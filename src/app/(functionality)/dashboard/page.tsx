@@ -189,12 +189,11 @@ export default async function DashboardPage() {
             </Button>
             {user.role === "EXTERNAL_USER" && (
               <>
-                <Button size="sm" variant="outline" disabled>
-                  <Trophy className="h-3.5 w-3.5 mr-1.5" />
-                  Payments
-                  <Badge variant="secondary" className="ml-1.5 text-[10px] px-1 py-0 font-normal">
-                    soon
-                  </Badge>
+                <Button size="sm" variant="outline" asChild>
+                  <Link href="/dashboard/payment">
+                    <Trophy className="h-3.5 w-3.5 mr-1.5" />
+                    Payments
+                  </Link>
                 </Button>
                 <Button size="sm" variant="outline" disabled>
                   <CalendarDays className="h-3.5 w-3.5 mr-1.5" />
