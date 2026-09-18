@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getParticipatingTeams, getInvitedTeams, deleteTeamAction, leaveTeamAction, getCurrentUserEmailAction } from "@/actions/team-actions";
+import { getParticipatingTeams, getInvitedTeams, deleteTeamAction, leaveTeamAction, getCurrentUserEmailAction, removeTeamMemberAction, checkUserExistsAction } from "@/actions/team-actions";
 import { sendTeamInviteAction, acceptInviteAction, rejectInviteAction, cancelInviteAction } from "@/actions/invite-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -74,21 +74,48 @@ function TeamCard({
   onInviteSent: () => void;
 }) {
   const [inviteEmail, setInviteEmail]       = useState("");
-  const [inviteMsg, setInviteMsg]           = useState<{ type: "ok" | "err"; text: string } | null>(null);
+  const [inviteMsg, setInviteMsg]           = useState<{ type: "ok" | "err" | "info"; text: string } | null>(null);
+  const [invitePreview, setInvitePreview]   = useState<string | null>(null); // resolved user's fullName
+  const [validating, setValidating]         = useState(false);
   const [actionLoading, setActionLoading]   = useState(false);
   const [inviting, setInviting]             = useState(false);
   const [cancelingId, setCancelingId]       = useState<string | null>(null);
+  const [removingEmail, setRemovingEmail]   = useState<string | null>(null);
   const [pendingInvites, setPendingInvites] = useState<PendingInvite[]>(team.pendingInvites ?? []);
-  const [confirm, setConfirm]               = useState<null | "delete" | "leave">(null);
+  const [members, setMembers]               = useState<Member[]>(team.members);
+  const [confirm, setConfirm]               = useState<null | "delete" | "leave" | string>(null); // string = remove memberEmail
   const [inviteOpenSlot, setInviteOpenSlot] = useState<number | null>(null);
 
   const isLeader     = team.leader === currentEmail;
-  const confirmedPct = Math.round((team.members.length / team.size) * 100);
-  const claimedPct   = Math.min(Math.round(((team.members.length + pendingInvites.length) / team.size) * 100), 100);
-  const isFull       = (team.members.length + pendingInvites.length) >= team.size;
+  const confirmedPct = Math.round((members.length / team.size) * 100);
+  const claimedPct   = Math.min(Math.round(((members.length + pendingInvites.length) / team.size) * 100), 100);
+  const isFull       = (members.length + pendingInvites.length) >= team.size;
+
+  async function handleEmailChange(val: string) {
+    setInviteEmail(val);
+    setInvitePreview(null);
+    setInviteMsg(null);
+    if (!val.includes("@")) return;
+    setValidating(true);
+    try {
+      const { exists, fullName } = await checkUserExistsAction(val.trim());
+      if (exists) {
+        setInvitePreview(fullName ?? null);
+        setInviteMsg({ type: "info", text: `✓ Found: ${fullName}` });
+      } else {
+        setInviteMsg({ type: "err", text: "No account found with this email" });
+      }
+    } catch { /* silent */ } finally {
+      setValidating(false);
+    }
+  }
 
   async function handleInvite(slotIndex?: number) {
     if (!inviteEmail.trim()) return;
+    if (!invitePreview) {
+      setInviteMsg({ type: "err", text: "Verify the email first — user must be registered" });
+      return;
+    }
     setInviting(true);
     setInviteMsg(null);
     try {
@@ -98,14 +125,27 @@ function TeamCard({
         { _id: String(result.invite._id), inviteeEmail: inviteEmail.trim() },
       ]);
       setInviteEmail("");
+      setInvitePreview(null);
       setInviteOpenSlot(null);
-      setInviteMsg(null);
       onInviteSent();
     } catch (e: unknown) {
       setInviteMsg({ type: "err", text: (e as Error).message });
-      void slotIndex; // keep slot open on error
+      void slotIndex;
     } finally {
       setInviting(false);
+    }
+  }
+
+  async function handleRemoveMember(memberEmail: string) {
+    setRemovingEmail(memberEmail);
+    setConfirm(null);
+    try {
+      await removeTeamMemberAction(team._id, memberEmail);
+      setMembers((prev) => prev.filter((m) => m.email !== memberEmail));
+    } catch (e: unknown) {
+      alert((e as Error).message);
+    } finally {
+      setRemovingEmail(null);
     }
   }
 
@@ -122,19 +162,22 @@ function TeamCard({
   }
 
   async function handleConfirmed() {
+    const current = confirm;
     setConfirm(null);
-    setActionLoading(true);
-    try {
-      if (isLeader) {
-        await deleteTeamAction(team._id);
-      } else {
-        await leaveTeamAction(team._id);
+    if (current === "delete" || current === "leave") {
+      setActionLoading(true);
+      try {
+        if (isLeader) { await deleteTeamAction(team._id); }
+        else          { await leaveTeamAction(team._id); }
+        onDelete(team._id);
+      } catch (e: unknown) {
+        alert((e as Error).message);
+      } finally {
+        setActionLoading(false);
       }
-      onDelete(team._id);
-    } catch (e: unknown) {
-      alert((e as Error).message);
-    } finally {
-      setActionLoading(false);
+    } else if (current) {
+      // current is the member email to remove
+      await handleRemoveMember(current);
     }
   }
 
@@ -142,16 +185,26 @@ function TeamCard({
     <>
       <ConfirmDialog
         open={confirm !== null}
-        title={isLeader ? "Delete team?" : "Leave team?"}
-        description={
-          isLeader
-            ? `This will permanently delete your team for "${team.event?.name ?? "this event"}" and cancel all pending invites.`
-            : `You will be removed from the team for "${team.event?.name ?? "this event"}". The team leader can re-invite you.`
+        title={
+          confirm === "delete" ? "Delete team?" :
+          confirm === "leave"  ? "Leave team?" :
+          "Remove member?"
         }
-        confirmLabel={isLeader ? "Delete team" : "Leave team"}
+        description={
+          confirm === "delete"
+            ? `This will permanently delete your team for "${team.event?.name ?? "this event"}" and cancel all pending invites.`
+            : confirm === "leave"
+            ? `You will be removed from the team for "${team.event?.name ?? "this event"}". The team leader can re-invite you.`
+            : `Remove ${confirm} from this team? They can be re-invited later.`
+        }
+        confirmLabel={
+          confirm === "delete" ? "Delete team" :
+          confirm === "leave"  ? "Leave team" :
+          "Remove"
+        }
         onConfirm={handleConfirmed}
         onCancel={() => setConfirm(null)}
-        danger={isLeader}
+        danger={confirm === "delete" || (typeof confirm === "string" && confirm !== "leave")}
       />
 
       <div className="bg-white border border-slate-100 border-l-4 border-l-indigo-500 rounded-2xl overflow-hidden">
@@ -163,7 +216,7 @@ function TeamCard({
                 {team.event?.name ?? "Unknown Event"}
               </h3>
               <p className="text-xs text-slate-400 mt-0.5">
-                {team.members.length} of {team.size} members
+                {members.length} of {team.size} members
                 {isLeader && (
                   <span className="ml-1.5 text-indigo-500 font-medium">· you&apos;re the leader</span>
                 )}
@@ -204,7 +257,7 @@ function TeamCard({
           </div>
           {pendingInvites.length > 0 && (
             <p className="text-[10px] text-amber-600 mt-1">
-              {pendingInvites.length} invite{pendingInvites.length > 1 ? "s" : ""} pending · {team.size - team.members.length - pendingInvites.length > 0 ? `${team.size - team.members.length - pendingInvites.length} slot${team.size - team.members.length - pendingInvites.length > 1 ? "s" : ""} open` : "all slots claimed"}
+              {pendingInvites.length} invite{pendingInvites.length > 1 ? "s" : ""} pending · {team.size - members.length - pendingInvites.length > 0 ? `${team.size - members.length - pendingInvites.length} slot${team.size - members.length - pendingInvites.length > 1 ? "s" : ""} open` : "all slots claimed"}
             </p>
           )}
         </div>
@@ -215,8 +268,10 @@ function TeamCard({
         <div className="px-5 py-4 space-y-2">
 
           {/* Confirmed members */}
-          {team.members.map((m) => {
-            const isExternal = m.role === "EXTERNAL_USER";
+          {members.map((m) => {
+            const isExternal   = m.role === "EXTERNAL_USER";
+            const isSelf       = m.email === currentEmail;
+            const isTeamLeader = m.email === team.leader;
             return (
               <div key={m.email} className="flex items-center gap-2.5">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
@@ -237,10 +292,25 @@ function TeamCard({
                   </div>
                   <p className="text-xs text-slate-400 truncate">{m.email}</p>
                 </div>
-                {m.email === team.leader
-                  ? <Badge className="text-xs h-5 shrink-0">Leader</Badge>
-                  : <span className="text-[10px] text-emerald-600 font-medium flex items-center gap-0.5 shrink-0"><CheckCircle2 className="h-3 w-3" /> Joined</span>
-                }
+                {isTeamLeader ? (
+                  <Badge className="text-xs h-5 shrink-0">Leader</Badge>
+                ) : isLeader && !isSelf ? (
+                  <button
+                    onClick={() => setConfirm(m.email)}
+                    disabled={removingEmail === m.email}
+                    className="shrink-0 inline-flex items-center gap-1 text-[10px] font-medium text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors px-2 py-1 rounded-lg disabled:opacity-40"
+                  >
+                    {removingEmail === m.email
+                      ? <div className="w-3 h-3 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                      : <X className="h-3 w-3" />
+                    }
+                    Remove
+                  </button>
+                ) : (
+                  <span className="text-[10px] text-emerald-600 font-medium flex items-center gap-0.5 shrink-0">
+                    <CheckCircle2 className="h-3 w-3" /> Joined
+                  </span>
+                )}
               </div>
             );
           })}
@@ -272,30 +342,43 @@ function TeamCard({
           ))}
 
           {/* Empty open slots — show invite form inline for leader */}
-          {Array.from({ length: Math.max(0, team.size - team.members.length - pendingInvites.length) }).map((_, i) => (
+          {Array.from({ length: Math.max(0, team.size - members.length - pendingInvites.length) }).map((_, i) => (
             <div key={`slot-${i}`}>
               {isLeader && inviteOpenSlot === i ? (
                 /* Expanded inline invite form */
-                <div className="border border-indigo-200 bg-indigo-50 rounded-xl px-3 py-2.5 space-y-2">
+                <div className="border border-indigo-200 bg-indigo-50 rounded-xl px-3 py-2.5 space-y-1.5">
                   <div className="flex gap-2">
-                    <Input
-                      type="email"
-                      placeholder="teammate@email.com"
-                      value={inviteEmail}
-                      onChange={(e) => setInviteEmail(e.target.value)}
-                      onKeyDown={(e) => { if (e.key === "Enter") handleInvite(i); if (e.key === "Escape") setInviteOpenSlot(null); }}
-                      autoFocus
-                      className="flex-1 h-8 text-sm bg-white"
-                    />
-                    <Button size="sm" onClick={() => handleInvite(i)} disabled={inviting} className="h-8 px-3 text-xs">
+                    <div className="flex-1 relative">
+                      <Input
+                        type="email"
+                        placeholder="teammate@email.com"
+                        value={inviteEmail}
+                        onChange={(e) => handleEmailChange(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === "Enter") handleInvite(i); if (e.key === "Escape") { setInviteOpenSlot(null); setInviteEmail(""); setInviteMsg(null); setInvitePreview(null); } }}
+                        autoFocus
+                        className="h-8 text-sm bg-white w-full"
+                      />
+                      {validating && (
+                        <div className="absolute right-2 top-2 w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
+                      )}
+                    </div>
+                    <Button
+                      size="sm"
+                      onClick={() => handleInvite(i)}
+                      disabled={inviting || !invitePreview}
+                      className="h-8 px-3 text-xs shrink-0"
+                    >
                       {inviting ? <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Send"}
                     </Button>
-                    <button onClick={() => { setInviteOpenSlot(null); setInviteEmail(""); setInviteMsg(null); }} className="text-slate-400 hover:text-slate-600 px-1">
+                    <button onClick={() => { setInviteOpenSlot(null); setInviteEmail(""); setInviteMsg(null); setInvitePreview(null); }} className="text-slate-400 hover:text-slate-600 px-1 shrink-0">
                       <X className="h-3.5 w-3.5" />
                     </button>
                   </div>
                   {inviteMsg && (
-                    <p className={`text-[10px] ${inviteMsg.type === "ok" ? "text-emerald-600" : "text-red-500"}`}>
+                    <p className={`text-[10px] font-medium ${
+                      inviteMsg.type === "info" ? "text-emerald-600" :
+                      inviteMsg.type === "err"  ? "text-red-500" : "text-emerald-600"
+                    }`}>
                       {inviteMsg.text}
                     </p>
                   )}
@@ -303,7 +386,7 @@ function TeamCard({
               ) : (
                 /* Empty slot button */
                 <button
-                  onClick={() => isLeader ? setInviteOpenSlot(i) : undefined}
+                  onClick={() => { if (isLeader) { setInviteEmail(""); setInviteMsg(null); setInvitePreview(null); setInviteOpenSlot(i); } }}
                   disabled={!isLeader}
                   className={`w-full flex items-center gap-2.5 border-2 border-dashed rounded-xl px-3 py-2 transition-colors ${
                     isLeader

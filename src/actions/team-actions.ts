@@ -83,6 +83,32 @@ export async function getInvitedTeams() {
   return JSON.parse(JSON.stringify(populatedInvites));
 }
 
+export async function checkUserExistsAction(email: string): Promise<{ exists: boolean; fullName?: string }> {
+  await connectToDatabase();
+  const found = await User.findOne({ email: email.toLowerCase().trim() }).select("fullName").lean<{ fullName: string }>();
+  return found ? { exists: true, fullName: found.fullName } : { exists: false };
+}
+
+export async function removeTeamMemberAction(teamId: string, memberEmail: string) {
+  await connectToDatabase();
+
+  const user = await getUser();
+  if (!user) throw new Error("User not found");
+
+  const team = await Team.findById(teamId);
+  if (!team) throw new Error("Team not found");
+  if (team.leader !== user.email) throw new Error("Only the team leader can remove members");
+  if (memberEmail === team.leader) throw new Error("Cannot remove the team leader");
+  if (!team.members.includes(memberEmail)) throw new Error("User is not a member of this team");
+
+  team.members = team.members.filter((m: string) => m !== memberEmail);
+  await team.save();
+
+  await User.updateOne({ email: memberEmail }, { $pull: { teams: team._id } });
+
+  return { success: true };
+}
+
 export async function leaveTeamAction(teamId: string) {
   await connectToDatabase();
 
