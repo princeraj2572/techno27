@@ -7,6 +7,7 @@ export interface IAccommodation extends Document {
   userId: Types.ObjectId;
   universityName: string;
   gender: "Male" | "Female" | "Other";
+  groupName?: string;
 }
 
 const accommodationSchema = new Schema<IAccommodation>(
@@ -17,6 +18,7 @@ const accommodationSchema = new Schema<IAccommodation>(
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     universityName: { type: String, required: true },
     gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
+    groupName: { type: String },
   },
   { timestamps: true }
 );

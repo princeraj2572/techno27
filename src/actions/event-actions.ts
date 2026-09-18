@@ -15,6 +15,40 @@ export async function getAllEventsAction() {
   return JSON.parse(JSON.stringify(allEvents));
 }
 
+export async function getEventsWithRegistrationCountsAction() {
+  await connectToDatabase();
+
+  const events = await Event.find().lean<IEvent[]>();
+  const allTeams = await Team.find().select("event members").lean<{ event: unknown; members: string[] }[]>();
+
+  const teamsByEvent = new Map<string, string[][]>();
+  for (const team of allTeams) {
+    const key = String(team.event);
+    if (!teamsByEvent.has(key)) teamsByEvent.set(key, []);
+    teamsByEvent.get(key)!.push(team.members);
+  }
+
+  const allEmails = [...new Set(allTeams.flatMap((t) => t.members))];
+  const users = await User.find({ email: { $in: allEmails } }).select("email role").lean<{ email: string; role: string }[]>();
+  const roleByEmail = new Map(users.map((u) => [u.email, u.role]));
+
+  const eventsWithCounts = events.map((event) => {
+    const memberLists = teamsByEvent.get(String(event._id)) ?? [];
+    const uniqueEmails = [...new Set(memberLists.flat())];
+    const teamCount = memberLists.length;
+    const participantCount = uniqueEmails.length;
+    const internalCount = uniqueEmails.filter((e) => roleByEmail.get(e) === "INTERNAL_USER").length;
+    const externalCount = uniqueEmails.filter((e) => roleByEmail.get(e) === "EXTERNAL_USER").length;
+    return { ...event, teamCount, participantCount, internalCount, externalCount };
+  });
+
+  const totalParticipants = allEmails.length;
+  const totalInternal = users.filter((u) => u.role === "INTERNAL_USER").length;
+  const totalExternal = users.filter((u) => u.role === "EXTERNAL_USER").length;
+
+  return JSON.parse(JSON.stringify({ eventsWithCounts, totalParticipants, totalInternal, totalExternal }));
+}
+
 export async function getEventByIdAction(eventId: string) {
   await connectToDatabase();
   const event = await Event.findById(eventId).lean<IEvent>();

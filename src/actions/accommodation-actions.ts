@@ -11,6 +11,7 @@ interface AccommodationDetails {
   additionalDetails?: string;
   universityName: string;
   gender: "Male" | "Female" | "Other";
+  groupName?: string;
 }
 
 export async function getAccommodationDetailsAction(): Promise<IAccommodation | null> {
