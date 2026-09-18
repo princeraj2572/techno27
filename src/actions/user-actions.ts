@@ -129,6 +129,12 @@ export async function getUser(): Promise<IUser | null> {
   }
 }
 
+export async function getUserById(id: string) {
+  await connectToDatabase();
+  const user = await User.findById(id).select("fullName email role mobileNumber department createdAt").lean();
+  return user ? JSON.parse(JSON.stringify(user)) : null;
+}
+
 export async function getUsersByEmails(
   emails: string[],
 ): Promise<(IUser & { createdAt: Date })[]> {

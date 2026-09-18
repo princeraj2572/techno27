@@ -85,6 +85,14 @@ export async function getManagementAssignmentsByEvent(eventId: string) {
   return JSON.parse(JSON.stringify(assignments));
 }
 
+export async function getAssignmentForUser(userId: string) {
+  await connectToDatabase();
+  const assignment = await ManagementAssignment.findOne({ userId, isActive: true })
+    .populate("eventIds", "name status category")
+    .lean();
+  return assignment ? JSON.parse(JSON.stringify(assignment)) : null;
+}
+
 export async function getEventManagerPermissions(userId: string, eventId: string) {
   await connectToDatabase();
   const assignment = await ManagementAssignment.findOne({
