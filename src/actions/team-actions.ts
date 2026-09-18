@@ -42,7 +42,10 @@ export async function getParticipatingTeams() {
         .select("fullName email role")
         .lean<{ fullName: string; email: string; role: string }[]>();
       const individualSchema = team.members.length === 1 && leader?.role === "EXTERNAL_USER";
-      return { ...team, members, leader, event, individualSchema };
+      const pendingInvites = await Invitation.find({ teamId: team._id, status: "PENDING" })
+        .select("_id inviteeEmail")
+        .lean<{ _id: string; inviteeEmail: string }[]>();
+      return { ...team, members, leader, event, individualSchema, pendingInvites };
     }),
   );
 
@@ -71,6 +74,25 @@ export async function getInvitedTeams() {
   );
 
   return JSON.parse(JSON.stringify(populatedInvites));
+}
+
+export async function leaveTeamAction(teamId: string) {
+  await connectToDatabase();
+
+  const user = await getUser();
+  if (!user) throw new Error("User not found");
+
+  const team = await Team.findById(teamId);
+  if (!team) throw new Error("Team not found");
+  if (team.leader === user.email) throw new Error("Leader cannot leave — delete the team instead");
+  if (!team.members.includes(user.email)) throw new Error("You are not a member of this team");
+
+  team.members = team.members.filter((m: string) => m !== user.email);
+  await team.save();
+
+  await User.updateOne({ email: user.email }, { $pull: { teams: team._id } });
+
+  return { success: true };
 }
 
 export async function deleteTeamAction(teamId: string) {
