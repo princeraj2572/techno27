@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import { User } from "@/models/user.model";
+import { ManagementAssignment } from "@/models/managementAssignment.model";
 import { ChevronLeft, Shield, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -12,7 +13,26 @@ async function getManagementUsers() {
   const users = await User.find({ role: { $in: ["MANAGEMENT_ADMIN", "EVENT_MANAGER"] } })
     .sort({ createdAt: -1 })
     .lean();
-  return JSON.parse(JSON.stringify(users));
+
+  // For EVENT_MANAGERs, fetch their event assignment counts
+  const eventManagerIds = users
+    .filter((u: { role: string }) => u.role === "EVENT_MANAGER")
+    .map((u: { _id: unknown }) => u._id);
+
+  const assignments = await ManagementAssignment.find({
+    userId: { $in: eventManagerIds },
+    isActive: true,
+  }).select("userId eventIds").lean();
+
+  const countMap: Record<string, number> = {};
+  for (const a of assignments) {
+    countMap[String(a.userId)] = (a.eventIds as unknown[]).length;
+  }
+
+  return JSON.parse(JSON.stringify(users)).map((u: { _id: string; role: string }) => ({
+    ...u,
+    assignedEventCount: u.role === "EVENT_MANAGER" ? (countMap[u._id] ?? 0) : null,
+  }));
 }
 
 const ROLE_CHIP: Record<string, string> = {
@@ -26,6 +46,9 @@ export default async function DevManagementPage() {
 
   const mgmtUsers = await getManagementUsers().catch(() => []);
 
+  const adminCount   = mgmtUsers.filter((u: { role: string }) => u.role === "MANAGEMENT_ADMIN").length;
+  const managerCount = mgmtUsers.filter((u: { role: string }) => u.role === "EVENT_MANAGER").length;
+
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
@@ -37,7 +60,9 @@ export default async function DevManagementPage() {
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Management</h1>
-            <p className="text-xs text-slate-400 mt-0.5">{mgmtUsers.length} account(s)</p>
+            <p className="text-xs text-slate-400 mt-0.5">
+              {adminCount} admin{adminCount !== 1 ? "s" : ""} · {managerCount} event manager{managerCount !== 1 ? "s" : ""}
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <Button size="sm" asChild>
@@ -64,7 +89,7 @@ export default async function DevManagementPage() {
           ) : (
             mgmtUsers.map((u: {
               _id: string; fullName: string; email: string; role: string;
-              mobileNumber?: string; createdAt?: string;
+              mobileNumber?: string; createdAt?: string; assignedEventCount: number | null;
             }) => (
               <div key={u._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700 shrink-0">
@@ -80,14 +105,24 @@ export default async function DevManagementPage() {
                   <p className="text-xs text-slate-400 truncate">{u.email}</p>
                 </div>
                 <div className="text-right shrink-0">
-                  {u.mobileNumber && <p className="text-xs text-slate-400">{u.mobileNumber}</p>}
+                  {u.role === "EVENT_MANAGER" && (
+                    <p className={`text-xs font-medium ${u.assignedEventCount && u.assignedEventCount > 0 ? "text-indigo-600" : "text-slate-300"}`}>
+                      {u.assignedEventCount ?? 0} event{u.assignedEventCount !== 1 ? "s" : ""}
+                    </p>
+                  )}
                   <p className="text-xs text-slate-300">
                     {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : "—"}
                   </p>
                 </div>
-                <Link href={`/dev/users/${u._id}`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">
-                  View →
-                </Link>
+                {u.role === "EVENT_MANAGER" ? (
+                  <Link href={`/dev/management/${u._id}`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">
+                    Assign events →
+                  </Link>
+                ) : (
+                  <Link href={`/dev/users/${u._id}`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">
+                    View →
+                  </Link>
+                )}
               </div>
             ))
           )}
