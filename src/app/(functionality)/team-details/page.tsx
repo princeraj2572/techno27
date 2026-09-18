@@ -207,7 +207,7 @@ function TeamCard({
         danger={confirm === "delete" || (typeof confirm === "string" && confirm !== "leave")}
       />
 
-      <div className="bg-white border border-slate-100 border-l-4 border-l-indigo-500 rounded-2xl overflow-hidden">
+      <div className="bg-white border border-slate-100 border-l-4 border-l-sky-500 rounded-2xl overflow-hidden">
         {/* Header */}
         <div className="px-5 pt-5 pb-3">
           <div className="flex items-start justify-between gap-3">
@@ -218,7 +218,7 @@ function TeamCard({
               <p className="text-xs text-slate-400 mt-0.5">
                 {members.length} of {team.size} members
                 {isLeader && (
-                  <span className="ml-1.5 text-indigo-500 font-medium">· you&apos;re the leader</span>
+                  <span className="ml-1.5 text-sky-500 font-medium">· you&apos;re the leader</span>
                 )}
               </p>
             </div>
@@ -242,7 +242,7 @@ function TeamCard({
             </button>
           </div>
 
-          {/* Fill bar — pending (amber) behind confirmed (indigo/emerald) */}
+          {/* Fill bar — pending (amber) behind confirmed (sky/emerald) */}
           <div className="mt-3 h-1.5 bg-slate-100 rounded-full overflow-hidden relative">
             {/* pending layer */}
             <div
@@ -251,7 +251,7 @@ function TeamCard({
             />
             {/* confirmed layer */}
             <div
-              className={`absolute inset-y-0 left-0 rounded-full transition-all ${isFull && pendingInvites.length === 0 ? "bg-emerald-500" : "bg-indigo-500"}`}
+              className={`absolute inset-y-0 left-0 rounded-full transition-all ${isFull && pendingInvites.length === 0 ? "bg-emerald-500" : "bg-sky-500"}`}
               style={{ width: `${confirmedPct}%` }}
             />
           </div>
@@ -275,7 +275,7 @@ function TeamCard({
             return (
               <div key={m.email} className="flex items-center gap-2.5">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                  isExternal ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
+                  isExternal ? "bg-amber-100 text-amber-700" : "bg-sky-100 text-sky-700"
                 }`}>
                   {m.fullName[0]?.toUpperCase()}
                 </div>
@@ -285,7 +285,7 @@ function TeamCard({
                     <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full border shrink-0 ${
                       isExternal
                         ? "bg-amber-50 text-amber-700 border-amber-200"
-                        : "bg-indigo-50 text-indigo-700 border-indigo-200"
+                        : "bg-sky-50 text-sky-700 border-sky-200"
                     }`}>
                       {isExternal ? "External" : "OPJU"}
                     </span>
@@ -346,7 +346,7 @@ function TeamCard({
             <div key={`slot-${i}`}>
               {isLeader && inviteOpenSlot === i ? (
                 /* Expanded inline invite form */
-                <div className="border border-indigo-200 bg-indigo-50 rounded-xl px-3 py-2.5 space-y-1.5">
+                <div className="border border-sky-200 bg-sky-50 rounded-xl px-3 py-2.5 space-y-1.5">
                   <div className="flex gap-2">
                     <div className="flex-1 relative">
                       <Input
@@ -359,7 +359,7 @@ function TeamCard({
                         className="h-8 text-sm bg-white w-full"
                       />
                       {validating && (
-                        <div className="absolute right-2 top-2 w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
+                        <div className="absolute right-2 top-2 w-4 h-4 border-2 border-sky-400 border-t-transparent rounded-full animate-spin" />
                       )}
                     </div>
                     <Button
@@ -390,20 +390,20 @@ function TeamCard({
                   disabled={!isLeader}
                   className={`w-full flex items-center gap-2.5 border-2 border-dashed rounded-xl px-3 py-2 transition-colors ${
                     isLeader
-                      ? "border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 group cursor-pointer"
+                      ? "border-slate-200 hover:border-sky-300 hover:bg-sky-50 group cursor-pointer"
                       : "border-slate-100 cursor-default"
                   }`}
                 >
                   <div className={`w-8 h-8 rounded-full border-2 border-dashed flex items-center justify-center shrink-0 transition-colors ${
-                    isLeader ? "border-slate-300 group-hover:border-indigo-400" : "border-slate-200"
+                    isLeader ? "border-slate-300 group-hover:border-sky-400" : "border-slate-200"
                   }`}>
-                    <UserPlus className={`h-3.5 w-3.5 transition-colors ${isLeader ? "text-slate-300 group-hover:text-indigo-500" : "text-slate-200"}`} />
+                    <UserPlus className={`h-3.5 w-3.5 transition-colors ${isLeader ? "text-slate-300 group-hover:text-sky-500" : "text-slate-200"}`} />
                   </div>
-                  <span className={`text-xs transition-colors ${isLeader ? "text-slate-400 group-hover:text-indigo-600 font-medium" : "text-slate-300"}`}>
+                  <span className={`text-xs transition-colors ${isLeader ? "text-slate-400 group-hover:text-sky-600 font-medium" : "text-slate-300"}`}>
                     {isLeader ? "Invite teammate" : "Open slot"}
                   </span>
                   {isLeader && (
-                    <span className="ml-auto text-[10px] font-semibold text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="ml-auto text-[10px] font-semibold text-sky-500 opacity-0 group-hover:opacity-100 transition-opacity">
                       + Invite
                     </span>
                   )}
@@ -551,7 +551,7 @@ export default function TeamDetailsPage() {
           <div>
             <Link
               href={filteredEvent ? "/dashboard" : "/dashboard"}
-              className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1"
+              className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-sky-600 transition-colors mb-1"
             >
               <ChevronLeft className="h-3.5 w-3.5" /> Dashboard
             </Link>
@@ -559,13 +559,13 @@ export default function TeamDetailsPage() {
               {filteredEvent ?? "My teams"}
             </h1>
             {filteredEvent && (
-              <Link href="/team-details" className="text-xs text-indigo-600 hover:underline mt-0.5 block">
+              <Link href="/team-details" className="text-xs text-sky-600 hover:underline mt-0.5 block">
                 ← All teams
               </Link>
             )}
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-            <Users className="h-5 w-5 text-indigo-600" />
+          <div className="w-10 h-10 rounded-2xl bg-sky-100 flex items-center justify-center">
+            <Users className="h-5 w-5 text-sky-600" />
           </div>
         </div>
 
@@ -615,7 +615,7 @@ export default function TeamDetailsPage() {
               <p className="text-sm font-medium text-slate-500">No team found for this event</p>
               <Link
                 href="/events-selection"
-                className="text-xs text-indigo-600 hover:underline mt-1 block"
+                className="text-xs text-sky-600 hover:underline mt-1 block"
               >
                 Register for an event to create or join a team
               </Link>

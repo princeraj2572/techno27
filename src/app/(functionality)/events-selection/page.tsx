@@ -24,7 +24,7 @@ type Event = {
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200" },
-  EVENT_LIVE:          { text: "Live now",   color: "text-indigo-700",  bg: "bg-indigo-50 border-indigo-200"  },
+  EVENT_LIVE:          { text: "Live now",   color: "text-sky-700",  bg: "bg-sky-50 border-sky-200"  },
   COMPLETED:           { text: "Completed",  color: "text-slate-500",   bg: "bg-slate-50 border-slate-200"    },
   CANCELLED:           { text: "Cancelled",  color: "text-red-600",     bg: "bg-red-50 border-red-200"        },
   REGISTRATION_CLOSED: { text: "Closed",     color: "text-amber-700",   bg: "bg-amber-50 border-amber-200"    },
@@ -117,7 +117,7 @@ export default function EventsSelectionPage() {
           <div>
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1"
+              className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-sky-600 transition-colors mb-1"
             >
               <ChevronLeft className="h-3.5 w-3.5" /> Dashboard
             </Link>
@@ -126,8 +126,8 @@ export default function EventsSelectionPage() {
               Tap an open event to select it, then confirm registration.
             </p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center shrink-0">
-            <CalendarDays className="h-5 w-5 text-indigo-600" />
+          <div className="w-10 h-10 rounded-2xl bg-sky-100 flex items-center justify-center shrink-0">
+            <CalendarDays className="h-5 w-5 text-sky-600" />
           </div>
         </div>
 
@@ -169,9 +169,9 @@ export default function EventsSelectionPage() {
                 if (isRegistered) {
                   cardClass += "border-l-4 border-l-emerald-500 cursor-default";
                 } else if (isSelected) {
-                  cardClass += "border-2 border-indigo-500 bg-indigo-50/50 cursor-pointer shadow-sm";
+                  cardClass += "border-2 border-sky-500 bg-sky-50/50 cursor-pointer shadow-sm";
                 } else if (isOpen) {
-                  cardClass += "hover:border-indigo-200 hover:shadow-sm cursor-pointer";
+                  cardClass += "hover:border-sky-200 hover:shadow-sm cursor-pointer";
                 } else {
                   cardClass += "opacity-50 cursor-not-allowed";
                 }
@@ -232,7 +232,7 @@ export default function EventsSelectionPage() {
 
                     {/* Selected hint */}
                     {isSelected && (
-                      <p className="mt-2.5 text-xs text-indigo-600 font-medium flex items-center gap-1">
+                      <p className="mt-2.5 text-xs text-sky-600 font-medium flex items-center gap-1">
                         <CheckCircle2 className="h-3.5 w-3.5" /> Selected — tap again to deselect
                       </p>
                     )}
@@ -258,7 +258,7 @@ export default function EventsSelectionPage() {
           <Button
             onClick={handleRegister}
             disabled={submitting}
-            className="pointer-events-auto bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl h-12 px-8 text-sm font-semibold shadow-xl shadow-indigo-200 disabled:opacity-60"
+            className="pointer-events-auto bg-sky-600 hover:bg-sky-700 text-white rounded-2xl h-12 px-8 text-sm font-semibold shadow-xl shadow-sky-200 disabled:opacity-60"
           >
             {submitting
               ? "Registering…"
