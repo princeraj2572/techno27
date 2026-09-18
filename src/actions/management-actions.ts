@@ -2,6 +2,7 @@
 import { connectToDatabase } from "@/lib/mongodb";
 import { ManagementAssignment } from "@/models/managementAssignment.model";
 import { User } from "@/models/user.model";
+import { Event, IEvent } from "@/models/event.model";
 import { AuditLog } from "@/models/auditLog.model";
 
 export async function assignEventManager(
@@ -91,6 +92,103 @@ export async function getAssignmentForUser(userId: string) {
     .populate("eventIds", "name status category")
     .lean();
   return assignment ? JSON.parse(JSON.stringify(assignment)) : null;
+}
+
+// ─── Auto-generate an EVENT_MANAGER account for an event ─────────────────
+export async function generateEventManagerAction(
+  eventId: string,
+  performedById: string,
+): Promise<{ userId: string; fullName: string; email: string; password: string; alreadyExists: boolean }> {
+  await connectToDatabase();
+
+  const performer = await User.findById(performedById);
+  if (!performer || performer.role !== "DEV_ADMIN") throw new Error("Unauthorized — DEV_ADMIN only");
+
+  const event = await Event.findById(eventId).select("name").lean<IEvent>();
+  if (!event) throw new Error("Event not found");
+
+  // Return existing EM if one is already assigned
+  const existingAssign = await ManagementAssignment.findOne({ eventIds: eventId, isActive: true })
+    .populate("userId", "fullName email password role")
+    .lean();
+
+  if (existingAssign) {
+    const u = existingAssign.userId as { _id: unknown; fullName: string; email: string; password: string; role: string };
+    if (u && u.role === "EVENT_MANAGER") {
+      return JSON.parse(JSON.stringify({ userId: String(u._id), fullName: u.fullName, email: u.email, password: u.password, alreadyExists: true }));
+    }
+  }
+
+  const slug = (event.name as string).toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 12);
+  let email = `em-${slug}@techno27.internal`;
+  if (await User.findOne({ email })) email = `em-${slug}-${Date.now()}@techno27.internal`;
+
+  const password =
+    Math.random().toString(36).slice(2, 6).toUpperCase() +
+    Math.random().toString(36).slice(2, 6).toUpperCase();
+
+  const emUser = await User.create({
+    fullName: `${event.name} Manager`,
+    email,
+    password,
+    role: "EVENT_MANAGER",
+    mobileNumber: "0000000000",
+    gender: "Other",
+    emergencyContactName: "Admin",
+    emergencyContactNumber: "0000000000",
+  });
+
+  await ManagementAssignment.create({
+    userId: emUser._id,
+    eventIds: [eventId],
+    permissions: ["participants.read", "checkin.manage", "reports.read"],
+    assignedBy: performer._id,
+    isActive: true,
+  });
+
+  return JSON.parse(JSON.stringify({ userId: String(emUser._id), fullName: `${event.name} Manager`, email, password, alreadyExists: false }));
+}
+
+// ─── Get the EVENT_MANAGER credentials for an event (DEV only) ────────────
+export async function getEventManagerForEvent(
+  eventId: string,
+): Promise<{ userId: string; fullName: string; email: string; password: string } | null> {
+  await connectToDatabase();
+  const assignment = await ManagementAssignment.findOne({ eventIds: eventId, isActive: true })
+    .populate("userId", "fullName email password role")
+    .lean();
+  if (!assignment) return null;
+  const u = assignment.userId as { _id: unknown; fullName: string; email: string; password: string; role: string };
+  if (!u || u.role !== "EVENT_MANAGER") return null;
+  return JSON.parse(JSON.stringify({ userId: String(u._id), fullName: u.fullName, email: u.email, password: u.password }));
+}
+
+// ─── Bulk-generate EVENT_MANAGER for every event that lacks one ────────────
+export async function generateAllEventManagersAction(performedById: string) {
+  await connectToDatabase();
+  const performer = await User.findById(performedById);
+  if (!performer || performer.role !== "DEV_ADMIN") throw new Error("Unauthorized");
+
+  const events = await Event.find().select("name _id").lean<IEvent[]>();
+  const results: { eventId: string; name: string; status: string; email?: string; password?: string }[] = [];
+
+  for (const event of events) {
+    const eventId = String(event._id);
+    const existing = await ManagementAssignment.findOne({ eventIds: eventId, isActive: true })
+      .populate("userId", "role email password")
+      .lean();
+    if (existing) {
+      const u = existing.userId as { role: string; email: string; password: string };
+      if (u?.role === "EVENT_MANAGER") {
+        results.push({ eventId, name: event.name as string, status: "exists", email: u.email, password: u.password });
+        continue;
+      }
+    }
+    const gen = await generateEventManagerAction(eventId, performedById);
+    results.push({ eventId, name: event.name as string, status: "created", email: gen.email, password: gen.password });
+  }
+
+  return JSON.parse(JSON.stringify(results));
 }
 
 export async function getEventManagerPermissions(userId: string, eventId: string) {
