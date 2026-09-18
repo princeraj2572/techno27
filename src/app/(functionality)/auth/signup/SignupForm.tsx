@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,6 +22,8 @@ export default function SignupForm({ email, isInternal }: Props) {
   const [error, setError] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
   const [photoUploading, setPhotoUploading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const [form, setForm] = useState({
     fullName: "",
@@ -313,15 +316,53 @@ export default function SignupForm({ email, isInternal }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-border pt-4">
         <div className="space-y-1">
           <Label>Password *</Label>
-          <Input type="password" placeholder="Min. 8 characters" value={form.password} onChange={set("password")} required />
+          <div className="relative">
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder="Min. 8 characters"
+              value={form.password}
+              onChange={set("password")}
+              className="pr-10"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
         </div>
         <div className="space-y-1">
           <Label>Confirm Password *</Label>
-          <Input type="password" placeholder="Re-enter password" value={form.confirmPassword} onChange={set("confirmPassword")} required />
+          <div className="relative">
+            <Input
+              type={showConfirm ? "text" : "password"}
+              placeholder="Re-enter password"
+              value={form.confirmPassword}
+              onChange={set("confirmPassword")}
+              className="pr-10"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirm((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              aria-label={showConfirm ? "Hide password" : "Show password"}
+            >
+              {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
         </div>
       </div>
 
-      {error && <p className="text-sm text-destructive text-center">{error}</p>}
+      {error && (
+        <div className="px-3 py-2 rounded-lg bg-destructive/10 border border-destructive/20">
+          <p className="text-sm text-destructive">{error}</p>
+        </div>
+      )}
 
       <Button type="submit" className="w-full" disabled={loading || photoUploading}>
         {loading ? "Creating account..." : "Create Account"}
