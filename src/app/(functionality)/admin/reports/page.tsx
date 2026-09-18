@@ -1,33 +1,41 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChevronLeft, BarChart2, CalendarDays, CreditCard, Hotel, Users } from "lucide-react";
 import Link from "next/link";
 
 const REPORTS = [
   {
+    key: "event-participants",
     title: "Event Participants",
-    description: "Download a list of all participants per event with team details.",
-    href: "/api/export/event-participants",
-    icon: "🎪",
+    description: "All participants per event with team details.",
+    icon: CalendarDays,
+    color: "bg-indigo-50 text-indigo-600",
+    exportHref: "/api/export/event-participants",
   },
   {
+    key: "payments",
     title: "Payment Report",
-    description: "All external participant payment data with acknowledgement and clearance status.",
-    href: "/api/export/payments",
-    icon: "💳",
+    description: "External participant payments with clearance status.",
+    icon: CreditCard,
+    color: "bg-emerald-50 text-emerald-600",
+    exportHref: "/api/export/payments",
   },
   {
+    key: "accommodation",
     title: "Accommodation Report",
-    description: "All accommodation requests with arrival/departure times.",
-    href: "/api/export/accommodation",
-    icon: "🏨",
+    description: "Accommodation requests with arrival and departure times.",
+    icon: Hotel,
+    color: "bg-amber-50 text-amber-600",
+    exportHref: "/api/export/accommodation",
   },
   {
+    key: "registrations",
     title: "All Registrations",
-    description: "Full participant registration list (internal and external).",
-    href: "/api/export/registrations",
-    icon: "📋",
+    description: "Full participant list — internal and external.",
+    icon: Users,
+    color: "bg-slate-50 text-slate-600",
+    exportHref: "/api/export/registrations",
   },
 ];
 
@@ -36,40 +44,55 @@ export default async function AdminReportsPage() {
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Reports</h1>
-        <Link href="/admin" className="text-sm text-muted-foreground hover:text-primary">← Admin</Link>
-      </div>
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {REPORTS.map((report) => (
-          <Card key={report.title} className="hover:border-primary/50 transition-colors">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">{report.icon}</span>
-                <CardTitle className="text-base">{report.title}</CardTitle>
+        {/* Header */}
+        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+          <div>
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+              <ChevronLeft className="h-3.5 w-3.5" /> Admin
+            </Link>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Reports</h1>
+            <p className="text-xs text-slate-400 mt-0.5">View and export paginated, filterable report data</p>
+          </div>
+          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
+            <BarChart2 className="h-5 w-5 text-indigo-600" />
+          </div>
+        </div>
+
+        {/* Report cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+          {REPORTS.map((report) => {
+            const Icon = report.icon;
+            return (
+              <div key={report.key} className="bg-white border border-slate-100 rounded-2xl px-5 py-5 hover:border-indigo-100 hover:shadow-sm transition-all">
+                <div className={`w-9 h-9 rounded-xl ${report.color} flex items-center justify-center mb-4`}>
+                  <Icon className="h-4 w-4" />
+                </div>
+                <p className="text-sm font-bold text-slate-900">{report.title}</p>
+                <p className="text-xs text-slate-400 mt-1 leading-relaxed">{report.description}</p>
+                <div className="flex items-center gap-4 mt-4">
+                  <Link
+                    href={`/admin/reports/${report.key}`}
+                    className="text-xs font-medium text-indigo-600 hover:text-indigo-700"
+                  >
+                    View data →
+                  </Link>
+                  <a
+                    href={report.exportHref}
+                    download
+                    className="text-xs text-slate-400 hover:text-slate-600"
+                  >
+                    Download Excel
+                  </a>
+                </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-3">{report.description}</p>
-              <a
-                href={report.href}
-                download
-                className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
-              >
-                Download Excel →
-              </a>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+            );
+          })}
+        </div>
 
-      <Card>
-        <CardContent className="py-6 text-center text-muted-foreground text-sm">
-          <p>More report types coming soon.</p>
-        </CardContent>
-      </Card>
+      </div>
     </div>
   );
 }
