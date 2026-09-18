@@ -1,18 +1,40 @@
 "use server";
-import { eventSubEventData } from "@/data/event-subeventData";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Event, IEvent } from "@/models/event.model";
-import { ITeam, Team } from "@/models/team.model";
+import { Team, ITeam } from "@/models/team.model";
 import { Transaction, ITransaction } from "@/models/transaction.model";
-import { IUser, User } from "@/models/user.model";
+import { User, IUser } from "@/models/user.model";
 
+// ─── Pricing constants (from Technorollix 2026) ───────────────────────────
+export const MAX_PAYMENT = 499;   // ₹499 hard cap
+export const SOLO_FEE_1  = 99;    // 1 individual event
+export const SOLO_FEE_2  = 199;   // 2–3 individual events
+export const TEAM_FEE    = 299;   // per team event
+
+export function calculatePayAmount(
+  individualCount: number,
+  teamCount: number,
+): number {
+  const total = individualCount + teamCount;
+  if (total >= 4) return MAX_PAYMENT;
+
+  let amount = 0;
+  if (individualCount === 1)       amount += SOLO_FEE_1;
+  else if (individualCount >= 2)   amount += SOLO_FEE_2;
+
+  amount += teamCount * TEAM_FEE;
+
+  return Math.min(amount, MAX_PAYMENT);
+}
+
+// ─── Submit a transaction ID (external user) ──────────────────────────────
 export async function addTransactionIdAction(
   transactionId: string,
   userEmail: string,
   currentPayAmount: number,
 ): Promise<ITransaction> {
   await connectToDatabase();
-  const newTransaction = new Transaction({
+  const newTx = new Transaction({
     transactionId,
     userEmail,
     currentPayAmount,
@@ -20,30 +42,129 @@ export async function addTransactionIdAction(
     acknowledgementByAdmin: false,
     clearanceApproval: false,
   });
-  const saved = await newTransaction.save();
+  const saved = await newTx.save();
   return JSON.parse(JSON.stringify(saved));
 }
 
+// ─── Get all transactions for a user ──────────────────────────────────────
 export async function getTransactionsByUserEmail(
   userEmail: string,
 ): Promise<(ITransaction & { createdAt: Date })[]> {
   await connectToDatabase();
-  const transactions = await Transaction.find({ userEmail }).lean<ITransaction[]>();
-  return JSON.parse(JSON.stringify(transactions));
+  const txs = await Transaction.find({ userEmail }).sort({ createdAt: -1 }).lean<ITransaction[]>();
+  return JSON.parse(JSON.stringify(txs));
 }
 
-function calculatePayAmount(individualSchemaCount: number, teamSchemaCount: number): number {
-  const totalTeams = individualSchemaCount + teamSchemaCount;
-  if (totalTeams >= 4) return 499;
-  let payAmount = 0;
-  if (individualSchemaCount === 1) payAmount += 99;
-  else if (individualSchemaCount === 2 || individualSchemaCount === 3) payAmount += 199;
-  if (teamSchemaCount === 1) payAmount += 299;
-  else if (teamSchemaCount === 2) payAmount += 299 * 2;
-  else if (teamSchemaCount === 3) payAmount += 299 * 3;
-  return payAmount;
+// ─── Payment summary for a single external user ───────────────────────────
+export interface IEventFeeRow {
+  eventId: string;
+  name: string;
+  isIndividual: boolean; // teamSize == 1
+  fee: number;
 }
 
+export interface IPaymentSummary {
+  payableAmount: number;
+  individualCount: number;
+  teamCount: number;
+  eventRows: IEventFeeRow[];
+  transactions: (ITransaction & { createdAt: Date })[];
+  acknowledgedAmount: number;
+  payClearance: boolean;
+  remaining: number;
+}
+
+export async function getPaymentSummaryForUser(
+  email: string,
+): Promise<IPaymentSummary> {
+  await connectToDatabase();
+
+  // Teams the user leads
+  const teams = await Team.find({ leader: email }).lean<ITeam[]>();
+
+  const eventRows: IEventFeeRow[] = [];
+  let individualCount = 0;
+  let teamCount = 0;
+
+  for (const team of teams) {
+    const event = await Event.findById(team.event).select("name teamSize").lean<IEvent>();
+    if (!event) continue;
+    const isIndividual = (event.teamSize ?? 1) === 1;
+    if (isIndividual) individualCount++;
+    else teamCount++;
+    eventRows.push({
+      eventId: String(event._id),
+      name: event.name as string,
+      isIndividual,
+      fee: isIndividual ? SOLO_FEE_1 : TEAM_FEE,
+    });
+  }
+
+  const payableAmount = calculatePayAmount(individualCount, teamCount);
+
+  const transactions = await Transaction.find({ userEmail: email })
+    .sort({ createdAt: -1 })
+    .lean<ITransaction[]>();
+
+  const serialized = JSON.parse(JSON.stringify(transactions)) as (ITransaction & { createdAt: Date })[];
+
+  const acknowledgedAmount = serialized.reduce(
+    (acc, t) => acc + (t.acknowledgementByAdmin ? t.amountAtAdmin : 0),
+    0,
+  );
+  const payClearance = acknowledgedAmount >= payableAmount && payableAmount > 0;
+  const remaining    = Math.max(payableAmount - acknowledgedAmount, 0);
+
+  return {
+    payableAmount,
+    individualCount,
+    teamCount,
+    eventRows,
+    transactions: serialized,
+    acknowledgedAmount,
+    payClearance,
+    remaining,
+  };
+}
+
+// ─── Acknowledge a transaction (DEV_ADMIN only) ───────────────────────────
+export async function acknowledgeTransactionAction(
+  transactionId: string,
+  amountReceived: number,
+  performedById: string,
+): Promise<{ success: boolean; cleared?: boolean }> {
+  await connectToDatabase();
+
+  const performer = await User.findById(performedById).lean<IUser>();
+  if (!performer || performer.role !== "DEV_ADMIN") {
+    throw new Error("Unauthorized — only DEV_ADMIN can acknowledge transactions");
+  }
+
+  const tx = await Transaction.findOne({ transactionId });
+  if (!tx) throw new Error("Transaction not found");
+
+  tx.amountAtAdmin = amountReceived;
+  tx.acknowledgementByAdmin = true;
+  await tx.save();
+
+  // Check if user's total acknowledged amount now covers payable
+  const summary = await getPaymentSummaryForUser(tx.userEmail);
+  const newAcknowledged = summary.acknowledgedAmount;
+
+  let cleared = false;
+  if (newAcknowledged >= summary.payableAmount && summary.payableAmount > 0) {
+    // Mark all transactions for this user as cleared
+    await Transaction.updateMany(
+      { userEmail: tx.userEmail },
+      { clearanceApproval: true },
+    );
+    cleared = true;
+  }
+
+  return { success: true, cleared };
+}
+
+// ─── Full payment data for admin views ────────────────────────────────────
 export interface IPaymentData {
   fullName: string;
   email: string;
@@ -56,84 +177,75 @@ export interface IPaymentData {
   acknowledgedTransactions: number;
   acknowledgedAmount: number;
   payClearance: boolean;
+  transactions: Array<{
+    transactionId: string;
+    currentPayAmount: number;
+    amountAtAdmin: number;
+    acknowledgementByAdmin: boolean;
+    clearanceApproval: boolean;
+    createdAt: Date;
+  }>;
 }
 
 export async function getPaymentData(): Promise<IPaymentData[] | null> {
   await connectToDatabase();
 
   const users = await User.find({
-    role: { $in: ["INTERNAL_USER", "EXTERNAL_USER"] },
+    role: "EXTERNAL_USER",
     $expr: { $gte: [{ $size: "$teams" }, 1] },
   }).lean<IUser[]>();
 
-  const paymentDataArray = await Promise.all(
+  const results = await Promise.all(
     users.map(async (user) => {
-      const { email, fullName, mobileNumber } = user;
+      const { email, fullName } = user;
 
       const teams = await Team.find({ leader: email }).lean<ITeam[]>();
       if (teams.length === 0) return null;
 
-      const populatedTeams = await Promise.all(
-        teams.map(async (team) => {
-          const [leader, event, members] = await Promise.all([
-            User.findOne({ email: team.leader }).select("fullName email role").lean<{ fullName: string; email: string; role: string }>(),
-            Event.findById(team.event).lean<IEvent>(),
-            User.find({ email: { $in: team.members } }).select("fullName email role").lean<{ fullName: string; email: string; role: string }[]>(),
-          ]);
-
-          const anyMemberIsExternal = members.some((m) => m.role === "EXTERNAL_USER");
-          if (!anyMemberIsExternal) return null;
-
-          const individualSchema = team.members.length === 1 && leader?.role === "EXTERNAL_USER";
-          return { ...team, members, leader, event, individualSchema };
-        }),
-      );
-
-      const leadingTeams = populatedTeams.filter((d) => d !== null);
-      if (leadingTeams.length === 0) return null;
-
-      const eventIds = leadingTeams.map((t) => t.event?._id?.toString());
+      let individualCount = 0;
+      let teamCount = 0;
       const eventNames: string[] = [];
-      const individualSchemaCount = leadingTeams.filter((t) => t.individualSchema).length;
-      const teamSchemaCount = leadingTeams.filter((t) => !t.individualSchema).length;
 
-      eventSubEventData.events.forEach((e) => {
-        if (eventIds.includes(e.event)) {
-          if (!eventNames.includes(e.eventName)) eventNames.push(e.eventName);
-        } else {
-          e.subEvents.forEach((se) => {
-            if (eventIds.includes(se.subEvent) && !eventNames.includes(e.eventName)) {
-              eventNames.push(e.eventName);
-            }
-          });
+      for (const team of teams) {
+        const event = await Event.findById(team.event).select("name teamSize").lean<IEvent>();
+        if (!event) continue;
+        const isIndividual = (event.teamSize ?? 1) === 1;
+        if (isIndividual) individualCount++;
+        else teamCount++;
+        if (!eventNames.includes(event.name as string)) {
+          eventNames.push(event.name as string);
         }
-      });
+      }
 
-      const payableAmount = calculatePayAmount(individualSchemaCount, teamSchemaCount);
-      const transactions = await Transaction.find({ userEmail: email }).lean<ITransaction[]>();
-      const numberOfTransactions = transactions.length;
-      const acknowledgedTransactions = transactions.filter((t) => t.acknowledgementByAdmin).length;
-      const acknowledgedAmount = transactions.reduce(
-        (acc, t) => acc + (t.acknowledgementByAdmin ? t.amountAtAdmin : 0),
+      const payableAmount = calculatePayAmount(individualCount, teamCount);
+
+      const txs = await Transaction.find({ userEmail: email })
+        .sort({ createdAt: -1 })
+        .lean<ITransaction[]>();
+
+      const serializedTxs = JSON.parse(JSON.stringify(txs));
+      const acknowledgedAmount = serializedTxs.reduce(
+        (acc: number, t: ITransaction) => acc + (t.acknowledgementByAdmin ? t.amountAtAdmin : 0),
         0,
       );
-      const payClearance = payableAmount <= acknowledgedAmount;
+      const payClearance = acknowledgedAmount >= payableAmount && payableAmount > 0;
 
       return {
         fullName,
         email,
-        mobileNumber: mobileNumber || "",
+        mobileNumber: user.mobileNumber || "",
         eventNames: eventNames.join(", "),
-        individualSchemaCount,
-        teamSchemaCount,
+        individualSchemaCount: individualCount,
+        teamSchemaCount: teamCount,
         payableAmount,
-        numberOfTransactions,
-        acknowledgedTransactions,
+        numberOfTransactions: txs.length,
+        acknowledgedTransactions: serializedTxs.filter((t: ITransaction) => t.acknowledgementByAdmin).length,
         acknowledgedAmount,
         payClearance,
+        transactions: serializedTxs,
       };
     }),
   );
 
-  return JSON.parse(JSON.stringify(paymentDataArray.filter((d) => d !== null)));
+  return JSON.parse(JSON.stringify(results.filter((r) => r !== null)));
 }
