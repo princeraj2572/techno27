@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect, notFound } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
@@ -12,7 +12,7 @@ import Link from "next/link";
 
 const STATUS_LABEL: Record<string, { text: string; color: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600" },
-  EVENT_LIVE:          { text: "Live now",  color: "text-indigo-600"  },
+  EVENT_LIVE:          { text: "Live now",  color: "text-teal-600"  },
   COMPLETED:           { text: "Completed", color: "text-slate-400"   },
   CANCELLED:           { text: "Cancelled", color: "text-red-500"     },
   REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600"   },
@@ -21,7 +21,7 @@ const STATUS_LABEL: Record<string, { text: string; color: string }> = {
 
 const STATUS_BORDER: Record<string, string> = {
   REGISTRATION_OPEN:   "border-l-emerald-500",
-  EVENT_LIVE:          "border-l-indigo-500",
+  EVENT_LIVE:          "border-l-teal-500",
   COMPLETED:           "border-l-slate-300",
   CANCELLED:           "border-l-red-400",
   REGISTRATION_CLOSED: "border-l-amber-400",
@@ -71,7 +71,7 @@ export default async function AdminParticipantDetailPage({
         {/* Header */}
         <div className="flex items-start justify-between gap-4 animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/participants" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/admin/participants" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Participants
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">{String(p.fullName)}</h1>
@@ -79,7 +79,7 @@ export default async function AdminParticipantDetailPage({
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <span className={`text-xs font-semibold px-2 py-1 rounded-full border ${
-              isExternal ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-indigo-50 text-indigo-700 border-indigo-200"
+              isExternal ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-teal-50 text-teal-700 border-teal-200"
             }`}>
               {isExternal ? "External" : "OPJU"}
             </span>
@@ -88,7 +88,7 @@ export default async function AdminParticipantDetailPage({
                 className="rounded-full object-cover ring-2 ring-slate-100" unoptimized />
             ) : (
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
-                isExternal ? "bg-amber-500 text-white" : "bg-indigo-600 text-white"
+                isExternal ? "bg-amber-500 text-white" : "bg-teal-600 text-white"
               }`}>
                 {firstName[0]?.toUpperCase()}
               </div>
@@ -99,8 +99,8 @@ export default async function AdminParticipantDetailPage({
         {/* Profile */}
         <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.05s" }}>
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-6 h-6 rounded-lg bg-indigo-50 flex items-center justify-center">
-              <UserIcon className="h-3.5 w-3.5 text-indigo-600" />
+            <div className="w-6 h-6 rounded-lg bg-teal-50 flex items-center justify-center">
+              <UserIcon className="h-3.5 w-3.5 text-teal-600" />
             </div>
             <p className="text-sm font-semibold text-slate-900">Profile</p>
           </div>
@@ -147,7 +147,7 @@ export default async function AdminParticipantDetailPage({
           ) : (
             teamList.map((t: { _id: string; event?: { name: string; status: string }; members: string[] }) => {
               const border = STATUS_BORDER[t.event?.status ?? ""] ?? "border-l-slate-200";
-              const label  = STATUS_LABEL[t.event?.status ?? ""] ?? { text: t.event?.status?.replace(/_/g, " ") ?? "—", color: "text-slate-400" };
+              const label  = STATUS_LABEL[t.event?.status ?? ""] ?? { text: t.event?.status?.replace(/_/g, " ") ?? "â€”", color: "text-slate-400" };
               return (
                 <div key={t._id} className={`bg-white border border-slate-100 border-l-4 ${border} rounded-xl px-4 py-3.5 flex items-center justify-between`}>
                   <p className="text-sm font-semibold text-slate-900">{t.event?.name ?? "Unknown Event"}</p>
@@ -178,7 +178,7 @@ export default async function AdminParticipantDetailPage({
                   <div key={tx._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center justify-between">
                     <code className="text-xs font-mono text-slate-500">{tx.transactionId}</code>
                     <div className="flex items-center gap-3">
-                      <span className="text-sm font-semibold text-slate-900">₹{tx.currentPayAmount}</span>
+                      <span className="text-sm font-semibold text-slate-900">â‚¹{tx.currentPayAmount}</span>
                       {tx.clearanceApproval ? (
                         <span className="text-xs font-medium text-emerald-600 flex items-center gap-1">
                           <CheckCircle2 className="h-3.5 w-3.5" /> Cleared

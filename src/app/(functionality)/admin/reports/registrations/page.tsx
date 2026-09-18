@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
@@ -101,7 +101,7 @@ export default async function ReportRegistrationsPage({
 
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Reports
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">All Registrations</h1>
@@ -138,7 +138,7 @@ export default async function ReportRegistrationsPage({
               return (
                 <div key={p._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center gap-3">
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                    isExternal ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
+                    isExternal ? "bg-amber-100 text-amber-700" : "bg-teal-100 text-teal-700"
                   }`}>
                     {p.fullName[0]?.toUpperCase()}
                   </div>
@@ -146,7 +146,7 @@ export default async function ReportRegistrationsPage({
                     <div className="flex items-center gap-2">
                       <p className="text-sm font-semibold text-slate-900 truncate">{p.fullName}</p>
                       <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border shrink-0 ${
-                        isExternal ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-indigo-50 text-indigo-700 border-indigo-200"
+                        isExternal ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-teal-50 text-teal-700 border-teal-200"
                       }`}>
                         {isExternal ? "External" : "OPJU"}
                       </span>
@@ -155,7 +155,7 @@ export default async function ReportRegistrationsPage({
                     <p className="text-xs text-slate-400 truncate">
                       {isExternal
                         ? [p.collegeName, p.city, p.state].filter(Boolean).join(", ")
-                        : [p.department, p.program, p.branch, p.year].filter(Boolean).join(" · ")}
+                        : [p.department, p.program, p.branch, p.year].filter(Boolean).join(" Â· ")}
                     </p>
                   </div>
                   <div className="text-right shrink-0">
@@ -175,15 +175,15 @@ export default async function ReportRegistrationsPage({
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-2">
             <p className="text-xs text-slate-400">
-              {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
+              {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
             </p>
             <div className="flex items-center gap-2">
               {page > 1 ? (
                 <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                  <Link href={`${baseUrl}&page=${page - 1}`}>← Prev</Link>
+                  <Link href={`${baseUrl}&page=${page - 1}`}>â† Prev</Link>
                 </Button>
               ) : (
-                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
               )}
               <span className="text-xs text-slate-400">{page} / {totalPages}</span>
               {page < totalPages ? (

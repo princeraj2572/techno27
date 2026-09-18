@@ -1,13 +1,13 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
-import { getAllEventsAction } from "@/actions/event-actions";
+import { getEventsWithRegistrationCountsAction } from "@/actions/event-actions";
 import { ChevronLeft, CalendarDays, Users, Trophy } from "lucide-react";
 import Link from "next/link";
 
 const STATUS_LABEL: Record<string, { text: string; color: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600" },
-  EVENT_LIVE:          { text: "Live now",  color: "text-indigo-600"  },
+  EVENT_LIVE:          { text: "Live now",  color: "text-teal-600"  },
   COMPLETED:           { text: "Completed", color: "text-slate-400"   },
   CANCELLED:           { text: "Cancelled", color: "text-red-500"     },
   REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600"   },
@@ -18,7 +18,7 @@ const STATUS_LABEL: Record<string, { text: string; color: string }> = {
 
 const STATUS_BORDER: Record<string, string> = {
   REGISTRATION_OPEN:   "border-l-emerald-500",
-  EVENT_LIVE:          "border-l-indigo-500",
+  EVENT_LIVE:          "border-l-teal-500",
   COMPLETED:           "border-l-slate-300",
   CANCELLED:           "border-l-red-400",
   REGISTRATION_CLOSED: "border-l-amber-400",
@@ -29,10 +29,11 @@ export default async function AdminEventsPage() {
   const user = await getUser();
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
-  const events = await getAllEventsAction().catch(() => []) as Array<{
-    _id: string; name: string; status: string; category?: string;
-    teamSize?: number; internalFee?: number; externalFee?: number; prizeMoney?: number;
-  }>;
+  const { eventsWithCounts: events, totalParticipants, totalInternal, totalExternal } =
+    await getEventsWithRegistrationCountsAction().catch(() => ({ eventsWithCounts: [], totalParticipants: 0, totalInternal: 0, totalExternal: 0 })) as {
+      eventsWithCounts: Array<{ _id: string; name: string; status: string; category?: string; teamSize?: number; internalFee?: number; externalFee?: number; prizeMoney?: number; teamCount: number; participantCount: number; internalCount: number; externalCount: number }>;
+      totalParticipants: number; totalInternal: number; totalExternal: number;
+    };
 
   return (
     <div className="min-h-screen bg-white">
@@ -41,7 +42,7 @@ export default async function AdminEventsPage() {
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Events</h1>
@@ -49,13 +50,32 @@ export default async function AdminEventsPage() {
           </div>
           <div className="flex items-center gap-3">
             {user.role === "DEV_ADMIN" && (
-              <Link href="/dev/events" className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">
-                Registration controls →
+              <Link href="/dev/events" className="text-xs text-teal-600 hover:text-teal-700 font-medium">
+                Registration controls â†’
               </Link>
             )}
-            <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-              <CalendarDays className="h-5 w-5 text-indigo-600" />
+            <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+              <CalendarDays className="h-5 w-5 text-teal-600" />
             </div>
+          </div>
+        </div>
+
+        {/* Registration stats */}
+        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.04s" }}>
+          <div className="bg-teal-600 rounded-2xl px-4 py-4">
+            <p className="text-xs font-medium text-teal-200 mb-1">Total registered</p>
+            <p className="text-2xl font-bold text-white tabular-nums">{totalParticipants}</p>
+            <p className="text-xs text-teal-300 mt-1">across all events</p>
+          </div>
+          <div className={`rounded-2xl px-4 py-4 ${totalInternal > 0 ? "bg-teal-50" : "bg-slate-50 border border-slate-100"}`}>
+            <p className={`text-xs font-medium mb-1 ${totalInternal > 0 ? "text-teal-500" : "text-slate-400"}`}>OPJU (Internal)</p>
+            <p className={`text-2xl font-bold tabular-nums ${totalInternal > 0 ? "text-teal-900" : "text-slate-600"}`}>{totalInternal}</p>
+            <p className={`text-xs mt-1 ${totalInternal > 0 ? "text-teal-400" : "text-slate-400"}`}>participants</p>
+          </div>
+          <div className={`rounded-2xl px-4 py-4 ${totalExternal > 0 ? "bg-amber-50 border border-amber-100" : "bg-slate-50 border border-slate-100"}`}>
+            <p className={`text-xs font-medium mb-1 ${totalExternal > 0 ? "text-amber-600" : "text-slate-400"}`}>External</p>
+            <p className={`text-2xl font-bold tabular-nums ${totalExternal > 0 ? "text-amber-900" : "text-slate-600"}`}>{totalExternal}</p>
+            <p className={`text-xs mt-1 ${totalExternal > 0 ? "text-amber-500" : "text-slate-400"}`}>participants</p>
           </div>
         </div>
 
@@ -71,31 +91,44 @@ export default async function AdminEventsPage() {
               const border = STATUS_BORDER[event.status] ?? "border-l-slate-200";
               const label  = STATUS_LABEL[event.status]  ?? { text: event.status.replace(/_/g, " "), color: "text-slate-400" };
               return (
-                <div key={event._id} className={`bg-white border border-slate-100 border-l-4 ${border} rounded-xl px-4 py-3.5`}>
+                <Link key={event._id} href={`/admin/events/${event._id}`} className={`block bg-white border border-slate-100 border-l-4 ${border} rounded-xl px-4 py-3.5 hover:bg-slate-50 transition-colors`}>
                   <div className="flex items-center gap-4">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-slate-900 truncate">{event.name}</p>
-                      {event.category && <p className="text-xs text-slate-400 mt-0.5">{event.category}</p>}
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="text-sm font-semibold text-slate-900 truncate">{event.name}</p>
+                        {event.category && <span className="text-xs text-slate-400">{event.category}</span>}
+                        <span className={`text-xs font-medium ${label.color}`}>{label.text}</span>
+                      </div>
+                      <div className="flex items-center gap-3 mt-1 flex-wrap text-xs">
+                        <span className="flex items-center gap-1 text-slate-500">
+                          <Users className="h-3 w-3" /> {event.participantCount} registered
+                        </span>
+                        {event.internalCount > 0 && (
+                          <span className="text-teal-500">{event.internalCount} OPJU</span>
+                        )}
+                        {event.externalCount > 0 && (
+                          <span className="text-amber-600">{event.externalCount} external</span>
+                        )}
+                        {event.teamCount > 0 && (
+                          <span className="text-slate-400">{event.teamCount} team{event.teamCount !== 1 ? "s" : ""}</span>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-4 shrink-0 text-xs text-slate-400">
-                      <span className="flex items-center gap-1">
-                        <Users className="h-3.5 w-3.5" /> {event.teamSize ?? 1}
-                      </span>
+                    <div className="flex items-center gap-3 shrink-0 text-xs text-slate-400">
+                      {event.teamSize && event.teamSize > 1 && (
+                        <span className="hidden sm:flex items-center gap-1">
+                          <Users className="h-3.5 w-3.5" /> {event.teamSize}
+                        </span>
+                      )}
                       {event.prizeMoney ? (
-                        <span className="flex items-center gap-1 text-amber-600 font-medium">
-                          <Trophy className="h-3.5 w-3.5" /> ₹{event.prizeMoney}
+                        <span className="hidden sm:flex items-center gap-1 text-amber-600 font-medium">
+                          <Trophy className="h-3.5 w-3.5" /> â‚¹{event.prizeMoney}
                         </span>
                       ) : null}
-                      <span className="hidden sm:inline">
-                        Int ₹{event.internalFee ?? 0} · Ext ₹{event.externalFee ?? 0}
-                      </span>
-                      <span className={`font-medium ${label.color}`}>{label.text}</span>
-                      <Link href={`/admin/events/${event._id}`} className="text-indigo-600 hover:text-indigo-700 font-medium">
-                        View →
-                      </Link>
+                      <span className="text-teal-600 font-medium">View â†’</span>
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })
           )}

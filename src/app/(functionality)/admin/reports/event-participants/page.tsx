@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
@@ -93,19 +93,19 @@ export default async function ReportEventParticipantsPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Reports
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Event Participants</h1>
             <p className="text-xs text-slate-400 mt-0.5">{total} team(s) found</p>
           </div>
           <div className="flex items-center gap-3">
-            <a href={exportHref} download className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-700 border border-indigo-200 rounded-lg px-3 py-2">
+            <a href={exportHref} download className="inline-flex items-center gap-1.5 text-xs font-medium text-teal-600 hover:text-teal-700 border border-teal-200 rounded-lg px-3 py-2">
               <Download className="h-3.5 w-3.5" />
               {q || event ? "Export filtered" : "Download Excel"}
             </a>
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
-              <CalendarDays className="h-4 w-4 text-indigo-600" />
+            <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center shrink-0">
+              <CalendarDays className="h-4 w-4 text-teal-600" />
             </div>
           </div>
         </div>
@@ -132,8 +132,8 @@ export default async function ReportEventParticipantsPage({
               event?: { name?: string; category?: string };
               leaderUser?: { fullName?: string };
             }) => (
-              <div key={t._id} className="bg-white border border-slate-100 border-l-4 border-l-indigo-300 rounded-xl px-4 py-3.5 flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700 shrink-0">
+              <div key={t._id} className="bg-white border border-slate-100 border-l-4 border-l-teal-300 rounded-xl px-4 py-3.5 flex items-center gap-3">
+                <div className="w-7 h-7 rounded-full bg-teal-100 flex items-center justify-center text-xs font-bold text-teal-700 shrink-0">
                   {(t.leaderUser?.fullName ?? t.leader)[0]?.toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -141,7 +141,7 @@ export default async function ReportEventParticipantsPage({
                   <p className="text-xs text-slate-400 truncate">{t.leader}</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-xs font-medium text-slate-700 truncate max-w-[160px]">{t.event?.name ?? "—"}</p>
+                  <p className="text-xs font-medium text-slate-700 truncate max-w-[160px]">{t.event?.name ?? "â€”"}</p>
                   <p className="text-xs text-slate-400">{t.members.length} member(s)</p>
                 </div>
               </div>
@@ -153,15 +153,15 @@ export default async function ReportEventParticipantsPage({
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-2">
             <p className="text-xs text-slate-400">
-              {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
+              {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
             </p>
             <div className="flex items-center gap-2">
               {page > 1 ? (
                 <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                  <Link href={`${baseUrl}&page=${page - 1}`}>← Prev</Link>
+                  <Link href={`${baseUrl}&page=${page - 1}`}>â† Prev</Link>
                 </Button>
               ) : (
-                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
               )}
               <span className="text-xs text-slate-400">{page} / {totalPages}</span>
               {page < totalPages ? (

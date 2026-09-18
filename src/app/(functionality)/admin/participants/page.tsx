@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
@@ -43,28 +43,28 @@ export default async function AdminParticipantsPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Participants</h1>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-            <Users className="h-5 w-5 text-indigo-600" />
+          <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+            <Users className="h-5 w-5 text-teal-600" />
           </div>
         </div>
 
         {/* Stats */}
         {!q && (
           <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.04s" }}>
-            <div className="bg-indigo-600 rounded-2xl p-4">
-              <p className="text-xs font-medium text-indigo-200 mb-3">Total</p>
+            <div className="bg-teal-600 rounded-2xl p-4">
+              <p className="text-xs font-medium text-teal-200 mb-3">Total</p>
               <p className="text-4xl font-bold text-white tabular-nums leading-none">{participants.length}</p>
-              <p className="text-xs text-indigo-300 mt-2">participants</p>
+              <p className="text-xs text-teal-300 mt-2">participants</p>
             </div>
-            <div className="bg-indigo-50 rounded-2xl p-4">
-              <p className="text-xs font-medium text-indigo-400 mb-3">Internal</p>
-              <p className="text-4xl font-bold text-indigo-900 tabular-nums leading-none">{internalCount}</p>
-              <p className="text-xs text-indigo-400 mt-2">OPJU students</p>
+            <div className="bg-teal-50 rounded-2xl p-4">
+              <p className="text-xs font-medium text-teal-400 mb-3">Internal</p>
+              <p className="text-4xl font-bold text-teal-900 tabular-nums leading-none">{internalCount}</p>
+              <p className="text-xs text-teal-400 mt-2">OPJU students</p>
             </div>
             <div className={`rounded-2xl p-4 ${externalCount > 0 ? "bg-amber-500" : "bg-slate-100"}`}>
               <p className={`text-xs font-medium mb-3 ${externalCount > 0 ? "text-amber-100" : "text-slate-400"}`}>External</p>
@@ -81,7 +81,7 @@ export default async function AdminParticipantsPage({
             <Input
               name="q"
               defaultValue={q ?? ""}
-              placeholder="Search by name, email, phone, enrollment number…"
+              placeholder="Search by name, email, phone, enrollment numberâ€¦"
               className="pl-9"
             />
           </div>
@@ -96,7 +96,7 @@ export default async function AdminParticipantsPage({
         {/* List */}
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.12s" }}>
           <p className="text-xs font-medium text-slate-400">
-            {q ? `Results for "${q}"` : "All participants"} · {participants.length}
+            {q ? `Results for "${q}"` : "All participants"} Â· {participants.length}
           </p>
 
           {participants.length === 0 ? (
@@ -112,7 +112,7 @@ export default async function AdminParticipantsPage({
             }) => (
               <div key={p._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center gap-3">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                  p.role === "INTERNAL_USER" ? "bg-indigo-100 text-indigo-700" : "bg-amber-100 text-amber-700"
+                  p.role === "INTERNAL_USER" ? "bg-teal-100 text-teal-700" : "bg-amber-100 text-amber-700"
                 }`}>
                   {p.fullName[0]?.toUpperCase()}
                 </div>
@@ -121,7 +121,7 @@ export default async function AdminParticipantsPage({
                     <p className="text-sm font-semibold text-slate-900 truncate">{p.fullName}</p>
                     <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${
                       p.role === "INTERNAL_USER"
-                        ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                        ? "bg-teal-50 text-teal-700 border-teal-200"
                         : "bg-amber-50 text-amber-700 border-amber-200"
                     }`}>
                       {p.role === "INTERNAL_USER" ? "OPJU" : "External"}
@@ -129,14 +129,14 @@ export default async function AdminParticipantsPage({
                   </div>
                   <p className="text-xs text-slate-400 truncate">{p.email}</p>
                   <p className="text-xs text-slate-400">
-                    {p.collegeName ?? p.department ?? "—"}
+                    {p.collegeName ?? p.department ?? "â€”"}
                     {(p.enrollmentNumber ?? p.participantId) && (
                       <code className="ml-2 font-mono">{p.enrollmentNumber ?? p.participantId}</code>
                     )}
                   </p>
                 </div>
-                <Link href={`/admin/participants/${p._id}`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">
-                  View →
+                <Link href={`/admin/participants/${p._id}`} className="text-xs text-teal-600 hover:text-teal-700 font-medium shrink-0">
+                  View â†’
                 </Link>
               </div>
             ))

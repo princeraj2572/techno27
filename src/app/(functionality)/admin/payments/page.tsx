@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { getPaymentData } from "@/actions/payment-actions";
@@ -22,23 +22,23 @@ export default async function AdminPaymentsPage() {
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Payments</h1>
             <p className="text-xs text-slate-400 mt-0.5">External participant payment status</p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-            <CreditCard className="h-5 w-5 text-indigo-600" />
+          <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+            <CreditCard className="h-5 w-5 text-teal-600" />
           </div>
         </div>
 
-        {/* Stats — no amounts shown */}
+        {/* Stats â€” no amounts shown */}
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-          <div className="bg-indigo-600 rounded-2xl p-4">
-            <p className="text-xs font-medium text-indigo-200 mb-3">Participants</p>
+          <div className="bg-teal-600 rounded-2xl p-4">
+            <p className="text-xs font-medium text-teal-200 mb-3">Participants</p>
             <p className="text-4xl font-bold text-white tabular-nums leading-none">{payments.length}</p>
-            <p className="text-xs text-indigo-300 mt-2">external</p>
+            <p className="text-xs text-teal-300 mt-2">external</p>
           </div>
           <div className={`rounded-2xl p-4 ${clearedCount > 0 ? "bg-emerald-500" : "bg-slate-100"}`}>
             <p className={`text-xs font-medium mb-3 ${clearedCount > 0 ? "text-emerald-100" : "text-slate-400"}`}>Cleared</p>
@@ -52,9 +52,9 @@ export default async function AdminPaymentsPage() {
           </div>
         </div>
 
-        {/* Payment rows — status only, no amounts */}
+        {/* Payment rows â€” status only, no amounts */}
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          <p className="text-xs font-medium text-slate-400 mb-2">All external participants · {payments.length}</p>
+          <p className="text-xs font-medium text-slate-400 mb-2">All external participants Â· {payments.length}</p>
 
           {payments.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">

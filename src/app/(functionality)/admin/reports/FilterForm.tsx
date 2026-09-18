@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -71,7 +71,7 @@ export default function FilterForm({ view, eventOptions = [] }: Props) {
     setLimit(sp.get("limit") ?? "25");
   }, [sp]);
 
-  const selectClass = "h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-400 cursor-pointer";
+  const selectClass = "h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-teal-400 cursor-pointer";
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -82,7 +82,7 @@ export default function FilterForm({ view, eventOptions = [] }: Props) {
         <Input
           value={q}
           onChange={(e) => onSearch(e.target.value)}
-          placeholder="Search…"
+          placeholder="Searchâ€¦"
           className="pl-8 h-9 w-52 text-sm"
         />
       </div>

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
@@ -41,7 +41,7 @@ export default async function AdminEventManagersPage() {
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Event managers</h1>
@@ -55,8 +55,8 @@ export default async function AdminEventManagersPage() {
                 </Link>
               </Button>
             )}
-            <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center shrink-0">
-              <ShieldCheck className="h-5 w-5 text-indigo-600" />
+            <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center shrink-0">
+              <ShieldCheck className="h-5 w-5 text-teal-600" />
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default async function AdminEventManagersPage() {
               <ShieldCheck className="h-8 w-8 mx-auto mb-3 text-slate-200" />
               <p className="text-sm font-medium text-slate-500">No event manager accounts yet</p>
               {user.role === "DEV_ADMIN" && (
-                <Link href="/dev/management/create" className="text-xs text-indigo-600 hover:underline mt-1 block">
+                <Link href="/dev/management/create" className="text-xs text-teal-600 hover:underline mt-1 block">
                   Create the first one
                 </Link>
               )}
@@ -83,22 +83,22 @@ export default async function AdminEventManagersPage() {
               const eventNames   = assignment?.eventNames ?? [];
               return (
                 <div key={m._id} className={`bg-white border border-slate-100 border-l-4 ${
-                  isAssigned ? "border-l-indigo-500" : "border-l-slate-200"
+                  isAssigned ? "border-l-teal-500" : "border-l-slate-200"
                 } rounded-xl px-4 py-3.5`}>
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700 shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-xs font-bold text-teal-700 shrink-0">
                       {m.fullName[0]?.toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-900 truncate">{m.fullName}</p>
                       <p className="text-xs text-slate-400 truncate">{m.email}</p>
                       {eventNames.length > 0 && (
-                        <p className="text-xs text-indigo-600 mt-0.5 truncate">{eventNames.join(", ")}</p>
+                        <p className="text-xs text-teal-600 mt-0.5 truncate">{eventNames.join(", ")}</p>
                       )}
                     </div>
                     <div className="shrink-0">
                       {isAssigned ? (
-                        <span className="text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 px-1.5 py-0.5 rounded-full">
+                        <span className="text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-200 px-1.5 py-0.5 rounded-full">
                           Active
                         </span>
                       ) : (

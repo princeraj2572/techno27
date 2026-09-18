@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect, notFound } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { getEventByIdAction } from "@/actions/event-actions";
@@ -36,7 +36,7 @@ export default async function AdminEventDetailPage({
 
   const STATUS_LABEL: Record<string, { text: string; color: string }> = {
     REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600" },
-    EVENT_LIVE:          { text: "Live now",  color: "text-indigo-600"  },
+    EVENT_LIVE:          { text: "Live now",  color: "text-teal-600"  },
     COMPLETED:           { text: "Completed", color: "text-slate-400"   },
     CANCELLED:           { text: "Cancelled", color: "text-red-500"     },
     REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600"   },
@@ -55,7 +55,7 @@ export default async function AdminEventDetailPage({
         {/* Header */}
         <div className="flex items-start justify-between gap-4 animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/events" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/admin/events" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Events
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">{event.name}</h1>
@@ -63,32 +63,32 @@ export default async function AdminEventDetailPage({
           </div>
           <div className="flex items-center gap-2 shrink-0">
             {viewer.role === "DEV_ADMIN" && (
-              <Link href={`/dev/events/${id}`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">
-                Manage →
+              <Link href={`/dev/events/${id}`} className="text-xs text-teal-600 hover:text-teal-700 font-medium">
+                Manage â†’
               </Link>
             )}
-            <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-              <CalendarDays className="h-5 w-5 text-indigo-600" />
+            <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+              <CalendarDays className="h-5 w-5 text-teal-600" />
             </div>
           </div>
         </div>
 
         {/* Stats grid */}
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-          <div className="bg-indigo-600 rounded-2xl p-4">
-            <p className="text-xs font-medium text-indigo-200 mb-3">Registered</p>
+          <div className="bg-teal-600 rounded-2xl p-4">
+            <p className="text-xs font-medium text-teal-200 mb-3">Registered</p>
             <p className="text-4xl font-bold text-white tabular-nums leading-none">{registered}</p>
-            <p className="text-xs text-indigo-300 mt-2">teams</p>
+            <p className="text-xs text-teal-300 mt-2">teams</p>
           </div>
-          <div className="bg-indigo-50 rounded-2xl p-4">
-            <p className="text-xs font-medium text-indigo-400 mb-3">Limit</p>
-            <p className="text-4xl font-bold text-indigo-900 tabular-nums leading-none">{limit || "∞"}</p>
-            <p className="text-xs text-indigo-400 mt-2">max participants</p>
+          <div className="bg-teal-50 rounded-2xl p-4">
+            <p className="text-xs font-medium text-teal-400 mb-3">Limit</p>
+            <p className="text-4xl font-bold text-teal-900 tabular-nums leading-none">{limit || "âˆž"}</p>
+            <p className="text-xs text-teal-400 mt-2">max participants</p>
           </div>
           <div className={`rounded-2xl p-4 ${event.prizeMoney ? "bg-amber-500" : "bg-slate-100"}`}>
             <p className={`text-xs font-medium mb-3 ${event.prizeMoney ? "text-amber-100" : "text-slate-400"}`}>Prize pool</p>
             <p className={`text-2xl font-bold tabular-nums leading-none ${event.prizeMoney ? "text-white" : "text-slate-700"}`}>
-              {event.prizeMoney ? `₹${event.prizeMoney}` : "—"}
+              {event.prizeMoney ? `â‚¹${event.prizeMoney}` : "â€”"}
             </p>
             <p className={`text-xs mt-2 ${event.prizeMoney ? "text-amber-200" : "text-slate-400"}`}>total prizes</p>
           </div>
@@ -98,8 +98,8 @@ export default async function AdminEventDetailPage({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.08s" }}>
           {[
             { icon: Users, label: "Team size", value: String(event.teamSize ?? 1) },
-            { icon: Trophy, label: "Internal fee", value: `₹${event.internalFee ?? 0}` },
-            { icon: Trophy, label: "External fee", value: `₹${event.externalFee ?? 0}` },
+            { icon: Trophy, label: "Internal fee", value: `â‚¹${event.internalFee ?? 0}` },
+            { icon: Trophy, label: "External fee", value: `â‚¹${event.externalFee ?? 0}` },
             { icon: CalendarDays, label: "Fill", value: limit > 0 ? `${fillPct}%` : "No limit" },
           ].map(({ label: lbl, value }) => (
             <div key={lbl} className="bg-white border border-slate-100 rounded-xl px-4 py-3">
@@ -117,7 +117,7 @@ export default async function AdminEventDetailPage({
             </div>
             <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all ${fillPct >= 90 ? "bg-red-400" : fillPct >= 60 ? "bg-amber-400" : "bg-indigo-500"}`}
+                className={`h-full rounded-full transition-all ${fillPct >= 90 ? "bg-red-400" : fillPct >= 60 ? "bg-amber-400" : "bg-teal-500"}`}
                 style={{ width: `${Math.min(fillPct, 100)}%` }}
               />
             </div>
@@ -146,7 +146,7 @@ export default async function AdminEventDetailPage({
               return (
                 <div key={t._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                    isExternal ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
+                    isExternal ? "bg-amber-100 text-amber-700" : "bg-teal-100 text-teal-700"
                   }`}>
                     {(leaderUser?.fullName ?? t.leader)[0]?.toUpperCase()}
                   </div>
@@ -157,7 +157,7 @@ export default async function AdminEventDetailPage({
                   <div className="flex items-center gap-2 shrink-0">
                     <span className="text-xs text-slate-400">{t.members.length} member(s)</span>
                     <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${
-                      isExternal ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-indigo-50 text-indigo-700 border-indigo-200"
+                      isExternal ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-teal-50 text-teal-700 border-teal-200"
                     }`}>
                       {isExternal ? "External" : "OPJU"}
                     </span>
