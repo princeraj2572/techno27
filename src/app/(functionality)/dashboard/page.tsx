@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
-  AlertCircle, Calendar, Users, CalendarDays, Trophy,
+  AlertCircle, Calendar, Users, CalendarDays, Trophy, QrCode,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -185,6 +185,12 @@ export default async function DashboardPage() {
               <Link href="/team-details">
                 <Users className="h-3.5 w-3.5 mr-1.5" />
                 My teams
+              </Link>
+            </Button>
+            <Button size="sm" variant="outline" asChild>
+              <Link href="/dashboard/qr">
+                <QrCode className="h-3.5 w-3.5 mr-1.5" />
+                My QR
               </Link>
             </Button>
             {user.role === "EXTERNAL_USER" && (
