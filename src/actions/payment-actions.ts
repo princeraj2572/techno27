@@ -4,28 +4,7 @@ import { Event, IEvent } from "@/models/event.model";
 import { Team, ITeam } from "@/models/team.model";
 import { Transaction, ITransaction } from "@/models/transaction.model";
 import { User, IUser } from "@/models/user.model";
-
-// ─── Pricing constants (from Technorollix 2026) ───────────────────────────
-export const MAX_PAYMENT = 499;   // ₹499 hard cap
-export const SOLO_FEE_1  = 99;    // 1 individual event
-export const SOLO_FEE_2  = 199;   // 2–3 individual events
-export const TEAM_FEE    = 299;   // per team event
-
-export function calculatePayAmount(
-  individualCount: number,
-  teamCount: number,
-): number {
-  const total = individualCount + teamCount;
-  if (total >= 4) return MAX_PAYMENT;
-
-  let amount = 0;
-  if (individualCount === 1)       amount += SOLO_FEE_1;
-  else if (individualCount >= 2)   amount += SOLO_FEE_2;
-
-  amount += teamCount * TEAM_FEE;
-
-  return Math.min(amount, MAX_PAYMENT);
-}
+import { MAX_PAYMENT, SOLO_FEE_1, TEAM_FEE, calculatePayAmount } from "@/lib/payment-constants";
 
 // ─── Submit a transaction ID (external user) ──────────────────────────────
 export async function addTransactionIdAction(
@@ -44,6 +23,42 @@ export async function addTransactionIdAction(
   });
   const saved = await newTx.save();
   return JSON.parse(JSON.stringify(saved));
+}
+
+// ─── DEV_ADMIN: manually record + immediately acknowledge a payment ────────
+export async function recordPaymentAction(
+  transactionId: string,
+  userEmail: string,
+  amountReceived: number,
+  performedById: string,
+): Promise<{ success: boolean; cleared?: boolean }> {
+  await connectToDatabase();
+
+  const performer = await User.findById(performedById).lean<IUser>();
+  if (!performer || performer.role !== "DEV_ADMIN") {
+    throw new Error("Unauthorized — only DEV_ADMIN can record payments");
+  }
+
+  const existing = await Transaction.findOne({ transactionId });
+  if (existing) throw new Error("Transaction ID already exists");
+
+  await Transaction.create({
+    transactionId,
+    userEmail,
+    currentPayAmount: amountReceived,
+    amountAtAdmin: amountReceived,
+    acknowledgementByAdmin: true,
+    clearanceApproval: false,
+  });
+
+  const summary = await getPaymentSummaryForUser(userEmail);
+  let cleared = false;
+  if (summary.acknowledgedAmount >= summary.payableAmount && summary.payableAmount > 0) {
+    await Transaction.updateMany({ userEmail }, { clearanceApproval: true });
+    cleared = true;
+  }
+
+  return { success: true, cleared };
 }
 
 // ─── Get all transactions for a user ──────────────────────────────────────
