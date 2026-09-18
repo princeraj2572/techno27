@@ -80,17 +80,21 @@ function TeamCard({
   const [pendingInvites, setPendingInvites] = useState<PendingInvite[]>(team.pendingInvites ?? []);
   const [confirm, setConfirm]             = useState<null | "delete" | "leave">(null);
 
-  const isLeader = team.leader === currentEmail;
-  const isFull   = team.members.length >= team.size;
-  const fillPct  = Math.round((team.members.length / team.size) * 100);
+  const isLeader     = team.leader === currentEmail;
+  const confirmedPct = Math.round((team.members.length / team.size) * 100);
+  const claimedPct   = Math.min(Math.round(((team.members.length + pendingInvites.length) / team.size) * 100), 100);
+  const isFull       = (team.members.length + pendingInvites.length) >= team.size;
 
   async function handleInvite() {
     if (!inviteEmail.trim()) return;
     setInviting(true);
     setInviteMsg(null);
     try {
-      await sendTeamInviteAction({ teamId: team._id, inviteeEmail: inviteEmail.trim() });
-      setPendingInvites((prev) => [...prev, { _id: Date.now().toString(), inviteeEmail: inviteEmail.trim() }]);
+      const result = await sendTeamInviteAction({ teamId: team._id, inviteeEmail: inviteEmail.trim() });
+      setPendingInvites((prev) => [
+        ...prev,
+        { _id: String(result.invite._id), inviteeEmail: inviteEmail.trim() },
+      ]);
       setInviteEmail("");
       setInviteMsg({ type: "ok", text: "Invite sent." });
       onInviteSent();
@@ -181,13 +185,24 @@ function TeamCard({
             </button>
           </div>
 
-          {/* Fill bar */}
-          <div className="mt-3 h-1 bg-slate-100 rounded-full overflow-hidden">
+          {/* Fill bar — pending (amber) behind confirmed (indigo/emerald) */}
+          <div className="mt-3 h-1.5 bg-slate-100 rounded-full overflow-hidden relative">
+            {/* pending layer */}
             <div
-              className={`h-full rounded-full transition-all ${isFull ? "bg-emerald-500" : "bg-indigo-500"}`}
-              style={{ width: `${fillPct}%` }}
+              className="absolute inset-y-0 left-0 rounded-full bg-amber-300 transition-all"
+              style={{ width: `${claimedPct}%` }}
+            />
+            {/* confirmed layer */}
+            <div
+              className={`absolute inset-y-0 left-0 rounded-full transition-all ${isFull && pendingInvites.length === 0 ? "bg-emerald-500" : "bg-indigo-500"}`}
+              style={{ width: `${confirmedPct}%` }}
             />
           </div>
+          {pendingInvites.length > 0 && (
+            <p className="text-[10px] text-amber-600 mt-1">
+              {pendingInvites.length} invite{pendingInvites.length > 1 ? "s" : ""} pending · {team.size - team.members.length - pendingInvites.length > 0 ? `${team.size - team.members.length - pendingInvites.length} slot${team.size - team.members.length - pendingInvites.length > 1 ? "s" : ""} open` : "all slots claimed"}
+            </p>
+          )}
         </div>
 
         <Separator />
@@ -290,10 +305,11 @@ function TeamCard({
             </div>
           </>
         )}
-        {isFull && (
+        {isFull && isLeader && (
           <div className="px-5 pb-4">
-            <p className="text-xs text-emerald-600 font-medium flex items-center gap-1">
-              <CheckCircle2 className="h-3.5 w-3.5" /> Team is full
+            <p className={`text-xs font-medium flex items-center gap-1 ${pendingInvites.length > 0 ? "text-amber-600" : "text-emerald-600"}`}>
+              <CheckCircle2 className="h-3.5 w-3.5" />
+              {pendingInvites.length > 0 ? "All slots claimed — cancel an invite to send a new one" : "Team is full"}
             </p>
           </div>
         )}
