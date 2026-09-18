@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAllEventsAction, getRegisteredEventsAction, submitEventsAction } from "@/actions/event-actions";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  CalendarDays, CheckCircle2, ChevronLeft, Trophy, Users,
+} from "lucide-react";
+import Link from "next/link";
 
 type Event = {
   _id: string;
@@ -18,21 +22,38 @@ type Event = {
   maxParticipants?: number;
 };
 
-const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  REGISTRATION_OPEN: "secondary",
-  EVENT_LIVE: "default",
-  COMPLETED: "outline",
-  CANCELLED: "destructive",
+const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
+  REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200" },
+  EVENT_LIVE:          { text: "Live now",   color: "text-indigo-700",  bg: "bg-indigo-50 border-indigo-200"  },
+  COMPLETED:           { text: "Completed",  color: "text-slate-500",   bg: "bg-slate-50 border-slate-200"    },
+  CANCELLED:           { text: "Cancelled",  color: "text-red-600",     bg: "bg-red-50 border-red-200"        },
+  REGISTRATION_CLOSED: { text: "Closed",     color: "text-amber-700",   bg: "bg-amber-50 border-amber-200"    },
+  TEMPORARILY_CLOSED:  { text: "Paused",     color: "text-orange-700",  bg: "bg-orange-50 border-orange-200"  },
 };
+
+function Skeleton() {
+  return (
+    <div className="min-h-screen bg-white">
+      <div className="max-w-3xl mx-auto px-4 py-8 space-y-3">
+        <div className="h-8 w-40 bg-slate-100 rounded-xl animate-pulse" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-44 rounded-2xl bg-slate-100 animate-pulse" />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function EventsSelectionPage() {
   const router = useRouter();
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents]           = useState<Event[]>([]);
   const [registeredIds, setRegisteredIds] = useState<Set<string>>(new Set());
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [msg, setMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [selected, setSelected]       = useState<Set<string>>(new Set());
+  const [loading, setLoading]         = useState(true);
+  const [submitting, setSubmitting]   = useState(false);
+  const [msg, setMsg]                 = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -51,8 +72,6 @@ export default function EventsSelectionPage() {
     })();
   }, []);
 
-  const openEvents = events.filter((e) => e.status === "REGISTRATION_OPEN");
-
   function toggleSelect(id: string) {
     if (registeredIds.has(id)) return;
     setSelected((prev) => {
@@ -69,7 +88,7 @@ export default function EventsSelectionPage() {
     setMsg(null);
     try {
       await submitEventsAction({ eventIds: [...selected] });
-      setMsg({ type: "success", text: `Registered for ${selected.size} event(s) successfully!` });
+      setMsg({ type: "success", text: `Registered for ${selected.size} event${selected.size > 1 ? "s" : ""} successfully!` });
       selected.forEach((id) => setRegisteredIds((prev) => new Set([...prev, id])));
       setSelected(new Set());
       setTimeout(() => router.push("/dashboard"), 1500);
@@ -80,132 +99,171 @@ export default function EventsSelectionPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="max-w-5xl mx-auto px-4 py-16 text-center text-muted-foreground">
-        Loading events...
-      </div>
-    );
-  }
+  if (loading) return <Skeleton />;
+
+  const openEvents     = events.filter((e) => e.status === "REGISTRATION_OPEN");
+  const otherEvents    = events.filter((e) => e.status !== "REGISTRATION_OPEN");
+  const orderedEvents  = [...openEvents, ...otherEvents];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Browse Events</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Select events to register. You can register for multiple events.
-          </p>
+    <div className="min-h-screen bg-white pb-28">
+      <div className="max-w-3xl mx-auto px-4 py-8 space-y-7">
+
+        {/* ── Header ───────────────────────────────────────── */}
+        <div
+          className="flex items-center justify-between animate-slide-up"
+          style={{ animationDelay: "0s" }}
+        >
+          <div>
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1"
+            >
+              <ChevronLeft className="h-3.5 w-3.5" /> Dashboard
+            </Link>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Browse events</h1>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Tap an open event to select it, then confirm registration.
+            </p>
+          </div>
+          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center shrink-0">
+            <CalendarDays className="h-5 w-5 text-indigo-600" />
+          </div>
         </div>
-        {selected.size > 0 && (
-          <button
-            onClick={handleRegister}
-            disabled={submitting}
-            className="px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/90 disabled:opacity-50"
+
+        {/* ── Status message ───────────────────────────────── */}
+        {msg && (
+          <div
+            className={`px-4 py-3 rounded-2xl text-sm border animate-slide-up ${
+              msg.type === "success"
+                ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                : "bg-red-50 text-red-700 border-red-200"
+            }`}
+            style={{ animationDelay: "0.04s" }}
           >
-            {submitting ? "Registering..." : `Register for ${selected.size} event(s)`}
-          </button>
+            {msg.type === "success" && <CheckCircle2 className="inline h-3.5 w-3.5 mr-1.5 text-emerald-600" />}
+            {msg.text}
+          </div>
         )}
+
+        {/* ── Events grid ──────────────────────────────────── */}
+        <div
+          className="animate-slide-up"
+          style={{ animationDelay: "0.06s" }}
+        >
+          {openEvents.length === 0 && otherEvents.length === 0 ? (
+            <div className="rounded-2xl border-2 border-dashed border-slate-100 py-16 text-center">
+              <CalendarDays className="h-8 w-8 mx-auto mb-3 text-slate-200" />
+              <p className="text-sm font-medium text-slate-500">No events available right now</p>
+              <p className="text-xs text-slate-400 mt-1">Check back soon or contact the organizers.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {orderedEvents.map((event, i) => {
+                const isRegistered = registeredIds.has(event._id);
+                const isSelected   = selected.has(event._id);
+                const isOpen       = event.status === "REGISTRATION_OPEN";
+                const statusInfo   = STATUS_LABEL[event.status] ?? { text: event.status.replace(/_/g, " "), color: "text-slate-500", bg: "bg-slate-50 border-slate-200" };
+
+                let cardClass = "bg-white border border-slate-100 rounded-2xl p-4 transition-all ";
+                if (isRegistered) {
+                  cardClass += "border-l-4 border-l-emerald-500 cursor-default";
+                } else if (isSelected) {
+                  cardClass += "border-2 border-indigo-500 bg-indigo-50/50 cursor-pointer shadow-sm";
+                } else if (isOpen) {
+                  cardClass += "hover:border-indigo-200 hover:shadow-sm cursor-pointer";
+                } else {
+                  cardClass += "opacity-50 cursor-not-allowed";
+                }
+
+                return (
+                  <div
+                    key={event._id}
+                    className={cardClass}
+                    onClick={() => isOpen && !isRegistered && toggleSelect(event._id)}
+                    style={{ animationDelay: `${0.06 + i * 0.03}s` }}
+                  >
+                    {/* Card header */}
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h3 className="text-sm font-bold text-slate-900 leading-tight">
+                        {event.name}
+                      </h3>
+                      {isRegistered ? (
+                        <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full shrink-0 flex items-center gap-1">
+                          <CheckCircle2 className="h-3 w-3" /> Registered
+                        </span>
+                      ) : (
+                        <span className={`text-xs font-medium border px-1.5 py-0.5 rounded-full shrink-0 ${statusInfo.bg} ${statusInfo.color}`}>
+                          {statusInfo.text}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Category */}
+                    {event.category && (
+                      <p className="text-xs text-slate-400 mb-2">{event.category}</p>
+                    )}
+
+                    {/* Description */}
+                    {event.description && (
+                      <p className="text-xs text-slate-500 mb-3 line-clamp-2 leading-relaxed">
+                        {event.description}
+                      </p>
+                    )}
+
+                    {/* Meta row */}
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
+                      <span className="flex items-center gap-1">
+                        <Users className="h-3.5 w-3.5" />
+                        {event.teamSize ?? 1} per team
+                      </span>
+                      {event.internalFee !== undefined && (
+                        <span>Internal ₹{event.internalFee}</span>
+                      )}
+                      {event.externalFee !== undefined && (
+                        <span>External ₹{event.externalFee}</span>
+                      )}
+                      {event.prizeMoney && (
+                        <span className="flex items-center gap-1 text-amber-600 font-medium">
+                          <Trophy className="h-3.5 w-3.5" /> ₹{event.prizeMoney}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Selected hint */}
+                    {isSelected && (
+                      <p className="mt-2.5 text-xs text-indigo-600 font-medium flex items-center gap-1">
+                        <CheckCircle2 className="h-3.5 w-3.5" /> Selected — tap again to deselect
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Selection summary */}
+        {selected.size > 0 && (
+          <p className="text-xs text-slate-400 text-center animate-slide-up">
+            {selected.size} event{selected.size > 1 ? "s" : ""} selected
+          </p>
+        )}
+
       </div>
 
-      {msg && (
-        <div
-          className={`px-4 py-3 rounded-lg text-sm ${
-            msg.type === "success"
-              ? "bg-green-500/10 text-green-400 border border-green-500/20"
-              : "bg-destructive/10 text-destructive border border-destructive/20"
-          }`}
-        >
-          {msg.text}
-        </div>
-      )}
-
-      {openEvents.length === 0 ? (
-        <Card>
-          <CardContent className="py-16 text-center text-muted-foreground">
-            <div className="text-4xl mb-4">🎪</div>
-            <p className="font-medium">No events are open for registration right now.</p>
-            <p className="text-sm mt-2">Check back soon or contact admin.</p>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {events.map((event) => {
-            const isRegistered = registeredIds.has(event._id);
-            const isSelected = selected.has(event._id);
-            const isOpen = event.status === "REGISTRATION_OPEN";
-
-            return (
-              <Card
-                key={event._id}
-                onClick={() => isOpen && toggleSelect(event._id)}
-                className={`transition-all ${
-                  isOpen && !isRegistered ? "cursor-pointer" : "cursor-default"
-                } ${
-                  isRegistered
-                    ? "border-green-500/30 bg-green-500/5"
-                    : isSelected
-                      ? "border-primary ring-2 ring-primary/40"
-                      : isOpen
-                        ? "hover:border-primary/50"
-                        : "opacity-60"
-                }`}
-              >
-                <CardHeader className="pb-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <CardTitle className="text-base">{event.name}</CardTitle>
-                    {isRegistered ? (
-                      <Badge variant="secondary" className="text-xs bg-green-500/10 text-green-400 border-green-500/20">
-                        Registered
-                      </Badge>
-                    ) : (
-                      <Badge variant={STATUS_VARIANT[event.status] ?? "outline"} className="text-xs">
-                        {event.status.replace(/_/g, " ")}
-                      </Badge>
-                    )}
-                  </div>
-                  {event.category && (
-                    <p className="text-xs text-muted-foreground">{event.category}</p>
-                  )}
-                </CardHeader>
-                <CardContent>
-                  {event.description && (
-                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{event.description}</p>
-                  )}
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                    <span>Team size: {event.teamSize ?? 1}</span>
-                    {event.internalFee !== undefined && (
-                      <span>Internal: ₹{event.internalFee}</span>
-                    )}
-                    {event.externalFee !== undefined && (
-                      <span>External: ₹{event.externalFee}</span>
-                    )}
-                    {event.prizeMoney && (
-                      <span className="text-amber-400">Prize: ₹{event.prizeMoney}</span>
-                    )}
-                  </div>
-                  {isSelected && (
-                    <div className="mt-3 flex items-center gap-1.5 text-xs text-primary font-medium">
-                      <span>✓</span>
-                      <span>Selected — click again to deselect</span>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      )}
-
+      {/* ── Sticky CTA ──────────────────────────────────────── */}
       {selected.size > 0 && (
-        <div className="sticky bottom-4 flex justify-center">
-          <button
+        <div className="fixed bottom-0 inset-x-0 flex justify-center pb-5 px-4 pointer-events-none z-10">
+          <Button
             onClick={handleRegister}
             disabled={submitting}
-            className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm shadow-lg hover:bg-primary/90 disabled:opacity-50"
+            className="pointer-events-auto bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl h-12 px-8 text-sm font-semibold shadow-xl shadow-indigo-200 disabled:opacity-60"
           >
-            {submitting ? "Registering..." : `Confirm Registration (${selected.size} event${selected.size > 1 ? "s" : ""})`}
-          </button>
+            {submitting
+              ? "Registering…"
+              : `Confirm registration · ${selected.size} event${selected.size > 1 ? "s" : ""}`}
+          </Button>
         </div>
       )}
     </div>
