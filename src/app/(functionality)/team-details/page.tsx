@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { getParticipatingTeams, getInvitedTeams, deleteTeamAction, leaveTeamAction, getCurrentUserEmailAction } from "@/actions/team-actions";
 import { sendTeamInviteAction, acceptInviteAction, rejectInviteAction, cancelInviteAction } from "@/actions/invite-actions";
 import { Badge } from "@/components/ui/badge";
@@ -16,7 +17,7 @@ type Team = {
   leader: string;
   members: Member[];
   size: number;
-  event?: { name: string };
+  event?: { _id: string; name: string };
   invites?: string[];
   pendingInvites?: PendingInvite[];
 };
@@ -419,6 +420,8 @@ function Skeleton() {
 }
 
 export default function TeamDetailsPage() {
+  const searchParams                    = useSearchParams();
+  const eventFilter                     = searchParams.get("event");
   const [teams, setTeams]               = useState<Team[]>([]);
   const [invites, setInvites]           = useState<Invite[]>([]);
   const [currentEmail, setCurrentEmail] = useState("");
@@ -447,7 +450,11 @@ export default function TeamDetailsPage() {
 
   if (loading) return <Skeleton />;
 
-  const pendingInvites = invites.filter((i) => i.status === "PENDING");
+  const pendingInvites  = invites.filter((i) => i.status === "PENDING");
+  const visibleTeams  = eventFilter
+    ? teams.filter((t) => t.event?._id === eventFilter)
+    : teams;
+  const filteredEvent = eventFilter ? (visibleTeams[0]?.event?.name ?? null) : null;
 
   return (
     <div className="min-h-screen bg-white">
@@ -460,12 +467,19 @@ export default function TeamDetailsPage() {
         >
           <div>
             <Link
-              href="/dashboard"
+              href={filteredEvent ? "/dashboard" : "/dashboard"}
               className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1"
             >
               <ChevronLeft className="h-3.5 w-3.5" /> Dashboard
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">My teams</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+              {filteredEvent ?? "My teams"}
+            </h1>
+            {filteredEvent && (
+              <Link href="/team-details" className="text-xs text-indigo-600 hover:underline mt-0.5 block">
+                ← All teams
+              </Link>
+            )}
           </div>
           <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
             <Users className="h-5 w-5 text-indigo-600" />
@@ -473,7 +487,7 @@ export default function TeamDetailsPage() {
         </div>
 
         {/* ── Pending invitations ─────────────────────────────── */}
-        {pendingInvites.length > 0 && (
+        {!filteredEvent && pendingInvites.length > 0 && (
           <div
             className="space-y-2 animate-slide-up"
             style={{ animationDelay: "0.05s" }}
@@ -499,6 +513,7 @@ export default function TeamDetailsPage() {
         )}
 
         {/* ── My teams ─────────────────────────────────────────── */}
+        {!filteredEvent && (
         <div
           className="space-y-3 animate-slide-up"
           style={{ animationDelay: pendingInvites.length > 0 ? "0.1s" : "0.05s" }}
@@ -507,11 +522,14 @@ export default function TeamDetailsPage() {
             Registered teams
             <span className="ml-1.5 text-slate-400 font-normal">({teams.length})</span>
           </p>
+          </div>
+        )}
 
-          {teams.length === 0 ? (
+        <div className="space-y-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+          {visibleTeams.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <Users className="h-8 w-8 mx-auto mb-3 text-slate-200" />
-              <p className="text-sm font-medium text-slate-500">No teams yet</p>
+              <p className="text-sm font-medium text-slate-500">No team found for this event</p>
               <Link
                 href="/events-selection"
                 className="text-xs text-indigo-600 hover:underline mt-1 block"
@@ -520,7 +538,7 @@ export default function TeamDetailsPage() {
               </Link>
             </div>
           ) : (
-            teams.map((team) => (
+            visibleTeams.map((team) => (
               <TeamCard
                 key={team._id}
                 team={team}

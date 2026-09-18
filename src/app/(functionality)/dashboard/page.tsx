@@ -308,9 +308,10 @@ export default async function DashboardPage() {
                 const border = STATUS_BORDER[event.status] ?? "border-l-slate-200";
                 const label  = STATUS_LABEL[event.status]  ?? { text: event.status.replace(/_/g, " "), color: "text-slate-400" };
                 return (
-                  <div
+                  <Link
                     key={event._id}
-                    className={`bg-white border border-slate-100 border-l-4 ${border} rounded-xl px-4 py-3.5`}
+                    href={`/team-details?event=${event._id}`}
+                    className={`block bg-white border border-slate-100 border-l-4 ${border} rounded-xl px-4 py-3.5 hover:bg-slate-50 transition-colors`}
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div className="min-w-0">
@@ -321,11 +322,14 @@ export default async function DashboardPage() {
                           <p className="text-xs text-slate-400 mt-0.5">{event.category}</p>
                         )}
                       </div>
-                      <span className={`text-xs font-medium shrink-0 ${label.color}`}>
-                        {label.text}
-                      </span>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className={`text-xs font-medium ${label.color}`}>
+                          {label.text}
+                        </span>
+                        <span className="text-xs text-indigo-500 font-medium">Team →</span>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
