@@ -38,7 +38,7 @@ export async function getParticipatingTeams() {
 
   const populatedTeams = await Promise.all(
     teams.map(async (team) => {
-      const leader = await User.findOne({ email: team.leader })
+      const leaderUser = await User.findOne({ email: team.leader })
         .select("fullName email role")
         .lean<{ fullName: string; email: string; role: string }>();
       const event = await Event.findById(team.event)
@@ -47,11 +47,12 @@ export async function getParticipatingTeams() {
       const members = await User.find({ email: { $in: team.members } })
         .select("fullName email role")
         .lean<{ fullName: string; email: string; role: string }[]>();
-      const individualSchema = team.members.length === 1 && leader?.role === "EXTERNAL_USER";
+      const individualSchema = team.members.length === 1 && leaderUser?.role === "EXTERNAL_USER";
       const pendingInvites = await Invitation.find({ teamId: team._id, status: "PENDING" })
         .select("_id inviteeEmail")
         .lean<{ _id: string; inviteeEmail: string }[]>();
-      return { ...team, members, leader, event, individualSchema, pendingInvites };
+      // Keep team.leader as the raw email string (do NOT overwrite with leaderUser object)
+      return { ...team, members, leaderUser, event, individualSchema, pendingInvites };
     }),
   );
 
