@@ -72,20 +72,21 @@ function TeamCard({
   onDelete: (id: string) => void;
   onInviteSent: () => void;
 }) {
-  const [inviteEmail, setInviteEmail]     = useState("");
-  const [inviteMsg, setInviteMsg]         = useState<{ type: "ok" | "err"; text: string } | null>(null);
-  const [actionLoading, setActionLoading] = useState(false);
-  const [inviting, setInviting]           = useState(false);
-  const [cancelingId, setCancelingId]     = useState<string | null>(null);
+  const [inviteEmail, setInviteEmail]       = useState("");
+  const [inviteMsg, setInviteMsg]           = useState<{ type: "ok" | "err"; text: string } | null>(null);
+  const [actionLoading, setActionLoading]   = useState(false);
+  const [inviting, setInviting]             = useState(false);
+  const [cancelingId, setCancelingId]       = useState<string | null>(null);
   const [pendingInvites, setPendingInvites] = useState<PendingInvite[]>(team.pendingInvites ?? []);
-  const [confirm, setConfirm]             = useState<null | "delete" | "leave">(null);
+  const [confirm, setConfirm]               = useState<null | "delete" | "leave">(null);
+  const [inviteOpenSlot, setInviteOpenSlot] = useState<number | null>(null);
 
   const isLeader     = team.leader === currentEmail;
   const confirmedPct = Math.round((team.members.length / team.size) * 100);
   const claimedPct   = Math.min(Math.round(((team.members.length + pendingInvites.length) / team.size) * 100), 100);
   const isFull       = (team.members.length + pendingInvites.length) >= team.size;
 
-  async function handleInvite() {
+  async function handleInvite(slotIndex?: number) {
     if (!inviteEmail.trim()) return;
     setInviting(true);
     setInviteMsg(null);
@@ -96,10 +97,12 @@ function TeamCard({
         { _id: String(result.invite._id), inviteeEmail: inviteEmail.trim() },
       ]);
       setInviteEmail("");
-      setInviteMsg({ type: "ok", text: "Invite sent." });
+      setInviteOpenSlot(null);
+      setInviteMsg(null);
       onInviteSent();
     } catch (e: unknown) {
       setInviteMsg({ type: "err", text: (e as Error).message });
+      void slotIndex; // keep slot open on error
     } finally {
       setInviting(false);
     }
@@ -207,13 +210,15 @@ function TeamCard({
 
         <Separator />
 
-        {/* Members */}
-        <div className="px-5 py-4 space-y-2.5">
+        {/* Unified slot list: confirmed → pending → empty */}
+        <div className="px-5 py-4 space-y-2">
+
+          {/* Confirmed members */}
           {team.members.map((m) => {
             const isExternal = m.role === "EXTERNAL_USER";
             return (
               <div key={m.email} className="flex items-center gap-2.5">
-                <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                   isExternal ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
                 }`}>
                   {m.fullName[0]?.toUpperCase()}
@@ -231,85 +236,104 @@ function TeamCard({
                   </div>
                   <p className="text-xs text-slate-400 truncate">{m.email}</p>
                 </div>
-                {m.email === team.leader && (
-                  <Badge className="text-xs h-5 shrink-0">Leader</Badge>
-                )}
+                {m.email === team.leader
+                  ? <Badge className="text-xs h-5 shrink-0">Leader</Badge>
+                  : <span className="text-[10px] text-emerald-600 font-medium flex items-center gap-0.5 shrink-0"><CheckCircle2 className="h-3 w-3" /> Joined</span>
+                }
               </div>
             );
           })}
-        </div>
 
-        {/* Pending outgoing invites (leader only) */}
-        {isLeader && pendingInvites.length > 0 && (
-          <>
-            <Separator />
-            <div className="px-5 py-4 space-y-2">
-              <p className="text-xs font-medium text-slate-400">
-                Pending invites ({pendingInvites.length})
-              </p>
-              {pendingInvites.map((inv) => (
-                <div
-                  key={inv._id}
-                  className="flex items-center gap-2.5 bg-slate-50 rounded-xl px-3 py-2"
-                >
-                  <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center shrink-0">
-                    <Clock className="h-3 w-3 text-slate-500" />
-                  </div>
-                  <p className="flex-1 text-xs text-slate-600 truncate">{inv.inviteeEmail}</p>
-                  <span className="text-[10px] font-medium text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-full shrink-0">
-                    Pending
-                  </span>
-                  <button
-                    onClick={() => handleCancelInvite(inv._id)}
-                    disabled={cancelingId === inv._id}
-                    className="text-slate-400 hover:text-red-500 transition-colors disabled:opacity-40 shrink-0 ml-1"
-                    title="Cancel invite"
-                  >
-                    {cancelingId === inv._id ? (
-                      <div className="w-3.5 h-3.5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <X className="h-3.5 w-3.5" />
-                    )}
-                  </button>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
-
-        {/* Invite form (leader only, not full) */}
-        {isLeader && !isFull && (
-          <>
-            <Separator />
-            <div className="px-5 py-4">
-              <p className="text-xs font-medium text-slate-500 mb-2">Invite a teammate</p>
-              <div className="flex gap-2">
-                <Input
-                  type="email"
-                  placeholder="teammate@email.com"
-                  value={inviteEmail}
-                  onChange={(e) => setInviteEmail(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleInvite()}
-                  className="flex-1 h-9 text-sm"
-                />
-                <Button size="sm" onClick={handleInvite} disabled={inviting} className="h-9 px-4">
-                  <UserPlus className="h-3.5 w-3.5 mr-1.5" />
-                  {inviting ? "Sending…" : "Invite"}
-                </Button>
+          {/* Pending invite rows (visible to everyone; cancel only for leader) */}
+          {pendingInvites.map((inv) => (
+            <div key={inv._id} className="flex items-center gap-2.5 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
+              <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+                <Clock className="h-3.5 w-3.5 text-amber-500" />
               </div>
-              {inviteMsg && (
-                <p className={`text-xs mt-1.5 ${inviteMsg.type === "ok" ? "text-emerald-600" : "text-red-500"}`}>
-                  {inviteMsg.text}
-                </p>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-medium text-slate-700 truncate">{inv.inviteeEmail}</p>
+                <p className="text-[10px] text-amber-600">Invite pending · awaiting response</p>
+              </div>
+              {isLeader && (
+                <button
+                  onClick={() => handleCancelInvite(inv._id)}
+                  disabled={cancelingId === inv._id}
+                  className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-400 hover:text-red-500 transition-colors disabled:opacity-40 shrink-0 px-2 py-1 rounded-lg hover:bg-red-50"
+                >
+                  {cancelingId === inv._id
+                    ? <div className="w-3 h-3 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                    : <X className="h-3 w-3" />
+                  }
+                  Cancel
+                </button>
               )}
             </div>
-          </>
-        )}
-        {isFull && isLeader && (
+          ))}
+
+          {/* Empty open slots — show invite form inline for leader */}
+          {Array.from({ length: Math.max(0, team.size - team.members.length - pendingInvites.length) }).map((_, i) => (
+            <div key={`slot-${i}`}>
+              {isLeader && inviteOpenSlot === i ? (
+                /* Expanded inline invite form */
+                <div className="border border-indigo-200 bg-indigo-50 rounded-xl px-3 py-2.5 space-y-2">
+                  <div className="flex gap-2">
+                    <Input
+                      type="email"
+                      placeholder="teammate@email.com"
+                      value={inviteEmail}
+                      onChange={(e) => setInviteEmail(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === "Enter") handleInvite(i); if (e.key === "Escape") setInviteOpenSlot(null); }}
+                      autoFocus
+                      className="flex-1 h-8 text-sm bg-white"
+                    />
+                    <Button size="sm" onClick={() => handleInvite(i)} disabled={inviting} className="h-8 px-3 text-xs">
+                      {inviting ? <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Send"}
+                    </Button>
+                    <button onClick={() => { setInviteOpenSlot(null); setInviteEmail(""); setInviteMsg(null); }} className="text-slate-400 hover:text-slate-600 px-1">
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                  {inviteMsg && (
+                    <p className={`text-[10px] ${inviteMsg.type === "ok" ? "text-emerald-600" : "text-red-500"}`}>
+                      {inviteMsg.text}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                /* Empty slot button */
+                <button
+                  onClick={() => isLeader ? setInviteOpenSlot(i) : undefined}
+                  disabled={!isLeader}
+                  className={`w-full flex items-center gap-2.5 border-2 border-dashed rounded-xl px-3 py-2 transition-colors ${
+                    isLeader
+                      ? "border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 group cursor-pointer"
+                      : "border-slate-100 cursor-default"
+                  }`}
+                >
+                  <div className={`w-8 h-8 rounded-full border-2 border-dashed flex items-center justify-center shrink-0 transition-colors ${
+                    isLeader ? "border-slate-300 group-hover:border-indigo-400" : "border-slate-200"
+                  }`}>
+                    <UserPlus className={`h-3.5 w-3.5 transition-colors ${isLeader ? "text-slate-300 group-hover:text-indigo-500" : "text-slate-200"}`} />
+                  </div>
+                  <span className={`text-xs transition-colors ${isLeader ? "text-slate-400 group-hover:text-indigo-600 font-medium" : "text-slate-300"}`}>
+                    {isLeader ? "Invite teammate" : "Open slot"}
+                  </span>
+                  {isLeader && (
+                    <span className="ml-auto text-[10px] font-semibold text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                      + Invite
+                    </span>
+                  )}
+                </button>
+              )}
+            </div>
+          ))}
+
+        </div>
+
+        {isFull && !isLeader && (
           <div className="px-5 pb-4">
-            <p className={`text-xs font-medium flex items-center gap-1 ${pendingInvites.length > 0 ? "text-amber-600" : "text-emerald-600"}`}>
-              <CheckCircle2 className="h-3.5 w-3.5" />
-              {pendingInvites.length > 0 ? "All slots claimed — cancel an invite to send a new one" : "Team is full"}
+            <p className="text-xs text-emerald-600 font-medium flex items-center gap-1">
+              <CheckCircle2 className="h-3.5 w-3.5" /> Team is full
             </p>
           </div>
         )}
