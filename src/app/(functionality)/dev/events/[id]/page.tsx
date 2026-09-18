@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { updateEventStatusAction, updateEventFeesAction, getEventByIdAction } from "@/actions/event-actions";
+import { generateEventManagerAction, getEventManagerForEvent } from "@/actions/management-actions";
 import { getUser } from "@/actions/user-actions";
 import { useRouter } from "next/navigation";
+import { Copy, Check, UserCog, RefreshCw } from "lucide-react";
 import Link from "next/link";
 
 const STATUS_LABEL: Record<string, { text: string; color: string; border: string }> = {
@@ -50,6 +52,12 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
   const [error, setError] = useState("");
   const [eventId, setEventId] = useState("");
 
+  // Event Manager
+  type EMData = { userId: string; fullName: string; email: string; password: string };
+  const [emData, setEmData] = useState<EMData | null | "loading">("loading");
+  const [emGenerating, setEmGenerating] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
+
   useEffect(() => {
     params.then((p) => setEventId(p.id));
   }, [params]);
@@ -60,7 +68,10 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
       const u = await getUser();
       if (!u || u.role !== "DEV_ADMIN") { router.push("/dashboard"); return; }
       setUserId(String(u._id ?? ""));
-      const data = await getEventByIdAction(eventId).catch(() => null);
+      const [data, em] = await Promise.all([
+        getEventByIdAction(eventId).catch(() => null),
+        getEventManagerForEvent(eventId).catch(() => null),
+      ]);
       if (data) {
         setEvent(data as EventData);
         setFees({
@@ -70,10 +81,31 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
           maxParticipants: data.maxParticipants ?? 0,
         });
       }
+      setEmData(em as EMData | null);
       setLoading(false);
     };
     load();
   }, [eventId, router]);
+
+  const handleGenerateEM = async () => {
+    if (!eventId || !userId) return;
+    setEmGenerating(true);
+    try {
+      const result = await generateEventManagerAction(eventId, userId);
+      setEmData(result);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to generate event manager");
+    } finally {
+      setEmGenerating(false);
+    }
+  };
+
+  const copyText = (text: string, key: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(key);
+      setTimeout(() => setCopied(null), 2000);
+    });
+  };
 
   const handleStatusChange = async (status: string) => {
     if (!event || !userId) return;
@@ -242,6 +274,63 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
                   <p className="text-sm font-semibold text-slate-900 mt-0.5">{value}</p>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+
+        {/* Event Manager credentials */}
+        <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.16s" }}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <UserCog className="h-4 w-4 text-indigo-500" />
+              <p className="text-xs font-semibold text-slate-400">Event Manager account</p>
+            </div>
+            {emData && emData !== "loading" && (
+              <Link href={`/event-manager/${eventId}/participants`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">
+                View participants →
+              </Link>
+            )}
+          </div>
+
+          {emData === "loading" ? (
+            <div className="h-16 bg-slate-50 rounded-xl animate-pulse" />
+          ) : emData ? (
+            <div className="space-y-2">
+              {[
+                { label: "Email", value: emData.email, key: "email" },
+                { label: "Password", value: emData.password, key: "pass" },
+              ].map(({ label, value, key }) => (
+                <div key={key} className="flex items-center gap-3 bg-slate-50 rounded-xl px-3 py-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] text-slate-400 font-medium">{label}</p>
+                    <code className="text-xs font-mono text-slate-800 break-all">{value}</code>
+                  </div>
+                  <button
+                    onClick={() => copyText(value, key)}
+                    className="shrink-0 text-slate-400 hover:text-indigo-600 transition-colors"
+                  >
+                    {copied === key
+                      ? <Check className="h-3.5 w-3.5 text-emerald-500" />
+                      : <Copy className="h-3.5 w-3.5" />}
+                  </button>
+                </div>
+              ))}
+              <p className="text-[10px] text-slate-400 mt-1">
+                Share these credentials with the event manager. They can log in at{" "}
+                <code className="font-mono">/auth/login</code>.
+              </p>
+            </div>
+          ) : (
+            <div className="text-center py-4">
+              <p className="text-xs text-slate-500 mb-3">No event manager assigned yet.</p>
+              <button
+                onClick={handleGenerateEM}
+                disabled={emGenerating}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-medium transition-colors"
+              >
+                <RefreshCw className={`h-3.5 w-3.5 ${emGenerating ? "animate-spin" : ""}`} />
+                {emGenerating ? "Generating..." : "Generate Event Manager ID"}
+              </button>
             </div>
           )}
         </div>
