@@ -1,7 +1,8 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
-import { getPaymentData, MAX_PAYMENT } from "@/actions/payment-actions";
+import { getPaymentData } from "@/actions/payment-actions";
+import { MAX_PAYMENT } from "@/lib/payment-constants";
 import { ChevronLeft, CreditCard } from "lucide-react";
 import Link from "next/link";
 import ApprovalPanel from "./ApprovalPanel";
