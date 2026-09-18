@@ -1,3 +1,4 @@
+import GenerateAllEMButton from "./GenerateAllEMButton";
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
@@ -48,12 +49,13 @@ export default async function DevEventsPage() {
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Events</h1>
             <p className="text-xs text-slate-400 mt-0.5">{events.length} event(s) total</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <GenerateAllEMButton userId={userId} />
             <Link
               href="/dev/seed"
               className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-700 border border-indigo-200 rounded-lg px-3 py-2"
             >
-              <Plus className="h-3.5 w-3.5" /> Seed events
+              <Plus className="h-3.5 w-3.5" /> Seed
             </Link>
             <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
               <CalendarDays className="h-4 w-4 text-indigo-600" />
