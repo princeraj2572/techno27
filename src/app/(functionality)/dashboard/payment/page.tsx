@@ -1,7 +1,8 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
-import { getPaymentSummaryForUser, MAX_PAYMENT } from "@/actions/payment-actions";
+import { getPaymentSummaryForUser } from "@/actions/payment-actions";
+import { MAX_PAYMENT } from "@/lib/payment-constants";
 import { ChevronLeft, CreditCard } from "lucide-react";
 import Link from "next/link";
 import PaymentClient from "./PaymentClient";
@@ -20,14 +21,14 @@ export default async function DashboardPaymentPage() {
         {/* Header */}
         <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dashboard" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/dashboard" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-violet-600 transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dashboard
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Payment</h1>
             <p className="text-xs text-slate-400 mt-0.5">Technorollix 2027 · External participant</p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center shrink-0">
-            <CreditCard className="h-5 w-5 text-indigo-600" />
+          <div className="w-10 h-10 rounded-2xl bg-violet-100 flex items-center justify-center shrink-0">
+            <CreditCard className="h-5 w-5 text-violet-600" />
           </div>
         </div>
 
@@ -36,7 +37,7 @@ export default async function DashboardPaymentPage() {
             <CreditCard className="h-8 w-8 mx-auto mb-3 text-slate-200" />
             <p className="text-sm font-medium text-slate-500">No events registered yet</p>
             <p className="text-xs text-slate-400 mt-1">Register for events first to see your payment details.</p>
-            <Link href="/events-selection" className="text-xs text-indigo-600 hover:underline mt-2 block">
+            <Link href="/events-selection" className="text-xs text-violet-600 hover:underline mt-2 block">
               Browse events →
             </Link>
           </div>

@@ -17,7 +17,12 @@ export default async function DashboardQRPage() {
       <div className="max-w-sm mx-auto px-4 py-8 space-y-7">
 
         <div className="animate-slide-up" style={{ animationDelay: "0s" }}>
-          <Link href="/dashboard" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+          <Link
+            href="/dashboard"
+            className={`inline-flex items-center gap-1 text-xs text-slate-400 transition-colors mb-1 ${
+              user.role === "EXTERNAL_USER" ? "hover:text-violet-600" : "hover:text-sky-600"
+            }`}
+          >
             <ChevronLeft className="h-3.5 w-3.5" /> Dashboard
           </Link>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">My QR Code</h1>
