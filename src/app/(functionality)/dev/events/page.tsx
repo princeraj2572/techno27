@@ -4,6 +4,7 @@ import { getUser } from "@/actions/user-actions";
 import { getAllEventsAction } from "@/actions/event-actions";
 import { ChevronLeft, CalendarDays, Plus } from "lucide-react";
 import Link from "next/link";
+import QuickStatusToggle from "./QuickStatusToggle";
 
 const STATUS_LABEL: Record<string, { text: string; color: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600" },
@@ -32,6 +33,7 @@ export default async function DevEventsPage() {
   if (!user || user.role !== "DEV_ADMIN") redirect("/dashboard");
 
   const events = await getAllEventsAction().catch(() => []);
+  const userId = String(user._id ?? "");
 
   return (
     <div className="min-h-screen bg-white">
@@ -92,6 +94,7 @@ export default async function DevEventsPage() {
                     </p>
                   </div>
                   <span className={`text-xs font-medium shrink-0 ${label.color}`}>{label.text}</span>
+                  <QuickStatusToggle eventId={event._id} currentStatus={event.status} currentUserId={userId} />
                   <Link href={`/dev/events/${event._id}`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">
                     Manage →
                   </Link>
