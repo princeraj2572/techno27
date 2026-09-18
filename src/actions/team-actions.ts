@@ -7,6 +7,12 @@ import { User } from "@/models/user.model";
 import { IInvitation, Invitation } from "@/models/invitation.model";
 import { getUser } from "./user-actions";
 
+export async function getCurrentUserEmailAction(): Promise<string> {
+  await connectToDatabase();
+  const user = await getUser();
+  return user?.email ?? "";
+}
+
 export async function getTeamDetailsAction(teamId: string) {
   await connectToDatabase();
 

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getParticipatingTeams, getInvitedTeams, deleteTeamAction, leaveTeamAction } from "@/actions/team-actions";
+import { getParticipatingTeams, getInvitedTeams, deleteTeamAction, leaveTeamAction, getCurrentUserEmailAction } from "@/actions/team-actions";
 import { sendTeamInviteAction, acceptInviteAction, rejectInviteAction, cancelInviteAction } from "@/actions/invite-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -435,11 +435,12 @@ export default function TeamDetailsPage() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("/api/session");
-        const d   = await res.json();
-        if (d.authenticated) setCurrentEmail(d.user?.email ?? "");
+        const [email] = await Promise.all([
+          getCurrentUserEmailAction(),
+          reload(),
+        ]);
+        setCurrentEmail(email);
       } catch { /* silent */ }
-      await reload();
       setLoading(false);
     })();
   }, []);
