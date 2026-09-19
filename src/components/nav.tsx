@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -56,7 +56,7 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="font-bold text-lg tracking-wider">
-          TECHNOROLLIX<span className="text-primary"> 27</span>
+          Techno-aiMBiAtion<span className="text-primary"> 27</span>
         </Link>
 
         {/* Desktop nav */}

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { getAccommodationDetailsAction } from "@/actions/accommodation-actions";
@@ -44,7 +44,7 @@ export default async function AccommodationPage() {
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-slate-900">Accommodation</h1>
               <p className="text-xs text-slate-400 mt-0.5">
-                {existing ? "Your accommodation request is submitted." : "Submit your accommodation request for Technorollix 2027."}
+                {existing ? "Your accommodation request is submitted." : "Submit your accommodation request for Techno-aiMBiAtion 2027."}
               </p>
             </div>
             <div className="w-10 h-10 rounded-2xl bg-violet-50 flex items-center justify-center shrink-0">
@@ -59,7 +59,7 @@ export default async function AccommodationPage() {
           <ul className="text-xs text-violet-700 space-y-1 list-disc list-inside">
             <li>Accommodation is provided free of charge for registered external participants.</li>
             <li>Separate dormitories for male and female participants.</li>
-            <li>Meals included during the fest days (27–28 Feb 2027).</li>
+            <li>Meals included during the fest days (27â€“28 Feb 2027).</li>
             <li>Bring your own bedding / sleeping bag if possible.</li>
           </ul>
         </div>

@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { getRegisteredEventsAction } from "@/actions/event-actions";
@@ -17,7 +17,7 @@ function greeting() {
   return "Hello";
 }
 
-// Status colors — shared across both roles
+// Status colors â€” shared across both roles
 const STATUS_BORDER: Record<string, string> = {
   REGISTRATION_OPEN:   "border-l-emerald-500",
   EVENT_LIVE:          "border-l-blue-500",
@@ -35,7 +35,7 @@ const STATUS_LABEL: Record<string, { text: string; color: string }> = {
   TEMPORARILY_CLOSED:  { text: "Paused",     color: "text-orange-500" },
 };
 
-// ── Role-based theme tokens ──────────────────────────────────────────────────
+// â”€â”€ Role-based theme tokens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 type Theme = {
   heroBg:        string; // stat card hero bg
   heroText:      string; // stat card hero label
@@ -76,7 +76,7 @@ function getTheme(role: string): Theme {
       pendingBtn:   "border-amber-300 text-amber-800 hover:bg-amber-100",
     };
   }
-  // INTERNAL_USER — sky theme
+  // INTERNAL_USER â€” sky theme
   return {
     heroBg:       "bg-sky-600 hover:bg-sky-700",
     heroText:     "text-sky-200",
@@ -126,13 +126,13 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-white">
       <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
 
-        {/* ── 1. GREETING ─────────────────────────────────────── */}
+        {/* â”€â”€ 1. GREETING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="flex items-center justify-between gap-4 animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
             <p className="text-xs text-slate-400 mb-0.5">{greeting()}</p>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">{firstName}</h1>
             <p className="text-xs text-slate-400 mt-0.5">
-              Technorollix 2027 ·{" "}
+              Techno-aiMBiAtion 2027 Â·{" "}
               <span className={`font-semibold ${t.accent}`}>
                 {isExt ? "External Participant" : "OPJU Student"}
               </span>
@@ -153,7 +153,7 @@ export default async function DashboardPage() {
           )}
         </div>
 
-        {/* ── 2. PENDING INVITATIONS BANNER ───────────────────── */}
+        {/* â”€â”€ 2. PENDING INVITATIONS BANNER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {pendingCount > 0 && (
           <div
             className="flex items-start gap-3 rounded-2xl bg-amber-50 border border-amber-200 px-4 py-3.5 animate-slide-up"
@@ -177,9 +177,9 @@ export default async function DashboardPage() {
           </div>
         )}
 
-        {/* ── 3. STAT CARDS ───────────────────────────────────── */}
+        {/* â”€â”€ 3. STAT CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.08s" }}>
-          {/* Events — primary */}
+          {/* Events â€” primary */}
           <Link href="/events-selection" className="group">
             <div className={`${t.heroBg} transition-colors rounded-2xl p-4 h-full`}>
               <p className={`text-xs font-medium ${t.heroText} mb-3`}>Events</p>
@@ -188,7 +188,7 @@ export default async function DashboardPage() {
             </div>
           </Link>
 
-          {/* Teams — light */}
+          {/* Teams â€” light */}
           <Link href="/team-details" className="group">
             <div className={`${t.lightBg} transition-colors rounded-2xl p-4 h-full`}>
               <p className={`text-xs font-medium ${t.lightLabel} mb-3`}>Teams</p>
@@ -197,7 +197,7 @@ export default async function DashboardPage() {
             </div>
           </Link>
 
-          {/* Invites — amber if pending, slate if zero */}
+          {/* Invites â€” amber if pending, slate if zero */}
           <Link href="/team-details" className="group">
             {pendingCount > 0 ? (
               <div className="bg-amber-500 hover:bg-amber-600 transition-colors rounded-2xl p-4 h-full">
@@ -215,7 +215,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        {/* ── 4. QUICK ACTIONS ────────────────────────────────── */}
+        {/* â”€â”€ 4. QUICK ACTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="animate-slide-up" style={{ animationDelay: "0.12s" }}>
           <p className="text-xs text-slate-400 font-medium mb-3">Quick actions</p>
           <div className="flex flex-wrap gap-2">
@@ -254,7 +254,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* ── 5. PROFILE CARD ─────────────────────────────────── */}
+        {/* â”€â”€ 5. PROFILE CARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div
           className="bg-white border border-slate-100 rounded-2xl px-5 py-4 animate-slide-up"
           style={{ animationDelay: "0.16s" }}
@@ -274,7 +274,7 @@ export default async function DashboardPage() {
               {!isExt && user.department && (
                 <p className="text-xs text-slate-400">
                   {[user.department, user.program, user.branch, user.year && `${user.year} Year`]
-                    .filter(Boolean).join(" · ")}
+                    .filter(Boolean).join(" Â· ")}
                 </p>
               )}
               {isExt && (user as Record<string, unknown>).collegeName && (
@@ -294,7 +294,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* ── 6. PARTICIPANT / ENROLLMENT ID CARD ─────────────── */}
+        {/* â”€â”€ 6. PARTICIPANT / ENROLLMENT ID CARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         {(isExt ? user.participantId : user.enrollmentNumber) && (
           <div
             className={`${t.idCardBg} rounded-2xl px-5 py-4 animate-slide-up`}
@@ -314,7 +314,7 @@ export default async function DashboardPage() {
           </div>
         )}
 
-        {/* ── 7. REGISTERED EVENTS ────────────────────────────── */}
+        {/* â”€â”€ 7. REGISTERED EVENTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="animate-slide-up" style={{ animationDelay: "0.2s" }}>
           <div className="flex items-center justify-between mb-3">
             <p className="text-sm font-semibold text-slate-900">Registered events</p>
@@ -351,7 +351,7 @@ export default async function DashboardPage() {
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <span className={`text-xs font-medium ${label.color}`}>{label.text}</span>
-                        <span className={`text-xs font-semibold ${t.accent}`}>Team →</span>
+                        <span className={`text-xs font-semibold ${t.accent}`}>Team â†’</span>
                       </div>
                     </div>
                   </Link>

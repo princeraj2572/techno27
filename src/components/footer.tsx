@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React from "react";
 import Link from "next/link";
 import { FaFacebookF, FaWhatsapp, FaInstagram } from "react-icons/fa";
@@ -11,7 +11,7 @@ const FooterSection = () => {
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12">
         <div className="flex flex-col gap-8">
           <div className="text-2xl font-bold tracking-wider">
-            TECHNOROLLIX 2027
+            Techno-aiMBiAtion 2027
           </div>
 
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm sm:text-base">
@@ -41,7 +41,7 @@ const FooterSection = () => {
       </div>
 
       <div className="mt-12 lg:mt-20 border-t border-white/10 pt-6 text-xs sm:text-sm text-gray-500">
-        © 2027 TechnoAmbiation · Technorollix 2027. All rights reserved.
+        Â© 2027 TechnoAmbiation Â· Techno-aiMBiAtion 2027. All rights reserved.
       </div>
     </footer>
   );

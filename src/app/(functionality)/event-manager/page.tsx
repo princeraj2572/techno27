@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
@@ -81,7 +81,7 @@ export default async function EventManagerPage() {
           <div>
             <p className="text-xs text-slate-400 mb-0.5">Event Manager</p>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">My Events</h1>
-            <p className="text-xs text-slate-400 mt-0.5">Technorollix 2027</p>
+            <p className="text-xs text-slate-400 mt-0.5">Techno-aiMBiAtion 2027</p>
           </div>
           <div className="flex items-center gap-3">
             <code className="text-xs bg-orange-50 border border-orange-100 px-2 py-1 rounded-lg text-orange-600 font-mono">
@@ -139,8 +139,8 @@ export default async function EventManagerPage() {
                           event.category,
                           event.teamSize && `Team: ${event.teamSize}`,
                           event.maxParticipants && `Limit: ${event.maxParticipants}`,
-                          event.prizeMoney && `Prize: ₹${event.prizeMoney}`,
-                        ].filter(Boolean).join(" · ")}
+                          event.prizeMoney && `Prize: â‚¹${event.prizeMoney}`,
+                        ].filter(Boolean).join(" Â· ")}
                       </p>
                     </div>
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${label.bg} ${label.color}`}>{label.text}</span>
@@ -155,7 +155,7 @@ export default async function EventManagerPage() {
         {/* Quick access */}
         {assignedEvents.length > 0 && (
           <div className="animate-slide-up" style={{ animationDelay: "0.14s" }}>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Quick access · {assignedEvents[0].name}</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Quick access Â· {assignedEvents[0].name}</p>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               {QUICK_LINKS.map(({ label, icon: Icon, desc, key, color }) => (
                 <Link key={key} href={`/event-manager/${assignedEvents[0]._id}/${key}`} className="group">

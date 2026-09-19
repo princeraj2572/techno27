@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { getPaymentSummaryForUser } from "@/actions/payment-actions";
@@ -25,7 +25,7 @@ export default async function DashboardPaymentPage() {
               <ChevronLeft className="h-3.5 w-3.5" /> Dashboard
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Payment</h1>
-            <p className="text-xs text-slate-400 mt-0.5">Technorollix 2027 · External participant</p>
+            <p className="text-xs text-slate-400 mt-0.5">Techno-aiMBiAtion 2027 Â· External participant</p>
           </div>
           <div className="w-10 h-10 rounded-2xl bg-violet-100 flex items-center justify-center shrink-0">
             <CreditCard className="h-5 w-5 text-violet-600" />
@@ -38,7 +38,7 @@ export default async function DashboardPaymentPage() {
             <p className="text-sm font-medium text-slate-500">No events registered yet</p>
             <p className="text-xs text-slate-400 mt-1">Register for events first to see your payment details.</p>
             <Link href="/events-selection" className="text-xs text-violet-600 hover:underline mt-2 block">
-              Browse events →
+              Browse events â†’
             </Link>
           </div>
         ) : (

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import type { ReactElement } from "react";
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
@@ -9,8 +9,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Technorollix 2027",
-  description: "A festival management platform for Technorollix 2027 — participants, organizers, and administration.",
+  title: "Techno-aiMBiAtion 2027",
+  description: "A festival management platform for Techno-aiMBiAtion 2027 â€” participants, organizers, and administration.",
   metadataBase: new URL("http://localhost:3000")
 };
 

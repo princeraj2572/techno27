@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { getEventStatsAction } from "@/actions/event-actions";
@@ -114,7 +114,7 @@ export default async function DevDashboardPage() {
           <div>
             <p className="text-xs text-slate-400 mb-0.5">Dev control center</p>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Developer</h1>
-            <p className="text-xs text-slate-400 mt-0.5">Technorollix 2027</p>
+            <p className="text-xs text-slate-400 mt-0.5">Techno-aiMBiAtion 2027</p>
           </div>
           <div className="flex items-center gap-3">
             <code className="text-xs bg-indigo-50 border border-indigo-100 px-2 py-1 rounded-lg text-indigo-600 font-mono">
@@ -158,7 +158,7 @@ export default async function DevDashboardPage() {
                 <p className="text-xs font-medium text-slate-500">Management Admins</p>
               </div>
               <p className="text-3xl font-bold text-slate-900 tabular-nums leading-none">{mgmt.mgmtAdminCount}</p>
-              <p className="text-xs text-teal-600 mt-2 font-medium">View all →</p>
+              <p className="text-xs text-teal-600 mt-2 font-medium">View all â†’</p>
             </div>
           </Link>
           <Link href="/dev/management">
@@ -170,7 +170,7 @@ export default async function DevDashboardPage() {
                 <p className="text-xs font-medium text-slate-500">Event Managers</p>
               </div>
               <p className="text-3xl font-bold text-slate-900 tabular-nums leading-none">{mgmt.managers.length}</p>
-              <p className="text-xs text-orange-500 mt-2 font-medium">Manage assignments →</p>
+              <p className="text-xs text-orange-500 mt-2 font-medium">Manage assignments â†’</p>
             </div>
           </Link>
         </div>
@@ -212,7 +212,7 @@ export default async function DevDashboardPage() {
               <UserCog className="h-7 w-7 mx-auto mb-2 text-slate-300" />
               <p className="text-sm font-medium text-slate-500">No event managers yet</p>
               <Link href="/dev/management/create" className="text-xs text-indigo-600 hover:underline mt-1 block">
-                Create one →
+                Create one â†’
               </Link>
             </div>
           ) : (
@@ -234,7 +234,7 @@ export default async function DevDashboardPage() {
                       {m.assignedEvents.length} event{m.assignedEvents.length !== 1 ? "s" : ""}
                     </span>
                     <Link href={`/dev/management/${m._id}`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">
-                      Assign →
+                      Assign â†’
                     </Link>
                   </div>
                   {m.assignedEvents.length > 0 && (
@@ -244,7 +244,7 @@ export default async function DevDashboardPage() {
                         return (
                           <span key={ev.id} className="inline-flex items-center gap-1 text-[10px] bg-slate-100 border border-slate-200 text-slate-600 px-2 py-0.5 rounded-full">
                             {ev.name}
-                            {sl && <span className={`font-semibold ${sl.color}`}>· {sl.text}</span>}
+                            {sl && <span className={`font-semibold ${sl.color}`}>Â· {sl.text}</span>}
                           </span>
                         );
                       })}
@@ -283,7 +283,7 @@ export default async function DevDashboardPage() {
                   <div key={ev.eventId} className={`flex items-center gap-4 px-4 py-3.5 border-l-4 ${border} hover:bg-slate-50 transition-colors`}>
                     <p className="text-sm font-semibold text-slate-900 min-w-0 flex-1 truncate">{ev.name}</p>
                     <span className="text-sm font-bold text-slate-900 tabular-nums shrink-0">
-                      {ev.registered}<span className="text-xs font-normal text-slate-400">/{ev.limit || "∞"}</span>
+                      {ev.registered}<span className="text-xs font-normal text-slate-400">/{ev.limit || "âˆž"}</span>
                     </span>
                     {ev.limit > 0 && (
                       <div className="flex items-center gap-2 shrink-0">
@@ -311,7 +311,7 @@ export default async function DevDashboardPage() {
         <div className="flex items-center gap-2 text-xs text-slate-400 animate-slide-up" style={{ animationDelay: "0.22s" }}>
           <TrendingUp className="h-3.5 w-3.5" />
           <span>
-            {stats.totalUsers} total users · {stats.internalCount} internal · {stats.externalCount} external ·{" "}
+            {stats.totalUsers} total users Â· {stats.internalCount} internal Â· {stats.externalCount} external Â·{" "}
             {mgmt.managers.length} event manager{mgmt.managers.length !== 1 ? "s" : ""}
           </span>
         </div>

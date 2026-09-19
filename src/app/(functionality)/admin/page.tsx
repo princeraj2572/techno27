@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { getEventsWithRegistrationCountsAction } from "@/actions/event-actions";
@@ -68,7 +68,7 @@ export default async function AdminDashboardPage() {
           <div>
             <p className="text-xs text-slate-400 mb-0.5">Management console</p>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Management</h1>
-            <p className="text-xs text-slate-400 mt-0.5">Technorollix 2027</p>
+            <p className="text-xs text-slate-400 mt-0.5">Techno-aiMBiAtion 2027</p>
           </div>
           <div className="flex items-center gap-3">
             <Badge
@@ -174,7 +174,7 @@ export default async function AdminDashboardPage() {
                         )}
                         {event.participantCount > 0 && (
                           <>
-                            {event.category && <span className="text-xs text-slate-300">·</span>}
+                            {event.category && <span className="text-xs text-slate-300">Â·</span>}
                             <span className="text-xs text-slate-600 font-medium">{event.participantCount} registered</span>
                             {event.internalCount > 0 && (
                               <span className="text-xs bg-sky-100 text-sky-700 font-medium px-1.5 py-0.5 rounded-full">{event.internalCount} OPJU</span>

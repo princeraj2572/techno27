@@ -1,11 +1,11 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import { addTransactionIdAction } from "@/actions/payment-actions";
 import type { IPaymentSummary } from "@/actions/payment-actions";
 import { CheckCircle2, Clock, ExternalLink, X, QrCode, ChevronDown, Users, User } from "lucide-react";
 
 // Update this URL when the 2027 Easebuzz payment link is set up
-const EASEBUZZ_URL = "https://smartpay.easebuzz.in/125084/Technorollix-2026";
+const EASEBUZZ_URL = "https://smartpay.easebuzz.in/125084/Techno-aiMBiAtion-2026";
 
 interface Props {
   userEmail: string;
@@ -58,7 +58,7 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
   return (
     <div className="space-y-4">
 
-      {/* ── 1. STATUS HERO ─────────────────────────────────────────── */}
+      {/* â”€â”€ 1. STATUS HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div
         className={`rounded-2xl px-5 py-5 animate-slide-up ${payClearance ? "bg-emerald-500" : "bg-violet-600"}`}
         style={{ animationDelay: "0.04s" }}
@@ -70,30 +70,30 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
             </div>
             <div>
               <p className="text-xs font-medium text-emerald-100">Payment status</p>
-              <p className="text-lg font-bold text-white leading-tight">Fully cleared — you&apos;re all set!</p>
+              <p className="text-lg font-bold text-white leading-tight">Fully cleared â€” you&apos;re all set!</p>
             </div>
           </div>
         ) : (
           <div className="flex items-end justify-between">
             <div>
               <p className="text-xs font-medium text-violet-200 mb-0.5">Amount due</p>
-              <p className="text-5xl font-bold text-white tabular-nums leading-none">₹{remaining}</p>
+              <p className="text-5xl font-bold text-white tabular-nums leading-none">â‚¹{remaining}</p>
               <p className="text-xs text-violet-300 mt-2">
-                Total: ₹{payableAmount}
+                Total: â‚¹{payableAmount}
                 {isCapped && <span className="ml-1.5 bg-emerald-500/30 text-emerald-200 text-[10px] font-semibold px-1.5 py-0.5 rounded-full">cap applied</span>}
               </p>
             </div>
             {acknowledgedAmount > 0 && (
               <div className="text-right bg-violet-500/30 rounded-xl px-3 py-2">
                 <p className="text-[10px] text-violet-300 font-medium">Received</p>
-                <p className="text-xl font-bold text-white tabular-nums">₹{acknowledgedAmount}</p>
+                <p className="text-xl font-bold text-white tabular-nums">â‚¹{acknowledgedAmount}</p>
               </div>
             )}
           </div>
         )}
       </div>
 
-      {/* ── 2. REGISTERED EVENTS ───────────────────────────────────── */}
+      {/* â”€â”€ 2. REGISTERED EVENTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden animate-slide-up" style={{ animationDelay: "0.07s" }}>
         <div className="px-5 pt-4 pb-3">
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Your registrations</p>
@@ -117,7 +117,7 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
                 </div>
               </div>
               <span className={`text-sm font-bold shrink-0 ${ev.isIndividual ? "text-violet-700" : "text-teal-700"}`}>
-                ₹{ev.fee}
+                â‚¹{ev.fee}
               </span>
             </div>
           ))}
@@ -132,12 +132,12 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
           )}
           <div className="flex items-center gap-1.5">
             <span className="text-xs text-slate-500">Total</span>
-            <span className="text-base font-bold text-violet-600 tabular-nums">₹{payableAmount}</span>
+            <span className="text-base font-bold text-violet-600 tabular-nums">â‚¹{payableAmount}</span>
           </div>
         </div>
       </div>
 
-      {/* ── 3. FEE GUIDE (collapsible) ─────────────────────────────── */}
+      {/* â”€â”€ 3. FEE GUIDE (collapsible) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="bg-fuchsia-50 border border-fuchsia-200 rounded-2xl overflow-hidden animate-slide-up" style={{ animationDelay: "0.09s" }}>
         <button
           type="button"
@@ -157,7 +157,7 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
                   <p className="text-[10px] font-bold text-fuchsia-700 uppercase tracking-wide">Individual</p>
                 </div>
                 <div className="space-y-1">
-                  {[["1 event", "₹99"], ["2–3 events", "₹199"], ["4–7 events", "₹499"]].map(([label, price]) => (
+                  {[["1 event", "â‚¹99"], ["2â€“3 events", "â‚¹199"], ["4â€“7 events", "â‚¹499"]].map(([label, price]) => (
                     <div key={label} className="flex justify-between text-xs">
                       <span className="text-slate-500">{label}</span>
                       <span className="font-bold text-slate-800">{price}</span>
@@ -172,7 +172,7 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
                   <p className="text-[10px] font-bold text-fuchsia-700 uppercase tracking-wide">Team</p>
                 </div>
                 <div className="space-y-1">
-                  {[["Per event", "₹299"], ["4–7 events", "₹499"]].map(([label, price]) => (
+                  {[["Per event", "â‚¹299"], ["4â€“7 events", "â‚¹499"]].map(([label, price]) => (
                     <div key={label} className="flex justify-between text-xs">
                       <span className="text-slate-500">{label}</span>
                       <span className="font-bold text-slate-800">{price}</span>
@@ -182,20 +182,20 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
               </div>
             </div>
             <ul className="text-xs text-fuchsia-700 space-y-0.5 pl-1">
-              <li>• Only team leaders pay the registration fee.</li>
-              <li>• Events with team size of 1 count as individual.</li>
-              <li>• ₹499 is the maximum cap across all events.</li>
+              <li>â€¢ Only team leaders pay the registration fee.</li>
+              <li>â€¢ Events with team size of 1 count as individual.</li>
+              <li>â€¢ â‚¹499 is the maximum cap across all events.</li>
             </ul>
           </div>
         )}
       </div>
 
-      {/* ── 4. HOW TO PAY STEPS ────────────────────────────────────── */}
+      {/* â”€â”€ 4. HOW TO PAY STEPS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="bg-amber-50 border border-amber-200 rounded-2xl px-4 py-4 animate-slide-up" style={{ animationDelay: "0.11s" }}>
         <p className="text-xs font-bold text-amber-800 mb-3">How to pay</p>
         <div className="space-y-2.5">
           {[
-            { n: "1", text: "Click Pay below — opens the Easebuzz payment page." },
+            { n: "1", text: "Click Pay below â€” opens the Easebuzz payment page." },
             { n: "2", text: <>Use <span className="font-semibold text-amber-900">{userEmail}</span> on the payment page.</> },
             { n: "3", text: "After payment, Easebuzz emails you a transaction ID." },
             { n: "4", text: "Come back here, enter the transaction ID, and submit." },
@@ -210,19 +210,19 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
         </div>
       </div>
 
-      {/* ── 5. PAY CTA ─────────────────────────────────────────────── */}
+      {/* â”€â”€ 5. PAY CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       {!payClearance && (
         <div className="animate-slide-up" style={{ animationDelay: "0.13s" }}>
           <button
             onClick={() => setShowModal(true)}
             className="w-full h-12 rounded-xl bg-violet-600 hover:bg-violet-700 active:scale-[0.98] text-white text-sm font-bold tracking-wide transition-all shadow-sm shadow-indigo-200"
           >
-            Pay ₹{remaining} via Easebuzz
+            Pay â‚¹{remaining} via Easebuzz
           </button>
         </div>
       )}
 
-      {/* ── 6. SUCCESS TOAST ───────────────────────────────────────── */}
+      {/* â”€â”€ 6. SUCCESS TOAST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       {success && (
         <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-xs font-medium">
           <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
@@ -230,7 +230,7 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
         </div>
       )}
 
-      {/* ── 7. TRANSACTION HISTORY ─────────────────────────────────── */}
+      {/* â”€â”€ 7. TRANSACTION HISTORY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       {transactions.length > 0 && (
         <div className="animate-slide-up" style={{ animationDelay: "0.15s" }}>
           <p className="text-xs font-semibold text-slate-400 mb-2 px-1">Transaction history</p>
@@ -254,7 +254,7 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
                     </span>
                   ) : tx.acknowledgementByAdmin ? (
                     <span className="text-[11px] font-semibold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-full flex items-center gap-1 shrink-0">
-                      <CheckCircle2 className="h-3 w-3" /> ₹{tx.amountAtAdmin} received
+                      <CheckCircle2 className="h-3 w-3" /> â‚¹{tx.amountAtAdmin} received
                     </span>
                   ) : (
                     <span className="text-[11px] font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full flex items-center gap-1 shrink-0">
@@ -263,7 +263,7 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
                   )}
                 </div>
                 <p className="text-xs text-slate-400 mt-1">
-                  ₹{tx.currentPayAmount} submitted · {new Date(tx.createdAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                  â‚¹{tx.currentPayAmount} submitted Â· {new Date(tx.createdAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
                 </p>
               </div>
             ))}
@@ -271,7 +271,7 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
         </div>
       )}
 
-      {/* ── 8. PAYMENT MODAL ───────────────────────────────────────── */}
+      {/* â”€â”€ 8. PAYMENT MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-2xl w-full max-w-sm shadow-xl animate-slide-up">
@@ -288,7 +288,7 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
               <div className="bg-violet-600 rounded-2xl px-4 py-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs text-violet-200 font-medium">Pay now</p>
-                  <p className="text-3xl font-bold text-white tabular-nums">₹{remaining}</p>
+                  <p className="text-3xl font-bold text-white tabular-nums">â‚¹{remaining}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] text-violet-300">Use this email</p>
@@ -338,7 +338,7 @@ export default function PaymentClient({ userEmail, summary: initial, maxPayment 
                 disabled={!txInput.trim() || submitting}
                 className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold transition-colors"
               >
-                {submitting ? "Submitting…" : "Submit transaction ID"}
+                {submitting ? "Submittingâ€¦" : "Submit transaction ID"}
               </button>
             </div>
           </div>

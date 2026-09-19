@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Event } from "@/models/event.model";
 import { User } from "@/models/user.model";
@@ -15,7 +15,7 @@ export async function seedEventsAction() {
 
   const existingCount = await Event.countDocuments();
   if (existingCount > 0) {
-    return { success: false, message: `Skipped — ${existingCount} events already exist` };
+    return { success: false, message: `Skipped â€” ${existingCount} events already exist` };
   }
 
   const inserted = await Event.insertMany(seedEvents);
@@ -30,7 +30,7 @@ export async function createDevAdminIfNotExists() {
 
   const devAdmin = new User({
     fullName: "Dev Admin",
-    email: "devadmin@technorollix.com",
+    email: "devadmin@Techno-aiMBiAtion.com",
     password: "devadmin2027",
     role: "DEV_ADMIN",
     isAdmin: true,

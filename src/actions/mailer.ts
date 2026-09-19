@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
@@ -13,7 +13,7 @@ export async function sendWelcomeEmail(recipientEmail: string, otp: string): Pro
   const mailOptions = {
     from: process.env.SMTP_USER,
     to: recipientEmail,
-    subject: "Welcome to Technorollix 2027!",
+    subject: "Welcome to Techno-aiMBiAtion 2027!",
     html: `
       <!DOCTYPE html>
       <html>
@@ -29,13 +29,13 @@ export async function sendWelcomeEmail(recipientEmail: string, otp: string): Pro
       </head>
       <body>
         <div class="container">
-          <div class="header"><h1>Technorollix 2027</h1></div>
+          <div class="header"><h1>Techno-aiMBiAtion 2027</h1></div>
           <p>Dear Participant,</p>
-          <p>Thank you for registering for Technorollix 2027! Please use the following OTP to verify your email:</p>
+          <p>Thank you for registering for Techno-aiMBiAtion 2027! Please use the following OTP to verify your email:</p>
           <div class="otp">${otp}</div>
           <p>This OTP is valid for 10 minutes. If you did not register, please ignore this email.</p>
-          <p>Best regards,<br/>The Technorollix 2027 Team</p>
-          <div class="footer"><p>&copy; 2027 Technorollix. All rights reserved.</p></div>
+          <p>Best regards,<br/>The Techno-aiMBiAtion 2027 Team</p>
+          <div class="footer"><p>&copy; 2027 Techno-aiMBiAtion. All rights reserved.</p></div>
         </div>
       </body>
       </html>
@@ -53,7 +53,7 @@ export async function sendResetPasswordEmail(recipientEmail: string, otp: string
   const mailOptions = {
     from: process.env.SMTP_USER,
     to: recipientEmail,
-    subject: "Reset Your Password — Technorollix 2027",
+    subject: "Reset Your Password â€” Techno-aiMBiAtion 2027",
     html: `
       <!DOCTYPE html>
       <html>
@@ -69,11 +69,11 @@ export async function sendResetPasswordEmail(recipientEmail: string, otp: string
       <body>
         <div class="container">
           <h1>Reset Your Password</h1>
-          <p>We received a request to reset your Technorollix 2027 password. Use the OTP below:</p>
+          <p>We received a request to reset your Techno-aiMBiAtion 2027 password. Use the OTP below:</p>
           <div class="otp">${otp}</div>
           <p>This OTP is valid for 10 minutes. If you did not request this, please ignore this email.</p>
-          <p>Best regards,<br/>The Technorollix 2027 Team</p>
-          <div class="footer"><p>&copy; 2027 Technorollix. All rights reserved.</p></div>
+          <p>Best regards,<br/>The Techno-aiMBiAtion 2027 Team</p>
+          <div class="footer"><p>&copy; 2027 Techno-aiMBiAtion. All rights reserved.</p></div>
         </div>
       </body>
       </html>
