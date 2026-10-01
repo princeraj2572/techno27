@@ -1,29 +1,39 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
-import { getAllAccommodationsWithUsers } from "@/actions/accommodation-actions";
-import { ChevronLeft, Hotel, Building2, Calendar, Phone, Users } from "lucide-react";
+import { getAccommodationCounts, getAccommodationsByGender } from "@/actions/accommodation-actions";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, Hotel, Building2, Calendar, Phone, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-const GENDER_CHIP: Record<string, string> = {
+const GENDERS = ["Male", "Female", "Other"] as const;
+type Gender = (typeof GENDERS)[number];
+
+const GENDER_CHIP: Record<Gender, string> = {
   Male:   "bg-sky-50   text-sky-700   border border-sky-200",
   Female: "bg-pink-50  text-pink-700  border border-pink-200",
   Other:  "bg-slate-50 text-slate-600 border border-slate-200",
 };
 
-const GENDER_BORDER: Record<string, string> = {
+const GENDER_BORDER: Record<Gender, string> = {
   Male:   "border-l-sky-400",
   Female: "border-l-pink-400",
   Other:  "border-l-slate-300",
 };
 
-type AccomItem = Awaited<ReturnType<typeof getAllAccommodationsWithUsers>>[number];
+const GENDER_TAB_ACTIVE: Record<Gender, string> = {
+  Male:   "bg-sky-600 text-white",
+  Female: "bg-pink-600 text-white",
+  Other:  "bg-slate-600 text-white",
+};
+
+type AccomItem = Awaited<ReturnType<typeof getAccommodationsByGender>>["rows"][number];
 
 function AccomRow({ item }: { item: AccomItem }) {
   const u = item.user as { _id: unknown; fullName: string; email: string; mobileNumber?: string };
   const a = item.accommodation;
-  const border = GENDER_BORDER[a.gender] ?? "border-l-slate-200";
-  const chip   = GENDER_CHIP[a.gender]   ?? "bg-slate-50 text-slate-600 border border-slate-200";
+  const border = GENDER_BORDER[a.gender as Gender] ?? "border-l-slate-200";
+  const chip   = GENDER_CHIP[a.gender as Gender]   ?? "bg-slate-50 text-slate-600 border border-slate-200";
 
   return (
     <div className={`bg-white border border-slate-100 border-l-4 ${border} rounded-xl px-4 py-3.5`}>
@@ -53,8 +63,8 @@ function AccomRow({ item }: { item: AccomItem }) {
               <span className="flex items-center gap-1 text-xs text-slate-400">
                 <Calendar className="h-3 w-3 shrink-0" />
                 {new Date(a.arrivalTime).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
-                {" â†’ "}
-                {a.departureTime ? new Date(a.departureTime).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "â€”"}
+                {" → "}
+                {a.departureTime ? new Date(a.departureTime).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "—"}
               </span>
             )}
           </div>
@@ -63,158 +73,6 @@ function AccomRow({ item }: { item: AccomItem }) {
             <p className="text-xs text-slate-400 mt-1 line-clamp-2">{a.additionalDetails}</p>
           )}
         </div>
-      </div>
-    </div>
-  );
-}
-
-export default async function AdminAccommodationPage() {
-  const user = await getUser();
-  if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
-
-  const accommodations = await getAllAccommodationsWithUsers().catch(() => []);
-
-  const maleItems   = accommodations.filter((i) => i.accommodation.gender === "Male");
-  const femaleItems = accommodations.filter((i) => i.accommodation.gender === "Female");
-  const otherItems  = accommodations.filter((i) => i.accommodation.gender === "Other");
-
-  // Group by groupName
-  function buildGroups(items: AccomItem[]) {
-    const groups = new Map<string, AccomItem[]>();
-    const solo: AccomItem[] = [];
-    for (const item of items) {
-      const g = (item.accommodation as { groupName?: string }).groupName?.trim();
-      if (g) {
-        if (!groups.has(g)) groups.set(g, []);
-        groups.get(g)!.push(item);
-      } else {
-        solo.push(item);
-      }
-    }
-    return { groups, solo };
-  }
-
-  const { groups: maleGroups, solo: maleSolo }     = buildGroups(maleItems);
-  const { groups: femaleGroups, solo: femaleSolo } = buildGroups(femaleItems);
-  const { groups: otherGroups, solo: otherSolo }   = buildGroups(otherItems);
-
-  const hasGroups =
-    maleGroups.size > 0 || femaleGroups.size > 0 || otherGroups.size > 0;
-
-  return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
-
-        {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
-          <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Admin
-            </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Accommodation</h1>
-            <p className="text-xs text-slate-400 mt-0.5">{accommodations.length} request{accommodations.length !== 1 ? "s" : ""}</p>
-          </div>
-          <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
-            <Hotel className="h-5 w-5 text-teal-600" />
-          </div>
-        </div>
-
-        {/* Stat cards */}
-        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-          <div className="bg-teal-600 rounded-2xl px-4 py-4">
-            <p className="text-xs font-medium text-teal-200 mb-1">Total</p>
-            <p className="text-2xl font-bold text-white tabular-nums">{accommodations.length}</p>
-            <p className="text-xs text-teal-300 mt-1">
-              {hasGroups ? `${[...maleGroups, ...femaleGroups, ...otherGroups].length} group${[...maleGroups, ...femaleGroups, ...otherGroups].length !== 1 ? "s" : ""}` : "requests"}
-            </p>
-          </div>
-          <div className={`rounded-2xl px-4 py-4 ${maleItems.length > 0 ? "bg-sky-50 border border-sky-100" : "bg-slate-50 border border-slate-100"}`}>
-            <p className={`text-xs font-medium mb-1 ${maleItems.length > 0 ? "text-sky-500" : "text-slate-400"}`}>Male</p>
-            <p className={`text-2xl font-bold tabular-nums ${maleItems.length > 0 ? "text-sky-900" : "text-slate-600"}`}>{maleItems.length}</p>
-            <p className={`text-xs mt-1 ${maleItems.length > 0 ? "text-sky-400" : "text-slate-400"}`}>participants</p>
-          </div>
-          <div className={`rounded-2xl px-4 py-4 ${femaleItems.length > 0 ? "bg-pink-50 border border-pink-100" : "bg-slate-50 border border-slate-100"}`}>
-            <p className={`text-xs font-medium mb-1 ${femaleItems.length > 0 ? "text-pink-500" : "text-slate-400"}`}>Female</p>
-            <p className={`text-2xl font-bold tabular-nums ${femaleItems.length > 0 ? "text-pink-900" : "text-slate-600"}`}>{femaleItems.length}</p>
-            <p className={`text-xs mt-1 ${femaleItems.length > 0 ? "text-pink-400" : "text-slate-400"}`}>participants</p>
-          </div>
-        </div>
-
-        {accommodations.length === 0 ? (
-          <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            <Hotel className="h-8 w-8 mx-auto mb-3 text-slate-200" />
-            <p className="text-sm font-medium text-slate-500">No accommodation requests yet</p>
-          </div>
-        ) : (
-          <>
-            {/* Male section */}
-            {maleItems.length > 0 && (
-              <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
-                <p className="text-xs font-semibold text-sky-600 mb-3">Male Â· {maleItems.length}</p>
-                <div className="space-y-4">
-                  {[...maleGroups.entries()].map(([gname, members]) => (
-                    <GroupBlock key={gname} groupName={gname} members={members} />
-                  ))}
-                  {maleSolo.length > 0 && (
-                    <div className="space-y-2">
-                      {maleGroups.size > 0 && (
-                        <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide">Individual</p>
-                      )}
-                      {maleSolo.map((item) => (
-                        <AccomRow key={String(item.user._id)} item={item} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Female section */}
-            {femaleItems.length > 0 && (
-              <div className="animate-slide-up" style={{ animationDelay: "0.12s" }}>
-                <p className="text-xs font-semibold text-pink-600 mb-3">Female Â· {femaleItems.length}</p>
-                <div className="space-y-4">
-                  {[...femaleGroups.entries()].map(([gname, members]) => (
-                    <GroupBlock key={gname} groupName={gname} members={members} />
-                  ))}
-                  {femaleSolo.length > 0 && (
-                    <div className="space-y-2">
-                      {femaleGroups.size > 0 && (
-                        <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide">Individual</p>
-                      )}
-                      {femaleSolo.map((item) => (
-                        <AccomRow key={String(item.user._id)} item={item} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Other section */}
-            {otherItems.length > 0 && (
-              <div className="animate-slide-up" style={{ animationDelay: "0.14s" }}>
-                <p className="text-xs font-semibold text-slate-500 mb-3">Other Â· {otherItems.length}</p>
-                <div className="space-y-4">
-                  {[...otherGroups.entries()].map(([gname, members]) => (
-                    <GroupBlock key={gname} groupName={gname} members={members} />
-                  ))}
-                  {otherSolo.length > 0 && (
-                    <div className="space-y-2">
-                      {otherGroups.size > 0 && (
-                        <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide">Individual</p>
-                      )}
-                      {otherSolo.map((item) => (
-                        <AccomRow key={String(item.user._id)} item={item} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </>
-        )}
-
       </div>
     </div>
   );
@@ -232,6 +90,160 @@ function GroupBlock({ groupName, members }: { groupName: string; members: AccomI
         {members.map((item) => (
           <AccomRow key={String(item.user._id)} item={item} />
         ))}
+      </div>
+    </div>
+  );
+}
+
+// Groups the current page's rows by groupName. Groups can only be judged
+// within the page being viewed — rows with the same groupName that land on
+// different pages (same gender tab, sorted by groupName) will appear as
+// separate blocks rather than merging across a page boundary.
+function buildGroups(items: AccomItem[]) {
+  const groups = new Map<string, AccomItem[]>();
+  const solo: AccomItem[] = [];
+  for (const item of items) {
+    const g = (item.accommodation as { groupName?: string }).groupName?.trim();
+    if (g) {
+      if (!groups.has(g)) groups.set(g, []);
+      groups.get(g)!.push(item);
+    } else {
+      solo.push(item);
+    }
+  }
+  return { groups, solo };
+}
+
+export default async function AdminAccommodationPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ gender?: string; page?: string }>;
+}) {
+  const user = await getUser();
+  if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
+
+  const counts = await getAccommodationCounts().catch(() => ({ total: 0, male: 0, female: 0, other: 0 }));
+
+  const { gender: rawGender, page: rawPage } = await searchParams;
+  const gender: Gender = GENDERS.includes(rawGender as Gender) ? (rawGender as Gender) : "Male";
+  const page = Math.max(1, parseInt(rawPage ?? "1"));
+  const limit = 25;
+
+  const { rows, total } = await getAccommodationsByGender(gender, page, limit).catch(() => ({ rows: [], total: 0 }));
+  const totalPages = Math.ceil(total / limit);
+  const { groups, solo } = buildGroups(rows);
+
+  const TAB_COUNT: Record<Gender, number> = { Male: counts.male, Female: counts.female, Other: counts.other };
+
+  return (
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
+
+        {/* Header */}
+        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+          <div>
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
+              <ChevronLeft className="h-3.5 w-3.5" /> Admin
+            </Link>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Accommodation</h1>
+            <p className="text-xs text-slate-400 mt-0.5">{counts.total} request{counts.total !== 1 ? "s" : ""}</p>
+          </div>
+          <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+            <Hotel className="h-5 w-5 text-teal-600" />
+          </div>
+        </div>
+
+        {/* Stat cards */}
+        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+          <div className="bg-teal-600 rounded-2xl px-4 py-4">
+            <p className="text-xs font-medium text-teal-200 mb-1">Total</p>
+            <p className="text-2xl font-bold text-white tabular-nums">{counts.total}</p>
+            <p className="text-xs text-teal-300 mt-1">requests</p>
+          </div>
+          <div className={`rounded-2xl px-4 py-4 ${counts.male > 0 ? "bg-sky-50 border border-sky-100" : "bg-slate-50 border border-slate-100"}`}>
+            <p className={`text-xs font-medium mb-1 ${counts.male > 0 ? "text-sky-500" : "text-slate-400"}`}>Male</p>
+            <p className={`text-2xl font-bold tabular-nums ${counts.male > 0 ? "text-sky-900" : "text-slate-600"}`}>{counts.male}</p>
+            <p className={`text-xs mt-1 ${counts.male > 0 ? "text-sky-400" : "text-slate-400"}`}>participants</p>
+          </div>
+          <div className={`rounded-2xl px-4 py-4 ${counts.female > 0 ? "bg-pink-50 border border-pink-100" : "bg-slate-50 border border-slate-100"}`}>
+            <p className={`text-xs font-medium mb-1 ${counts.female > 0 ? "text-pink-500" : "text-slate-400"}`}>Female</p>
+            <p className={`text-2xl font-bold tabular-nums ${counts.female > 0 ? "text-pink-900" : "text-slate-600"}`}>{counts.female}</p>
+            <p className={`text-xs mt-1 ${counts.female > 0 ? "text-pink-400" : "text-slate-400"}`}>participants</p>
+          </div>
+        </div>
+
+        {counts.total === 0 ? (
+          <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center animate-slide-up" style={{ animationDelay: "0.1s" }}>
+            <Hotel className="h-8 w-8 mx-auto mb-3 text-slate-200" />
+            <p className="text-sm font-medium text-slate-500">No accommodation requests yet</p>
+          </div>
+        ) : (
+          <div className="animate-slide-up space-y-4" style={{ animationDelay: "0.1s" }}>
+
+            {/* Gender tabs */}
+            <div className="flex items-center gap-2">
+              {GENDERS.map((g) => (
+                <Link
+                  key={g}
+                  href={`/admin/accommodation?gender=${g}`}
+                  className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${
+                    gender === g ? GENDER_TAB_ACTIVE[g] : "bg-slate-50 text-slate-500 hover:bg-slate-100"
+                  }`}
+                >
+                  {g} · {TAB_COUNT[g]}
+                </Link>
+              ))}
+            </div>
+
+            {rows.length === 0 ? (
+              <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
+                <p className="text-sm text-slate-400">No {gender.toLowerCase()} requests</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {[...groups.entries()].map(([gname, members]) => (
+                  <GroupBlock key={gname} groupName={gname} members={members} />
+                ))}
+                {solo.length > 0 && (
+                  <div className="space-y-2">
+                    {groups.size > 0 && (
+                      <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide">Individual</p>
+                    )}
+                    {solo.map((item) => (
+                      <AccomRow key={String(item.user._id)} item={item} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between pt-2">
+                <p className="text-xs text-slate-400">
+                  {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
+                </p>
+                <div className="flex items-center gap-2">
+                  {page > 1 ? (
+                    <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                      <Link href={`/admin/accommodation?gender=${gender}&page=${page - 1}`}>← Prev</Link>
+                    </Button>
+                  ) : (
+                    <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
+                  )}
+                  <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                  {page < totalPages ? (
+                    <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                      <Link href={`/admin/accommodation?gender=${gender}&page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>
+                    </Button>
+                  ) : (
+                    <Button variant="outline" size="sm" className="h-8 text-xs" disabled>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
       </div>
     </div>
   );

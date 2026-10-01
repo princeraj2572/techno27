@@ -50,9 +50,32 @@ interface AccommodationWithUser {
   leaders: string[];
 }
 
-export async function getAllAccommodationsWithUsers(): Promise<AccommodationWithUser[]> {
+export async function getAccommodationCounts() {
   await connectToDatabase();
-  const accommodations = await Accommodation.find().lean<IAccommodation[]>();
+  const [total, male, female, other] = await Promise.all([
+    Accommodation.countDocuments(),
+    Accommodation.countDocuments({ gender: "Male" }),
+    Accommodation.countDocuments({ gender: "Female" }),
+    Accommodation.countDocuments({ gender: "Other" }),
+  ]);
+  return { total, male, female, other };
+}
+
+// Paginated per gender tab so grouped rooming blocks (same groupName) never
+// split across pages within the tab being viewed.
+export async function getAccommodationsByGender(
+  gender: "Male" | "Female" | "Other",
+  page: number = 1,
+  limit: number = 25,
+): Promise<{ rows: AccommodationWithUser[]; total: number }> {
+  await connectToDatabase();
+  const total = await Accommodation.countDocuments({ gender });
+  const accommodations = await Accommodation.find({ gender })
+    .sort({ groupName: 1, createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .lean<IAccommodation[]>();
+
   const userIds = accommodations.map((a) => a.userId);
   const users = await User.find({ _id: { $in: userIds } }).lean<IUser[]>();
 
@@ -70,5 +93,5 @@ export async function getAllAccommodationsWithUsers(): Promise<AccommodationWith
     }),
   );
 
-  return JSON.parse(JSON.stringify(results.filter(Boolean)));
+  return JSON.parse(JSON.stringify({ rows: results.filter(Boolean), total }));
 }
