@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { userSignup } from "@/actions/user-actions";
+import { OPJU_DEPARTMENTS, OPJU_BRANCHES } from "@/data/opju-academics";
 
 interface Props {
   email: string;
@@ -49,6 +50,8 @@ export default function SignupForm({ email, isInternal }: Props) {
     city: "",
     state: "",
     accommodationNeeded: "",
+    // Custom branch when "Other" is selected
+    otherBranch: "",
   });
 
   const set = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -85,6 +88,15 @@ export default function SignupForm({ email, isInternal }: Props) {
     if (!isInternal && !photoUrl) {
       return setError("Profile photo is required for external participants");
     }
+    if (!form.department) {
+      return setError("Please select a department");
+    }
+    if (!form.branch) {
+      return setError("Please select a branch");
+    }
+    if (form.branch === "__other" && !form.otherBranch.trim()) {
+      return setError("Please enter your branch name");
+    }
 
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(form.mobileNumber)) {
@@ -104,7 +116,7 @@ export default function SignupForm({ email, isInternal }: Props) {
         gender: form.gender as "Male" | "Female" | "Other",
         department: form.department,
         program: form.program,
-        branch: form.branch,
+        branch: form.branch === "__other" ? form.otherBranch.trim() : form.branch,
         year: form.year as "1st" | "2nd" | "3rd" | "4th",
         address: form.address,
         emergencyContactName: form.emergencyContactName,
@@ -174,7 +186,14 @@ export default function SignupForm({ email, isInternal }: Props) {
         </div>
         <div className="space-y-1">
           <Label>Department *</Label>
-          <Input placeholder="e.g. Engineering" value={form.department} onChange={set("department")} required />
+          <Select value={form.department} onValueChange={(v) => setForm((p) => ({ ...p, department: v }))}>
+            <SelectTrigger><SelectValue placeholder="Select department" /></SelectTrigger>
+            <SelectContent>
+              {OPJU_DEPARTMENTS.map((d) => (
+                <SelectItem key={d} value={d}>{d}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div className="space-y-1">
           <Label>Program *</Label>
@@ -182,7 +201,24 @@ export default function SignupForm({ email, isInternal }: Props) {
         </div>
         <div className="space-y-1">
           <Label>Branch *</Label>
-          <Input placeholder="e.g. CSE" value={form.branch} onChange={set("branch")} required />
+          <Select value={form.branch} onValueChange={(v) => setForm((p) => ({ ...p, branch: v }))}>
+            <SelectTrigger><SelectValue placeholder="Select branch" /></SelectTrigger>
+            <SelectContent>
+              {OPJU_BRANCHES.map((b) => (
+                <SelectItem key={b} value={b}>{b}</SelectItem>
+              ))}
+              <SelectItem value="__other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+          {form.branch === "__other" && (
+            <Input
+              placeholder="Enter your branch name"
+              value={form.otherBranch}
+              onChange={set("otherBranch")}
+              className="mt-1.5"
+              required
+            />
+          )}
         </div>
         <div className="space-y-1">
           <Label>Year of Study *</Label>
