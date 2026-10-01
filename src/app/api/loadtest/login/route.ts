@@ -8,8 +8,11 @@ export async function POST(req: NextRequest) {
 
   try {
     const { email, password } = await req.json();
-    const { user, token } = await userLogin({ email, password });
-    return NextResponse.json({ success: true, user, token });
+    const result = await userLogin({ email, password });
+    if (!result.success) {
+      return NextResponse.json({ error: result.error }, { status: 400 });
+    }
+    return NextResponse.json({ success: true, user: result.user, token: result.token });
   } catch (e) {
     return errorResponse(e);
   }
