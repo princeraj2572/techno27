@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAllEventsAction, getRegisteredEventsAction, submitEventsAction } from "@/actions/event-actions";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   CalendarDays, CheckCircle2, ChevronLeft, Trophy, Users,
