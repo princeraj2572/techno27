@@ -10,13 +10,12 @@ const EASEBUZZ_URL = "https://smartpay.easebuzz.in/125084/Techno-aiMBiAtion-2026
 interface Props {
   userEmail: string;
   summary: IPaymentSummary;
-  maxPayment: number;
 }
 
-export default function PaymentClient({ userEmail, summary: initial, maxPayment }: Props) {
+export default function PaymentClient({ userEmail, summary: initial }: Props) {
   const [payableAmount]       = useState(initial.payableAmount);
-  const [acknowledgedAmount, setAcknowledgedAmount] = useState(initial.acknowledgedAmount);
-  const [payClearance, setPayClearance]             = useState(initial.payClearance);
+  const acknowledgedAmount = initial.acknowledgedAmount;
+  const payClearance       = initial.payClearance;
   const [transactions, setTransactions]             = useState(initial.transactions);
   const [showModal, setShowModal]                   = useState(false);
   const [showFeeGuide, setShowFeeGuide]             = useState(true);
