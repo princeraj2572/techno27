@@ -38,10 +38,10 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
   const [errors, setErrors]         = useState<Record<string, string>>({});
   const [success, setSuccess]       = useState<Record<string, string>>({});
 
-  const [txStates, setTxStates] = useState<Record<string, {
-    ackAmount: number; acknowledged: boolean; cleared: boolean;
-  }>>(() => {
-    const init: typeof txStates = {};
+  type TxState = Record<string, { ackAmount: number; acknowledged: boolean; cleared: boolean }>;
+
+  const [txStates, setTxStates] = useState<TxState>(() => {
+    const init: TxState = {};
     for (const row of rows)
       for (const tx of row.transactions)
         init[tx.transactionId] = {
