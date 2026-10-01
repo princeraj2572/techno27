@@ -42,3 +42,6 @@ next-env.d.ts
 
 # k6 load-test run output (regenerated per run, not source)
 /load-test/*.log
+
+# local Claude Code session state
+/.claude/
