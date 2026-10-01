@@ -3,24 +3,38 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import { AuditLog } from "@/models/auditLog.model";
-import { ChevronLeft, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, FileText, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-async function getRecentLogs(limit = 100) {
+async function getLogsPage(page: number, limit: number) {
   await connectToDatabase();
-  const logs = await AuditLog.find()
-    .sort({ timestamp: -1 })
-    .limit(limit)
-    .populate("performedBy", "fullName email")
-    .lean();
-  return JSON.parse(JSON.stringify(logs));
+  const [logs, total] = await Promise.all([
+    AuditLog.find()
+      .sort({ timestamp: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate("performedBy", "fullName email")
+      .lean(),
+    AuditLog.countDocuments(),
+  ]);
+  return { logs: JSON.parse(JSON.stringify(logs)), total };
 }
 
-export default async function DevLogsPage() {
+export default async function DevLogsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const user = await getUser();
   if (!user || user.role !== "DEV_ADMIN") redirect("/dashboard");
 
-  const logs = await getRecentLogs().catch(() => []);
+  const { page: rawPage } = await searchParams;
+  const page = Math.max(1, parseInt(rawPage ?? "1"));
+  const limit = 50;
+
+  const { logs, total } = await getLogsPage(page, limit).catch(() => ({ logs: [], total: 0 }));
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="min-h-screen bg-white">
@@ -33,7 +47,7 @@ export default async function DevLogsPage() {
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Audit Logs</h1>
-            <p className="text-xs text-slate-400 mt-0.5">{logs.length} recent entries</p>
+            <p className="text-xs text-slate-400 mt-0.5">{total} entries</p>
           </div>
           <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
             <FileText className="h-5 w-5 text-indigo-600" />
@@ -81,6 +95,31 @@ export default async function DevLogsPage() {
                 </div>
               </div>
             ))
+          )}
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-slate-400">
+                {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+              </p>
+              <div className="flex items-center gap-2">
+                {page > 1 ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/dev/logs?page=${page - 1}`}>â† Prev</Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                )}
+                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                {page < totalPages ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/dev/logs?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Button>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
