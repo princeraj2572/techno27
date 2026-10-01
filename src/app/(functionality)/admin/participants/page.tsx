@@ -8,14 +8,27 @@ import { Input } from "@/components/ui/input";
 import { ChevronLeft, Users, Search, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import ExportButton from "./ExportButton";
+import ExtraFilters from "./ExtraFilters";
+import { OPJU_DEPARTMENTS, OPJU_BRANCHES, OPJU_SEMESTERS, branchFilterValue } from "@/data/opju-academics";
 
-async function getParticipants(q: string, type: string, page: number, limit: number) {
+interface ParticipantFilters {
+  q: string;
+  type: string;
+  branch: string;
+  department: string;
+  semester: string;
+}
+
+async function getParticipants(f: ParticipantFilters, page: number, limit: number) {
   await connectToDatabase();
   const filter: Record<string, unknown> = { role: { $in: ["INTERNAL_USER", "EXTERNAL_USER"] } };
-  if (type === "internal") filter.role = "INTERNAL_USER";
-  if (type === "external") filter.role = "EXTERNAL_USER";
-  if (q) {
-    const regex = new RegExp(q, "i");
+  if (f.type === "internal") filter.role = "INTERNAL_USER";
+  if (f.type === "external") filter.role = "EXTERNAL_USER";
+  if (f.branch) filter.branch = branchFilterValue(f.branch);
+  if (f.department) filter.department = f.department;
+  if (f.semester) filter.semester = f.semester;
+  if (f.q) {
+    const regex = new RegExp(f.q, "i");
     filter.$or = [
       { fullName: regex }, { email: regex }, { mobileNumber: regex },
       { enrollmentNumber: regex }, { participantId: regex }, { collegeName: regex },
@@ -42,35 +55,58 @@ async function getParticipantCounts() {
   return { total, internal, external };
 }
 
+// Full official OPJU lists, not just whatever values happen to already
+// exist in the User collection — lets an admin filter by a branch/
+// department/semester even before anyone has registered under it.
+function getFilterOptions() {
+  return {
+    branches: [...OPJU_BRANCHES],
+    departments: [...OPJU_DEPARTMENTS],
+    semesters: OPJU_SEMESTERS.map(String),
+  };
+}
+
 export default async function AdminParticipantsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; page?: string; type?: string }>;
+  searchParams: Promise<{
+    q?: string; page?: string; type?: string;
+    branch?: string; department?: string; semester?: string;
+  }>;
 }) {
   const user = await getUser();
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
-  const { q: rawQ, page: rawPage, type: rawType } = await searchParams;
+  const {
+    q: rawQ, page: rawPage, type: rawType,
+    branch: rawBranch, department: rawDepartment, semester: rawSemester,
+  } = await searchParams;
   const q = rawQ ?? "";
   const type = ["internal", "external"].includes(rawType ?? "") ? rawType! : "";
+  const branch = rawBranch ?? "";
+  const department = rawDepartment ?? "";
+  const semester = rawSemester ?? "";
   const page = Math.max(1, parseInt(rawPage ?? "1"));
   const limit = 25;
 
   const [{ rows: participants, total: resultCount }, counts] = await Promise.all([
-    getParticipants(q, type, page, limit).catch(() => ({ rows: [], total: 0 })),
+    getParticipants({ q, type, branch, department, semester }, page, limit).catch(() => ({ rows: [], total: 0 })),
     getParticipantCounts().catch(() => ({ total: 0, internal: 0, external: 0 })),
   ]);
+  const filterOptions = getFilterOptions();
 
   const totalPages = Math.ceil(resultCount / limit);
   const filterParams = new URLSearchParams();
   if (q) filterParams.set("q", q);
   if (type) filterParams.set("type", type);
+  if (branch) filterParams.set("branch", branch);
+  if (department) filterParams.set("department", department);
+  if (semester) filterParams.set("semester", semester);
   const baseUrl = `/admin/participants?${filterParams.toString()}`;
 
   const tabHref = (t: string) => {
-    const p = new URLSearchParams();
-    if (q) p.set("q", q);
-    if (t) p.set("type", t);
+    const p = new URLSearchParams(filterParams);
+    if (t) p.set("type", t); else p.delete("type");
     const qs = p.toString();
     return `/admin/participants${qs ? `?${qs}` : ""}`;
   };
@@ -113,31 +149,38 @@ export default async function AdminParticipantsPage({
           </div>
         )}
 
-        {/* Filter tabs + Export */}
+        {/* Filter tabs + branch/department/semester filters + Export */}
         <div className="flex items-center justify-between gap-2 flex-wrap animate-slide-up" style={{ animationDelay: "0.06s" }}>
-          <div className="flex items-center gap-1 bg-slate-100 rounded-xl p-1">
-            {[
-              { label: "All", value: "" },
-              { label: "Internal", value: "internal" },
-              { label: "External", value: "external" },
-            ].map((t) => (
-              <Link
-                key={t.value}
-                href={tabHref(t.value)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  type === t.value
-                    ? "bg-white text-slate-900 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700"
-                }`}
-              >
-                {t.label}
-                <span className="ml-1.5 text-[10px] text-slate-400">
-                  {t.value === "" ? counts.total : t.value === "internal" ? counts.internal : counts.external}
-                </span>
-              </Link>
-            ))}
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1 bg-slate-100 rounded-xl p-1">
+              {[
+                { label: "All", value: "" },
+                { label: "Internal", value: "internal" },
+                { label: "External", value: "external" },
+              ].map((t) => (
+                <Link
+                  key={t.value}
+                  href={tabHref(t.value)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                    type === t.value
+                      ? "bg-white text-slate-900 shadow-sm"
+                      : "text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  {t.label}
+                  <span className="ml-1.5 text-[10px] text-slate-400">
+                    {t.value === "" ? counts.total : t.value === "internal" ? counts.internal : counts.external}
+                  </span>
+                </Link>
+              ))}
+            </div>
+            <ExtraFilters
+              branches={filterOptions.branches}
+              departments={filterOptions.departments}
+              semesters={filterOptions.semesters}
+            />
           </div>
-          <ExportButton q={q} type={type} />
+          <ExportButton q={q} type={type} branch={branch} department={department} semester={semester} />
         </div>
 
         {/* Search */}
@@ -152,6 +195,9 @@ export default async function AdminParticipantsPage({
             />
           </div>
           {type && <input type="hidden" name="type" value={type} />}
+          {branch && <input type="hidden" name="branch" value={branch} />}
+          {department && <input type="hidden" name="department" value={department} />}
+          {semester && <input type="hidden" name="semester" value={semester} />}
           <Button type="submit">Search</Button>
           {q && (
             <Button variant="outline" asChild>
@@ -175,7 +221,7 @@ export default async function AdminParticipantsPage({
             participants.map((p: {
               _id: string; fullName: string; email: string; role: string;
               mobileNumber?: string; enrollmentNumber?: string; participantId?: string;
-              collegeName?: string; department?: string;
+              collegeName?: string; department?: string; branch?: string; semester?: string;
             }) => (
               <div key={p._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center gap-3">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
@@ -196,7 +242,9 @@ export default async function AdminParticipantsPage({
                   </div>
                   <p className="text-xs text-slate-400 truncate">{p.email}</p>
                   <p className="text-xs text-slate-400">
-                    {p.collegeName ?? p.department ?? "â€”"}
+                    {p.role === "INTERNAL_USER"
+                      ? [p.department, p.branch, p.semester ? `Sem ${p.semester}` : null].filter(Boolean).join(" Â· ") || "â€”"
+                      : p.collegeName ?? "â€”"}
                     {(p.enrollmentNumber ?? p.participantId) && (
                       <code className="ml-2 font-mono">{p.enrollmentNumber ?? p.participantId}</code>
                     )}
