@@ -2,6 +2,8 @@
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { getEventsWithRegistrationCountsAction } from "@/actions/event-actions";
+import { connectToDatabase } from "@/lib/mongodb";
+import { User } from "@/models/user.model";
 import { Badge } from "@/components/ui/badge";
 import {
   Users, CalendarDays, CreditCard, Hotel,
@@ -43,13 +45,26 @@ const STATUS_BORDER: Record<string, string> = {
   TEMPORARILY_CLOSED:  "border-l-orange-400",
 };
 
+async function getParticipantCounts() {
+  await connectToDatabase();
+  const [total, internal, external] = await Promise.all([
+    User.countDocuments({ role: { $in: ["INTERNAL_USER", "EXTERNAL_USER"] } }),
+    User.countDocuments({ role: "INTERNAL_USER" }),
+    User.countDocuments({ role: "EXTERNAL_USER" }),
+  ]);
+  return { total, internal, external };
+}
+
 export default async function AdminDashboardPage() {
   const user = await getUser();
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
-  const { eventsWithCounts: events } = await getEventsWithRegistrationCountsAction().catch(() => ({ eventsWithCounts: [] })) as {
-    eventsWithCounts: Array<{ _id: string; name: string; status: string; category?: string; teamCount: number; participantCount: number; internalCount: number; externalCount: number }>;
-  };
+  const [{ eventsWithCounts: events }, participantCounts] = await Promise.all([
+    getEventsWithRegistrationCountsAction().catch(() => ({ eventsWithCounts: [] })) as Promise<{
+      eventsWithCounts: Array<{ _id: string; name: string; status: string; category?: string; teamCount: number; participantCount: number; internalCount: number; externalCount: number }>;
+    }>,
+    getParticipantCounts().catch(() => ({ total: 0, internal: 0, external: 0 })),
+  ]);
 
   const openCount  = events.filter((e) => e.status === "REGISTRATION_OPEN").length;
   const liveCount  = events.filter((e) => e.status === "EVENT_LIVE").length;
@@ -91,21 +106,47 @@ export default async function AdminDashboardPage() {
           <Link href="/admin/events">
             <div className="bg-teal-600 hover:bg-teal-700 transition-colors rounded-2xl p-4 cursor-pointer">
               <p className="text-xs font-medium text-teal-200 mb-3">Total events</p>
-              <p className="text-4xl font-bold text-white tabular-nums leading-none">{totalCount}</p>
+              <p className="text-xl sm:text-3xl md:text-4xl font-bold text-white tabular-nums leading-none">{totalCount}</p>
               <p className="text-xs text-teal-300 mt-2">all events</p>
             </div>
           </Link>
 
-          <div className={`rounded-2xl p-4 transition-colors ${openCount > 0 ? "bg-emerald-500 hover:bg-emerald-600" : "bg-white border border-slate-200"}`}>
-            <p className={`text-xs font-medium mb-3 ${openCount > 0 ? "text-emerald-100" : "text-slate-400"}`}>Open now</p>
-            <p className={`text-4xl font-bold tabular-nums leading-none ${openCount > 0 ? "text-white" : "text-slate-700"}`}>{openCount}</p>
-            <p className={`text-xs mt-2 ${openCount > 0 ? "text-emerald-200" : "text-slate-400"}`}>registration open</p>
+          <div className="rounded-2xl p-4 bg-emerald-500 hover:bg-emerald-600 transition-colors">
+            <p className="text-xs font-medium mb-3 text-emerald-100">Open now</p>
+            <p className="text-xl sm:text-3xl md:text-4xl font-bold tabular-nums leading-none text-white">{openCount}</p>
+            <p className="text-xs mt-2 text-emerald-200">registration open</p>
           </div>
 
-          <div className={`rounded-2xl p-4 transition-colors ${liveCount > 0 ? "bg-amber-500 hover:bg-amber-600" : "bg-white border border-slate-200"}`}>
-            <p className={`text-xs font-medium mb-3 ${liveCount > 0 ? "text-amber-100" : "text-slate-400"}`}>Live now</p>
-            <p className={`text-4xl font-bold tabular-nums leading-none ${liveCount > 0 ? "text-white" : "text-slate-700"}`}>{liveCount}</p>
-            <p className={`text-xs mt-2 ${liveCount > 0 ? "text-amber-200" : "text-slate-400"}`}>events running</p>
+          <div className="rounded-2xl p-4 bg-amber-500 hover:bg-amber-600 transition-colors">
+            <p className="text-xs font-medium mb-3 text-amber-100">Live now</p>
+            <p className="text-xl sm:text-3xl md:text-4xl font-bold tabular-nums leading-none text-white">{liveCount}</p>
+            <p className="text-xs mt-2 text-amber-200">events running</p>
+          </div>
+        </div>
+
+        {/* Participant stats */}
+        <div
+          className="grid grid-cols-3 gap-3 animate-slide-up"
+          style={{ animationDelay: "0.07s" }}
+        >
+          <Link href="/admin/participants">
+            <div className="bg-teal-600 hover:bg-teal-700 transition-colors rounded-2xl p-4 cursor-pointer">
+              <p className="text-xs font-medium text-teal-200 mb-3">Total participants</p>
+              <p className="text-xl sm:text-3xl md:text-4xl font-bold text-white tabular-nums leading-none">{participantCounts.total}</p>
+              <p className="text-xs text-teal-300 mt-2">registered</p>
+            </div>
+          </Link>
+
+          <div className="rounded-2xl p-4 bg-sky-500">
+            <p className="text-xs font-medium mb-3 text-sky-100">Internal</p>
+            <p className="text-xl sm:text-3xl md:text-4xl font-bold tabular-nums leading-none text-white">{participantCounts.internal}</p>
+            <p className="text-xs mt-2 text-sky-200">@opju.ac.in</p>
+          </div>
+
+          <div className="rounded-2xl p-4 bg-violet-500">
+            <p className="text-xs font-medium mb-3 text-violet-100">External</p>
+            <p className="text-xl sm:text-3xl md:text-4xl font-bold tabular-nums leading-none text-white">{participantCounts.external}</p>
+            <p className="text-xs mt-2 text-violet-200">outside colleges</p>
           </div>
         </div>
 
