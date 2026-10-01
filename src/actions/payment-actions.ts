@@ -4,7 +4,7 @@ import { Event, IEvent } from "@/models/event.model";
 import { Team, ITeam } from "@/models/team.model";
 import { Transaction, ITransaction } from "@/models/transaction.model";
 import { User, IUser } from "@/models/user.model";
-import { MAX_PAYMENT, SOLO_FEE_1, TEAM_FEE, calculatePayAmount } from "@/lib/payment-constants";
+import { SOLO_FEE_1, TEAM_FEE, calculatePayAmount } from "@/lib/payment-constants";
 
 // ─── Submit a transaction ID (external user) ──────────────────────────────
 export async function addTransactionIdAction(
@@ -202,13 +202,25 @@ export interface IPaymentData {
   }>;
 }
 
-export async function getPaymentData(): Promise<IPaymentData[] | null> {
+export async function getPaymentData(
+  page: number = 1,
+  limit: number = 25,
+): Promise<{ rows: IPaymentData[]; total: number }> {
   await connectToDatabase();
 
-  const users = await User.find({
+  const filter = {
     role: "EXTERNAL_USER",
     $expr: { $gte: [{ $size: "$teams" }, 1] },
-  }).lean<IUser[]>();
+  };
+
+  const [users, total] = await Promise.all([
+    User.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean<IUser[]>(),
+    User.countDocuments(filter),
+  ]);
 
   const results = await Promise.all(
     users.map(async (user) => {
@@ -262,5 +274,19 @@ export async function getPaymentData(): Promise<IPaymentData[] | null> {
     }),
   );
 
-  return JSON.parse(JSON.stringify(results.filter((r) => r !== null)));
+  return { rows: JSON.parse(JSON.stringify(results.filter((r) => r !== null))), total };
+}
+
+// Global cleared/pending counts (across ALL external participants, not just
+// the current page) based on the stored clearanceApproval flag, which the
+// same acknowledge/record actions above keep in sync with payClearance.
+export async function getPaymentStatusCounts(): Promise<{ cleared: number; pending: number }> {
+  await connectToDatabase();
+  const [clearedEmails, pendingEmails] = await Promise.all([
+    Transaction.distinct("userEmail", { clearanceApproval: true }),
+    Transaction.distinct("userEmail", { clearanceApproval: false }),
+  ]);
+  const clearedSet = new Set(clearedEmails);
+  const pending = pendingEmails.filter((e: string) => !clearedSet.has(e)).length;
+  return { cleared: clearedSet.size, pending };
 }
