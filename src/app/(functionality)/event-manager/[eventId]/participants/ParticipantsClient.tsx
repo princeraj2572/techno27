@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import type { ParticipantRow } from "./page";
-import { CheckCircle2, Clock, Download, Users } from "lucide-react";
+import { CheckCircle2, Clock, Download, Users, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import * as XLSX from "xlsx";
 
 interface Props {
@@ -13,13 +14,25 @@ interface Props {
 
 type FilterTab = "all" | "internal" | "external";
 
+const PAGE_SIZE = 25;
+
 export default function ParticipantsClient({ participants, eventName }: Props) {
   const [tab, setTab] = useState<FilterTab>("all");
+  const [page, setPage] = useState(1);
 
   const filtered =
     tab === "all"      ? participants :
     tab === "internal" ? participants.filter((p) => p.role === "INTERNAL_USER") :
                          participants.filter((p) => p.role === "EXTERNAL_USER");
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const paged = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  const changeTab = (t: FilterTab) => {
+    setTab(t);
+    setPage(1);
+  };
 
   const downloadExcel = () => {
     const rows = filtered.map((p) => {
@@ -63,7 +76,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
           {(["all", "internal", "external"] as FilterTab[]).map((t) => (
             <button
               key={t}
-              onClick={() => setTab(t)}
+              onClick={() => changeTab(t)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                 tab === t
                   ? "bg-white text-slate-900 shadow-sm"
@@ -100,7 +113,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
         </div>
       ) : (
         <div className="space-y-2">
-          {filtered.map((p) => {
+          {paged.map((p) => {
             const isExternal = p.role === "EXTERNAL_USER";
             return (
               <div
@@ -170,6 +183,31 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
               </div>
             );
           })}
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-slate-400">
+                {(currentPage - 1) * PAGE_SIZE + 1}â€“{Math.min(currentPage * PAGE_SIZE, filtered.length)} of {filtered.length}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline" size="sm" className="h-8 text-xs"
+                  disabled={currentPage <= 1}
+                  onClick={() => setPage(currentPage - 1)}
+                >
+                  â† Prev
+                </Button>
+                <span className="text-xs text-slate-400">{currentPage} / {totalPages}</span>
+                <Button
+                  variant="outline" size="sm" className="h-8 text-xs"
+                  disabled={currentPage >= totalPages}
+                  onClick={() => setPage(currentPage + 1)}
+                >
+                  Next <ChevronRight className="h-3 w-3 ml-0.5" />
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
