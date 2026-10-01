@@ -2,7 +2,6 @@
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { getPaymentSummaryForUser } from "@/actions/payment-actions";
-import { MAX_PAYMENT } from "@/lib/payment-constants";
 import { ChevronLeft, CreditCard } from "lucide-react";
 import Link from "next/link";
 import PaymentClient from "./PaymentClient";
@@ -45,7 +44,6 @@ export default async function DashboardPaymentPage() {
           <PaymentClient
             userEmail={user.email}
             summary={summary}
-            maxPayment={MAX_PAYMENT}
           />
         )}
 
