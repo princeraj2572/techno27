@@ -1,6 +1,10 @@
 "use server";
 import mongoose from "mongoose";
 
+if (process.env.MONGOOSE_DEBUG === "true") {
+  mongoose.set("debug", true);
+}
+
 const MONGODB_URI = process.env.MONGODB_URI;
 const MONGODB_DBNAME = process.env.MONGODB_DBNAME;
 
@@ -34,6 +38,7 @@ export async function connectToDatabase() {
     cached.promise = mongoose.connect(MONGODB_URI!, {
       dbName: MONGODB_DBNAME,
       bufferCommands: false,
+      maxPoolSize: 500,
     });
   }
 
