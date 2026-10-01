@@ -96,7 +96,7 @@ export default function (data) {
   const eventsRes = http.get(`${BASE_URL}/api/loadtest/events`, json);
   check(eventsRes, { "events ok": (r) => r.status === 200 });
   const events = eventsRes.json("events") || [];
-  const openEvent = events.find((e) => e.status === "REGISTRATION_OPEN");
+  const openEvent = events.find((e) => e.name === "Load Test Event" && e.status === "REGISTRATION_OPEN");
   if (!openEvent) {
     // No seeded event to join — skip the rest of this iteration rather than
     // failing the whole run. Seed at least one REGISTRATION_OPEN event first.
