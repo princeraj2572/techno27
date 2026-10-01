@@ -39,3 +39,6 @@ next-env.d.ts
 
 # uploads (local dev only)
 /public/uploads/
+
+# k6 load-test run output (regenerated per run, not source)
+/load-test/*.log
