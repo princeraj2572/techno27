@@ -1,19 +1,20 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { getEventsWithRegistrationCountsAction } from "@/actions/event-actions";
-import { ChevronLeft, CalendarDays, Users, Trophy } from "lucide-react";
+import { ChevronLeft, CalendarDays, Users, Trophy, UsersRound, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import StatTile from "./StatTile";
 
-const STATUS_LABEL: Record<string, { text: string; color: string }> = {
-  REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600" },
-  EVENT_LIVE:          { text: "Live now",  color: "text-teal-600"  },
-  COMPLETED:           { text: "Completed", color: "text-slate-400"   },
-  CANCELLED:           { text: "Cancelled", color: "text-red-500"     },
-  REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600"   },
-  TEMPORARILY_CLOSED:  { text: "Paused",    color: "text-orange-500"  },
-  DRAFT:               { text: "Draft",     color: "text-slate-400"   },
-  UPCOMING:            { text: "Upcoming",  color: "text-slate-500"   },
+const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
+  REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-700", bg: "bg-emerald-100" },
+  EVENT_LIVE:          { text: "Live now",  color: "text-teal-700",    bg: "bg-teal-100"    },
+  COMPLETED:           { text: "Completed", color: "text-slate-500",   bg: "bg-slate-100"   },
+  CANCELLED:           { text: "Cancelled", color: "text-red-700",     bg: "bg-red-100"     },
+  REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-700",   bg: "bg-amber-100"   },
+  TEMPORARILY_CLOSED:  { text: "Paused",    color: "text-orange-700",  bg: "bg-orange-100"  },
+  DRAFT:               { text: "Draft",     color: "text-slate-500",   bg: "bg-slate-100"   },
+  UPCOMING:            { text: "Upcoming",  color: "text-blue-700",    bg: "bg-blue-100"    },
 };
 
 const STATUS_BORDER: Record<string, string> = {
@@ -29,14 +30,14 @@ export default async function AdminEventsPage() {
   const user = await getUser();
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
-  const { eventsWithCounts: events, totalParticipants, totalInternal, totalExternal } =
-    await getEventsWithRegistrationCountsAction().catch(() => ({ eventsWithCounts: [], totalParticipants: 0, totalInternal: 0, totalExternal: 0 })) as {
+  const { eventsWithCounts: events, totalParticipants, totalInternal, totalExternal, totalTeams } =
+    await getEventsWithRegistrationCountsAction().catch(() => ({ eventsWithCounts: [], totalParticipants: 0, totalInternal: 0, totalExternal: 0, totalTeams: 0 })) as {
       eventsWithCounts: Array<{ _id: string; name: string; status: string; category?: string; teamSize?: number; internalFee?: number; externalFee?: number; prizeMoney?: number; teamCount: number; participantCount: number; internalCount: number; externalCount: number }>;
-      totalParticipants: number; totalInternal: number; totalExternal: number;
+      totalParticipants: number; totalInternal: number; totalExternal: number; totalTeams: number;
     };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-slate-50">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
@@ -61,72 +62,103 @@ export default async function AdminEventsPage() {
         </div>
 
         {/* Registration stats */}
-        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.04s" }}>
-          <div className="bg-teal-600 rounded-2xl px-4 py-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.04s" }}>
+          <div className="bg-teal-600 rounded-2xl px-4 py-4 shadow-sm">
             <p className="text-xs font-medium text-teal-200 mb-1">Total registered</p>
-            <p className="text-2xl font-bold text-white tabular-nums">{totalParticipants}</p>
+            <p className="text-3xl font-bold text-white tabular-nums">{totalParticipants}</p>
             <p className="text-xs text-teal-300 mt-1">across all events</p>
           </div>
-          <div className={`rounded-2xl px-4 py-4 ${totalInternal > 0 ? "bg-teal-50" : "bg-slate-50 border border-slate-100"}`}>
-            <p className={`text-xs font-medium mb-1 ${totalInternal > 0 ? "text-teal-500" : "text-slate-400"}`}>OPJU (Internal)</p>
-            <p className={`text-2xl font-bold tabular-nums ${totalInternal > 0 ? "text-teal-900" : "text-slate-600"}`}>{totalInternal}</p>
-            <p className={`text-xs mt-1 ${totalInternal > 0 ? "text-teal-400" : "text-slate-400"}`}>participants</p>
+          <div className="bg-indigo-600 rounded-2xl px-4 py-4 shadow-sm">
+            <p className="text-xs font-medium text-indigo-200 mb-1">Total teams</p>
+            <p className="text-3xl font-bold text-white tabular-nums">{totalTeams}</p>
+            <p className="text-xs text-indigo-300 mt-1">registered</p>
           </div>
-          <div className={`rounded-2xl px-4 py-4 ${totalExternal > 0 ? "bg-amber-50 border border-amber-100" : "bg-slate-50 border border-slate-100"}`}>
-            <p className={`text-xs font-medium mb-1 ${totalExternal > 0 ? "text-amber-600" : "text-slate-400"}`}>External</p>
-            <p className={`text-2xl font-bold tabular-nums ${totalExternal > 0 ? "text-amber-900" : "text-slate-600"}`}>{totalExternal}</p>
-            <p className={`text-xs mt-1 ${totalExternal > 0 ? "text-amber-500" : "text-slate-400"}`}>participants</p>
+          <div className="rounded-2xl px-4 py-4 bg-sky-500 shadow-sm">
+            <p className="text-xs font-medium mb-1 text-sky-100">OPJU (Internal)</p>
+            <p className="text-3xl font-bold tabular-nums text-white">{totalInternal}</p>
+            <p className="text-xs mt-1 text-sky-200">participants</p>
+          </div>
+          <div className="rounded-2xl px-4 py-4 bg-amber-500 shadow-sm">
+            <p className="text-xs font-medium mb-1 text-amber-100">External</p>
+            <p className="text-3xl font-bold tabular-nums text-white">{totalExternal}</p>
+            <p className="text-xs mt-1 text-amber-200">participants</p>
           </div>
         </div>
 
-        {/* Events list */}
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+        {/* Events grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 animate-slide-up" style={{ animationDelay: "0.06s" }}>
           {events.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
+            <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <CalendarDays className="h-8 w-8 mx-auto mb-3 text-slate-200" />
               <p className="text-sm font-medium text-slate-500">No events found</p>
             </div>
           ) : (
             events.map((event) => {
               const border = STATUS_BORDER[event.status] ?? "border-l-slate-200";
-              const label  = STATUS_LABEL[event.status]  ?? { text: event.status.replace(/_/g, " "), color: "text-slate-400" };
+              const label  = STATUS_LABEL[event.status]  ?? { text: event.status.replace(/_/g, " "), color: "text-slate-500", bg: "bg-slate-100" };
               return (
-                <Link key={event._id} href={`/admin/events/${event._id}`} className={`block bg-white border border-slate-100 border-l-4 ${border} rounded-xl px-4 py-3.5 hover:bg-slate-50 transition-colors`}>
-                  <div className="flex items-center gap-4">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <p className="text-sm font-semibold text-slate-900 truncate">{event.name}</p>
-                        {event.category && <span className="text-xs text-slate-400">{event.category}</span>}
-                        <span className={`text-xs font-medium ${label.color}`}>{label.text}</span>
+                <Link
+                  key={event._id}
+                  href={`/admin/events/${event._id}`}
+                  className={`block bg-white border border-slate-200 border-l-4 ${border} rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-teal-300 hover:-translate-y-0.5 transition-all`}
+                >
+                  {/* Title row */}
+                  <div className="flex items-start justify-between gap-3 mb-4">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                        <p className="text-base font-bold text-slate-900">{event.name}</p>
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${label.bg} ${label.color}`}>
+                          {label.text}
+                        </span>
                       </div>
-                      <div className="flex items-center gap-3 mt-1 flex-wrap text-xs">
-                        <span className="flex items-center gap-1 text-slate-500">
-                          <Users className="h-3 w-3" /> {event.participantCount} registered
-                        </span>
-                        {event.internalCount > 0 && (
-                          <span className="text-teal-500">{event.internalCount} OPJU</span>
-                        )}
-                        {event.externalCount > 0 && (
-                          <span className="text-amber-600">{event.externalCount} external</span>
-                        )}
-                        {event.teamCount > 0 && (
-                          <span className="text-slate-400">{event.teamCount} team{event.teamCount !== 1 ? "s" : ""}</span>
-                        )}
-                      </div>
+                      {event.category && <p className="text-xs text-slate-400">{event.category}</p>}
                     </div>
-                    <div className="flex items-center gap-3 shrink-0 text-xs text-slate-400">
-                      {event.teamSize && event.teamSize > 1 && (
-                        <span className="hidden sm:flex items-center gap-1">
-                          <Users className="h-3.5 w-3.5" /> {event.teamSize}
-                        </span>
-                      )}
-                      {event.prizeMoney ? (
-                        <span className="hidden sm:flex items-center gap-1 text-amber-600 font-medium">
-                          <Trophy className="h-3.5 w-3.5" /> â‚¹{event.prizeMoney}
-                        </span>
-                      ) : null}
-                      <span className="text-teal-600 font-medium">View â†’</span>
-                    </div>
+                    <span className="shrink-0 inline-flex items-center gap-1 text-xs font-semibold text-teal-600">
+                      View <ArrowRight className="h-3.5 w-3.5" />
+                    </span>
+                  </div>
+
+                  {/* Stat grid */}
+                  <div className="grid grid-cols-3 gap-2">
+                    <StatTile
+                      label="Registered"
+                      value={event.participantCount}
+                      icon={<Users className="h-3.5 w-3.5 text-slate-500" />}
+                      bg="bg-slate-100"
+                      labelColor="text-slate-500"
+                      valueColor="text-slate-900"
+                    />
+                    <StatTile
+                      label="OPJU"
+                      value={event.internalCount}
+                      bg="bg-sky-50"
+                      labelColor="text-sky-500"
+                      valueColor="text-sky-700"
+                    />
+                    <StatTile
+                      label="External"
+                      value={event.externalCount}
+                      bg="bg-amber-50"
+                      labelColor="text-amber-600"
+                      valueColor="text-amber-700"
+                    />
+                    <StatTile
+                      label="Teams"
+                      value={event.teamCount}
+                      icon={<UsersRound className="h-3.5 w-3.5" />}
+                      bg="bg-indigo-50"
+                      labelColor="text-indigo-500"
+                      valueColor="text-indigo-700"
+                    />
+                    <StatTile
+                      label="Prize"
+                      value={event.prizeMoney ? <>â‚¹{event.prizeMoney}</> : "â€”"}
+                      icon={event.prizeMoney ? <Trophy className="h-3.5 w-3.5" /> : null}
+                      bg="bg-emerald-50"
+                      labelColor="text-emerald-600"
+                      valueColor="text-emerald-700"
+                      wide
+                    />
                   </div>
                 </Link>
               );
