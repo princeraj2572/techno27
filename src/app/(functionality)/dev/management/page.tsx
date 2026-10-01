@@ -4,17 +4,21 @@ import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import { User } from "@/models/user.model";
 import { ManagementAssignment } from "@/models/managementAssignment.model";
-import { ChevronLeft, Shield, Plus } from "lucide-react";
+import { ChevronLeft, Shield, Plus, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-async function getManagementUsers() {
+async function getManagementUsers(page: number, limit: number) {
   await connectToDatabase();
-  const users = await User.find({ role: { $in: ["MANAGEMENT_ADMIN", "EVENT_MANAGER"] } })
-    .sort({ createdAt: -1 })
-    .lean();
+  const filter = { role: { $in: ["MANAGEMENT_ADMIN", "EVENT_MANAGER"] } };
+  const [users, total, adminCount, managerCount] = await Promise.all([
+    User.find(filter).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).lean(),
+    User.countDocuments(filter),
+    User.countDocuments({ role: "MANAGEMENT_ADMIN" }),
+    User.countDocuments({ role: "EVENT_MANAGER" }),
+  ]);
 
-  // For EVENT_MANAGERs, fetch their event assignment counts
+  // For EVENT_MANAGERs on this page, fetch their event assignment counts
   const eventManagerIds = users
     .filter((u: { role: string }) => u.role === "EVENT_MANAGER")
     .map((u: { _id: unknown }) => u._id);
@@ -29,10 +33,12 @@ async function getManagementUsers() {
     countMap[String(a.userId)] = (a.eventIds as unknown[]).length;
   }
 
-  return JSON.parse(JSON.stringify(users)).map((u: { _id: string; role: string }) => ({
+  const rows = JSON.parse(JSON.stringify(users)).map((u: { _id: string; role: string }) => ({
     ...u,
     assignedEventCount: u.role === "EVENT_MANAGER" ? (countMap[u._id] ?? 0) : null,
   }));
+
+  return { rows, total, adminCount, managerCount };
 }
 
 const ROLE_CHIP: Record<string, string> = {
@@ -40,14 +46,21 @@ const ROLE_CHIP: Record<string, string> = {
   EVENT_MANAGER:    "bg-blue-50   text-blue-700   border-blue-200",
 };
 
-export default async function DevManagementPage() {
+export default async function DevManagementPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const user = await getUser();
   if (!user || user.role !== "DEV_ADMIN") redirect("/dashboard");
 
-  const mgmtUsers = await getManagementUsers().catch(() => []);
+  const { page: rawPage } = await searchParams;
+  const page = Math.max(1, parseInt(rawPage ?? "1"));
+  const limit = 25;
 
-  const adminCount   = mgmtUsers.filter((u: { role: string }) => u.role === "MANAGEMENT_ADMIN").length;
-  const managerCount = mgmtUsers.filter((u: { role: string }) => u.role === "EVENT_MANAGER").length;
+  const { rows: mgmtUsers, total, adminCount, managerCount } = await getManagementUsers(page, limit)
+    .catch(() => ({ rows: [], total: 0, adminCount: 0, managerCount: 0 }));
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="min-h-screen bg-white">
@@ -125,6 +138,31 @@ export default async function DevManagementPage() {
                 )}
               </div>
             ))
+          )}
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-slate-400">
+                {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+              </p>
+              <div className="flex items-center gap-2">
+                {page > 1 ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/dev/management?page=${page - 1}`}>â† Prev</Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                )}
+                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                {page < totalPages ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/dev/management?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Button>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
