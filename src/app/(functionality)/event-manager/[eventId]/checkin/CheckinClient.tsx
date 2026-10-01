@@ -2,7 +2,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { BrowserQRCodeReader, IScannerControls } from "@zxing/browser";
 import { checkInByQRAction, checkInManualAction } from "@/actions/checkin-actions";
-import { CheckCircle2, Clock, QrCode, Camera, CameraOff, AlertCircle, X, CheckSquare, UserCheck } from "lucide-react";
+import { CheckCircle2, QrCode, Camera, CameraOff, AlertCircle, X, CheckSquare, UserCheck, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const PAGE_SIZE = 25;
 
 export interface ParticipantData {
   _id: string;
@@ -61,6 +64,9 @@ export default function CheckinClient({
   const [manualErrors, setManualErrors] = useState<Record<string, string>>({});
   const [manualSuccess, setManualSuccess] = useState<Record<string, boolean>>({});
 
+  const [pendingPage, setPendingPage] = useState(1);
+  const [checkedInPage, setCheckedInPage] = useState(1);
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const controlsRef = useRef<IScannerControls | null>(null);
   const lastScannedRef = useRef<string>("");
@@ -86,7 +92,7 @@ export default function CheckinClient({
       controlsRef.current = await reader.decodeFromConstraints(
         { video: { facingMode: "environment" } },
         videoRef.current,
-        async (result, err) => {
+        async (result) => {
           if (!result || processing) return;
           const text = result.getText();
           if (text === lastScannedRef.current) return;
@@ -142,6 +148,14 @@ export default function CheckinClient({
 
   const notCheckedIn = participants.filter((p) => !p.checkedIn);
   const checkedIn    = participants.filter((p) => p.checkedIn);
+
+  const pendingTotalPages = Math.max(1, Math.ceil(notCheckedIn.length / PAGE_SIZE));
+  const pendingPageClamped = Math.min(pendingPage, pendingTotalPages);
+  const pendingPaged = notCheckedIn.slice((pendingPageClamped - 1) * PAGE_SIZE, pendingPageClamped * PAGE_SIZE);
+
+  const checkedInTotalPages = Math.max(1, Math.ceil(checkedIn.length / PAGE_SIZE));
+  const checkedInPageClamped = Math.min(checkedInPage, checkedInTotalPages);
+  const checkedInPaged = checkedIn.slice((checkedInPageClamped - 1) * PAGE_SIZE, checkedInPageClamped * PAGE_SIZE);
 
   return (
     <div className="space-y-6">
@@ -282,7 +296,7 @@ export default function CheckinClient({
       {notCheckedIn.length > 0 && (
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <p className="text-xs font-medium text-slate-400">Pending check-in ({notCheckedIn.length})</p>
-          {notCheckedIn.map((p) => (
+          {pendingPaged.map((p) => (
             <div key={p._id} className="bg-white border border-slate-100 border-l-4 border-l-amber-300 rounded-xl px-4 py-3.5 flex items-center gap-3">
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                 p.role === "EXTERNAL_USER" ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
@@ -319,6 +333,23 @@ export default function CheckinClient({
               )}
             </div>
           ))}
+
+          {pendingTotalPages > 1 && (
+            <div className="flex items-center justify-between pt-1">
+              <p className="text-xs text-slate-400">
+                {(pendingPageClamped - 1) * PAGE_SIZE + 1}â€“{Math.min(pendingPageClamped * PAGE_SIZE, notCheckedIn.length)} of {notCheckedIn.length}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled={pendingPageClamped <= 1} onClick={() => setPendingPage(pendingPageClamped - 1)}>
+                  â† Prev
+                </Button>
+                <span className="text-xs text-slate-400">{pendingPageClamped} / {pendingTotalPages}</span>
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled={pendingPageClamped >= pendingTotalPages} onClick={() => setPendingPage(pendingPageClamped + 1)}>
+                  Next <ChevronRight className="h-3 w-3 ml-0.5" />
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -326,7 +357,7 @@ export default function CheckinClient({
       {checkedIn.length > 0 && (
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.12s" }}>
           <p className="text-xs font-medium text-slate-400">Checked in ({checkedIn.length})</p>
-          {checkedIn.map((p) => (
+          {checkedInPaged.map((p) => (
             <div key={p._id} className="bg-white border border-slate-100 border-l-4 border-l-emerald-400 rounded-xl px-4 py-3.5 flex items-center gap-3">
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                 p.role === "EXTERNAL_USER" ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
@@ -345,6 +376,23 @@ export default function CheckinClient({
               </span>
             </div>
           ))}
+
+          {checkedInTotalPages > 1 && (
+            <div className="flex items-center justify-between pt-1">
+              <p className="text-xs text-slate-400">
+                {(checkedInPageClamped - 1) * PAGE_SIZE + 1}â€“{Math.min(checkedInPageClamped * PAGE_SIZE, checkedIn.length)} of {checkedIn.length}
+              </p>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled={checkedInPageClamped <= 1} onClick={() => setCheckedInPage(checkedInPageClamped - 1)}>
+                  â† Prev
+                </Button>
+                <span className="text-xs text-slate-400">{checkedInPageClamped} / {checkedInTotalPages}</span>
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled={checkedInPageClamped >= checkedInTotalPages} onClick={() => setCheckedInPage(checkedInPageClamped + 1)}>
+                  Next <ChevronRight className="h-3 w-3 ml-0.5" />
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
