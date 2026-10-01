@@ -32,7 +32,7 @@ const REPORTS = [
   {
     key: "registrations",
     title: "All Registrations",
-    description: "Full participant list â€” internal and external.",
+    description: "Full participant list — internal and external.",
     icon: Users,
     color: "bg-slate-50 text-slate-600",
     exportHref: "/api/export/registrations",
@@ -77,7 +77,7 @@ export default async function AdminReportsPage() {
                     href={`/admin/reports/${report.key}`}
                     className="text-xs font-medium text-teal-600 hover:text-teal-700"
                   >
-                    View data â†’
+                    View data →
                   </Link>
                   <a
                     href={report.exportHref}

@@ -75,7 +75,7 @@ export default async function AdminEventDetailPage({
           <div className="flex items-center gap-2 shrink-0">
             {viewer.role === "DEV_ADMIN" && (
               <Link href={`/dev/events/${id}`} className="text-xs text-teal-600 hover:text-teal-700 font-medium">
-                Manage â†’
+                Manage →
               </Link>
             )}
             <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
@@ -93,13 +93,13 @@ export default async function AdminEventDetailPage({
           </div>
           <div className="bg-teal-50 rounded-2xl p-4">
             <p className="text-xs font-medium text-teal-400 mb-3">Limit</p>
-            <p className="text-4xl font-bold text-teal-900 tabular-nums leading-none">{limit || "âˆž"}</p>
+            <p className="text-4xl font-bold text-teal-900 tabular-nums leading-none">{limit || "∞"}</p>
             <p className="text-xs text-teal-400 mt-2">max participants</p>
           </div>
           <div className={`rounded-2xl p-4 ${event.prizeMoney ? "bg-amber-500" : "bg-slate-100"}`}>
             <p className={`text-xs font-medium mb-3 ${event.prizeMoney ? "text-amber-100" : "text-slate-400"}`}>Prize pool</p>
             <p className={`text-2xl font-bold tabular-nums leading-none ${event.prizeMoney ? "text-white" : "text-slate-700"}`}>
-              {event.prizeMoney ? `â‚¹${event.prizeMoney}` : "â€”"}
+              {event.prizeMoney ? `₹${event.prizeMoney}` : "—"}
             </p>
             <p className={`text-xs mt-2 ${event.prizeMoney ? "text-amber-200" : "text-slate-400"}`}>total prizes</p>
           </div>
@@ -109,8 +109,8 @@ export default async function AdminEventDetailPage({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.08s" }}>
           {[
             { icon: Users, label: "Team size", value: String(event.teamSize ?? 1) },
-            { icon: Trophy, label: "Internal fee", value: `â‚¹${event.internalFee ?? 0}` },
-            { icon: Trophy, label: "External fee", value: `â‚¹${event.externalFee ?? 0}` },
+            { icon: Trophy, label: "Internal fee", value: `₹${event.internalFee ?? 0}` },
+            { icon: Trophy, label: "External fee", value: `₹${event.externalFee ?? 0}` },
             { icon: CalendarDays, label: "Fill", value: limit > 0 ? `${fillPct}%` : "No limit" },
           ].map(({ label: lbl, value }) => (
             <div key={lbl} className="bg-white border border-slate-100 rounded-xl px-4 py-3">
@@ -181,15 +181,15 @@ export default async function AdminEventDetailPage({
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
               <p className="text-xs text-slate-400">
-                {(page - 1) * pageSize + 1}â€“{Math.min(page * pageSize, teamCount)} of {teamCount}
+                {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, teamCount)} of {teamCount}
               </p>
               <div className="flex items-center gap-2">
                 {page > 1 ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                    <Link href={`/admin/events/${id}?page=${page - 1}`}>â† Prev</Link>
+                    <Link href={`/admin/events/${id}?page=${page - 1}`}>← Prev</Link>
                   </Button>
                 ) : (
-                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
                 <span className="text-xs text-slate-400">{page} / {totalPages}</span>
                 {page < totalPages ? (

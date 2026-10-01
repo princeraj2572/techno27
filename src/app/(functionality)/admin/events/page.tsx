@@ -52,7 +52,7 @@ export default async function AdminEventsPage() {
           <div className="flex items-center gap-3">
             {user.role === "DEV_ADMIN" && (
               <Link href="/dev/events" className="text-xs text-teal-600 hover:text-teal-700 font-medium">
-                Registration controls â†’
+                Registration controls →
               </Link>
             )}
             <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
@@ -152,7 +152,7 @@ export default async function AdminEventsPage() {
                     />
                     <StatTile
                       label="Prize"
-                      value={event.prizeMoney ? <>â‚¹{event.prizeMoney}</> : "â€”"}
+                      value={event.prizeMoney ? <>₹{event.prizeMoney}</> : "—"}
                       icon={event.prizeMoney ? <Trophy className="h-3.5 w-3.5" /> : null}
                       bg="bg-emerald-50"
                       labelColor="text-emerald-600"

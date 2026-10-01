@@ -63,7 +63,7 @@ export default async function AdminCheckinPage() {
                   <div className="flex items-center gap-3 shrink-0">
                     <span className={`text-xs font-medium ${label.color}`}>{label.text}</span>
                     <Link href={`/admin/events/${e._id}`} className="text-xs text-teal-600 hover:text-teal-700 font-medium">
-                      View participants â†’
+                      View participants →
                     </Link>
                   </div>
                 </div>

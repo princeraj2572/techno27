@@ -147,7 +147,7 @@ export default async function AdminParticipantDetailPage({
           ) : (
             teamList.map((t: { _id: string; event?: { name: string; status: string }; members: string[] }) => {
               const border = STATUS_BORDER[t.event?.status ?? ""] ?? "border-l-slate-200";
-              const label  = STATUS_LABEL[t.event?.status ?? ""] ?? { text: t.event?.status?.replace(/_/g, " ") ?? "â€”", color: "text-slate-400" };
+              const label  = STATUS_LABEL[t.event?.status ?? ""] ?? { text: t.event?.status?.replace(/_/g, " ") ?? "—", color: "text-slate-400" };
               return (
                 <div key={t._id} className={`bg-white border border-slate-100 border-l-4 ${border} rounded-xl px-4 py-3.5 flex items-center justify-between`}>
                   <p className="text-sm font-semibold text-slate-900">{t.event?.name ?? "Unknown Event"}</p>
@@ -178,7 +178,7 @@ export default async function AdminParticipantDetailPage({
                   <div key={tx._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center justify-between">
                     <code className="text-xs font-mono text-slate-500">{tx.transactionId}</code>
                     <div className="flex items-center gap-3">
-                      <span className="text-sm font-semibold text-slate-900">â‚¹{tx.currentPayAmount}</span>
+                      <span className="text-sm font-semibold text-slate-900">₹{tx.currentPayAmount}</span>
                       {tx.clearanceApproval ? (
                         <span className="text-xs font-medium text-emerald-600 flex items-center gap-1">
                           <CheckCircle2 className="h-3.5 w-3.5" /> Cleared

@@ -140,7 +140,7 @@ export default async function ReportPaymentsPage({
                   {p.participantId && <code className="text-[10px] font-mono text-slate-400">{p.participantId}</code>}
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-sm font-bold text-slate-900">â‚¹{p.payableAmount}</p>
+                  <p className="text-sm font-bold text-slate-900">₹{p.payableAmount}</p>
                   <p className="text-xs text-slate-400">{p.txCount} tx</p>
                 </div>
                 {p.payClearance ? (
@@ -160,15 +160,15 @@ export default async function ReportPaymentsPage({
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-2">
             <p className="text-xs text-slate-400">
-              {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+              {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
             </p>
             <div className="flex items-center gap-2">
               {page > 1 ? (
                 <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                  <Link href={`${baseUrl}&page=${page - 1}`}>â† Prev</Link>
+                  <Link href={`${baseUrl}&page=${page - 1}`}>← Prev</Link>
                 </Button>
               ) : (
-                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
               )}
               <span className="text-xs text-slate-400">{page} / {totalPages}</span>
               {page < totalPages ? (

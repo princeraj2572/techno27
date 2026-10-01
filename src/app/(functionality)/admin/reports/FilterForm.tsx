@@ -82,7 +82,7 @@ export default function FilterForm({ view, eventOptions = [] }: Props) {
         <Input
           value={q}
           onChange={(e) => onSearch(e.target.value)}
-          placeholder="Searchâ€¦"
+          placeholder="Search…"
           className="pl-8 h-9 w-52 text-sm"
         />
       </div>

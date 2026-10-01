@@ -121,15 +121,15 @@ export default async function ReportAccommodationPage({
                   {(item.userId?.fullName ?? "?")[0]?.toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-900">{item.userId?.fullName ?? "â€”"}</p>
-                  <p className="text-xs text-slate-400">{item.userId?.email ?? "â€”"}</p>
+                  <p className="text-sm font-semibold text-slate-900">{item.userId?.fullName ?? "—"}</p>
+                  <p className="text-xs text-slate-400">{item.userId?.email ?? "—"}</p>
                   <p className="text-xs text-slate-400 mt-0.5">
                     {[
                       item.universityName,
                       item.gender && `(${item.gender})`,
                       item.arrivalTime  && `Arrives ${new Date(item.arrivalTime).toLocaleDateString()}`,
                       item.departureTime && `Departs ${new Date(item.departureTime).toLocaleDateString()}`,
-                    ].filter(Boolean).join(" Â· ")}
+                    ].filter(Boolean).join(" · ")}
                   </p>
                   {item.additionalDetails && (
                     <p className="text-xs text-slate-400 truncate">{item.additionalDetails}</p>
@@ -143,15 +143,15 @@ export default async function ReportAccommodationPage({
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-2">
             <p className="text-xs text-slate-400">
-              {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+              {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
             </p>
             <div className="flex items-center gap-2">
               {page > 1 ? (
                 <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                  <Link href={`${baseUrl}&page=${page - 1}`}>â† Prev</Link>
+                  <Link href={`${baseUrl}&page=${page - 1}`}>← Prev</Link>
                 </Button>
               ) : (
-                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
               )}
               <span className="text-xs text-slate-400">{page} / {totalPages}</span>
               {page < totalPages ? (

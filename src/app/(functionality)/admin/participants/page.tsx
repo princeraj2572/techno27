@@ -190,7 +190,7 @@ export default async function AdminParticipantsPage({
             <Input
               name="q"
               defaultValue={q ?? ""}
-              placeholder="Search by name, email, phone, enrollment numberâ€¦"
+              placeholder="Search by name, email, phone, enrollment number…"
               className="pl-9"
             />
           </div>
@@ -209,7 +209,7 @@ export default async function AdminParticipantsPage({
         {/* List */}
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.12s" }}>
           <p className="text-xs font-medium text-slate-400">
-            {q ? `Results for "${q}"` : "All participants"} Â· {resultCount}
+            {q ? `Results for "${q}"` : "All participants"} · {resultCount}
           </p>
 
           {participants.length === 0 ? (
@@ -243,15 +243,15 @@ export default async function AdminParticipantsPage({
                   <p className="text-xs text-slate-400 truncate">{p.email}</p>
                   <p className="text-xs text-slate-400">
                     {p.role === "INTERNAL_USER"
-                      ? [p.department, p.branch, p.semester ? `Sem ${p.semester}` : null].filter(Boolean).join(" Â· ") || "â€”"
-                      : p.collegeName ?? "â€”"}
+                      ? [p.department, p.branch, p.semester ? `Sem ${p.semester}` : null].filter(Boolean).join(" · ") || "—"
+                      : p.collegeName ?? "—"}
                     {(p.enrollmentNumber ?? p.participantId) && (
                       <code className="ml-2 font-mono">{p.enrollmentNumber ?? p.participantId}</code>
                     )}
                   </p>
                 </div>
                 <Link href={`/admin/participants/${p._id}`} className="text-xs text-teal-600 hover:text-teal-700 font-medium shrink-0">
-                  View â†’
+                  View →
                 </Link>
               </div>
             ))
@@ -260,15 +260,15 @@ export default async function AdminParticipantsPage({
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
               <p className="text-xs text-slate-400">
-                {(page - 1) * limit + 1}â€“{Math.min(page * limit, resultCount)} of {resultCount}
+                {(page - 1) * limit + 1}–{Math.min(page * limit, resultCount)} of {resultCount}
               </p>
               <div className="flex items-center gap-2">
                 {page > 1 ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                    <Link href={`${baseUrl}&page=${page - 1}`}>â† Prev</Link>
+                    <Link href={`${baseUrl}&page=${page - 1}`}>← Prev</Link>
                   </Button>
                 ) : (
-                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
                 <span className="text-xs text-slate-400">{page} / {totalPages}</span>
                 {page < totalPages ? (

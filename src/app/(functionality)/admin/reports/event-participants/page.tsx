@@ -141,7 +141,7 @@ export default async function ReportEventParticipantsPage({
                   <p className="text-xs text-slate-400 truncate">{t.leader}</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-xs font-medium text-slate-700 truncate max-w-[160px]">{t.event?.name ?? "â€”"}</p>
+                  <p className="text-xs font-medium text-slate-700 truncate max-w-[160px]">{t.event?.name ?? "—"}</p>
                   <p className="text-xs text-slate-400">{t.members.length} member(s)</p>
                 </div>
               </div>
@@ -153,15 +153,15 @@ export default async function ReportEventParticipantsPage({
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-2">
             <p className="text-xs text-slate-400">
-              {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+              {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
             </p>
             <div className="flex items-center gap-2">
               {page > 1 ? (
                 <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                  <Link href={`${baseUrl}&page=${page - 1}`}>â† Prev</Link>
+                  <Link href={`${baseUrl}&page=${page - 1}`}>← Prev</Link>
                 </Button>
               ) : (
-                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
               )}
               <span className="text-xs text-slate-400">{page} / {totalPages}</span>
               {page < totalPages ? (

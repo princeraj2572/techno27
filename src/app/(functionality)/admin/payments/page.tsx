@@ -42,7 +42,7 @@ export default async function AdminPaymentsPage({
           </div>
         </div>
 
-        {/* Stats â€” no amounts shown */}
+        {/* Stats — no amounts shown */}
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
           <div className="bg-teal-600 rounded-2xl p-4">
             <p className="text-xs font-medium text-teal-200 mb-3">Participants</p>
@@ -61,9 +61,9 @@ export default async function AdminPaymentsPage({
           </div>
         </div>
 
-        {/* Payment rows â€” status only, no amounts */}
+        {/* Payment rows — status only, no amounts */}
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          <p className="text-xs font-medium text-slate-400 mb-2">All external participants Â· {total}</p>
+          <p className="text-xs font-medium text-slate-400 mb-2">All external participants · {total}</p>
 
           {payments.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
@@ -108,15 +108,15 @@ export default async function AdminPaymentsPage({
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
               <p className="text-xs text-slate-400">
-                {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+                {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
               </p>
               <div className="flex items-center gap-2">
                 {page > 1 ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                    <Link href={`/admin/payments?page=${page - 1}`}>â† Prev</Link>
+                    <Link href={`/admin/payments?page=${page - 1}`}>← Prev</Link>
                   </Button>
                 ) : (
-                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
                 <span className="text-xs text-slate-400">{page} / {totalPages}</span>
                 {page < totalPages ? (
