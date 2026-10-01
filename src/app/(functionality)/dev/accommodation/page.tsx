@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Accommodation } from "@/models/accommodation.model";
-import { ChevronLeft, Hotel, Building2, Calendar, Phone, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, Hotel, Building2, Calendar, Phone, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 type AccomItem = {
@@ -12,13 +13,27 @@ type AccomItem = {
   userId?: { fullName?: string; email?: string; mobileNumber?: string } | null;
 };
 
-async function getData() {
+async function getData(page: number, limit: number) {
   await connectToDatabase();
-  const items = await Accommodation.find()
-    .populate("userId", "fullName email mobileNumber")
-    .sort({ createdAt: -1 })
-    .lean();
-  return JSON.parse(JSON.stringify(items)) as AccomItem[];
+  const [items, total, maleCount, femaleCount, otherCount] = await Promise.all([
+    Accommodation.find()
+      .populate("userId", "fullName email mobileNumber")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean(),
+    Accommodation.countDocuments(),
+    Accommodation.countDocuments({ gender: "Male" }),
+    Accommodation.countDocuments({ gender: "Female" }),
+    Accommodation.countDocuments({ gender: "Other" }),
+  ]);
+  return {
+    items: JSON.parse(JSON.stringify(items)) as AccomItem[],
+    total,
+    maleCount,
+    femaleCount,
+    otherCount,
+  };
 }
 
 const GENDER_CHIP: Record<string, string> = {
@@ -96,17 +111,24 @@ function GroupBlock({ groupName, members }: { groupName: string; members: AccomI
   );
 }
 
-export default async function DevAccommodationPage() {
+export default async function DevAccommodationPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const user = await getUser();
   if (!user || user.role !== "DEV_ADMIN") redirect("/dashboard");
 
-  const items = await getData().catch(() => []);
+  const { page: rawPage } = await searchParams;
+  const page = Math.max(1, parseInt(rawPage ?? "1"));
+  const limit = 25;
 
-  const maleCount   = items.filter((i) => i.gender === "Male").length;
-  const femaleCount = items.filter((i) => i.gender === "Female").length;
-  const otherCount  = items.filter((i) => i.gender === "Other").length;
+  const { items, total, maleCount, femaleCount, otherCount } = await getData(page, limit)
+    .catch(() => ({ items: [], total: 0, maleCount: 0, femaleCount: 0, otherCount: 0 }));
+  const totalPages = Math.ceil(total / limit);
 
-  // Build groups
+  // Groups are formed from the current page only — a group split across
+  // pages will appear partially on each page it has members on.
   const groups = new Map<string, AccomItem[]>();
   const solo: AccomItem[] = [];
   for (const item of items) {
@@ -131,8 +153,7 @@ export default async function DevAccommodationPage() {
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Accommodation</h1>
             <p className="text-xs text-slate-400 mt-0.5">
-              {items.length} request{items.length !== 1 ? "s" : ""}
-              {groups.size > 0 && ` · ${groups.size} group${groups.size !== 1 ? "s" : ""}`}
+              {total} request{total !== 1 ? "s" : ""}
             </p>
           </div>
           <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
@@ -144,7 +165,7 @@ export default async function DevAccommodationPage() {
         <div className="grid grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
           <div className="bg-indigo-600 rounded-2xl px-4 py-4">
             <p className="text-xs font-medium text-indigo-200 mb-1">Total</p>
-            <p className="text-2xl font-bold text-white tabular-nums">{items.length}</p>
+            <p className="text-2xl font-bold text-white tabular-nums">{total}</p>
             <p className="text-xs text-indigo-300 mt-1">requests</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${maleCount > 0 ? "bg-sky-50 border border-sky-100" : "bg-slate-50 border border-slate-100"}`}>
@@ -195,6 +216,31 @@ export default async function DevAccommodationPage() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between pt-2">
+            <p className="text-xs text-slate-400">
+              {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+            </p>
+            <div className="flex items-center gap-2">
+              {page > 1 ? (
+                <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                  <Link href={`/dev/accommodation?page=${page - 1}`}>â† Prev</Link>
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+              )}
+              <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+              {page < totalPages ? (
+                <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                  <Link href={`/dev/accommodation?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>
+                </Button>
+              ) : (
+                <Button variant="outline" size="sm" className="h-8 text-xs" disabled>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Button>
+              )}
+            </div>
           </div>
         )}
 
