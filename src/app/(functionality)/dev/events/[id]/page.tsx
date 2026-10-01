@@ -8,7 +8,7 @@ import { updateEventStatusAction, updateEventFeesAction, getEventByIdAction } fr
 import { generateEventManagerAction, getEventManagerForEvent } from "@/actions/management-actions";
 import { getUser } from "@/actions/user-actions";
 import { useRouter } from "next/navigation";
-import { Copy, Check, UserCog, RefreshCw } from "lucide-react";
+import { Copy, Check, UserCog, RefreshCw, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
 const STATUS_LABEL: Record<string, { text: string; color: string; border: string }> = {
@@ -180,14 +180,14 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         {/* Stats row */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
           {[
-            { label: "Registered", value: event.registeredCount ?? 0, highlight: true },
-            { label: "Limit",      value: event.maxParticipants || "∞" },
-            { label: "Remaining",  value: remaining !== null ? remaining : "∞" },
-            { label: "Team size",  value: event.teamSize ?? 1 },
+            { label: "Registered", value: event.registeredCount ?? 0,               bg: "bg-indigo-600", label_c: "text-indigo-200", val_c: "text-white" },
+            { label: "Limit",      value: event.maxParticipants || "∞",             bg: "bg-sky-500",    label_c: "text-sky-100",    val_c: "text-white" },
+            { label: "Remaining",  value: remaining !== null ? remaining : "∞",     bg: "bg-emerald-500",label_c: "text-emerald-100",val_c: "text-white" },
+            { label: "Team size",  value: event.teamSize ?? 1,                      bg: "bg-violet-500", label_c: "text-violet-100", val_c: "text-white" },
           ].map((stat) => (
-            <div key={stat.label} className={`rounded-2xl px-4 py-4 ${stat.highlight ? "bg-indigo-600" : "bg-slate-50"}`}>
-              <p className={`text-xs font-medium mb-1 ${stat.highlight ? "text-indigo-200" : "text-slate-400"}`}>{stat.label}</p>
-              <p className={`text-3xl font-bold tabular-nums leading-none ${stat.highlight ? "text-white" : "text-slate-900"}`}>{stat.value}</p>
+            <div key={stat.label} className={`rounded-2xl px-4 py-4 shadow-sm ${stat.bg}`}>
+              <p className={`text-xs font-medium mb-1 ${stat.label_c}`}>{stat.label}</p>
+              <p className={`text-3xl font-bold tabular-nums leading-none ${stat.val_c}`}>{stat.value}</p>
             </div>
           ))}
         </div>
@@ -209,16 +209,24 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <p className="text-xs font-semibold text-slate-400 mb-4">Registration controls</p>
           <div className="flex flex-wrap gap-2">
-            {STATUS_ACTIONS.map((action) => (
-              <button
-                key={action.status}
-                disabled={event.status === action.status || !!actionLoading}
-                onClick={() => handleStatusChange(action.status)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${action.style}`}
-              >
-                {actionLoading === action.status ? "..." : action.label}
-              </button>
-            ))}
+            {STATUS_ACTIONS.map((action) => {
+              const isCurrent = event.status === action.status;
+              return (
+                <button
+                  key={action.status}
+                  disabled={isCurrent || !!actionLoading}
+                  onClick={() => handleStatusChange(action.status)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-colors disabled:cursor-not-allowed ${
+                    isCurrent
+                      ? "bg-slate-900 text-white ring-2 ring-offset-1 ring-slate-900"
+                      : `${action.style} disabled:opacity-40`
+                  }`}
+                >
+                  {isCurrent && <CheckCircle2 className="h-3.5 w-3.5" />}
+                  {actionLoading === action.status ? "..." : isCurrent ? `${action.label} (current)` : action.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
