@@ -5,6 +5,7 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { User } from "@/models/user.model";
 import { Team } from "@/models/team.model";
 import * as XLSX from "xlsx";
+import { branchFilterValue } from "@/data/opju-academics";
 
 function getSecret() {
   const s = process.env.JWT_SECRET;
@@ -30,16 +31,22 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const sp    = req.nextUrl.searchParams;
-  const q     = sp.get("q")     ?? "";
-  const type  = sp.get("type")  ?? "";
-  const event = sp.get("event") ?? "";
+  const sp         = req.nextUrl.searchParams;
+  const q          = sp.get("q")          ?? "";
+  const type       = sp.get("type")       ?? "";
+  const event      = sp.get("event")      ?? "";
+  const branch     = sp.get("branch")     ?? "";
+  const department = sp.get("department") ?? "";
+  const semester   = sp.get("semester")   ?? "";
 
   await connectToDatabase();
 
   const filter: Record<string, unknown> = { role: { $in: ["INTERNAL_USER", "EXTERNAL_USER"] } };
   if (type === "internal") filter.role = "INTERNAL_USER";
   if (type === "external") filter.role = "EXTERNAL_USER";
+  if (branch)     filter.branch     = branchFilterValue(branch);
+  if (department) filter.department = department;
+  if (semester)   filter.semester   = semester;
 
   if (q) {
     const r = new RegExp(q, "i");
