@@ -277,11 +277,9 @@ export default async function DashboardPage() {
                     .filter(Boolean).join(" Â· ")}
                 </p>
               )}
-              {isExt && (user as Record<string, unknown>).collegeName && (
+              {isExt && user.collegeName && (
                 <p className="text-xs text-slate-400">
-                  {[(user as Record<string, unknown>).collegeName as string,
-                    (user as Record<string, unknown>).city  as string,
-                    (user as Record<string, unknown>).state as string]
+                  {[user.collegeName, user.city, user.state]
                     .filter(Boolean).join(", ")}
                 </p>
               )}
