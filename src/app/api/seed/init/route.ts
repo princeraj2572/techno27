@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { User } from "@/models/user.model";
+import { Event } from "@/models/event.model";
 
 // One-time seed endpoint — creates test accounts if they don't exist.
 // Hit GET /api/seed/init once in dev, then remove this file.
@@ -112,6 +113,42 @@ export async function GET() {
 
       await User.create({ ...account, ...(participantId ? { participantId } : {}) });
       results.push({ email: account.email, role: account.role, status: "created" });
+    }
+
+    const LOADTEST_EVENTS = [
+      {
+        name: "Load Test Event",
+        description: "Seeded for k6 load testing — safe to delete after the run.",
+        category: "Load Test",
+        teamSize: 4,
+        status: "REGISTRATION_OPEN" as const,
+        internalFee: 0,
+        externalFee: 0,
+        accommodationFee: 0,
+        prizeMoney: 0,
+      },
+      {
+        name: "Load Test Event Capped",
+        description: "Seeded for k6 load testing — has a low maxParticipants to exercise the event-full rejection path under concurrency.",
+        category: "Load Test",
+        teamSize: 2,
+        status: "REGISTRATION_OPEN" as const,
+        maxParticipants: 20,
+        internalFee: 0,
+        externalFee: 0,
+        accommodationFee: 0,
+        prizeMoney: 0,
+      },
+    ];
+
+    for (const eventDef of LOADTEST_EVENTS) {
+      const existingEvent = await Event.findOne({ name: eventDef.name });
+      if (existingEvent) {
+        results.push({ event: eventDef.name, status: "already exists" });
+      } else {
+        await Event.create(eventDef);
+        results.push({ event: eventDef.name, status: "created" });
+      }
     }
 
     return NextResponse.json({ success: true, results });
