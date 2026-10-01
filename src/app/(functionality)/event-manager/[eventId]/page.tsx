@@ -5,7 +5,7 @@ import { getEventManagerPermissions } from "@/actions/management-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Event } from "@/models/event.model";
 import { Team } from "@/models/team.model";
-import { Users, CheckSquare, ChevronLeft, CalendarDays } from "lucide-react";
+import { Users, CheckSquare, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
