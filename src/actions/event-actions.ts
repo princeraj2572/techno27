@@ -98,51 +98,52 @@ export async function submitEventsAction(data: { eventIds: string[] }) {
   const existingUser = await User.findOne({ email: user.email });
   if (!existingUser) throw new Error("User not found");
 
+  const events = await Event.find({ _id: { $in: data.eventIds } });
+  const eventsById = new Map(events.map((e) => [e._id.toString(), e]));
+
   for (const eventId of data.eventIds) {
-    const event = await Event.findById(eventId);
+    const event = eventsById.get(eventId);
     if (!event) throw new Error(`Event with ID ${eventId} not found`);
 
     if (event.status !== "REGISTRATION_OPEN") {
       throw new Error(`Registration for "${event.name}" is not open`);
     }
-
-    if (event.maxParticipants) {
-      const teamCount = await Team.countDocuments({ event: event._id });
-      const approxParticipants = teamCount * event.teamSize;
-      if (approxParticipants >= event.maxParticipants) {
-        throw new Error(`"${event.name}" is full`);
-      }
-    }
   }
 
-  const userEvents = await Promise.all(
-    existingUser.teams.map(async (teamId: string) => {
-      const team = await Team.findById(teamId);
-      return team?.event.toString();
-    }),
+  const eventsWithCap = events.filter((e) => e.maxParticipants);
+  const teamCounts = await Promise.all(
+    eventsWithCap.map((e) => Team.countDocuments({ event: e._id })),
   );
+  eventsWithCap.forEach((event, i) => {
+    const approxParticipants = teamCounts[i] * event.teamSize;
+    if (approxParticipants >= event.maxParticipants!) {
+      throw new Error(`"${event.name}" is full`);
+    }
+  });
 
-  const allEventsArray = [...(userEvents.filter(Boolean) as string[]), ...data.eventIds];
+  const userTeams = await Team.find({ _id: { $in: existingUser.teams } }).select("event");
+  const userEvents = userTeams.map((team) => team.event.toString());
+
+  const allEventsArray = [...userEvents, ...data.eventIds];
   const mainEventsCount = await getParticipatingEventsCountAction(allEventsArray);
 
   if (existingUser.role === "EXTERNAL_USER" && mainEventsCount.eventCount > 7) {
     throw new Error("External participants cannot register for more than 7 events.");
   }
 
-  for (const eventId of data.eventIds) {
-    const event = await Event.findById(eventId);
-    if (!event) throw new Error(`Event with ID ${eventId} not found`);
-
-    const newTeam = new Team({
-      leader: existingUser.email,
-      members: [existingUser.email],
-      event: event._id,
-      size: event.teamSize,
-      invites: [],
-    });
-    const savedTeam = await newTeam.save();
-    existingUser.teams.push(savedTeam._id);
-  }
+  const newTeams = await Team.insertMany(
+    data.eventIds.map((eventId) => {
+      const event = eventsById.get(eventId)!;
+      return {
+        leader: existingUser.email,
+        members: [existingUser.email],
+        event: event._id,
+        size: event.teamSize,
+        invites: [],
+      };
+    }),
+  );
+  existingUser.teams.push(...newTeams.map((t) => t._id));
 
   await existingUser.save();
   return { success: true };
@@ -434,7 +435,20 @@ export async function getParticipatingEventsCountAction(
 
 // ===================== DEV_ADMIN ONLY =====================
 
-export async function getEventStatsAction() {
+export interface EventStats {
+  totalUsers: number;
+  internalCount: number;
+  externalCount: number;
+  eventStats: Array<{
+    eventId: string;
+    name: string;
+    registered: number;
+    limit: number | null;
+    status: string;
+  }>;
+}
+
+export async function getEventStatsAction(): Promise<EventStats> {
   await connectToDatabase();
   const totalUsers = await User.countDocuments({ role: { $in: ["INTERNAL_USER", "EXTERNAL_USER"] } });
   const internalCount = await User.countDocuments({ role: "INTERNAL_USER" });
