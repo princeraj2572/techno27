@@ -1,16 +1,19 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import { User } from "@/models/user.model";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronLeft, Users, Search } from "lucide-react";
+import { ChevronLeft, Users, Search, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import ExportButton from "./ExportButton";
 
-async function getParticipants(q?: string) {
+async function getParticipants(q: string, type: string, page: number, limit: number) {
   await connectToDatabase();
   const filter: Record<string, unknown> = { role: { $in: ["INTERNAL_USER", "EXTERNAL_USER"] } };
+  if (type === "internal") filter.role = "INTERNAL_USER";
+  if (type === "external") filter.role = "EXTERNAL_USER";
   if (q) {
     const regex = new RegExp(q, "i");
     filter.$or = [
@@ -18,23 +21,59 @@ async function getParticipants(q?: string) {
       { enrollmentNumber: regex }, { participantId: regex }, { collegeName: regex },
     ];
   }
-  const users = await User.find(filter).sort({ createdAt: -1 }).limit(100).lean();
-  return JSON.parse(JSON.stringify(users));
+  const [users, total] = await Promise.all([
+    User.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean(),
+    User.countDocuments(filter),
+  ]);
+  return { rows: JSON.parse(JSON.stringify(users)), total };
+}
+
+async function getParticipantCounts() {
+  await connectToDatabase();
+  const [total, internal, external] = await Promise.all([
+    User.countDocuments({ role: { $in: ["INTERNAL_USER", "EXTERNAL_USER"] } }),
+    User.countDocuments({ role: "INTERNAL_USER" }),
+    User.countDocuments({ role: "EXTERNAL_USER" }),
+  ]);
+  return { total, internal, external };
 }
 
 export default async function AdminParticipantsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; page?: string; type?: string }>;
 }) {
   const user = await getUser();
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
-  const { q } = await searchParams;
-  const participants = await getParticipants(q).catch(() => []);
+  const { q: rawQ, page: rawPage, type: rawType } = await searchParams;
+  const q = rawQ ?? "";
+  const type = ["internal", "external"].includes(rawType ?? "") ? rawType! : "";
+  const page = Math.max(1, parseInt(rawPage ?? "1"));
+  const limit = 25;
 
-  const internalCount = participants.filter((p: { role: string }) => p.role === "INTERNAL_USER").length;
-  const externalCount = participants.filter((p: { role: string }) => p.role === "EXTERNAL_USER").length;
+  const [{ rows: participants, total: resultCount }, counts] = await Promise.all([
+    getParticipants(q, type, page, limit).catch(() => ({ rows: [], total: 0 })),
+    getParticipantCounts().catch(() => ({ total: 0, internal: 0, external: 0 })),
+  ]);
+
+  const totalPages = Math.ceil(resultCount / limit);
+  const filterParams = new URLSearchParams();
+  if (q) filterParams.set("q", q);
+  if (type) filterParams.set("type", type);
+  const baseUrl = `/admin/participants?${filterParams.toString()}`;
+
+  const tabHref = (t: string) => {
+    const p = new URLSearchParams();
+    if (q) p.set("q", q);
+    if (t) p.set("type", t);
+    const qs = p.toString();
+    return `/admin/participants${qs ? `?${qs}` : ""}`;
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -58,21 +97,48 @@ export default async function AdminParticipantsPage({
           <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.04s" }}>
             <div className="bg-teal-600 rounded-2xl p-4">
               <p className="text-xs font-medium text-teal-200 mb-3">Total</p>
-              <p className="text-4xl font-bold text-white tabular-nums leading-none">{participants.length}</p>
+              <p className="text-4xl font-bold text-white tabular-nums leading-none">{counts.total}</p>
               <p className="text-xs text-teal-300 mt-2">participants</p>
             </div>
             <div className="bg-teal-50 rounded-2xl p-4">
               <p className="text-xs font-medium text-teal-400 mb-3">Internal</p>
-              <p className="text-4xl font-bold text-teal-900 tabular-nums leading-none">{internalCount}</p>
+              <p className="text-4xl font-bold text-teal-900 tabular-nums leading-none">{counts.internal}</p>
               <p className="text-xs text-teal-400 mt-2">OPJU students</p>
             </div>
-            <div className={`rounded-2xl p-4 ${externalCount > 0 ? "bg-amber-500" : "bg-slate-100"}`}>
-              <p className={`text-xs font-medium mb-3 ${externalCount > 0 ? "text-amber-100" : "text-slate-400"}`}>External</p>
-              <p className={`text-4xl font-bold tabular-nums leading-none ${externalCount > 0 ? "text-white" : "text-slate-700"}`}>{externalCount}</p>
-              <p className={`text-xs mt-2 ${externalCount > 0 ? "text-amber-200" : "text-slate-400"}`}>outside colleges</p>
+            <div className="rounded-2xl p-4 bg-amber-500">
+              <p className="text-xs font-medium mb-3 text-amber-100">External</p>
+              <p className="text-4xl font-bold tabular-nums leading-none text-white">{counts.external}</p>
+              <p className="text-xs mt-2 text-amber-200">outside colleges</p>
             </div>
           </div>
         )}
+
+        {/* Filter tabs + Export */}
+        <div className="flex items-center justify-between gap-2 flex-wrap animate-slide-up" style={{ animationDelay: "0.06s" }}>
+          <div className="flex items-center gap-1 bg-slate-100 rounded-xl p-1">
+            {[
+              { label: "All", value: "" },
+              { label: "Internal", value: "internal" },
+              { label: "External", value: "external" },
+            ].map((t) => (
+              <Link
+                key={t.value}
+                href={tabHref(t.value)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  type === t.value
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                {t.label}
+                <span className="ml-1.5 text-[10px] text-slate-400">
+                  {t.value === "" ? counts.total : t.value === "internal" ? counts.internal : counts.external}
+                </span>
+              </Link>
+            ))}
+          </div>
+          <ExportButton q={q} type={type} />
+        </div>
 
         {/* Search */}
         <form method="GET" className="flex gap-2 animate-slide-up" style={{ animationDelay: "0.08s" }}>
@@ -85,10 +151,11 @@ export default async function AdminParticipantsPage({
               className="pl-9"
             />
           </div>
+          {type && <input type="hidden" name="type" value={type} />}
           <Button type="submit">Search</Button>
           {q && (
             <Button variant="outline" asChild>
-              <Link href="/admin/participants">Clear</Link>
+              <Link href={tabHref(type)}>Clear</Link>
             </Button>
           )}
         </form>
@@ -96,7 +163,7 @@ export default async function AdminParticipantsPage({
         {/* List */}
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.12s" }}>
           <p className="text-xs font-medium text-slate-400">
-            {q ? `Results for "${q}"` : "All participants"} Â· {participants.length}
+            {q ? `Results for "${q}"` : "All participants"} Â· {resultCount}
           </p>
 
           {participants.length === 0 ? (
@@ -140,6 +207,31 @@ export default async function AdminParticipantsPage({
                 </Link>
               </div>
             ))
+          )}
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-slate-400">
+                {(page - 1) * limit + 1}â€“{Math.min(page * limit, resultCount)} of {resultCount}
+              </p>
+              <div className="flex items-center gap-2">
+                {page > 1 ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`${baseUrl}&page=${page - 1}`}>â† Prev</Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                )}
+                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                {page < totalPages ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`${baseUrl}&page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Button>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
