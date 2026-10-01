@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { getUser, getAllUsersPaginated, searchUsers } from "@/actions/user-actions";
 import { ChevronLeft, Users, Search, ChevronRight, ChevronLeft as ChevLeft } from "lucide-react";
 import Link from "next/link";
+import ExtraFilters from "../../admin/participants/ExtraFilters";
+import { OPJU_BRANCHES, OPJU_DEPARTMENTS, OPJU_SEMESTERS, branchFilterValue } from "@/data/opju-academics";
 
 const ROLE_CHIP: Record<string, string> = {
   DEV_ADMIN:        "bg-red-50    text-red-700    border-red-200",
@@ -23,18 +25,19 @@ const ROLE_AVATAR: Record<string, string> = {
 type UserRow = {
   _id: string; fullName: string; email: string; role: string;
   mobileNumber?: string; enrollmentNumber?: string; participantId?: string;
-  collegeName?: string; createdAt?: string;
+  collegeName?: string; branch?: string; department?: string; semester?: string;
+  createdAt?: string;
 };
 
 export default async function DevUsersPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; page?: string }>;
+  searchParams: Promise<{ q?: string; page?: string; branch?: string; department?: string; semester?: string }>;
 }) {
   const user = await getUser();
   if (!user || user.role !== "DEV_ADMIN") redirect("/dashboard");
 
-  const { q, page: pageParam } = await searchParams;
+  const { q, page: pageParam, branch, department, semester } = await searchParams;
   const page = Math.max(1, parseInt(pageParam ?? "1", 10) || 1);
 
   let users: UserRow[] = [];
@@ -47,7 +50,11 @@ export default async function DevUsersPage({
     total = results.length;
     totalPages = 1;
   } else {
-    const data = await getAllUsersPaginated(page, 25).catch(() => ({ users: [], total: 0, totalPages: 1, currentPage: 1 }));
+    const data = await getAllUsersPaginated(page, 25, {
+      branch: branch ? branchFilterValue(branch) : undefined,
+      department,
+      semester,
+    }).catch(() => ({ users: [], total: 0, totalPages: 1, currentPage: 1 }));
     users = data.users as UserRow[];
     total = data.total;
     totalPages = data.totalPages;
@@ -73,8 +80,20 @@ export default async function DevUsersPage({
           </div>
         </div>
 
+        {/* Branch / Department / Semester filters */}
+        <div className="animate-slide-up" style={{ animationDelay: "0.04s" }}>
+          <ExtraFilters
+            branches={[...OPJU_BRANCHES]}
+            departments={[...OPJU_DEPARTMENTS]}
+            semesters={OPJU_SEMESTERS.map(String)}
+          />
+        </div>
+
         {/* Search */}
         <form method="GET" className="animate-slide-up" style={{ animationDelay: "0.05s" }}>
+          {branch && <input type="hidden" name="branch" value={branch} />}
+          {department && <input type="hidden" name="department" value={department} />}
+          {semester && <input type="hidden" name="semester" value={semester} />}
           <div className="flex gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
@@ -132,6 +151,11 @@ export default async function DevUsersPage({
                       <code className="text-xs font-mono text-slate-400 block">{u.enrollmentNumber ?? u.participantId}</code>
                     )}
                     {u.collegeName && <p className="text-xs text-slate-400 truncate max-w-[120px]">{u.collegeName}</p>}
+                    {(u.branch || u.semester) && (
+                      <p className="text-xs text-slate-400 truncate max-w-[160px]">
+                        {[u.branch, u.semester ? `Sem ${u.semester}` : null].filter(Boolean).join(" · ")}
+                      </p>
+                    )}
                   </div>
                   <Link
                     href={`/dev/users/${u._id}`}
@@ -146,7 +170,14 @@ export default async function DevUsersPage({
         </div>
 
         {/* Pagination (only when not searching) */}
-        {!q && totalPages > 1 && (
+        {!q && totalPages > 1 && (() => {
+          const pageParams = new URLSearchParams();
+          if (branch) pageParams.set("branch", branch);
+          if (department) pageParams.set("department", department);
+          if (semester) pageParams.set("semester", semester);
+          const extra = pageParams.toString();
+          const pageHref = (p: number) => `/dev/users?page=${p}${extra ? `&${extra}` : ""}`;
+          return (
           <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0.15s" }}>
             <p className="text-xs text-slate-400">
               Page {page} of {totalPages} · {total} users
@@ -154,7 +185,7 @@ export default async function DevUsersPage({
             <div className="flex items-center gap-2">
               {page > 1 && (
                 <Link
-                  href={`/dev/users?page=${page - 1}`}
+                  href={pageHref(page - 1)}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   <ChevLeft className="h-3.5 w-3.5" /> Prev
@@ -162,7 +193,7 @@ export default async function DevUsersPage({
               )}
               {page < totalPages && (
                 <Link
-                  href={`/dev/users?page=${page + 1}`}
+                  href={pageHref(page + 1)}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   Next <ChevronRight className="h-3.5 w-3.5" />
@@ -170,7 +201,8 @@ export default async function DevUsersPage({
               )}
             </div>
           </div>
-        )}
+          );
+        })()}
 
       </div>
     </div>
