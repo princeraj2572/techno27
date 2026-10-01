@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Users, CalendarDays, CreditCard, Hotel,
   CheckSquare, UsersRound, ShieldCheck, BarChart2,
-  ArrowRight, Megaphone, UserCog,
+  ArrowRight, Megaphone,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -22,7 +22,6 @@ const NAV_ITEMS = [
   { label: "Event Managers",  href: "/admin/event-managers",  icon: ShieldCheck, desc: "Assign event manager access",      color: "bg-orange-500" },
   { label: "Reports",         href: "/admin/reports",         icon: BarChart2,   desc: "Export data and reports",          color: "bg-indigo-600" },
   { label: "Announcements",   href: "/admin/announcements",   icon: Megaphone,   desc: "Post fest announcements",          color: "bg-pink-500" },
-  { label: "User Management", href: "/admin/participants",    icon: UserCog,     desc: "Roles and account management",     color: "bg-cyan-600" },
 ];
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
@@ -215,7 +214,7 @@ export default async function AdminDashboardPage() {
                         )}
                         {event.participantCount > 0 && (
                           <>
-                            {event.category && <span className="text-xs text-slate-300">Â·</span>}
+                            {event.category && <span className="text-xs text-slate-300">·</span>}
                             <span className="text-xs text-slate-600 font-medium">{event.participantCount} registered</span>
                             {event.internalCount > 0 && (
                               <span className="text-xs bg-sky-100 text-sky-700 font-medium px-1.5 py-0.5 rounded-full">{event.internalCount} OPJU</span>
