@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
@@ -6,18 +6,22 @@ import { User } from "@/models/user.model";
 import { ManagementAssignment } from "@/models/managementAssignment.model";
 import { Event } from "@/models/event.model";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ShieldCheck, Plus } from "lucide-react";
+import { ChevronLeft, ShieldCheck, Plus, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-async function getEventManagersWithAssignments() {
+async function getEventManagersWithAssignments(page: number, limit: number) {
   await connectToDatabase();
-  const managers = await User.find({ role: "EVENT_MANAGER" }).lean();
-  const assignments = await ManagementAssignment.find({ isActive: true }).lean();
+  const [managers, total] = await Promise.all([
+    User.find({ role: "EVENT_MANAGER" }).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).lean(),
+    User.countDocuments({ role: "EVENT_MANAGER" }),
+  ]);
+  const managerIds = managers.map((m: { _id: unknown }) => m._id);
+  const assignments = await ManagementAssignment.find({ userId: { $in: managerIds }, isActive: true }).lean();
   const eventIds = [...new Set(assignments.flatMap((a: { eventIds: unknown[] }) => a.eventIds.map(String)))];
   const events = await Event.find({ _id: { $in: eventIds } }).select("name").lean();
   const eventMap = Object.fromEntries(events.map((e: { _id: unknown; name: string }) => [String(e._id), e.name]));
 
-  return JSON.parse(JSON.stringify(managers.map((m: { _id: unknown }) => ({
+  const rows = managers.map((m: { _id: unknown }) => ({
     ...m,
     assignments: assignments
       .filter((a: { userId: unknown }) => String(a.userId) === String(m._id))
@@ -25,14 +29,25 @@ async function getEventManagersWithAssignments() {
         ...a,
         eventNames: a.eventIds.map((id) => eventMap[String(id)] ?? "Unknown"),
       })),
-  }))));
+  }));
+
+  return { rows: JSON.parse(JSON.stringify(rows)), total };
 }
 
-export default async function AdminEventManagersPage() {
+export default async function AdminEventManagersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const user = await getUser();
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
-  const managers = await getEventManagersWithAssignments().catch(() => []);
+  const { page: rawPage } = await searchParams;
+  const page = Math.max(1, parseInt(rawPage ?? "1"));
+  const limit = 25;
+
+  const { rows: managers, total } = await getEventManagersWithAssignments(page, limit).catch(() => ({ rows: [], total: 0 }));
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="min-h-screen bg-white">
@@ -45,7 +60,7 @@ export default async function AdminEventManagersPage() {
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Event managers</h1>
-            <p className="text-xs text-slate-400 mt-0.5">{managers.length} accounts</p>
+            <p className="text-xs text-slate-400 mt-0.5">{total} accounts</p>
           </div>
           <div className="flex items-center gap-3">
             {user.role === "DEV_ADMIN" && (
@@ -111,6 +126,31 @@ export default async function AdminEventManagersPage() {
                 </div>
               );
             })
+          )}
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-slate-400">
+                {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+              </p>
+              <div className="flex items-center gap-2">
+                {page > 1 ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/admin/event-managers?page=${page - 1}`}>â† Prev</Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                )}
+                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                {page < totalPages ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/admin/event-managers?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Button>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
