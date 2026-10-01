@@ -65,7 +65,7 @@ export default async function EventManagerCheckinPage({
   if (!data) redirect("/event-manager");
 
   const { event, participants, checkedInCount } = data;
-  const checkedInById = String((user as Record<string, unknown>)._id ?? "");
+  const checkedInById = String(user._id ?? "");
 
   return (
     <div className="min-h-screen bg-white">
