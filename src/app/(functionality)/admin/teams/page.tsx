@@ -1,31 +1,45 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Team } from "@/models/team.model";
 import { Event } from "@/models/event.model";
-import { ChevronLeft, UsersRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, UsersRound, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-async function getAllTeamsWithEvents() {
+async function getTeamsPage(page: number, limit: number) {
   await connectToDatabase();
-  const teams = await Team.find().sort({ createdAt: -1 }).lean();
+  const [teams, total] = await Promise.all([
+    Team.find().sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit).lean(),
+    Team.countDocuments(),
+  ]);
   const eventIds = [...new Set(teams.map((t: { event: unknown }) => String(t.event)))];
   const events = await Event.find({ _id: { $in: eventIds } }).select("name").lean();
   const eventMap = Object.fromEntries(
     events.map((e: { _id: unknown; name: string }) => [String(e._id), e.name])
   );
-  return JSON.parse(JSON.stringify(teams.map((t: { event: unknown }) => ({
+  const rows = teams.map((t: { event: unknown }) => ({
     ...t,
     eventName: eventMap[String(t.event)] ?? "Unknown",
-  }))));
+  }));
+  return { rows: JSON.parse(JSON.stringify(rows)), total };
 }
 
-export default async function AdminTeamsPage() {
+export default async function AdminTeamsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const user = await getUser();
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
-  const teams = await getAllTeamsWithEvents().catch(() => []);
+  const { page: rawPage } = await searchParams;
+  const page = Math.max(1, parseInt(rawPage ?? "1"));
+  const limit = 25;
+
+  const { rows: teams, total } = await getTeamsPage(page, limit).catch(() => ({ rows: [], total: 0 }));
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="min-h-screen bg-white">
@@ -38,7 +52,7 @@ export default async function AdminTeamsPage() {
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900">Teams</h1>
-            <p className="text-xs text-slate-400 mt-0.5">{teams.length} registered teams</p>
+            <p className="text-xs text-slate-400 mt-0.5">{total} registered teams</p>
           </div>
           <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
             <UsersRound className="h-5 w-5 text-teal-600" />
@@ -88,6 +102,31 @@ export default async function AdminTeamsPage() {
                 </div>
               );
             })
+          )}
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-slate-400">
+                {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+              </p>
+              <div className="flex items-center gap-2">
+                {page > 1 ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/admin/teams?page=${page - 1}`}>â† Prev</Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                )}
+                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                {page < totalPages ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/admin/teams?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Button>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
