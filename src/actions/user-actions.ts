@@ -64,17 +64,25 @@ interface LoginData {
   password: string;
 }
 
-export const userLogin = async (
-  loginData: LoginData,
-): Promise<{ user: IUser; token: string }> => {
+type LoginResult =
+  | { success: true; user: IUser; token: string }
+  | { success: false; error: string };
+
+// Returns a result object instead of throwing for expected auth failures
+// (wrong password, unknown email). Next.js sends errors *thrown* from a
+// Server Action to the nearest error boundary rather than as a normal
+// catchable rejection — even when the caller wraps the call in try/catch —
+// which showed users a generic "Server Components render" crash screen
+// instead of an inline "wrong password" message.
+export const userLogin = async (loginData: LoginData): Promise<LoginResult> => {
   await connectToDatabase();
 
   const normalizedEmail = loginData.email.toLowerCase().trim();
   const existingUser = await User.findOne({ email: normalizedEmail });
-  if (!existingUser) throw new Error("User does not exist with this email");
+  if (!existingUser) return { success: false, error: "User does not exist with this email" };
 
   if (existingUser.password !== loginData.password) {
-    throw new Error("Invalid password");
+    return { success: false, error: "Invalid password" };
   }
 
   const token = jwt.sign(
@@ -86,7 +94,7 @@ export const userLogin = async (
   const cookieStore = await cookies();
   cookieStore.set(AUTH_COOKIE, token, authCookieOptions());
 
-  return JSON.parse(JSON.stringify({ user: existingUser, token }));
+  return JSON.parse(JSON.stringify({ success: true, user: existingUser, token }));
 };
 
 export const resetPassword = async (email: string, newPassword: string) => {
