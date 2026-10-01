@@ -10,7 +10,7 @@ export default async function DashboardQRPage() {
   if (!user) redirect("/auth/login");
   if (!["INTERNAL_USER", "EXTERNAL_USER"].includes(user.role)) redirect("/dashboard");
 
-  const userId = String((user as Record<string, unknown>)._id ?? "");
+  const userId = String(user._id ?? "");
 
   return (
     <div className="min-h-screen bg-white">
@@ -34,10 +34,7 @@ export default async function DashboardQRPage() {
           fullName={user.fullName}
           email={user.email}
           role={user.role}
-          identifier={
-            (user as Record<string, unknown>).enrollmentNumber as string ??
-            (user as Record<string, unknown>).participantId as string ?? ""
-          }
+          identifier={user.enrollmentNumber ?? user.participantId ?? ""}
         />
 
       </div>
