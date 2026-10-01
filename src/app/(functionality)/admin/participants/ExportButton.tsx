@@ -5,11 +5,14 @@ import { Download, Loader2, AlertCircle } from "lucide-react";
 interface Props {
   q: string;
   type: string;
+  branch?: string;
+  department?: string;
+  semester?: string;
 }
 
 type Status = "idle" | "loading" | "error";
 
-export default function ExportButton({ q, type }: Props) {
+export default function ExportButton({ q, type, branch, department, semester }: Props) {
   const [status, setStatus] = useState<Status>("idle");
   const [progress, setProgress] = useState<number | null>(null);
 
@@ -20,6 +23,9 @@ export default function ExportButton({ q, type }: Props) {
       const params = new URLSearchParams();
       if (q) params.set("q", q);
       if (type) params.set("type", type);
+      if (branch) params.set("branch", branch);
+      if (department) params.set("department", department);
+      if (semester) params.set("semester", semester);
       const url = `/api/export/registrations${params.toString() ? `?${params}` : ""}`;
 
       const res = await fetch(url);
