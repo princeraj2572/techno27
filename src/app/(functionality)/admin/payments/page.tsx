@@ -1,19 +1,28 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
-import { getPaymentData } from "@/actions/payment-actions";
-import { ChevronLeft, CreditCard, CheckCircle2, Clock } from "lucide-react";
+import { getPaymentData, getPaymentStatusCounts } from "@/actions/payment-actions";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, CreditCard, CheckCircle2, Clock, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-export default async function AdminPaymentsPage() {
+export default async function AdminPaymentsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const user = await getUser();
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
-  const paymentData = await getPaymentData().catch(() => []);
-  const payments = (paymentData ?? []).filter(Boolean) as NonNullable<(typeof paymentData)[0]>[];
+  const { page: rawPage } = await searchParams;
+  const page = Math.max(1, parseInt(rawPage ?? "1"));
+  const limit = 25;
 
-  const clearedCount = payments.filter((p) => p.payClearance).length;
-  const pendingCount = payments.filter((p) => !p.payClearance && p.numberOfTransactions > 0).length;
+  const [{ rows: payments, total }, statusCounts] = await Promise.all([
+    getPaymentData(page, limit).catch(() => ({ rows: [], total: 0 })),
+    getPaymentStatusCounts().catch(() => ({ cleared: 0, pending: 0 })),
+  ]);
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="min-h-screen bg-white">
@@ -37,24 +46,24 @@ export default async function AdminPaymentsPage() {
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
           <div className="bg-teal-600 rounded-2xl p-4">
             <p className="text-xs font-medium text-teal-200 mb-3">Participants</p>
-            <p className="text-4xl font-bold text-white tabular-nums leading-none">{payments.length}</p>
+            <p className="text-4xl font-bold text-white tabular-nums leading-none">{total}</p>
             <p className="text-xs text-teal-300 mt-2">external</p>
           </div>
-          <div className={`rounded-2xl p-4 ${clearedCount > 0 ? "bg-emerald-500" : "bg-slate-100"}`}>
-            <p className={`text-xs font-medium mb-3 ${clearedCount > 0 ? "text-emerald-100" : "text-slate-400"}`}>Cleared</p>
-            <p className={`text-4xl font-bold tabular-nums leading-none ${clearedCount > 0 ? "text-white" : "text-slate-700"}`}>{clearedCount}</p>
-            <p className={`text-xs mt-2 ${clearedCount > 0 ? "text-emerald-200" : "text-slate-400"}`}>payments done</p>
+          <div className={`rounded-2xl p-4 ${statusCounts.cleared > 0 ? "bg-emerald-500" : "bg-slate-100"}`}>
+            <p className={`text-xs font-medium mb-3 ${statusCounts.cleared > 0 ? "text-emerald-100" : "text-slate-400"}`}>Cleared</p>
+            <p className={`text-4xl font-bold tabular-nums leading-none ${statusCounts.cleared > 0 ? "text-white" : "text-slate-700"}`}>{statusCounts.cleared}</p>
+            <p className={`text-xs mt-2 ${statusCounts.cleared > 0 ? "text-emerald-200" : "text-slate-400"}`}>payments done</p>
           </div>
-          <div className={`rounded-2xl p-4 ${pendingCount > 0 ? "bg-amber-500" : "bg-slate-100"}`}>
-            <p className={`text-xs font-medium mb-3 ${pendingCount > 0 ? "text-amber-100" : "text-slate-400"}`}>Pending</p>
-            <p className={`text-4xl font-bold tabular-nums leading-none ${pendingCount > 0 ? "text-white" : "text-slate-700"}`}>{pendingCount}</p>
-            <p className={`text-xs mt-2 ${pendingCount > 0 ? "text-amber-200" : "text-slate-400"}`}>awaiting clearance</p>
+          <div className={`rounded-2xl p-4 ${statusCounts.pending > 0 ? "bg-amber-500" : "bg-slate-100"}`}>
+            <p className={`text-xs font-medium mb-3 ${statusCounts.pending > 0 ? "text-amber-100" : "text-slate-400"}`}>Pending</p>
+            <p className={`text-4xl font-bold tabular-nums leading-none ${statusCounts.pending > 0 ? "text-white" : "text-slate-700"}`}>{statusCounts.pending}</p>
+            <p className={`text-xs mt-2 ${statusCounts.pending > 0 ? "text-amber-200" : "text-slate-400"}`}>awaiting clearance</p>
           </div>
         </div>
 
         {/* Payment rows â€” status only, no amounts */}
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          <p className="text-xs font-medium text-slate-400 mb-2">All external participants Â· {payments.length}</p>
+          <p className="text-xs font-medium text-slate-400 mb-2">All external participants Â· {total}</p>
 
           {payments.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
@@ -94,6 +103,31 @@ export default async function AdminPaymentsPage() {
                 </div>
               </div>
             ))
+          )}
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-slate-400">
+                {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+              </p>
+              <div className="flex items-center gap-2">
+                {page > 1 ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/admin/payments?page=${page - 1}`}>â† Prev</Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                )}
+                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                {page < totalPages ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/admin/payments?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Button>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
