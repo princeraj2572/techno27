@@ -38,14 +38,17 @@ function LoginForm() {
     setServerError("");
     try {
       const result = await login(data);
-      if (result) {
-        const role = result.user.role;
-        if (role === "DEV_ADMIN") router.push("/dev");
-        else if (role === "MANAGEMENT_ADMIN") router.push("/admin");
-        else if (role === "EVENT_MANAGER") router.push("/event-manager");
-        else router.push("/dashboard");
-        router.refresh();
+      if (!result) return; // useFetch already caught a real/unexpected error
+      if (!result.success) {
+        setServerError(result.error);
+        return;
       }
+      const role = result.user.role;
+      if (role === "DEV_ADMIN") router.push("/dev");
+      else if (role === "MANAGEMENT_ADMIN") router.push("/admin");
+      else if (role === "EVENT_MANAGER") router.push("/event-manager");
+      else router.push("/dashboard");
+      router.refresh();
     } catch (err: unknown) {
       setServerError(err instanceof Error ? err.message : "Login failed");
     }
