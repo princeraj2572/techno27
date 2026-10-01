@@ -276,7 +276,7 @@ export default async function DevDashboardPage() {
           ) : (
             <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden divide-y divide-slate-100">
               {stats.eventStats.map((ev) => {
-                const pct    = ev.limit > 0 ? Math.round((ev.registered / ev.limit) * 100) : 0;
+                const pct    = ev.limit && ev.limit > 0 ? Math.round((ev.registered / ev.limit) * 100) : 0;
                 const border = STATUS_BORDER[ev.status] ?? "border-l-slate-300";
                 const label  = STATUS_LABEL[ev.status]  ?? { text: ev.status.replace(/_/g, " "), color: "text-slate-500", bg: "bg-slate-100" };
                 return (
@@ -285,7 +285,7 @@ export default async function DevDashboardPage() {
                     <span className="text-sm font-bold text-slate-900 tabular-nums shrink-0">
                       {ev.registered}<span className="text-xs font-normal text-slate-400">/{ev.limit || "âˆž"}</span>
                     </span>
-                    {ev.limit > 0 && (
+                    {ev.limit != null && ev.limit > 0 && (
                       <div className="flex items-center gap-2 shrink-0">
                         <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                           <div
