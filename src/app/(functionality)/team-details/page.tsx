@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getParticipatingTeams, getInvitedTeams, deleteTeamAction, leaveTeamAction, getCurrentUserEmailAction, removeTeamMemberAction, checkUserExistsAction } from "@/actions/team-actions";
 import { sendTeamInviteAction, acceptInviteAction, rejectInviteAction, cancelInviteAction } from "@/actions/invite-actions";
@@ -503,6 +503,14 @@ function Skeleton() {
 }
 
 export default function TeamDetailsPage() {
+  return (
+    <Suspense fallback={<Skeleton />}>
+      <TeamDetailsContent />
+    </Suspense>
+  );
+}
+
+function TeamDetailsContent() {
   const searchParams                    = useSearchParams();
   const eventFilter                     = searchParams.get("event");
   const [teams, setTeams]               = useState<Team[]>([]);
