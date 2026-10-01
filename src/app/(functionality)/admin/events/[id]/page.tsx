@@ -6,23 +6,33 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { Team } from "@/models/team.model";
 import { User } from "@/models/user.model";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, CalendarDays, Users, Trophy, UsersRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, CalendarDays, Users, Trophy, UsersRound, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 export default async function AdminEventDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ page?: string }>;
 }) {
   const viewer = await getUser();
   if (!viewer || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(viewer.role)) redirect("/dashboard");
 
   const { id } = await params;
+  const { page: rawPage } = await searchParams;
+  const page = Math.max(1, parseInt(rawPage ?? "1"));
+  const pageSize = 25;
+
   const event = await getEventByIdAction(id);
   if (!event) notFound();
 
   await connectToDatabase();
-  const teams = await Team.find({ event: id }).lean();
+  const [teams, teamCount] = await Promise.all([
+    Team.find({ event: id }).sort({ createdAt: -1 }).skip((page - 1) * pageSize).limit(pageSize).lean(),
+    Team.countDocuments({ event: id }),
+  ]);
   const allEmails = teams.flatMap((t: { leader: string; members: string[] }) => [t.leader, ...t.members]);
   const uniqueEmails = [...new Set(allEmails)];
   const users = await User.find({ email: { $in: uniqueEmails } })
@@ -33,6 +43,7 @@ export default async function AdminEventDetailPage({
     JSON.parse(JSON.stringify(users)).map((u: { email: string }) => [u.email, u])
   );
   const teamList = JSON.parse(JSON.stringify(teams));
+  const totalPages = Math.ceil(teamCount / pageSize);
 
   const STATUS_LABEL: Record<string, { text: string; color: string }> = {
     REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600" },
@@ -131,7 +142,7 @@ export default async function AdminEventDetailPage({
           <div className="flex items-center gap-2">
             <UsersRound className="h-4 w-4 text-slate-400" />
             <p className="text-sm font-semibold text-slate-900">
-              Registered teams <span className="text-slate-400 font-normal">({teamList.length})</span>
+              Registered teams <span className="text-slate-400 font-normal">({teamCount})</span>
             </p>
           </div>
 
@@ -165,6 +176,31 @@ export default async function AdminEventDetailPage({
                 </div>
               );
             })
+          )}
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-2">
+              <p className="text-xs text-slate-400">
+                {(page - 1) * pageSize + 1}â€“{Math.min(page * pageSize, teamCount)} of {teamCount}
+              </p>
+              <div className="flex items-center gap-2">
+                {page > 1 ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/admin/events/${id}?page=${page - 1}`}>â† Prev</Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                )}
+                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                {page < totalPages ? (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
+                    <Link href={`/admin/events/${id}?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Button>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
