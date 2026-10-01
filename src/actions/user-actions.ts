@@ -265,3 +265,18 @@ export async function createManagementAccount(data: {
 
   return JSON.parse(JSON.stringify({ user: newUser, tempPassword }));
 }
+
+export async function getAllUsersPaginated(page: number = 1, limit: number = 25) {
+  await connectToDatabase();
+  const skip = (page - 1) * limit;
+  const total = await User.countDocuments();
+  const users = await User.find()
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .select("fullName email role mobileNumber enrollmentNumber participantId collegeName createdAt")
+    .lean();
+  return JSON.parse(
+    JSON.stringify({ users, total, totalPages: Math.ceil(total / limit), currentPage: page }),
+  );
+}
