@@ -45,8 +45,9 @@ export async function getEventsWithRegistrationCountsAction() {
   const totalParticipants = allEmails.length;
   const totalInternal = users.filter((u) => u.role === "INTERNAL_USER").length;
   const totalExternal = users.filter((u) => u.role === "EXTERNAL_USER").length;
+  const totalTeams = allTeams.length;
 
-  return JSON.parse(JSON.stringify({ eventsWithCounts, totalParticipants, totalInternal, totalExternal }));
+  return JSON.parse(JSON.stringify({ eventsWithCounts, totalParticipants, totalInternal, totalExternal, totalTeams }));
 }
 
 export async function getEventByIdAction(eventId: string) {
