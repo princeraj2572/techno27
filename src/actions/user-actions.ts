@@ -266,15 +266,25 @@ export async function createManagementAccount(data: {
   return JSON.parse(JSON.stringify({ user: newUser, tempPassword }));
 }
 
-export async function getAllUsersPaginated(page: number = 1, limit: number = 25) {
+export async function getAllUsersPaginated(
+  page: number = 1,
+  limit: number = 25,
+  filters: { branch?: unknown; department?: string; semester?: string } = {},
+) {
   await connectToDatabase();
   const skip = (page - 1) * limit;
-  const total = await User.countDocuments();
-  const users = await User.find()
+
+  const filter: Record<string, unknown> = {};
+  if (filters.branch) filter.branch = filters.branch;
+  if (filters.department) filter.department = filters.department;
+  if (filters.semester) filter.semester = filters.semester;
+
+  const total = await User.countDocuments(filter);
+  const users = await User.find(filter)
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
-    .select("fullName email role mobileNumber enrollmentNumber participantId collegeName createdAt")
+    .select("fullName email role mobileNumber enrollmentNumber participantId collegeName branch department semester createdAt")
     .lean();
   return JSON.parse(
     JSON.stringify({ users, total, totalPages: Math.ceil(total / limit), currentPage: page }),
