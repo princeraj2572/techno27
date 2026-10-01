@@ -97,6 +97,7 @@ export async function GET(req: NextRequest) {
     headers: {
       "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       "Content-Disposition": `attachment; filename="registrations.xlsx"`,
+      "Content-Length": String(buf.length),
     },
   });
 }
