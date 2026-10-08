@@ -141,6 +141,66 @@ export function SectionTitle({ children, className = "" }: { children: ReactNode
   );
 }
 
+// ---- Line-art mandala backdrop (orange field, brown petals, beads, dotted texture) ----
+
+function Petals({ n, r, w, fill = "none" }: { n: number; r: number; w: number; fill?: string }) {
+  return (
+    <>
+      {Array.from({ length: n }).map((_, i) => (
+        <path
+          key={i}
+          fill={fill}
+          transform={`rotate(${(360 / n) * i})`}
+          d={`M0,${-r} C${w},${-r * 0.72} ${w},${-r * 0.3} 0,0 C${-w},${-r * 0.3} ${-w},${-r * 0.72} 0,${-r} Z`}
+        />
+      ))}
+    </>
+  );
+}
+
+function Beads({ n, r, size }: { n: number; r: number; size: number }) {
+  return (
+    <>
+      {Array.from({ length: n }).map((_, i) => {
+        const a = (Math.PI * 2 * i) / n;
+        return <circle key={i} cx={Math.cos(a) * r} cy={Math.sin(a) * r} r={size} />;
+      })}
+    </>
+  );
+}
+
+function Mandala({ cx, cy, s, rot = 0 }: { cx: number; cy: number; s: number; rot?: number }) {
+  return (
+    <g transform={`translate(${cx} ${cy}) rotate(${rot}) scale(${s})`}>
+      <Petals n={12} r={330} w={100} fill="rgba(160,50,0,0.10)" />
+      <Petals n={12} r={250} w={74} />
+      <Beads n={40} r={350} size={7} />
+      <Beads n={28} r={285} size={5} />
+      <Petals n={8} r={170} w={56} fill="rgba(160,50,0,0.10)" />
+      <Beads n={20} r={190} size={5} />
+      <Petals n={16} r={90} w={20} />
+      <circle r={62} />
+      <circle r={42} />
+      <circle r={14} fill="rgba(160,50,0,0.35)" />
+    </g>
+  );
+}
+
+export function MandalaArt() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" fill="none" stroke="#a8400b" strokeWidth="3" strokeLinejoin="round" opacity="0.55">
+        <Mandala cx={1380} cy={120} s={1.15} rot={8} />
+        <Mandala cx={140} cy={820} s={1.0} rot={-12} />
+        <Mandala cx={820} cy={470} s={0.55} rot={20} />
+        <Mandala cx={1560} cy={860} s={0.6} rot={0} />
+        <Mandala cx={90} cy={60} s={0.5} rot={14} />
+      </svg>
+      <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(rgba(120,30,0,0.38) 1px, transparent 1.3px)", backgroundSize: "6px 6px" }} />
+    </div>
+  );
+}
+
 // ---- Full-bleed colour bands ----
 
 const BAND_TONES = {
@@ -158,7 +218,7 @@ const BAND_TONES = {
 export type BandTone = keyof typeof BAND_TONES;
 
 export function Band({
-  tone, zigzag, mandala = false, halftone = false, ghost, panel = false, className = "", children,
+  tone, zigzag, mandala = false, halftone = false, ghost, panel = false, art = false, className = "", children,
 }: {
   tone: BandTone;
   zigzag?: string;
@@ -166,11 +226,13 @@ export function Band({
   halftone?: boolean;
   ghost?: string;
   panel?: boolean;
+  art?: boolean;
   className?: string;
   children: ReactNode;
 }) {
   return (
     <section className={`relative overflow-hidden ${panel ? "panel" : ""} ${BAND_TONES[tone]} ${mandala ? "indie-mandala" : ""} ${halftone ? "indie-halftone" : ""}`}>
+      {art && <MandalaArt />}
       {zigzag && (
         <div
           aria-hidden
@@ -196,24 +258,26 @@ export function Band({
 
 // Page hero: coloured band with a big outlined title (like the Events / Schedule / Sponsors pages).
 export function PageHero({
-  tone = "crimson", title, sub, outline = false, ghost, children,
+  tone = "crimson", title, sub, outline = false, ghost, art = false, children,
 }: {
   tone?: BandTone;
   title: string;
   sub?: string;
   outline?: boolean;
   ghost?: string;
+  art?: boolean;
   children?: ReactNode;
 }) {
+  const light = tone === "orange" || tone === "amber" || tone === "parchment";
   return (
-    <Band tone={tone} mandala={tone !== "blue"} ghost={ghost ?? `${title} `} className="!py-12 sm:!py-16">
+    <Band tone={tone} art={art} mandala={tone !== "blue" && !art} ghost={ghost ?? `${title} `} className="!py-12 sm:!py-16">
       <h1
-        className={`text-5xl sm:text-7xl leading-[0.95] ${outline ? "indie-outline" : "text-[#f5c928]"} ${serif.className}`}
-        style={outline ? undefined : { textShadow: "4px 4px 0 #5a0010" }}
+        className={`text-5xl sm:text-7xl leading-[0.95] ${outline ? "indie-outline" : light ? "text-[#a1001a]" : "text-[#f5c928]"} ${serif.className}`}
+        style={outline ? undefined : { textShadow: light ? "3px 3px 0 rgba(255,236,200,0.8)" : "4px 4px 0 #5a0010" }}
       >
         {title}
       </h1>
-      {sub && <p className="mt-3 text-2xl sm:text-3xl font-bold uppercase text-[#f5edd8]">{sub}</p>}
+      {sub && <p className={`mt-3 text-2xl sm:text-3xl font-bold uppercase ${light ? "text-black" : "text-[#f5edd8]"}`}>{sub}</p>}
       {children && <div className="mt-6">{children}</div>}
     </Band>
   );

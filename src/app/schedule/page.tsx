@@ -1,23 +1,28 @@
 import { SCHEDULE } from "@/data/schedule";
 import { DeparturesBoard } from "@/components/departures-board";
-import { Band, PageHero, PageShell, TicketCta } from "@/components/indie";
+import { Band, PageShell, TicketCta, serif } from "@/components/indie";
 
 export const metadata = { title: "Schedule | Techno-aiMBiAtion 2027" };
 
 export default function SchedulePage() {
   return (
     <PageShell>
-      <PageHero tone="crimson" title="Schedule" sub="All lines · All stations" ghost="Techno Junction · All lines" />
-
-      <Band tone="crimson" mandala className="!pt-4">
+      <Band tone="orange" art className="!pt-12">
+        <h1
+          className={`text-5xl sm:text-7xl leading-[0.95] text-[#a1001a] ${serif.className}`}
+          style={{ textShadow: "3px 3px 0 rgba(255,236,200,0.8)" }}
+        >
+          Schedule
+        </h1>
+        <p className="mt-3 mb-10 text-2xl sm:text-3xl font-bold uppercase text-black">All lines · All stations</p>
         <DeparturesBoard days={SCHEDULE} />
-        <p className="mt-6 text-center text-xs uppercase tracking-widest text-white/60">
+        <p className="mt-6 text-center text-xs uppercase tracking-widest text-black/60">
           Sample timetable — all times and venues are placeholders.
         </p>
       </Band>
 
       {/* train strip */}
-      <div aria-hidden className="relative h-24 overflow-hidden bg-[#a1001a] border-y-2 border-black">
+      <div aria-hidden className="relative h-24 overflow-hidden bg-[#f65f00] border-y-2 border-black">
         <div className="indie-train absolute bottom-3 flex">
           {[0, 1, 2, 3].map((c) => (
             <div key={c} className="mr-1 h-14 w-44 rounded-md border-2 border-black bg-[#e9e6df] relative">
