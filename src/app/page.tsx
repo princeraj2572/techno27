@@ -4,6 +4,7 @@ import { SCHEDULE } from "@/data/schedule";
 import { EVENT_MEDIA, JUNOON_ACTS, JUNOON_NIGHTS, MYSTERY_HINTS, TESTIMONIALS } from "@/data/dummy";
 import { CULTURES } from "@/components/culture-art";
 import { Stamp } from "@/components/stamp";
+import { CutoutTitle } from "@/components/cutout-title";
 import { CountUp, Reveal, Splash, TestimonialSlider } from "@/components/motion";
 import {
   Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif,
@@ -201,7 +202,7 @@ export default function HomePage() {
         <Band panel tone="blue" ghost="Something for every genre" className="!px-0">
           <div className="px-6 flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
             <div>
-              <h2 className={`text-6xl sm:text-8xl indie-outline ${serif.className}`}>Events</h2>
+              <CutoutTitle latin="Events" hindi="इवेंट्स" />
               <p className="text-3xl font-bold uppercase text-[#f5edd8] mt-2">
                 Tune into the <span className="text-[#f5c928]">fest.</span>
               </p>
