@@ -1,4 +1,4 @@
-import { Marquee, PageHeader, PageShell, SectionTitle, TicketCta, CARD, ACCENTS, display } from "@/components/indie";
+import { Band, Marquee, Note, PageHero, PageShell, TicketCta, Vinyl, ACCENTS, CARD, display, serif } from "@/components/indie";
 import { PUBLIC_EVENTS } from "@/data/public-events";
 
 export const metadata = { title: "About | Techno-aiMBiAtion 2027" };
@@ -22,71 +22,51 @@ export default function AboutPage() {
   const stats = [
     { val: `${PUBLIC_EVENTS.length}`, label: "Flagship events" },
     { val: `${totalSub}+`, label: "Competitions" },
-    { val: "3", label: "Days" },
     { val: "2k+", label: "Expected participants" },
   ];
 
   return (
     <PageShell>
-      <PageHeader
-        kicker="About the fest"
-        title="Techno-aiMBiAtion 2027"
-        subtitle="The annual flagship festival of O.P. Jindal University — three days where technology, creativity and culture share one stage."
-      />
+      <PageHero tone="crimson" title="About the fest" sub="More than a fest, a movement" ghost="Innovation meets culture" />
 
-      <section className="py-4">
-        <Marquee
-          className="bg-[#f5c928] text-black font-bold uppercase tracking-[0.3em] text-xs py-1 rotate-1"
-          text="Tech ● Robotics ● Coding ● Design ● Music ● Fashion ● Art ● Food ● "
-          speed={45}
-          reverse
-        />
-      </section>
+      <Marquee className="bg-[#f5c928] text-black font-bold uppercase tracking-[0.3em] text-xs py-1" text="Tech ● Robotics ● Coding ● Design ● Music ● Fashion ● Art ● Food ● " speed={45} reverse />
 
-      {/* Story */}
-      <section className="max-w-5xl mx-auto px-6 py-14 grid md:grid-cols-5 gap-8 items-start">
-        <div className="md:col-span-3 space-y-4 text-xl leading-snug text-[#f5edd8]/85">
-          <SectionTitle className="mb-2">Our story</SectionTitle>
-          <p>
-            Techno-aiMBiAtion started as a way to bring OPJU&apos;s students together around the things they
-            build and the things they love. Every year it grows — more events, more colleges, more people on stage.
-          </p>
-          <p>
-            It is run by students, for students: from the website and registrations to stage, sound and hospitality.
-            Every department has a convener and a co-convener who make it happen.
-          </p>
+      {/* Story on pinned notes */}
+      <Band tone="crimson" zigzag="#f5c928" mandala>
+        <div className="grid md:grid-cols-3 gap-10 items-center">
+          <div className="md:col-span-2 grid sm:grid-cols-2 gap-8">
+            <Note tag="Story" title="Where it started" tilt="-rotate-2">
+              Techno-aiMBiAtion brings OPJU&apos;s students together around the things they build and the things they love. Every year it grows — more events, more colleges, more people on stage.
+            </Note>
+            <Note tag="People" title="Run by students" tilt="rotate-1">
+              From the website and registrations to stage, sound and hospitality, every department has a convener and a co-convener who make it happen.
+            </Note>
+          </div>
+          <div className="hidden md:flex justify-center">
+            <Vinyl className="w-52 h-52 drop-shadow-[8px_8px_0_rgba(0,0,0,0.4)]" slow />
+          </div>
         </div>
-        <div className={`${CARD} md:col-span-2 rounded-xl p-6 rotate-1 relative`}>
-          <span className="absolute -top-3 left-5 bg-[#ff6a00] text-black text-xs font-bold uppercase tracking-widest px-2.5 py-0.5 border-2 border-black -rotate-2">
-            Liner notes
-          </span>
-          <p className={`text-2xl leading-tight mb-2 ${display.className}`}>Op Jindal University</p>
-          <p className="text-lg text-[#1a0505]/70 leading-snug">Raigarh, Chhattisgarh · 2027 edition</p>
-        </div>
-      </section>
+      </Band>
 
       {/* Numbers */}
-      <section className="max-w-4xl mx-auto px-6 pb-14 grid grid-cols-2 sm:grid-cols-4 gap-5 text-center">
-        {stats.map((s, i) => (
-          <div
-            key={s.label}
-            className={`${ACCENTS[i]} ${i % 2 ? "rotate-1" : "-rotate-1"} text-black border-2 border-black shadow-[4px_4px_0_0_#000] rounded-xl p-5 hover:rotate-0 transition-transform`}
-          >
-            <div className={`text-4xl sm:text-5xl ${display.className}`}>{s.val}</div>
-            <div className="text-sm font-bold uppercase tracking-wider mt-2 opacity-75">{s.label}</div>
-          </div>
-        ))}
-      </section>
+      <Band tone="cream">
+        <div className="grid grid-cols-3 gap-6 text-center">
+          {stats.map((s) => (
+            <div key={s.label}>
+              <p className="text-5xl sm:text-7xl font-bold leading-none text-[#7a1c1c]">{s.val}</p>
+              <p className="mt-1 text-sm sm:text-lg font-bold uppercase tracking-wider text-[#1a0505]">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </Band>
 
       {/* Pillars */}
-      <section className="max-w-5xl mx-auto px-6 pb-14">
-        <SectionTitle className="mb-8">What it&apos;s about</SectionTitle>
+      <Band tone="orange" mandala>
+        <h2 className={`text-5xl text-black leading-none mb-8 ${serif.className}`}>What it&apos;s about</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {PILLARS.map((p, i) => (
             <div key={p.title} className={`${CARD} rounded-xl p-6 flex gap-4 hover:-translate-y-1 hover:shadow-[7px_7px_0_0_#000] transition-all`}>
-              <div className={`w-12 h-12 shrink-0 rounded-full ${ACCENTS[i]} border-2 border-black flex items-center justify-center text-2xl`}>
-                {p.icon}
-              </div>
+              <div className={`w-12 h-12 shrink-0 rounded-full ${ACCENTS[i]} border-2 border-black flex items-center justify-center text-2xl`}>{p.icon}</div>
               <div>
                 <h3 className="text-2xl font-bold uppercase tracking-wide leading-tight">{p.title}</h3>
                 <p className="text-lg leading-snug text-[#1a0505]/70 mt-1">{p.desc}</p>
@@ -94,11 +74,11 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
-      </section>
+      </Band>
 
       {/* FAQ */}
-      <section className="max-w-3xl mx-auto px-6 pb-14">
-        <SectionTitle className="mb-8">Good to know</SectionTitle>
+      <Band tone="indigo">
+        <h2 className={`text-4xl sm:text-5xl text-[#f5c928] mb-8 ${display.className}`}>Good to know</h2>
         <div className={`${CARD} rounded-xl overflow-hidden divide-y-2 divide-dashed divide-black/30`}>
           {FAQ.map((f) => (
             <details key={f.q} className="group px-5 py-4 open:bg-[#f5c928]/25">
@@ -110,14 +90,9 @@ export default function AboutPage() {
             </details>
           ))}
         </div>
-      </section>
+      </Band>
 
-      <TicketCta
-        title="Be part of it"
-        text="Register with your OPJU email to get free entry, or sign up as an external participant."
-        href="/auth/signup"
-        label="Create your account"
-      />
+      <TicketCta title="Be part of it" text="Register with your OPJU email to get free entry, or sign up as an external participant." href="/auth/signup" label="Create your account" />
     </PageShell>
   );
 }

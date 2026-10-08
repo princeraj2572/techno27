@@ -14,7 +14,12 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Events", href: "/events" },
+  { label: "Schedule", href: "/schedule" },
+  { label: "Pronites", href: "/pronites" },
+  { label: "Creatorverse", href: "/creatorverse" },
   { label: "Gallery", href: "/gallery" },
+  { label: "Sponsors", href: "/sponsors" },
+  { label: "Contact", href: "/contact" },
 ];
 
 function isActive(pathname: string, href: string) {
@@ -51,7 +56,7 @@ export default function Navbar() {
         scrolled && "shadow-[0_4px_0_0_#7a1c1c]"
       )}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 shrink-0">
           <svg viewBox="0 0 100 100" className="h-9 w-9" aria-hidden>
@@ -62,19 +67,19 @@ export default function Navbar() {
             <circle cx="50" cy="50" r="11" fill="#f5c928" />
             <circle cx="50" cy="50" r="2.5" fill="#000" />
           </svg>
-          <span className={cn("text-base sm:text-lg text-[#f5c928] leading-none", display.className)}>
+          <span className={cn("text-sm sm:text-base 2xl:text-lg whitespace-nowrap text-[#f5c928] leading-none", display.className)}>
             Techno-aiMBiAtion<span className="text-[#ff6a00]"> 27</span>
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-7">
+        <div className="hidden xl:flex items-center gap-4 2xl:gap-6">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                "text-lg font-bold uppercase tracking-wider border-b-2 transition-colors",
+                "whitespace-nowrap text-[15px] 2xl:text-lg font-bold uppercase tracking-wider border-b-2 transition-colors",
                 isActive(pathname, link.href)
                   ? "text-[#f5c928] border-[#f5c928]"
                   : "text-white border-transparent hover:text-[#ff6a00]"
@@ -86,7 +91,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop right side */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-3 shrink-0">
           {user ? (
             <UserDropdown
               user={{
@@ -99,13 +104,13 @@ export default function Navbar() {
             <>
               <Link
                 href="/auth/login"
-                className="text-lg font-bold uppercase tracking-wider text-white hover:text-[#ff6a00] transition-colors"
+                className="whitespace-nowrap text-base 2xl:text-lg font-bold uppercase tracking-wider text-white hover:text-[#ff6a00] transition-colors"
               >
                 Sign in
               </Link>
               <Link
                 href="/auth/signup"
-                className="bg-[#f5edd8] text-black hover:bg-[#f5c928] transition-colors px-5 py-1 text-lg font-bold uppercase tracking-wider rounded-full"
+                className="whitespace-nowrap bg-[#f5edd8] text-black hover:bg-[#f5c928] transition-colors px-5 py-1 text-base 2xl:text-lg font-bold uppercase tracking-wider rounded-full"
               >
                 Register
               </Link>
@@ -115,7 +120,7 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-2 text-[#f5c928] hover:text-[#ff6a00]"
+          className="xl:hidden p-2 text-[#f5c928] hover:text-[#ff6a00]"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
@@ -126,7 +131,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-black border-t-2 border-dashed border-[#f5c928]/50">
+        <div className="xl:hidden bg-black border-t-2 border-dashed border-[#f5c928]/50">
           <div className="px-4 py-4 space-y-1">
             {NAV_LINKS.map((link) => (
               <Link
