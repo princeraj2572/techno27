@@ -17,6 +17,7 @@ export function Stamp({
   number,
   image,
   big = false,
+  compact = false,
   className = "",
 }: {
   slug: string;
@@ -25,12 +26,13 @@ export function Stamp({
   number: number;
   image?: string;
   big?: boolean;
+  compact?: boolean; // smaller stamp for rows and carousels
   className?: string;
 }) {
   const culture = CULTURES[slug];
   return (
     <div className={`stamp-shadow ${className}`}>
-      <div className="stamp-cut bg-[#fde9bd] p-4">
+      <div className={`stamp-cut bg-[#fde9bd] ${compact ? "p-3" : "p-4"}`}>
         <div className="bg-white p-1">
           <div className="stamp-scene relative aspect-[3/4] overflow-hidden">
             {image ? (
@@ -42,12 +44,12 @@ export function Stamp({
 
             <div className="absolute inset-x-2 top-3 text-center">
               <h3
-                className={`${big ? "text-5xl sm:text-6xl" : "text-[2rem]"} font-extrabold uppercase leading-[0.92] tracking-tight [text-shadow:0_2px_0_rgba(255,255,255,0.55)]`}
+                className={`${big ? "text-5xl sm:text-6xl" : compact ? "text-[1.55rem]" : "text-[2rem]"} font-extrabold uppercase leading-[0.92] tracking-tight [text-shadow:0_2px_0_rgba(255,255,255,0.55)]`}
                 style={{ color: culture?.ink ?? "#1a0505" }}
               >
                 {name}
               </h3>
-              <p className={`${big ? "mt-2 text-2xl" : "mt-1.5 text-lg"} font-bold uppercase tracking-[0.3em]`} style={{ color: culture?.sub ?? "#7a1c1c" }}>
+              <p className={`${big ? "mt-2 text-2xl" : compact ? "mt-1 text-sm" : "mt-1.5 text-lg"} font-bold uppercase tracking-[0.3em]`} style={{ color: culture?.sub ?? "#7a1c1c" }}>
                 {culture ? "India" : category}
               </p>
             </div>

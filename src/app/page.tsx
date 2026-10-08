@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { PUBLIC_EVENTS } from "@/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
-import { JUNOON_ACTS, JUNOON_NIGHTS, MYSTERY_HINTS, TESTIMONIALS } from "@/data/dummy";
+import { EVENT_MEDIA, JUNOON_ACTS, JUNOON_NIGHTS, MYSTERY_HINTS, TESTIMONIALS } from "@/data/dummy";
+import { CULTURES } from "@/components/culture-art";
+import { Stamp } from "@/components/stamp";
 import { CountUp, Reveal, Splash, TestimonialSlider } from "@/components/motion";
 import {
-  ACCENTS, Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif,
+  Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif,
 } from "@/components/indie";
 
 const NOTES = [
@@ -197,7 +199,7 @@ export default function HomePage() {
 
         {/* Events */}
         <Band panel tone="blue" ghost="Something for every genre" className="!px-0">
-          <div className="px-6 flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+          <div className="px-6 flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8">
             <div>
               <h2 className={`text-6xl sm:text-8xl indie-outline ${serif.className}`}>Events</h2>
               <p className="text-3xl font-bold uppercase text-[#f5edd8] mt-2">
@@ -206,17 +208,15 @@ export default function HomePage() {
             </div>
             <BlockButton href="/events" tone="mustard">Browse all {PUBLIC_EVENTS.length} events →</BlockButton>
           </div>
-          <div className="indie-hscroll flex gap-5 overflow-x-auto snap-x snap-mandatory px-6 pb-6">
+          <div className="indie-hscroll flex gap-8 overflow-x-auto snap-x snap-mandatory px-6 pb-6 pt-2">
             {PUBLIC_EVENTS.map((e, i) => (
-              <Link key={e.slug} href={`/events/${e.slug}`} className="snap-start shrink-0 w-64 group">
-                <div className={`${ACCENTS[i % ACCENTS.length]} text-black border-2 border-black shadow-[5px_5px_0_0_#000] rounded-2xl p-5 h-48 flex flex-col justify-between group-hover:-translate-y-1 transition-transform`}>
-                  <span className="text-sm font-bold tracking-widest">{String(i + 1).padStart(2, "0")} / {PUBLIC_EVENTS.length}</span>
-                  <div>
-                    <p className={`text-2xl leading-tight ${display.className}`}>{e.name}</p>
-                    <p className="text-sm font-bold uppercase tracking-wider mt-1 opacity-70">
-                      {e.subEvents.length > 0 ? `${e.subEvents.length} competitions` : "Marquee event"} · {e.category}
-                    </p>
-                  </div>
+              <Link key={e.slug} href={`/events/${e.slug}`} className="group snap-start shrink-0 w-56">
+                <Stamp slug={e.slug} name={e.name} category={e.category} number={i + 1} image={EVENT_MEDIA[e.slug]?.image} compact />
+                <div className="mt-4 text-[#f5edd8]">
+                  <p className={`text-lg uppercase leading-tight tracking-[0.16em] ${serif.className}`}>{CULTURES[e.slug]?.state}</p>
+                  <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.3em] text-[#f5c928]">
+                    {e.subEvents.length > 0 ? `${e.subEvents.length} competitions` : "Marquee event"} · {e.category}
+                  </p>
                 </div>
               </Link>
             ))}
