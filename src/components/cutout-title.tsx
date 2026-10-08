@@ -1,7 +1,7 @@
 import { blockHindi } from "@/components/indie";
 
 // Heavy "cut-out" lettering: every Latin letter is tilted and nudged a little, on a hard offset shadow,
-// with an optional Hindi word in the same typeface (like a mixed-script film title).
+// with a Hindi word in the same typeface beside it (like a mixed-script film title).
 // Offsets are fixed lists (not random) so server and browser render identically.
 
 const ROT = [-5, 3, -2, 5, -4, 2, -3, 4];
@@ -28,54 +28,29 @@ function Letters({ text, offset = 0 }: { text: string; offset?: number }) {
   );
 }
 
-const SIZES = {
-  md: { latin: "text-[4rem] leading-[1.05] sm:text-[6.2rem]", hindi: "text-[2.9rem] leading-[1.2] sm:text-[4.4rem]" },
-  hero: { latin: "text-[3rem] leading-[1.02] sm:text-[4.9rem]", hindi: "text-[2.2rem] leading-[1.2] sm:text-[3.4rem]" },
-} as const;
-
 export function CutoutTitle({
   latin,
   hindi,
   color = "#ffd21f",
-  lineColors,
   shadow = "#050f2e",
-  size = "md",
-  as: Tag = "h2",
   className = "",
 }: {
-  latin: string | string[]; // an array puts each entry on its own line
+  latin: string;
   hindi?: string;
   color?: string;
-  lineColors?: string[]; // optional colour per Latin line
   shadow?: string;
-  size?: keyof typeof SIZES;
-  as?: "h1" | "h2";
   className?: string;
 }) {
-  const lines = Array.isArray(latin) ? latin : [latin];
-  const z = SIZES[size];
   const textShadow = `3px 3px 0 ${shadow}, 6px 6px 0 ${shadow}`;
   return (
-    <Tag
-      aria-label={[...lines, hindi].filter(Boolean).join(" ")}
-      className={`flex flex-wrap items-end gap-x-4 gap-y-1 ${blockHindi.className} ${className}`}
-      style={{ color, textShadow }}
-    >
-      {lines.length === 1 ? (
-        <span className={`${z.latin} tracking-tight`}><Letters text={lines[0]} /></span>
-      ) : (
-        <span className="block w-full">
-          {lines.map((l, i) => (
-            <span key={i} className={`block ${z.latin} tracking-tight`} style={lineColors?.[i] ? { color: lineColors[i] } : undefined}>
-              <Letters text={l} offset={i * 3} />
-            </span>
-          ))}
-        </span>
-      )}
+    <h2 aria-label={hindi ? `${latin} ${hindi}` : latin} className={`flex flex-wrap items-end gap-x-4 gap-y-1 ${blockHindi.className} ${className}`} style={{ color, textShadow }}>
+      <span className="text-[4rem] leading-[1.05] tracking-tight sm:text-[6.2rem]">
+        <Letters text={latin} />
+      </span>
       {hindi && (
         // Devanagari letters join into clusters, so the word is kept whole (only tilted), not split per letter.
-        <span aria-hidden className={`-rotate-2 pb-1 ${z.hindi}`}>{hindi}</span>
+        <span aria-hidden className="-rotate-3 pb-1 text-[2.9rem] leading-[1.2] sm:text-[4.4rem]">{hindi}</span>
       )}
-    </Tag>
+    </h2>
   );
 }
