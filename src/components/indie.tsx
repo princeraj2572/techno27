@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Abril_Fatface, Barlow_Condensed, Dela_Gothic_One, Lora } from "next/font/google";
+import { Abril_Fatface, Barlow_Condensed, Dela_Gothic_One, Lora, Yatra_One } from "next/font/google";
 
 // Retro "indie" theme, inspired by the Rendezvous IITD site's structure:
 // full-bleed colour bands, torn paper edges, mandala + halftone texture,
@@ -9,6 +9,7 @@ export const display = Dela_Gothic_One({ weight: "400", subsets: ["latin"] });
 export const body = Barlow_Condensed({ weight: ["500", "600", "700"], subsets: ["latin"] });
 export const serif = Abril_Fatface({ weight: "400", subsets: ["latin"] });
 export const paper = Lora({ subsets: ["latin"], style: ["normal", "italic"] });
+export const devanagari = Yatra_One({ weight: "400", subsets: ["devanagari", "latin"] });
 
 export const CARD = "bg-[#f5edd8] text-[#1a0505] border-2 border-black shadow-[4px_4px_0_0_#000]";
 export const TITLE_SHADOW = { textShadow: "3px 3px 0 #7a1c1c" };
@@ -35,6 +36,7 @@ export function IndieStyles() {
       @keyframes indie-vdown { from { transform: translateY(-50%); } to { transform: translateY(0); } }
       @keyframes indie-qshake { 0%,100% { transform: rotate(0); } 15% { transform: rotate(-14deg); } 30% { transform: rotate(12deg); } 45% { transform: rotate(-9deg); } 60% { transform: rotate(6deg); } 75% { transform: rotate(0); } }
       @keyframes indie-splash-out { to { transform: translateY(-100%); visibility: hidden; } }
+      @keyframes indie-sway { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
       @keyframes indie-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
       .indie-marquee { animation: indie-marquee 30s linear infinite; }
       .indie-spin { animation: indie-spin 10s linear infinite; }
@@ -82,6 +84,7 @@ export function IndieStyles() {
         .panel { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; }
         .panel > .panel-inner { width: 100%; }
       }
+      .indie-sway { animation: indie-sway 3.2s ease-in-out infinite alternate; transform-origin: 50% 0; }
       .indie-float { animation: indie-float 5s ease-in-out infinite; }
       .indie-pop { animation: indie-pop .5s ease both; }
       .indie-shine { background-image: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.55) 50%, transparent 60%); background-size: 200% 100%; animation: indie-shine 3.2s linear infinite; }
@@ -113,7 +116,7 @@ export function IndieStyles() {
       @media (prefers-reduced-motion: reduce) {
         .indie-marquee, .indie-spin, .indie-spin-slow, .indie-spin-rev, .indie-wobble, .indie-tonearm,
         .indie-drive, .indie-train, .indie-blink, .indie-float, .indie-pop, .indie-shine,
-        .indie-rise, .indie-cloud, .indie-metro, .indie-bob, .indie-vup, .indie-vdown, .indie-qshake { animation: none; }
+        .indie-rise, .indie-cloud, .indie-metro, .indie-bob, .indie-vup, .indie-vdown, .indie-qshake, .indie-sway { animation: none; }
         .splash { display: none; }
         .stamp-shadow, .stamp-scene svg { transition: none; }
         .reveal { opacity: 1; transform: none; transition: none; }

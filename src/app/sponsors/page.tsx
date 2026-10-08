@@ -4,7 +4,8 @@ import { EVENT_THEMES, patternStyle } from "@/data/event-themes";
 import { SponsorStamp, type StampSize } from "@/components/sponsor-stamp";
 import { ImageSlot } from "@/components/media";
 import { CountUp, Reveal } from "@/components/motion";
-import { Band, BlockButton, Marquee, PageShell, display, serif } from "@/components/indie";
+import { NimbuMirch } from "@/components/nimbu-mirch";
+import { Band, BlockButton, Marquee, PageShell, devanagari, display, serif } from "@/components/indie";
 
 export const metadata = { title: "Sponsors | Techno-aiMBiAtion 2027" };
 
@@ -94,7 +95,7 @@ export default function SponsorsPage() {
               <div className="flex flex-wrap justify-center gap-x-9 gap-y-12">
                 {tier.sponsors.map((sp, i) => (
                   <div key={sp.name} className="indie-pop" style={{ animationDelay: `${Math.min(i, 8) * 70}ms`, transform: `rotate(${[-1.5, 1, 1.8, -1][i % 4]}deg)` }}>
-                    <SponsorStamp sponsor={sp} role={tier.role} size={tier.size} pattern={t.pattern} />
+                    <SponsorStamp sponsor={sp} role={tier.role} size={tier.size} pattern={t.pattern} charm={tier.size === "xl" || tier.size === "lg"} />
                   </div>
                 ))}
               </div>
@@ -103,6 +104,42 @@ export default function SponsorsPage() {
         );
       })}
       <p className="bg-black py-3 text-center text-xs uppercase tracking-widest text-[#f5edd8]/60">Sample sponsors — all brands are fictional.</p>
+
+      {/* Nazar Na Lage — a blessing for every partner */}
+      <Reveal>
+        <section className="relative overflow-hidden bg-[#e6177a] text-white">
+          <div aria-hidden className="absolute inset-0 opacity-60" style={patternStyle("leaves", "#ff7ab8")} />
+          <div
+            aria-hidden
+            className="relative h-9"
+            style={{
+              backgroundImage: "radial-gradient(circle at 16px 14px, #ffd000 0 7px, #ff8a00 7.5px 11px, transparent 11.5px), radial-gradient(circle at 16px 26px, #1f8a3a 0 4px, transparent 4.5px)",
+              backgroundSize: "32px 36px",
+              backgroundRepeat: "repeat-x",
+            }}
+          />
+          <div className="relative mx-auto max-w-5xl px-6 pb-16">
+            <div className="flex items-start justify-center gap-4 sm:gap-12">
+              <p className={`rotate-180 text-6xl leading-none tracking-tight text-[#ffe600] sm:text-8xl [writing-mode:vertical-rl] ${display.className}`} style={{ textShadow: "3px 3px 0 #a10f55" }}>NAZAR</p>
+              <NimbuMirch className="-mt-px h-[22rem] w-auto drop-shadow-[4px_6px_0_rgba(0,0,0,0.3)] sm:h-[30rem]" />
+              <p className={`text-6xl leading-none tracking-tight text-[#ffe600] sm:text-8xl [writing-mode:vertical-rl] ${display.className}`} style={{ textShadow: "3px 3px 0 #a10f55" }}>NA LAGE</p>
+            </div>
+
+            <div className="mx-auto mt-10 max-w-2xl text-center">
+              <p className={`text-5xl text-[#fff6b0] sm:text-6xl ${devanagari.className}`}>नज़र ना लगे</p>
+              <p className="mt-4 text-xl font-semibold leading-snug sm:text-2xl">
+                In India, a lemon and chillies strung on a thread guard a doorway from the evil eye. We hang one for every partner who makes this fest possible — may no evil eye ever touch your success.
+              </p>
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                {["For every partner", "Good luck, guaranteed*", "Hung with love"].map((c, i) => (
+                  <span key={c} className={`border-2 border-black bg-[#ffe600] px-4 py-1.5 text-sm font-bold uppercase tracking-widest text-black shadow-[3px_3px_0_0_#000] ${i % 2 ? "rotate-1" : "-rotate-1"}`}>{c}</span>
+                ))}
+              </div>
+              <p className="mt-3 text-[10px] uppercase tracking-widest text-white/70">*Terms: made entirely of good wishes.</p>
+            </div>
+          </div>
+        </section>
+      </Reveal>
 
       {/* Why partner with us */}
       <Reveal>
