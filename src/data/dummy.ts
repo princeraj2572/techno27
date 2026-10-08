@@ -248,3 +248,23 @@ export const FEATURED_CREATIONS = [
   { title: "Poster: Techno Junction", by: PEOPLE[14], kind: "Design", bg: "from-[#f5c928] to-[#c8421f]", icon: "🖼️" },
   { title: "Notes from the Night Stage", by: PEOPLE[21], kind: "Writing", bg: "from-[#3b82f6] to-[#0b2a6b]", icon: "✍️" },
 ];
+
+// ---------------------------------------------------------------------------
+// Junoon '27 — extra acts for the scrolling artist columns + the guessing game
+// ---------------------------------------------------------------------------
+export const JUNOON_ACTS = [
+  { name: "The Midnight Ragas", genre: "Indie fusion" },
+  { name: "DJ Nova", genre: "Electronic" },
+  { name: "Echo & The Monsoon", genre: "Rock" },
+  { name: "Raag Rewind", genre: "Classical fusion" },
+  { name: "Neon Tandav", genre: "Synthwave" },
+  { name: "Saanjh Sound", genre: "Folk" },
+  { name: "The Chai Collective", genre: "Acoustic" },
+  { name: "Monsoon Beats", genre: "Percussion" },
+];
+
+export const MYSTERY_HINTS = [
+  "Sold out three campus tours in a row.",
+  "Their debut single went viral last monsoon.",
+  "Two words, and the crowd knows every lyric.",
+];

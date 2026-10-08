@@ -27,6 +27,14 @@ export function IndieStyles() {
       @keyframes indie-float { 0%,100% { transform: translateY(0) rotate(var(--r, -4deg)); } 50% { transform: translateY(-10px) rotate(calc(var(--r, -4deg) + 3deg)); } }
       @keyframes indie-pop { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
       @keyframes indie-shine { from { background-position: -200% 0; } to { background-position: 200% 0; } }
+      @keyframes indie-rise { 0% { opacity: 0; transform: translateY(110%); } 20% { opacity: 1; } 100% { opacity: 1; transform: translateY(0); } }
+      @keyframes indie-cloud { from { transform: translateY(0); } to { transform: translateY(-0.8vw); } }
+      @keyframes indie-metro { from { transform: translateX(-60vw); } to { transform: translateX(115vw); } }
+      @keyframes indie-bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 7px); } }
+      @keyframes indie-vup { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+      @keyframes indie-vdown { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+      @keyframes indie-qshake { 0%,100% { transform: rotate(0); } 15% { transform: rotate(-14deg); } 30% { transform: rotate(12deg); } 45% { transform: rotate(-9deg); } 60% { transform: rotate(6deg); } 75% { transform: rotate(0); } }
+      @keyframes indie-splash-out { to { transform: translateY(-100%); visibility: hidden; } }
       @keyframes indie-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
       .indie-marquee { animation: indie-marquee 30s linear infinite; }
       .indie-spin { animation: indie-spin 10s linear infinite; }
@@ -37,6 +45,23 @@ export function IndieStyles() {
       .indie-drive { animation: indie-drive 6s linear infinite; }
       .indie-train { animation: indie-train 18s linear infinite; }
       .indie-blink { animation: indie-blink 1.2s steps(2) infinite; }
+      .indie-rise { animation: indie-rise 3s cubic-bezier(.16,1,.3,1) both; }
+      .indie-cloud { animation: indie-cloud 3s ease-in-out infinite alternate; }
+      .indie-metro { animation: indie-metro 16s linear infinite; }
+      .indie-bob { animation: indie-bob 2.2s ease-in-out infinite; }
+      .indie-vup { animation: indie-vup 24s linear infinite; }
+      .indie-vdown { animation: indie-vdown 28s linear infinite; }
+      .indie-qshake { animation: indie-qshake 2s ease-in-out infinite; transform-origin: 50% 80%; }
+      .indie-vfade { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent); }
+
+      .splash { position: fixed; inset: 0; z-index: 100; background: #4a0e0e; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; transition: transform .75s cubic-bezier(.7,0,.3,1); animation: indie-splash-out .01s linear 6s forwards; }
+      .splash.out { transform: translateY(-100%); }
+
+      /* Pinned "drawer" sections that slide over one another (large screens only) */
+      @media (min-width: 768px) and (min-height: 760px) {
+        .panel { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; }
+        .panel > .panel-inner { width: 100%; }
+      }
       .indie-float { animation: indie-float 5s ease-in-out infinite; }
       .indie-pop { animation: indie-pop .5s ease both; }
       .indie-shine { background-image: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.55) 50%, transparent 60%); background-size: 200% 100%; animation: indie-shine 3.2s linear infinite; }
@@ -67,7 +92,9 @@ export function IndieStyles() {
 
       @media (prefers-reduced-motion: reduce) {
         .indie-marquee, .indie-spin, .indie-spin-slow, .indie-spin-rev, .indie-wobble, .indie-tonearm,
-        .indie-drive, .indie-train, .indie-blink, .indie-float, .indie-pop, .indie-shine { animation: none; }
+        .indie-drive, .indie-train, .indie-blink, .indie-float, .indie-pop, .indie-shine,
+        .indie-rise, .indie-cloud, .indie-metro, .indie-bob, .indie-vup, .indie-vdown, .indie-qshake { animation: none; }
+        .splash { display: none; }
         .reveal { opacity: 1; transform: none; transition: none; }
         .flip-inner { transition: none; }
       }
@@ -78,7 +105,7 @@ export function IndieStyles() {
 export function PageShell({ children, footer = true }: { children: ReactNode; footer?: boolean }) {
   return (
     <main
-      className={`min-h-screen bg-[#4a0e0e] text-[#f5edd8] overflow-x-hidden ${body.className}`}
+      className={`min-h-screen bg-[#4a0e0e] text-[#f5edd8] overflow-x-clip ${body.className}`}
       style={{
         backgroundImage: "radial-gradient(rgba(245,237,216,0.07) 1px, transparent 1px), linear-gradient(180deg, #3a0808 0%, #4a0e0e 35%, #5a1212 100%)",
         backgroundSize: "6px 6px, 100% 100%",
@@ -131,18 +158,19 @@ const BAND_TONES = {
 export type BandTone = keyof typeof BAND_TONES;
 
 export function Band({
-  tone, zigzag, mandala = false, halftone = false, ghost, className = "", children,
+  tone, zigzag, mandala = false, halftone = false, ghost, panel = false, className = "", children,
 }: {
   tone: BandTone;
   zigzag?: string;
   mandala?: boolean;
   halftone?: boolean;
   ghost?: string;
+  panel?: boolean;
   className?: string;
   children: ReactNode;
 }) {
   return (
-    <section className={`relative overflow-hidden ${BAND_TONES[tone]} ${mandala ? "indie-mandala" : ""} ${halftone ? "indie-halftone" : ""}`}>
+    <section className={`relative overflow-hidden ${panel ? "panel" : ""} ${BAND_TONES[tone]} ${mandala ? "indie-mandala" : ""} ${halftone ? "indie-halftone" : ""}`}>
       {zigzag && (
         <div
           aria-hidden
@@ -161,7 +189,7 @@ export function Band({
           ))}
         </div>
       )}
-      <div className={`relative max-w-5xl mx-auto px-6 ${zigzag ? "pt-20 pb-16" : "py-16"} ${className}`}>{children}</div>
+      <div className={`panel-inner relative max-w-5xl mx-auto px-6 ${zigzag ? "pt-20 pb-16" : "py-16"} ${className}`}>{children}</div>
     </section>
   );
 }
