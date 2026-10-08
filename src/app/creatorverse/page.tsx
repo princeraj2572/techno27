@@ -1,5 +1,6 @@
 import { Band, BlockButton, Marquee, PageShell, TicketCta, display } from "@/components/indie";
-import { CREATOR_PERKS } from "@/data/dummy";
+import { CREATOR_PERKS, FEATURED_CREATIONS } from "@/data/dummy";
+import { Reveal } from "@/components/motion";
 
 export const metadata = { title: "Creatorverse | Techno-aiMBiAtion 2027" };
 
@@ -15,7 +16,7 @@ const STEPS = [
 export default function CreatorversePage() {
   return (
     <PageShell>
-      <Band tone="pink" halftone className="!py-14">
+      <Reveal><Band tone="pink" halftone className="!py-14">
         <p className="text-sm font-bold uppercase tracking-[0.3em]">Creatorverse</p>
         <h1 className="mt-3 leading-[0.88]">
           <span className="block text-7xl sm:text-9xl font-bold uppercase indie-outline-dark">Make</span>
@@ -26,9 +27,9 @@ export default function CreatorversePage() {
           A platform to showcase your creativity at the fest. Whether you create to entertain, inspire or simply express yourself — this is your stage.
         </p>
         <div className="mt-6"><BlockButton href="/auth/signup">Register</BlockButton></div>
-      </Band>
+      </Band></Reveal>
 
-      <Band tone="cream" className="!px-4">
+      <Reveal><Band tone="cream" className="!px-4">
         <h2 className={`text-4xl sm:text-5xl text-black mb-8 px-2 ${display.className}`}>What&apos;s your job?</h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {STEPS.map((s) => (
@@ -46,11 +47,29 @@ export default function CreatorversePage() {
             </div>
           ))}
         </div>
-      </Band>
+      </Band></Reveal>
 
       <Marquee className="bg-white text-black font-bold uppercase tracking-widest text-lg py-1.5" text="Perks & rewards ✦ Features ✦ Merch ✦ Community ✦ " speed={40} />
 
-      <Band tone="cream" className="!py-12">
+      <Reveal><Band tone="pink" halftone className="!py-14">
+        <h2 className={`text-4xl sm:text-5xl text-black mb-8 ${display.className}`}>Featured creations</h2>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+          {FEATURED_CREATIONS.map((c, i) => (
+            <figure key={c.title} className={`border-2 border-black bg-[#f5edd8] p-2.5 text-black shadow-[5px_5px_0_0_#000] ${i % 2 ? "rotate-1" : "-rotate-1"} transition-all hover:rotate-0 hover:-translate-y-1`}>
+              <div className={`flex aspect-square items-center justify-center border-2 border-black bg-gradient-to-br ${c.bg}`}>
+                <span className="text-6xl drop-shadow-[3px_3px_0_rgba(0,0,0,0.35)]" aria-hidden>{c.icon}</span>
+              </div>
+              <figcaption className="mt-2">
+                <p className="text-base font-bold uppercase leading-tight">{c.title}</p>
+                <p className="text-xs uppercase tracking-wider text-black/60">{c.kind} · {c.by}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        <p className="mt-6 text-xs uppercase tracking-widest text-black/60">Sample work — all creators and titles are fictional.</p>
+      </Band></Reveal>
+
+      <Reveal><Band tone="cream" className="!py-12">
         <h2 className={`text-4xl text-black mb-6 ${display.className}`}>Perks &amp; rewards</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {CREATOR_PERKS.map((p, i) => (
@@ -62,7 +81,7 @@ export default function CreatorversePage() {
           ))}
         </div>
         <p className="mt-6 text-xs uppercase tracking-widest text-black/50">Sample perks — to be confirmed.</p>
-      </Band>
+      </Band></Reveal>
 
       {/* the road */}
       <div aria-hidden className="grid grid-cols-3 h-72 overflow-hidden border-b-2 border-black">

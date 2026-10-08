@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { PUBLIC_EVENTS } from "@/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
-import { PRONITES } from "@/data/dummy";
+import { PRONITES, TESTIMONIALS } from "@/data/dummy";
+import { CountUp, Reveal, TestimonialSlider } from "@/components/motion";
 import {
   ACCENTS, Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif,
 } from "@/components/indie";
@@ -22,10 +23,10 @@ const STEPS = [
 export default function HomePage() {
   const totalSub = PUBLIC_EVENTS.reduce((n, e) => n + e.subEvents.length, 0);
   const stats = [
-    { val: `${PUBLIC_EVENTS.length}`, label: "Flagship events" },
-    { val: `${totalSub}+`, label: "Competitions" },
-    { val: "2k+", label: "Expected participants" },
-    { val: "₹5L+", label: "Prize pool" },
+    { to: PUBLIC_EVENTS.length, prefix: "", suffix: "", label: "Flagship events" },
+    { to: totalSub, prefix: "", suffix: "+", label: "Competitions" },
+    { to: 2000, prefix: "", suffix: "+", label: "Expected participants" },
+    { to: 5, prefix: "₹", suffix: "L+", label: "Prize pool" },
   ];
   const nextUp = SCHEDULE[0].items.slice(0, 4);
 
@@ -52,6 +53,10 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* floating stickers */}
+          <span aria-hidden className="indie-float absolute left-4 top-6 hidden md:block bg-[#f5c928] text-black text-xs font-bold uppercase tracking-widest px-3 py-1 border-2 border-black" style={{ ["--r" as string]: "-6deg" }}>★ Vol. 1</span>
+          <span aria-hidden className="indie-float absolute bottom-10 left-1/2 hidden md:block bg-[#f5edd8] text-black text-xs font-bold uppercase tracking-widest px-3 py-1 border-2 border-black" style={{ ["--r" as string]: "4deg", animationDelay: "1.2s" }}>5 days · 15 events</span>
+
           {/* the wheel */}
           <div className="relative mx-auto w-72 sm:w-96 md:w-[30rem] md:-mr-24 aspect-square">
             <Wheel className="h-full w-full drop-shadow-[10px_10px_0_rgba(0,0,0,0.45)]" />
@@ -71,7 +76,7 @@ export default function HomePage() {
       />
 
       {/* What's new — crimson band with pinned notes */}
-      <Band tone="crimson" zigzag="#f5c928" mandala>
+      <Reveal><Band tone="crimson" zigzag="#f5c928" mandala>
         <div className="grid md:grid-cols-3 gap-10 items-start">
           <div className="md:col-span-2">
             <h2 className={`text-5xl sm:text-6xl text-[#f5c928] leading-[0.95] ${serif.className}`} style={{ textShadow: "3px 3px 0 #5a0010" }}>
@@ -90,10 +95,10 @@ export default function HomePage() {
             <Vinyl className="w-56 h-56 drop-shadow-[8px_8px_0_rgba(0,0,0,0.4)]" slow />
           </div>
         </div>
-      </Band>
+      </Band></Reveal>
 
       {/* Pronites — purple band */}
-      <Band tone="indigo">
+      <Reveal><Band tone="indigo">
         <div className="text-center">
           <p className="inline-block border border-[#f5c928]/60 px-3 py-0.5 text-xs font-bold uppercase tracking-[0.35em] text-[#f5c928]">After dark</p>
           <h2 className="mt-4 text-6xl sm:text-8xl font-bold uppercase leading-none text-[#f5edd8]">Pronites</h2>
@@ -115,10 +120,10 @@ export default function HomePage() {
             Enter after dark ↗
           </Link>
         </div>
-      </Band>
+      </Band></Reveal>
 
       {/* Events — blue band */}
-      <Band tone="blue" ghost="Something for every genre" className="!px-0">
+      <Reveal><Band tone="blue" ghost="Something for every genre" className="!px-0">
         <div className="px-6 flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
           <div>
             <h2 className={`text-6xl sm:text-8xl indie-outline ${serif.className}`}>Events</h2>
@@ -143,7 +148,7 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
-      </Band>
+      </Band></Reveal>
       <Marquee
         className="bg-black text-white font-bold uppercase tracking-wider text-lg py-2"
         text={`${PUBLIC_EVENTS.map((e) => e.name).join(" • ")} • `}
@@ -151,7 +156,7 @@ export default function HomePage() {
       />
 
       {/* Numbers — cream band */}
-      <Band tone="cream">
+      <Reveal><Band tone="cream">
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div>
             <p className="text-5xl sm:text-6xl font-bold uppercase leading-none text-[#1a0505]">Fest by the</p>
@@ -159,7 +164,7 @@ export default function HomePage() {
             <div className="mt-8 grid grid-cols-2 gap-6">
               {stats.map((s) => (
                 <div key={s.label}>
-                  <p className="text-5xl sm:text-6xl font-bold leading-none text-[#7a1c1c]">{s.val}</p>
+                  <p className="text-5xl sm:text-6xl font-bold leading-none text-[#7a1c1c]"><CountUp to={s.to} prefix={s.prefix} suffix={s.suffix} /></p>
                   <p className="text-lg font-bold uppercase tracking-wider text-[#1a0505]">{s.label}</p>
                 </div>
               ))}
@@ -172,10 +177,15 @@ export default function HomePage() {
             </span>
           </div>
         </div>
-      </Band>
+      </Band></Reveal>
+
+      <Reveal><Band tone="indigo" mandala>
+        <h2 className={`text-4xl sm:text-5xl text-center text-[#f5edd8] mb-10 ${serif.className}`}>What people say</h2>
+        <TestimonialSlider items={TESTIMONIALS} />
+      </Band></Reveal>
 
       {/* Departures preview — dark board on red */}
-      <Band tone="crimson" mandala>
+      <Reveal><Band tone="crimson" mandala>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
             <h2 className={`text-5xl sm:text-6xl text-[#f5c928] leading-none ${serif.className}`} style={{ textShadow: "3px 3px 0 #5a0010" }}>Schedule</h2>
@@ -194,10 +204,10 @@ export default function HomePage() {
             ))}
           </ul>
         </div>
-      </Band>
+      </Band></Reveal>
 
       {/* Creatorverse — pop-art band */}
-      <Band tone="pink" halftone>
+      <Reveal><Band tone="pink" halftone>
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div>
             <p className="text-6xl sm:text-8xl font-bold uppercase leading-[0.9] indie-outline-dark">Make</p>
@@ -212,10 +222,10 @@ export default function HomePage() {
             <BlockButton href="/creatorverse">Explore Creatorverse</BlockButton>
           </div>
         </div>
-      </Band>
+      </Band></Reveal>
 
       {/* Steps — orange mandala */}
-      <Band tone="orange" mandala>
+      <Reveal><Band tone="orange" mandala>
         <h2 className={`text-5xl text-black leading-none mb-8 ${serif.className}`}>How to get in</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {STEPS.map((s, i) => (
@@ -226,7 +236,7 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </Band>
+      </Band></Reveal>
 
       {/* CTA — cream arc + record */}
       <section className="relative grid md:grid-cols-5 overflow-hidden bg-[#a1001a]">

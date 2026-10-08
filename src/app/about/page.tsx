@@ -1,6 +1,7 @@
 import { Band, Marquee, Note, PageHero, PageShell, TicketCta, Vinyl, ACCENTS, CARD, display, serif } from "@/components/indie";
 import { PUBLIC_EVENTS } from "@/data/public-events";
-import { MILESTONES } from "@/data/dummy";
+import { MILESTONES, TESTIMONIALS } from "@/data/dummy";
+import { CountUp, Reveal, TestimonialSlider } from "@/components/motion";
 
 export const metadata = { title: "About | Techno-aiMBiAtion 2027" };
 
@@ -21,9 +22,9 @@ const FAQ = [
 export default function AboutPage() {
   const totalSub = PUBLIC_EVENTS.reduce((n, e) => n + e.subEvents.length, 0);
   const stats = [
-    { val: `${PUBLIC_EVENTS.length}`, label: "Flagship events" },
-    { val: `${totalSub}+`, label: "Competitions" },
-    { val: "2k+", label: "Expected participants" },
+    { to: PUBLIC_EVENTS.length, suffix: "", label: "Flagship events" },
+    { to: totalSub, suffix: "+", label: "Competitions" },
+    { to: 2000, suffix: "+", label: "Expected participants" },
   ];
 
   return (
@@ -33,7 +34,7 @@ export default function AboutPage() {
       <Marquee className="bg-[#f5c928] text-black font-bold uppercase tracking-[0.3em] text-xs py-1" text="Tech ● Robotics ● Coding ● Design ● Music ● Fashion ● Art ● Food ● " speed={45} reverse />
 
       {/* Story on pinned notes */}
-      <Band tone="crimson" zigzag="#f5c928" mandala>
+      <Reveal><Band tone="crimson" zigzag="#f5c928" mandala>
         <div className="grid md:grid-cols-3 gap-10 items-center">
           <div className="md:col-span-2 grid sm:grid-cols-2 gap-8">
             <Note tag="Story" title="Where it started" tilt="-rotate-2">
@@ -47,22 +48,22 @@ export default function AboutPage() {
             <Vinyl className="w-52 h-52 drop-shadow-[8px_8px_0_rgba(0,0,0,0.4)]" slow />
           </div>
         </div>
-      </Band>
+      </Band></Reveal>
 
       {/* Numbers */}
-      <Band tone="cream">
+      <Reveal><Band tone="cream">
         <div className="grid grid-cols-3 gap-6 text-center">
           {stats.map((s) => (
             <div key={s.label}>
-              <p className="text-5xl sm:text-7xl font-bold leading-none text-[#7a1c1c]">{s.val}</p>
+              <p className="text-5xl sm:text-7xl font-bold leading-none text-[#7a1c1c]"><CountUp to={s.to} suffix={s.suffix} /></p>
               <p className="mt-1 text-sm sm:text-lg font-bold uppercase tracking-wider text-[#1a0505]">{s.label}</p>
             </div>
           ))}
         </div>
-      </Band>
+      </Band></Reveal>
 
       {/* Journey */}
-      <Band tone="parchment" mandala>
+      <Reveal><Band tone="parchment" mandala>
         <h2 className={`text-5xl text-[#7a1c1c] leading-none mb-10 ${serif.className}`}>Our journey</h2>
         <ol className="relative border-l-4 border-dashed border-black/40 pl-8 space-y-8">
           {MILESTONES.map((m) => (
@@ -75,10 +76,10 @@ export default function AboutPage() {
           ))}
         </ol>
         <p className="mt-8 text-xs uppercase tracking-widest text-black/50">Sample timeline — figures are placeholders.</p>
-      </Band>
+      </Band></Reveal>
 
       {/* Pillars */}
-      <Band tone="orange" mandala>
+      <Reveal><Band tone="orange" mandala>
         <h2 className={`text-5xl text-black leading-none mb-8 ${serif.className}`}>What it&apos;s about</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {PILLARS.map((p, i) => (
@@ -91,10 +92,15 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
-      </Band>
+      </Band></Reveal>
+
+      <Reveal><Band tone="indigo" mandala>
+        <h2 className={`text-4xl sm:text-5xl text-center text-[#f5edd8] mb-10 ${serif.className}`}>What people say</h2>
+        <TestimonialSlider items={TESTIMONIALS} />
+      </Band></Reveal>
 
       {/* FAQ */}
-      <Band tone="indigo">
+      <Reveal><Band tone="indigo">
         <h2 className={`text-4xl sm:text-5xl text-[#f5c928] mb-8 ${display.className}`}>Good to know</h2>
         <div className={`${CARD} rounded-xl overflow-hidden divide-y-2 divide-dashed divide-black/30`}>
           {FAQ.map((f) => (
@@ -107,7 +113,7 @@ export default function AboutPage() {
             </details>
           ))}
         </div>
-      </Band>
+      </Band></Reveal>
 
       <TicketCta title="Be part of it" text="Register with your OPJU email to get free entry, or sign up as an external participant." href="/auth/signup" label="Create your account" />
     </PageShell>

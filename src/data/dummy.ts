@@ -1,3 +1,5 @@
+import { SCHEDULE } from "./schedule";
+
 // DUMMY DATA — every name, brand, number and date below is fictional sample content
 // for previewing the design. Replace with real information before launch.
 
@@ -138,4 +140,111 @@ export const CREATOR_PERKS = [
   { title: "Official merch", text: "Featured creators receive limited-edition merchandise." },
   { title: "Certificates", text: "Verified certificates for every accepted submission." },
   { title: "Creator meetup", text: "An evening to meet and swap ideas with other makers." },
+];
+
+// ---------------------------------------------------------------------------
+// Per-event mock details (date, venue, prize, rules ...) — derived from the slug.
+// ---------------------------------------------------------------------------
+
+const TAGLINES: Record<string, string> = {
+  backtrace: "Trace the clues, crack the code.",
+  kalakriti: "Where art meets culture.",
+  robovation: "Machines, meet your match.",
+  masterchef: "Cook up a storm.",
+  antaragni: "Express what lies within.",
+  ideathon: "Ideas for a better tomorrow.",
+  "beat-battle": "Let the beats decide.",
+  techlab: "Hands-on tech, live.",
+  "startup-business-plan": "Pitch it. Fund it. Build it.",
+  "riwayat-fashion-show": "Tradition on the runway.",
+  roadies: "Survive the campus trail.",
+  "voice-of-youth": "Speak up, be heard.",
+  aima: "Think like a manager.",
+  codigo: "Code. Compete. Conquer.",
+  designathon: "Design that moves people.",
+};
+
+const VENUES = ["CSE Block", "Main Auditorium", "Seminar Hall", "Open Air Stage", "Innovation Lab", "Design Studio", "Sports Arena", "Food Court"];
+const TIMES = ["10:00 AM", "11:30 AM", "2:30 PM", "4:00 PM", "5:30 PM"];
+const PRIZES = ["₹25,000", "₹20,000", "₹15,000", "₹12,000", "₹10,000", "₹8,000"];
+const TEAM_BY_CATEGORY: Record<string, string> = {
+  Technical: "2–4 members",
+  Cultural: "Solo or group",
+  Management: "1–3 members",
+  Fun: "Teams of 3–5",
+};
+
+export interface EventMock {
+  tagline: string;
+  about: string;
+  date: string;
+  time: string;
+  venue: string;
+  teamSize: string;
+  fee: string;
+  prize: string;
+  rules: string[];
+  contact: { name: string; phone: string };
+}
+
+export function getEventMock(slug: string, name: string, category: string, index: number): EventMock {
+  const day = SCHEDULE[index % SCHEDULE.length];
+  const person = PEOPLE[(index * 3 + 5) % PEOPLE.length];
+  return {
+    tagline: TAGLINES[slug] ?? "Be part of the fest.",
+    about: `${name} is one of the flagship ${category.toLowerCase()} events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.`,
+    date: day.date,
+    time: TIMES[index % TIMES.length],
+    venue: VENUES[index % VENUES.length],
+    teamSize: TEAM_BY_CATEGORY[category] ?? "Open",
+    fee: "Free for OPJU · ₹199 for external",
+    prize: PRIZES[index % PRIZES.length],
+    rules: [
+      "Carry your TRX27 QR pass and a valid college ID.",
+      "Report to the venue 20 minutes before the start time.",
+      "Judges' decisions are final; any misconduct leads to disqualification.",
+      "Use of unfair means or outside help is not permitted.",
+    ],
+    contact: { name: person, phone: `+91 98765 5${String(1000 + index).slice(1)}0` },
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Gallery, testimonials, featured creators
+// ---------------------------------------------------------------------------
+export interface GalleryItem {
+  caption: string;
+  tag: string;
+  year: string;
+  bg: string; // tailwind gradient classes
+  icon: string;
+}
+
+export const GALLERY: GalleryItem[] = [
+  { caption: "Hackathon night", tag: "Technical", year: "2026", bg: "from-[#f5c928] to-[#c8421f]", icon: "💻" },
+  { caption: "Robo Race finals", tag: "Technical", year: "2026", bg: "from-[#ff6a00] to-[#7a1c1c]", icon: "🤖" },
+  { caption: "Opening night crowd", tag: "Pronite", year: "2026", bg: "from-[#6d28d9] to-[#0f0029]", icon: "🎤" },
+  { caption: "Fashion walk", tag: "Cultural", year: "2026", bg: "from-[#ff2d8a] to-[#7a1c1c]", icon: "👗" },
+  { caption: "Rangoli corner", tag: "Cultural", year: "2026", bg: "from-[#ffb10f] to-[#c8421f]", icon: "🎨" },
+  { caption: "Prize ceremony", tag: "Awards", year: "2026", bg: "from-[#f5c928] to-[#7a1c1c]", icon: "🏆" },
+  { caption: "Beat battle", tag: "Cultural", year: "2025", bg: "from-[#3b82f6] to-[#0b2a6b]", icon: "🥁" },
+  { caption: "Masterchef kitchen", tag: "Fun", year: "2025", bg: "from-[#ff6a00] to-[#a1001a]", icon: "🍳" },
+  { caption: "Ideathon pitches", tag: "Management", year: "2025", bg: "from-[#22c55e] to-[#14532d]", icon: "💡" },
+  { caption: "Campus trail", tag: "Fun", year: "2025", bg: "from-[#f5c928] to-[#15803d]", icon: "🧭" },
+  { caption: "Volunteers", tag: "Team", year: "2025", bg: "from-[#ff6a00] to-[#4a0e0e]", icon: "🙌" },
+  { caption: "Closing ceremony", tag: "Awards", year: "2025", bg: "from-[#6d28d9] to-[#a1001a]", icon: "🎆" },
+];
+
+export const TESTIMONIALS = [
+  { quote: "Five days that felt like a whole semester of learning — and the Pronites were unreal.", name: PEOPLE[3], role: "Participant, CSE" },
+  { quote: "Our robot lost in the finals, but we left with new friends and a hundred ideas to improve.", name: PEOPLE[8], role: "Team Robovation" },
+  { quote: "The organisation was spotless. Registration to check-in took under two minutes.", name: PEOPLE[13], role: "Visitor, external college" },
+  { quote: "Creatorverse gave my photography a real audience. I'm already planning next year's series.", name: PEOPLE[18], role: "Creator" },
+];
+
+export const FEATURED_CREATIONS = [
+  { title: "Golden Hour at the Ghat", by: PEOPLE[4], kind: "Photography", bg: "from-[#ff6a00] to-[#7a1c1c]", icon: "📷" },
+  { title: "Rhythm of the Campus", by: PEOPLE[9], kind: "Short film", bg: "from-[#6d28d9] to-[#0f0029]", icon: "🎬" },
+  { title: "Poster: Techno Junction", by: PEOPLE[14], kind: "Design", bg: "from-[#f5c928] to-[#c8421f]", icon: "🖼️" },
+  { title: "Notes from the Night Stage", by: PEOPLE[21], kind: "Writing", bg: "from-[#3b82f6] to-[#0b2a6b]", icon: "✍️" },
 ];

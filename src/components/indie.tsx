@@ -24,6 +24,9 @@ export function IndieStyles() {
       @keyframes indie-tonearm { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-4deg); } }
       @keyframes indie-drive { from { transform: translateY(-30%); } to { transform: translateY(130%); } }
       @keyframes indie-train { from { transform: translateX(-60%); } to { transform: translateX(110%); } }
+      @keyframes indie-float { 0%,100% { transform: translateY(0) rotate(var(--r, -4deg)); } 50% { transform: translateY(-10px) rotate(calc(var(--r, -4deg) + 3deg)); } }
+      @keyframes indie-pop { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+      @keyframes indie-shine { from { background-position: -200% 0; } to { background-position: 200% 0; } }
       @keyframes indie-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
       .indie-marquee { animation: indie-marquee 30s linear infinite; }
       .indie-spin { animation: indie-spin 10s linear infinite; }
@@ -34,6 +37,11 @@ export function IndieStyles() {
       .indie-drive { animation: indie-drive 6s linear infinite; }
       .indie-train { animation: indie-train 18s linear infinite; }
       .indie-blink { animation: indie-blink 1.2s steps(2) infinite; }
+      .indie-float { animation: indie-float 5s ease-in-out infinite; }
+      .indie-pop { animation: indie-pop .5s ease both; }
+      .indie-shine { background-image: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.55) 50%, transparent 60%); background-size: 200% 100%; animation: indie-shine 3.2s linear infinite; }
+      .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1); }
+      .reveal.in { opacity: 1; transform: none; }
 
       .indie-mandala {
         background-image:
@@ -59,7 +67,8 @@ export function IndieStyles() {
 
       @media (prefers-reduced-motion: reduce) {
         .indie-marquee, .indie-spin, .indie-spin-slow, .indie-spin-rev, .indie-wobble, .indie-tonearm,
-        .indie-drive, .indie-train, .indie-blink { animation: none; }
+        .indie-drive, .indie-train, .indie-blink, .indie-float, .indie-pop, .indie-shine { animation: none; }
+        .reveal { opacity: 1; transform: none; transition: none; }
         .flip-inner { transition: none; }
       }
     `}</style>

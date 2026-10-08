@@ -11,6 +11,11 @@ export interface RadioEvent {
   name: string;
   category: EventCategory;
   subEvents: string[];
+  tagline: string;
+  date: string;
+  time: string;
+  venue: string;
+  prize: string;
 }
 
 function Knob({ label }: { label: string }) {
@@ -92,6 +97,7 @@ export function RadioConsole({ events }: { events: RadioEvent[] }) {
               </p>
               <h3 className={`mt-2 text-3xl sm:text-4xl leading-tight text-[#f5c928] ${display.className}`}>{current.name}</h3>
               <p className="mt-1 text-xs font-bold uppercase tracking-[0.3em] text-[#f5edd8]/60">{current.category}</p>
+              <p key={current.slug} className="indie-pop mt-2 text-lg font-semibold text-[#f5edd8]/85">{current.tagline}</p>
               {current.subEvents.length > 0 ? (
                 <ul className="mt-4 flex flex-wrap gap-1.5">
                   {current.subEvents.map((s) => (
@@ -102,7 +108,7 @@ export function RadioConsole({ events }: { events: RadioEvent[] }) {
                 <p className="mt-4 text-lg text-[#f5edd8]/75">A standalone marquee event.</p>
               )}
               <div className="mt-5 flex items-center justify-between border-t border-white/15 pt-3">
-                <span className="text-xs uppercase tracking-widest text-[#f5edd8]/50">Date · Venue · TBA</span>
+                <span className="text-xs uppercase tracking-widest text-[#f5edd8]/60">{current.date} · {current.time} · {current.venue} · Prize {current.prize}</span>
                 <Link href={`/events/${current.slug}`} className="flex items-center gap-1 text-sm font-bold uppercase tracking-wider text-[#ff4d4d] hover:text-white">
                   Details <ArrowRight className="h-4 w-4" />
                 </Link>

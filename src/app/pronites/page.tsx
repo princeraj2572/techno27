@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion";
 import { Band, Marquee, PageHero, PageShell, TicketCta, display, serif } from "@/components/indie";
 import { PRONITES } from "@/data/dummy";
 
@@ -14,7 +15,7 @@ export default function PronitesPage() {
     <PageShell>
       <PageHero tone="indigo" title="Pronites" sub="The nights that light up the campus" ghost="After dark" />
 
-      <Band tone="indigo" halftone className="!pt-4">
+      <Reveal><Band tone="indigo" halftone className="!pt-4">
         <p className="mb-8 max-w-xl text-xl text-[#f5edd8]/85">
           When the competitions end, the stage lights up. Hover (or tap) a card to meet the act.
         </p>
@@ -47,7 +48,7 @@ export default function PronitesPage() {
           ))}
         </div>
         <p className="mt-10 text-center text-xs uppercase tracking-widest text-white/50">Sample lineup — artists and dates are placeholders.</p>
-      </Band>
+      </Band></Reveal>
 
       <Marquee className="bg-[#f5c928] text-black font-bold uppercase tracking-[0.3em] text-sm py-1.5" text="Live ● Loud ● Unforgettable ● " speed={45} />
       <TicketCta title="Don't miss the nights" text="Register to get your pass and be first to know the lineup." href="/auth/signup" label="Register now" />

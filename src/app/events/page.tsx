@@ -1,4 +1,5 @@
 import { PUBLIC_EVENTS } from "@/data/public-events";
+import { getEventMock } from "@/data/dummy";
 import { RadioConsole } from "@/components/radio-console";
 import { Band, Marquee, PageHero, PageShell, TicketCta } from "@/components/indie";
 
@@ -19,12 +20,20 @@ export default function EventsPage() {
 
       <Band tone="crimson" mandala className="!pt-6">
         <RadioConsole
-          events={PUBLIC_EVENTS.map((e) => ({
-            slug: e.slug,
-            name: e.name,
-            category: e.category,
-            subEvents: e.subEvents,
-          }))}
+          events={PUBLIC_EVENTS.map((e, i) => {
+            const m = getEventMock(e.slug, e.name, e.category, i);
+            return {
+              slug: e.slug,
+              name: e.name,
+              category: e.category,
+              subEvents: e.subEvents,
+              tagline: m.tagline,
+              date: m.date,
+              time: m.time,
+              venue: m.venue,
+              prize: m.prize,
+            };
+          })}
         />
       </Band>
 

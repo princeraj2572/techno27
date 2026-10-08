@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion";
 import { Band, BlockButton, PageShell, serif } from "@/components/indie";
 import { SPONSOR_TIERS } from "@/data/dummy";
 
@@ -14,7 +15,7 @@ const TILE: Record<string, { box: string; mark: string; name: string }> = {
 export default function SponsorsPage() {
   return (
     <PageShell>
-      <Band tone="orange" mandala className="!pb-20">
+      <Reveal><Band tone="orange" mandala className="!pb-20">
         <h1 className="text-5xl sm:text-7xl font-bold uppercase leading-none text-black">Sponsors</h1>
         <p className="mt-2 text-xl font-semibold text-black/80">The brands and partners powering Techno-aiMBiAtion &apos;27.</p>
 
@@ -46,15 +47,15 @@ export default function SponsorsPage() {
           })}
         </div>
         <p className="mt-10 text-center text-xs uppercase tracking-widest text-black/60">Sample sponsors — all brands are fictional.</p>
-      </Band>
+      </Band></Reveal>
 
-      <Band tone="black">
+      <Reveal><Band tone="black">
         <div className="text-center space-y-4">
           <h2 className={`text-4xl sm:text-5xl text-[#f5c928] ${serif.className}`}>Partner with us</h2>
           <p className="mx-auto max-w-xl text-xl text-[#f5edd8]/80">Reach thousands of students, creators and innovators. Get in touch to become a sponsor.</p>
           <BlockButton href="/contact" tone="mustard">Contact us</BlockButton>
         </div>
-      </Band>
+      </Band></Reveal>
     </PageShell>
   );
 }
