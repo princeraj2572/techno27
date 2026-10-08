@@ -2,26 +2,17 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  ArrowRight, Bot, Brain, CalendarDays, ChefHat, Clock, Code2, Compass, FlaskConical, Flame,
-  Lightbulb, MapPin, Mic, Music, Palette, PenTool, Search, Shirt, Star, Terminal, Trophy,
-  TrendingUp, type LucideIcon,
-} from "lucide-react";
-import { display } from "@/components/indie";
-import { ImageSlot, LogoSlot } from "@/components/media";
+import { ArrowRight, CalendarDays, MapPin, Search, Trophy } from "lucide-react";
+import { display, serif } from "@/components/indie";
+import { LogoSlot } from "@/components/media";
+import { CULTURES, CultureScene } from "@/components/culture-art";
 import { EVENT_CATEGORIES, type EventCategory } from "@/data/public-events";
 
-const ICONS: Record<string, LucideIcon> = {
-  terminal: Terminal, palette: Palette, bot: Bot, chef: ChefHat, flame: Flame, bulb: Lightbulb,
-  music: Music, flask: FlaskConical, trend: TrendingUp, shirt: Shirt, compass: Compass,
-  mic: Mic, brain: Brain, code: Code2, pen: PenTool, star: Star,
-};
-
-const CATEGORY_STYLE: Record<EventCategory, { badge: string; tone: string }> = {
-  Technical: { badge: "bg-[#f5c928] text-black", tone: "from-[#f5c928] to-[#c8421f]" },
-  Cultural: { badge: "bg-[#ff6a00] text-black", tone: "from-[#ff6a00] to-[#7a1c1c]" },
-  Management: { badge: "bg-[#ff2d8a] text-black", tone: "from-[#ff2d8a] to-[#7a1c1c]" },
-  Fun: { badge: "bg-[#3b82f6] text-white", tone: "from-[#3b82f6] to-[#0b2a6b]" },
+const CATEGORY_BADGE: Record<EventCategory, string> = {
+  Technical: "bg-[#f5c928] text-black",
+  Cultural: "bg-[#ff6a00] text-black",
+  Management: "bg-[#ff2d8a] text-black",
+  Fun: "bg-[#3b82f6] text-white",
 };
 
 export interface EventCard {
@@ -36,7 +27,7 @@ export interface EventCard {
   time: string;
   venue: string;
   prize: string;
-  image?: string;
+  image?: string; // optional picture; replaces the illustration inside the stamp
   logo?: string;
 }
 
@@ -50,7 +41,10 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
     return events.filter(
       (e) =>
         (cat === "All" || e.category === cat) &&
-        (!needle || e.name.toLowerCase().includes(needle) || e.subEvents.some((s) => s.toLowerCase().includes(needle)))
+        (!needle ||
+          e.name.toLowerCase().includes(needle) ||
+          (CULTURES[e.slug]?.state ?? "").toLowerCase().includes(needle) ||
+          e.subEvents.some((s) => s.toLowerCase().includes(needle)))
     );
   }, [events, cat, q]);
 
@@ -82,21 +76,20 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Search events…"
+            placeholder="Search events or states…"
             className="w-full border-2 border-black bg-[#f5edd8] py-2 pl-9 pr-3 text-base font-semibold text-black shadow-[3px_3px_0_0_#000] outline-none placeholder:text-black/40 focus:bg-white"
           />
         </label>
       </div>
 
-      <p className="mb-6 text-sm font-bold uppercase tracking-[0.25em] text-[#f5edd8]/80" aria-live="polite">
+      <p className="mb-8 text-sm font-bold uppercase tracking-[0.25em] text-[#f5edd8]/80" aria-live="polite">
         Showing {shown.length} of {events.length} events
       </p>
 
-      {/* Cards */}
-      <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Stamp cards */}
+      <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map((e, i) => {
-          const Icon = ICONS[e.iconKey] ?? Star;
-          const st = CATEGORY_STYLE[e.category];
+          const culture = CULTURES[e.slug];
           return (
             <Link
               key={e.slug}
@@ -104,67 +97,65 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
               className="indie-pop group block"
               style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}
             >
-              <article className="flex h-full flex-col overflow-hidden border-2 border-black bg-[#f5edd8] text-[#1a0505] shadow-[5px_5px_0_0_#000] transition-all duration-200 group-hover:-translate-y-1.5 group-hover:-rotate-[0.6deg] group-hover:shadow-[9px_9px_0_0_#000]">
-                {/* image slot + badges + logo slot */}
-                <div className="relative">
-                  <ImageSlot
-                    src={e.image}
-                    alt={e.name}
-                    label="Event image"
-                    hint="1200 × 675"
-                    tone={st.tone}
-                    className="border-b-2 border-black transition-transform duration-300 group-hover:scale-[1.03]"
-                  />
-                  <span className="absolute left-3 top-3 border-2 border-black bg-[#f5edd8] px-2 py-0.5 text-sm font-bold tracking-[0.2em] shadow-[2px_2px_0_0_#000]">
-                    {String(e.number).padStart(2, "0")}
-                  </span>
-                  <span className={`absolute right-3 top-3 flex items-center gap-1.5 border-2 border-black px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest shadow-[2px_2px_0_0_#000] ${st.badge}`}>
-                    <Icon className="h-3.5 w-3.5" />{e.category}
-                  </span>
-                  <LogoSlot
-                    src={e.logo}
-                    alt={`${e.name} logo`}
-                    label="Logo"
-                    size="h-14 w-14"
-                    shape="rounded-full"
-                    className="absolute -bottom-7 left-4 !border-solid border-black bg-[#f5edd8] text-[#7a1c1c] shadow-[2px_2px_0_0_#000] transition-transform group-hover:rotate-6"
-                  />
-                </div>
-
-                <div className="flex flex-1 flex-col gap-3 px-4 pb-4 pt-10">
-                  <div>
-                    <h3 className={`text-2xl leading-tight ${display.className}`}>{e.name}</h3>
-                    <p className="mt-0.5 text-lg font-semibold leading-snug text-[#7a1c1c]">{e.tagline}</p>
-                  </div>
-
-                  <ul className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-sm font-semibold text-black/75">
-                    <li className="flex items-center gap-1.5"><CalendarDays className="h-4 w-4 shrink-0 text-[#c8421f]" />{e.date}</li>
-                    <li className="flex items-center gap-1.5"><Clock className="h-4 w-4 shrink-0 text-[#c8421f]" />{e.time}</li>
-                    <li className="flex items-center gap-1.5"><MapPin className="h-4 w-4 shrink-0 text-[#c8421f]" />{e.venue}</li>
-                    <li className="flex items-center gap-1.5"><Trophy className="h-4 w-4 shrink-0 text-[#c8421f]" />{e.prize}</li>
-                  </ul>
-
-                  {e.subEvents.length > 0 ? (
-                    <ul className="flex flex-wrap gap-1.5">
-                      {e.subEvents.slice(0, 3).map((s) => (
-                        <li key={s} className="border border-black/40 bg-black/5 px-2 py-0.5 text-xs font-bold uppercase tracking-wide">{s}</li>
-                      ))}
-                      {e.subEvents.length > 3 && (
-                        <li className="px-1 py-0.5 text-xs font-bold uppercase tracking-wide text-[#c8421f]">+{e.subEvents.length - 3} more</li>
+              {/* the stamp */}
+              <div className="stamp-shadow">
+                <div className="stamp-cut bg-[#fde9bd] p-4">
+                  <div className="bg-white p-1">
+                    <div className="stamp-scene relative aspect-[3/4] overflow-hidden">
+                      {e.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={e.image} alt={e.name} className="absolute inset-0 h-full w-full object-cover" />
+                      ) : (
+                        <CultureScene slug={e.slug} className="absolute inset-0 h-full w-full" />
                       )}
-                    </ul>
-                  ) : (
-                    <p className="text-xs font-bold uppercase tracking-widest text-black/50">Marquee event</p>
-                  )}
 
-                  <div className="mt-auto flex items-center justify-between border-t-2 border-dashed border-black/25 pt-3">
-                    <span className="text-sm font-bold uppercase tracking-wider">View details</span>
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-[#f5c928] transition-transform group-hover:translate-x-1">
-                      <ArrowRight className="h-4 w-4" />
-                    </span>
+                      {/* title on the sky */}
+                      <div className="absolute inset-x-2 top-3 text-center">
+                        <h3 className="text-[2rem] font-extrabold uppercase leading-[0.92] tracking-tight [text-shadow:0_2px_0_rgba(255,255,255,0.55)]" style={{ color: culture?.ink ?? "#1a0505" }}>
+                          {e.name}
+                        </h3>
+                        <p className="mt-1.5 text-lg font-bold uppercase tracking-[0.3em]" style={{ color: culture?.sub ?? "#7a1c1c" }}>
+                          {culture ? "India" : e.category}
+                        </p>
+                      </div>
+
+                      {/* number + category */}
+                      <span className="absolute bottom-2 left-2 border-2 border-black bg-[#f5edd8] px-2 py-0.5 text-sm font-bold tracking-[0.2em] text-black shadow-[2px_2px_0_0_#000]">
+                        {String(e.number).padStart(2, "0")}
+                      </span>
+                      <span className={`absolute bottom-2 right-2 border-2 border-black px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest shadow-[2px_2px_0_0_#000] ${CATEGORY_BADGE[e.category]}`}>
+                        {e.category}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </article>
+              </div>
+
+              {/* caption */}
+              <div className="mt-5 flex items-start gap-3 text-[#f5edd8]">
+                <LogoSlot
+                  src={e.logo}
+                  alt={`${e.name} logo`}
+                  label="Logo"
+                  size="h-12 w-12"
+                  shape="rounded-full"
+                  className="text-[#f5c928]"
+                />
+                <div className="min-w-0">
+                  <p className={`text-xl leading-tight tracking-[0.18em] uppercase ${serif.className}`}>{culture?.state ?? "India"}</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.45em] text-[#f5edd8]/70">Bharat · {culture?.landmark}</p>
+                </div>
+              </div>
+              <p className={`mt-3 text-lg leading-snug text-[#f5c928] ${display.className}`}>{e.tagline}</p>
+              <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold text-[#f5edd8]/85">
+                <li className="flex items-center gap-1.5"><CalendarDays className="h-4 w-4 text-[#f5c928]" />{e.date}</li>
+                <li className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-[#f5c928]" />{e.venue}</li>
+                <li className="flex items-center gap-1.5"><Trophy className="h-4 w-4 text-[#f5c928]" />{e.prize}</li>
+              </ul>
+              <span className="mt-3 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#f5c928]">
+                {e.subEvents.length > 0 ? `${e.subEvents.length} competitions · ` : ""}View details
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </span>
             </Link>
           );
         })}

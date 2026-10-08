@@ -57,6 +57,26 @@ export function IndieStyles() {
       .splash { position: fixed; inset: 0; z-index: 100; background: #4a0e0e; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; transition: transform .75s cubic-bezier(.7,0,.3,1); animation: indie-splash-out .01s linear 6s forwards; }
       .splash.out { transform: translateY(-100%); }
 
+      /* Postage-stamp edge: scalloped holes cut along all four sides */
+      .stamp-cut {
+        -webkit-mask:
+          radial-gradient(circle 7px at 50% 0, transparent 98%, #000) 0 0 / 22px 100% repeat-x,
+          radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) 0 0 / 22px 100% repeat-x,
+          radial-gradient(circle 7px at 0 50%, transparent 98%, #000) 0 0 / 100% 22px repeat-y,
+          radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) 0 0 / 100% 22px repeat-y;
+        -webkit-mask-composite: source-in;
+        mask:
+          radial-gradient(circle 7px at 50% 0, transparent 98%, #000) 0 0 / 22px 100% repeat-x,
+          radial-gradient(circle 7px at 50% 100%, transparent 98%, #000) 0 0 / 22px 100% repeat-x,
+          radial-gradient(circle 7px at 0 50%, transparent 98%, #000) 0 0 / 100% 22px repeat-y,
+          radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) 0 0 / 100% 22px repeat-y;
+        mask-composite: intersect;
+      }
+      .stamp-shadow { filter: drop-shadow(5px 6px 0 rgba(0,0,0,.5)); transition: transform .25s ease, filter .25s ease; }
+      .group:hover .stamp-shadow { transform: translateY(-6px) rotate(-1.2deg); filter: drop-shadow(9px 11px 0 rgba(0,0,0,.5)); }
+      .stamp-scene svg { transition: transform .5s ease; }
+      .group:hover .stamp-scene svg { transform: scale(1.06); }
+
       /* Pinned "drawer" sections that slide over one another (large screens only) */
       @media (min-width: 768px) and (min-height: 760px) {
         .panel { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; }
@@ -95,6 +115,7 @@ export function IndieStyles() {
         .indie-drive, .indie-train, .indie-blink, .indie-float, .indie-pop, .indie-shine,
         .indie-rise, .indie-cloud, .indie-metro, .indie-bob, .indie-vup, .indie-vdown, .indie-qshake { animation: none; }
         .splash { display: none; }
+        .stamp-shadow, .stamp-scene svg { transition: none; }
         .reveal { opacity: 1; transform: none; transition: none; }
         .flip-inner { transition: none; }
       }
@@ -163,7 +184,7 @@ function Beads({ n, r, size }: { n: number; r: number; size: number }) {
     <>
       {Array.from({ length: n }).map((_, i) => {
         const a = (Math.PI * 2 * i) / n;
-        return <circle key={i} cx={Math.cos(a) * r} cy={Math.sin(a) * r} r={size} />;
+        return <circle key={i} cx={Math.round(Math.cos(a) * r * 100) / 100} cy={Math.round(Math.sin(a) * r * 100) / 100} r={size} />;
       })}
     </>
   );
