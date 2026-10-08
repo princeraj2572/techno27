@@ -5,15 +5,9 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays, MapPin, Search, Trophy } from "lucide-react";
 import { display, serif } from "@/components/indie";
 import { LogoSlot } from "@/components/media";
-import { CULTURES, CultureScene } from "@/components/culture-art";
+import { CULTURES } from "@/components/culture-art";
+import { Stamp } from "@/components/stamp";
 import { EVENT_CATEGORIES, type EventCategory } from "@/data/public-events";
-
-const CATEGORY_BADGE: Record<EventCategory, string> = {
-  Technical: "bg-[#f5c928] text-black",
-  Cultural: "bg-[#ff6a00] text-black",
-  Management: "bg-[#ff2d8a] text-black",
-  Fun: "bg-[#3b82f6] text-white",
-};
 
 export interface EventCard {
   slug: string;
@@ -97,39 +91,7 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
               className="indie-pop group block"
               style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}
             >
-              {/* the stamp */}
-              <div className="stamp-shadow">
-                <div className="stamp-cut bg-[#fde9bd] p-4">
-                  <div className="bg-white p-1">
-                    <div className="stamp-scene relative aspect-[3/4] overflow-hidden">
-                      {e.image ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={e.image} alt={e.name} className="absolute inset-0 h-full w-full object-cover" />
-                      ) : (
-                        <CultureScene slug={e.slug} className="absolute inset-0 h-full w-full" />
-                      )}
-
-                      {/* title on the sky */}
-                      <div className="absolute inset-x-2 top-3 text-center">
-                        <h3 className="text-[2rem] font-extrabold uppercase leading-[0.92] tracking-tight [text-shadow:0_2px_0_rgba(255,255,255,0.55)]" style={{ color: culture?.ink ?? "#1a0505" }}>
-                          {e.name}
-                        </h3>
-                        <p className="mt-1.5 text-lg font-bold uppercase tracking-[0.3em]" style={{ color: culture?.sub ?? "#7a1c1c" }}>
-                          {culture ? "India" : e.category}
-                        </p>
-                      </div>
-
-                      {/* number + category */}
-                      <span className="absolute bottom-2 left-2 border-2 border-black bg-[#f5edd8] px-2 py-0.5 text-sm font-bold tracking-[0.2em] text-black shadow-[2px_2px_0_0_#000]">
-                        {String(e.number).padStart(2, "0")}
-                      </span>
-                      <span className={`absolute bottom-2 right-2 border-2 border-black px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest shadow-[2px_2px_0_0_#000] ${CATEGORY_BADGE[e.category]}`}>
-                        {e.category}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Stamp slug={e.slug} name={e.name} category={e.category} number={e.number} image={e.image} />
 
               {/* caption */}
               <div className="mt-5 flex items-start gap-3 text-[#f5edd8]">

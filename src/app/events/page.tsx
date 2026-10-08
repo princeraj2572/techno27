@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CalendarDays, MapPin, Trophy, Users } from "lucide-react";
 import { PUBLIC_EVENTS } from "@/data/public-events";
 import {
   EVENTS_BANNER, EVENT_FAQ, EVENT_MEDIA, EVENT_STEPS, FESTIVAL_LOGO, FEST_START,
@@ -9,6 +9,8 @@ import { EventsCards } from "@/components/events-cards";
 import { Countdown } from "@/components/countdown";
 import { CountUp, Reveal } from "@/components/motion";
 import { ImageSlot, LogoSlot } from "@/components/media";
+import { CULTURES } from "@/components/culture-art";
+import { Postmark, Stamp } from "@/components/stamp";
 import { Band, BlockButton, Marquee, PageShell, TicketCta, display, serif } from "@/components/indie";
 
 export const metadata = { title: "Events | Techno-aiMBiAtion 2027" };
@@ -99,36 +101,63 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
         </Band>
       </Reveal>
 
-      {/* Spotlight */}
+      {/* Spotlight — the featured event as a big stamp */}
       <Reveal>
-        <Band tone="parchment" mandala className="!py-12">
-          <div className="relative grid overflow-hidden border-2 border-black bg-[#f5edd8] text-[#1a0505] shadow-[7px_7px_0_0_#000] md:grid-cols-2">
-            <span className="absolute left-4 top-4 z-10 -rotate-3 border-2 border-black bg-[#ff2d8a] px-3 py-1 text-xs font-bold uppercase tracking-[0.25em]">Spotlight</span>
-            <ImageSlot
-              src={featured.image}
-              alt={featured.name}
-              label="Spotlight image"
-              hint="1200 × 900"
-              ratio="aspect-[4/3]"
-              tone="from-[#ff6a00] to-[#7a1c1c]"
-              className="md:h-full md:!aspect-auto md:min-h-[18rem]"
-            />
-            <div className="flex flex-col gap-4 p-6 sm:p-8">
+        <Band tone="parchment" mandala className="!py-14">
+          <div className="grid items-center gap-10 md:grid-cols-[minmax(0,24rem)_1fr]">
+            <div className="group relative mx-auto w-full max-w-sm">
+              <span className="absolute -left-3 -top-4 z-10 -rotate-6 border-2 border-black bg-[#ff2d8a] px-3 py-1 text-xs font-bold uppercase tracking-[0.25em] text-black shadow-[3px_3px_0_0_#000]">
+                ★ Spotlight
+              </span>
+              <Stamp slug={featured.slug} name={featured.name} category={featured.category} number={featured.number} image={featured.image} big />
+              <Postmark lines={false} className="pointer-events-none absolute -bottom-9 -right-9 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
+            </div>
+
+            <div className="flex flex-col gap-5 text-[#1a0505]">
               <div className="flex items-center gap-3">
                 <LogoSlot src={featured.logo} alt={`${featured.name} logo`} label="Logo" size="h-14 w-14" shape="rounded-full" className="text-[#7a1c1c]" />
-                <p className="text-xs font-bold uppercase tracking-[0.3em] text-black/60">{featured.category} · {featured.subEvents.length} competitions</p>
+                <div>
+                  <p className={`text-2xl uppercase tracking-[0.18em] text-[#7a1c1c] ${serif.className}`}>{CULTURES[featured.slug]?.state}</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-black/60">Bharat · {CULTURES[featured.slug]?.landmark}</p>
+                </div>
               </div>
-              <h2 className={`text-4xl sm:text-5xl leading-none ${display.className}`}>{featured.name}</h2>
-              <p className="text-xl font-semibold text-[#7a1c1c]">{featured.tagline}</p>
-              <p className="text-lg leading-snug text-black/75">
-                {featured.date} · {featured.time} · {featured.venue}. Prize pool {featured.prize}.
-              </p>
+
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#c8421f]">{featured.category} · {featured.subEvents.length} competitions</p>
+                <h2 className={`mt-1 text-5xl sm:text-6xl leading-none ${display.className}`}>{featured.name}</h2>
+                <p className="mt-2 text-2xl font-semibold text-[#7a1c1c]">{featured.tagline}</p>
+              </div>
+
+              <ul className="grid grid-cols-2 gap-3">
+                {[
+                  [CalendarDays, "Date", `${featured.date} · ${featured.time}`],
+                  [MapPin, "Venue", featured.venue],
+                  [Trophy, "Prize pool", featured.prize],
+                  [Users, "Format", `${featured.subEvents.length} competitions`],
+                ].map(([Icon, label, value]) => {
+                  const I = Icon as typeof CalendarDays;
+                  return (
+                    <li key={label as string} className="flex items-start gap-2.5 border-2 border-black bg-[#f5edd8] p-3 shadow-[3px_3px_0_0_#000]">
+                      <I className="mt-0.5 h-5 w-5 shrink-0 text-[#c8421f]" />
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-black/55">{label as string}</p>
+                        <p className="text-base font-bold leading-tight">{value as string}</p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+
               <ul className="flex flex-wrap gap-1.5">
                 {featured.subEvents.map((s) => (
                   <li key={s} className="border border-black/40 bg-black/5 px-2 py-0.5 text-xs font-bold uppercase tracking-wide">{s}</li>
                 ))}
               </ul>
-              <div className="mt-auto pt-2"><BlockButton href={`/events/${featured.slug}`}>View event →</BlockButton></div>
+
+              <div className="flex flex-wrap gap-3 pt-1">
+                <BlockButton href={`/events/${featured.slug}`}>View event →</BlockButton>
+                <BlockButton href="/auth/signup" tone="mustard">Register</BlockButton>
+              </div>
             </div>
           </div>
         </Band>

@@ -270,11 +270,20 @@ export const MYSTERY_HINTS = [
 ];
 
 // ---------------------------------------------------------------------------
-// Artwork slots — add file paths (files go in /public) to show real pictures.
-// Leave a field out and a labelled placeholder keeps the space reserved.
+// Artwork slots
+//
+// HOW TO CHANGE AN EVENT'S PICTURE LATER
+//   1. Put the file in  public/images/events/   (e.g. robovation.jpg)
+//   2. Add one line to EVENT_MEDIA below, using the event's slug:
+//        robovation: { image: "/images/events/robovation.jpg", logo: "/images/events/robovation-logo.png" },
+//   The picture then replaces the cultural illustration on that event's stamp card (and in the
+//   Spotlight, if it is the featured event). Remove the line to bring the illustration back.
+//   Slugs: backtrace, kalakriti, robovation, masterchef, antaragni, ideathon, beat-battle, techlab,
+//          startup-business-plan, riwayat-fashion-show, roadies, voice-of-youth, aima, codigo, designathon
+//   Image tips: portrait 3:4 (about 900 x 1200) fits the stamp best; logos should be square (256 x 256).
 // ---------------------------------------------------------------------------
 export interface EventMedia {
-  image?: string; // card + spotlight picture, ~1200 x 675
+  image?: string; // stamp picture, portrait 3:4 (~900 x 1200)
   logo?: string; // round event logo, square, ~256 x 256
 }
 export const EVENT_MEDIA: Record<string, EventMedia> = {
