@@ -24,7 +24,7 @@ export default function ContactPage() {
   return (
     <PageShell>
       {/* Heading: "Tera bhai sabkuch sambhal lega" as a logo-style lockup */}
-      <Band tone="teal" art="gold" className="!max-w-6xl !py-14">
+      <Band tone="teal" art="gold" artCenterRight className="!max-w-6xl !py-14">
         <div className="grid items-center gap-8 md:grid-cols-[1fr_auto]">
           <div>
             <p className="mb-5 text-sm font-bold uppercase tracking-[0.4em] text-[#ffd34d]">Team · The people behind Techno-aiMBiAtion &apos;27</p>

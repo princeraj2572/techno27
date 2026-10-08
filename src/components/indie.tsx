@@ -212,14 +212,14 @@ function Mandala({ cx, cy, s, rot = 0 }: { cx: number; cy: number; s: number; ro
   );
 }
 
-export function MandalaArt({ variant = "orange" }: { variant?: "orange" | "gold" }) {
+export function MandalaArt({ variant = "orange", centerRight = false }: { variant?: "orange" | "gold"; centerRight?: boolean }) {
   const gold = variant === "gold";
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" fill="none" stroke={gold ? "#d9b54a" : "#a8400b"} strokeWidth="3" strokeLinejoin="round" opacity={gold ? 0.5 : 0.55}>
         <Mandala cx={1380} cy={120} s={1.15} rot={8} />
         <Mandala cx={140} cy={820} s={1.0} rot={-12} />
-        <Mandala cx={820} cy={470} s={0.55} rot={20} />
+        <Mandala cx={centerRight ? 1330 : 820} cy={centerRight ? 500 : 470} s={centerRight ? 0.62 : 0.55} rot={20} />
         <Mandala cx={1560} cy={860} s={0.6} rot={0} />
         <Mandala cx={90} cy={60} s={0.5} rot={14} />
       </svg>
@@ -246,7 +246,7 @@ const BAND_TONES = {
 export type BandTone = keyof typeof BAND_TONES;
 
 export function Band({
-  tone, zigzag, mandala = false, halftone = false, ghost, panel = false, art = false, className = "", children,
+  tone, zigzag, mandala = false, halftone = false, ghost, panel = false, art = false, artCenterRight = false, className = "", children,
 }: {
   tone: BandTone;
   zigzag?: string;
@@ -255,12 +255,13 @@ export function Band({
   ghost?: string;
   panel?: boolean;
   art?: boolean | "gold";
+  artCenterRight?: boolean; // move the middle mandala to the right edge
   className?: string;
   children: ReactNode;
 }) {
   return (
     <section className={`relative overflow-hidden ${panel ? "panel" : ""} ${BAND_TONES[tone]} ${mandala ? "indie-mandala" : ""} ${halftone ? "indie-halftone" : ""}`}>
-      {art && <MandalaArt variant={art === "gold" ? "gold" : "orange"} />}
+      {art && <MandalaArt variant={art === "gold" ? "gold" : "orange"} centerRight={artCenterRight} />}
       {zigzag && (
         <div
           aria-hidden
