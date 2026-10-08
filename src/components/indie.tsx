@@ -139,9 +139,9 @@ export function PageShell({ children, footer = true }: { children: ReactNode; fo
   );
 }
 
-export function Marquee({ text, className, speed = 30, reverse = false }: { text: string; className: string; speed?: number; reverse?: boolean }) {
+export function Marquee({ text, className, speed = 30, reverse = false, style }: { text: string; className: string; speed?: number; reverse?: boolean; style?: React.CSSProperties }) {
   return (
-    <div className={`overflow-hidden border-y-2 border-black ${className}`}>
+    <div className={`overflow-hidden border-y-2 border-black ${className}`} style={style}>
       <div
         className="indie-marquee flex w-max whitespace-nowrap"
         style={{ animationDuration: `${speed}s`, animationDirection: reverse ? "reverse" : "normal" }}

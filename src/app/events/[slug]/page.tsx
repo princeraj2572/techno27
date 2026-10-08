@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Clock, MapPin, Trophy, Users, Wallet } from "lucide-react";
 import { PUBLIC_EVENTS, getPublicEvent } from "@/data/public-events";
-import { getEventMock } from "@/data/dummy";
-import { ACCENTS, Band, CARD, Marquee, PageShell, TicketCta, display, serif } from "@/components/indie";
+import { EVENT_MEDIA, getEventMock } from "@/data/dummy";
+import { DEFAULT_THEME, EVENT_THEMES, patternStyle } from "@/data/event-themes";
+import { CULTURES } from "@/components/culture-art";
+import { Postmark, Stamp } from "@/components/stamp";
+import { LogoSlot } from "@/components/media";
+import { Marquee, PageShell, serif } from "@/components/indie";
 
 export function generateStaticParams() {
   return PUBLIC_EVENTS.map((e) => ({ slug: e.slug }));
@@ -22,94 +26,164 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
   const index = PUBLIC_EVENTS.findIndex((e) => e.slug === slug);
   const next = PUBLIC_EVENTS[(index + 1) % PUBLIC_EVENTS.length];
+  const prev = PUBLIC_EVENTS[(index + PUBLIC_EVENTS.length - 1) % PUBLIC_EVENTS.length];
   const mock = getEventMock(event.slug, event.name, event.category, index);
+  const media = EVENT_MEDIA[event.slug] ?? {};
+  const t = EVENT_THEMES[slug] ?? DEFAULT_THEME;
+  const culture = CULTURES[slug];
+  const pattern = patternStyle(t.pattern, t.patternColor);
 
   const facts = [
-    { label: "Date", value: mock.date },
-    { label: "Time", value: mock.time },
-    { label: "Venue", value: mock.venue },
-    { label: "Team size", value: mock.teamSize },
-    { label: "Prize pool", value: mock.prize },
-    { label: "Entry fee", value: mock.fee },
+    { Icon: CalendarDays, label: "Date", value: mock.date },
+    { Icon: Clock, label: "Time", value: mock.time },
+    { Icon: MapPin, label: "Venue", value: mock.venue },
+    { Icon: Users, label: "Team size", value: mock.teamSize },
+    { Icon: Trophy, label: "Prize pool", value: mock.prize },
+    { Icon: Wallet, label: "Entry fee", value: mock.fee },
   ];
+
+  const cardStyle = { background: t.card, color: t.cardInk, border: `2px solid ${t.accent2}`, boxShadow: `5px 5px 0 ${t.accent2}` };
+  const pill = { background: t.accent, color: t.accentInk, border: "2px solid #000", boxShadow: "3px 3px 0 #000" };
 
   return (
     <PageShell>
-      <Band tone="crimson" mandala className="!py-12">
-        <Link href="/events" className="inline-flex items-center gap-1 text-sm font-bold uppercase tracking-wider text-[#f5c928] hover:text-white">
-          <ArrowLeft className="h-4 w-4" /> All events
-        </Link>
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <span className="bg-[#ff6a00] text-black text-sm font-bold uppercase tracking-[0.25em] px-3 py-1 border-2 border-black -rotate-1">
-            Track {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="border-2 border-[#f5edd8]/70 px-3 py-0.5 text-sm font-bold uppercase tracking-widest">{event.category}</span>
-        </div>
-        <h1 className={`mt-4 text-5xl sm:text-7xl leading-[0.95] text-[#f5c928] break-words ${serif.className}`} style={{ textShadow: "4px 4px 0 #5a0010" }}>
-          {event.name}
-        </h1>
-        <p className="mt-3 text-2xl sm:text-3xl font-bold uppercase text-[#f5edd8]">{mock.tagline}</p>
-      </Band>
+      {/* Hero — themed to the event's culture */}
+      <section className="relative overflow-hidden" style={{ background: `linear-gradient(160deg, ${t.bg} 0%, ${t.bg2} 100%)`, color: t.ink }}>
+        <div aria-hidden className="absolute inset-0 opacity-30" style={pattern} />
+        <p aria-hidden className="pointer-events-none absolute -bottom-8 -left-4 select-none whitespace-nowrap text-[9rem] sm:text-[13rem] font-extrabold uppercase leading-none opacity-[0.08]">
+          {culture?.state ?? event.category}
+        </p>
 
-      <Marquee className="bg-[#ff6a00] text-black font-bold uppercase tracking-wider text-lg py-1.5 -rotate-1" text={`${event.name} ✦ ${mock.tagline} ✦ `} />
+        <div className="relative mx-auto grid max-w-5xl items-center gap-12 px-6 py-14 md:grid-cols-[1fr_auto]">
+          <div className="space-y-5">
+            <Link href="/events" className="inline-flex items-center gap-1 text-sm font-bold uppercase tracking-wider hover:underline" style={{ color: t.soft }}>
+              <ArrowLeft className="h-4 w-4" /> All events
+            </Link>
 
-      <div className="max-w-5xl mx-auto px-6 py-14 space-y-14">
-        <section className="grid gap-4 grid-cols-2 sm:grid-cols-3">
-          {facts.map((f, i) => (
-            <div key={f.label} className={`${ACCENTS[i % ACCENTS.length]} text-black border-2 border-black shadow-[4px_4px_0_0_#000] rounded-xl p-4`}>
-              <p className="text-xs font-bold uppercase tracking-wider opacity-75">{f.label}</p>
-              <p className={`mt-2 text-lg leading-tight ${display.className}`}>{f.value}</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="px-3 py-1 text-sm font-bold uppercase tracking-[0.25em] -rotate-1" style={pill}>Event {String(index + 1).padStart(2, "0")}</span>
+              <span className="border-2 px-3 py-0.5 text-sm font-bold uppercase tracking-widest" style={{ borderColor: t.ink }}>{event.category}</span>
             </div>
-          ))}
-        </section>
 
-        <section className="grid gap-8 md:grid-cols-2">
-          <div>
-            <h2 className={`text-3xl text-[#f5c928] mb-4 ${display.className}`}>About</h2>
-            <p className="text-xl leading-snug text-[#f5edd8]/85">{mock.about}</p>
+            <div className="flex items-center gap-3">
+              <LogoSlot src={media.logo} alt={`${event.name} logo`} label="Logo" size="h-14 w-14" shape="rounded-full" className="bg-white/40" />
+              <div>
+                <p className={`text-2xl uppercase tracking-[0.18em] ${serif.className}`}>{culture?.state}</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.4em]" style={{ color: t.soft }}>Bharat · {culture?.landmark}</p>
+              </div>
+            </div>
+
+            <h1 className="text-6xl font-extrabold uppercase leading-[0.9] tracking-tight sm:text-8xl break-words">{event.name}</h1>
+            <p className="text-2xl font-semibold sm:text-3xl" style={{ color: t.soft }}>{mock.tagline}</p>
+
+            <p className="flex flex-wrap gap-x-5 gap-y-1 text-lg font-semibold">
+              <span className="flex items-center gap-1.5"><CalendarDays className="h-5 w-5" />{mock.date}</span>
+              <span className="flex items-center gap-1.5"><MapPin className="h-5 w-5" />{mock.venue}</span>
+              <span className="flex items-center gap-1.5"><Trophy className="h-5 w-5" />{mock.prize}</span>
+            </p>
+
+            <div className="flex flex-wrap gap-3 pt-1">
+              <Link href="/auth/signup" className="inline-block px-8 py-3 text-lg font-bold uppercase tracking-widest transition hover:-translate-y-0.5" style={pill}>Register now</Link>
+              {event.subEvents.length > 0 && (
+                <a href="#lineup" className="inline-block border-2 px-8 py-3 text-lg font-bold uppercase tracking-widest transition hover:-translate-y-0.5" style={{ borderColor: t.ink }}>See the lineup</a>
+              )}
+            </div>
           </div>
-          <div>
-            <h2 className={`text-3xl text-[#f5c928] mb-4 ${display.className}`}>Rules</h2>
-            <ol className={`${CARD} rounded-xl divide-y-2 divide-dashed divide-black/25`}>
-              {mock.rules.map((r, i) => (
-                <li key={r} className="flex gap-3 px-4 py-3">
-                  <span className={`text-xl text-[#ff6a00] ${display.className}`}>{String(i + 1).padStart(2, "0")}</span>
-                  <span className="text-lg leading-snug">{r}</span>
-                </li>
-              ))}
-            </ol>
+
+          <div className="group relative mx-auto w-64 sm:w-72">
+            <Stamp slug={event.slug} name={event.name} category={event.category} number={index + 1} image={media.image} />
+            <Postmark lines={false} className="pointer-events-none absolute -bottom-9 -right-9 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
           </div>
-        </section>
+        </div>
+      </section>
 
-        {event.subEvents.length > 0 && (
-          <section>
-            <h2 className={`text-3xl text-[#f5c928] mb-4 ${display.className}`}>The lineup</h2>
-            <ol className={`${CARD} rounded-xl overflow-hidden divide-y-2 divide-dashed divide-black/30`}>
-              {event.subEvents.map((s, i) => (
-                <li key={s} className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#f5c928]/30 transition-colors">
-                  <span className={`text-2xl w-10 shrink-0 text-[#ff6a00] ${display.className}`}>{String(i + 1).padStart(2, "0")}</span>
-                  <span className="text-xl font-bold uppercase tracking-wide flex-1">{s}</span>
-                </li>
-              ))}
-            </ol>
-          </section>
-        )}
+      {/* Motif strip */}
+      <Marquee
+        className="-rotate-1 py-1.5 text-lg font-bold uppercase tracking-wider"
+        style={{ background: t.accent, color: t.accentInk }}
+        text={t.motif}
+        speed={36}
+      />
 
-        <section className={`${CARD} rounded-xl p-6 flex flex-wrap items-center justify-between gap-4`}>
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-black/50">Event coordinator</p>
-            <p className={`text-2xl ${display.className}`}>{mock.contact.name}</p>
-            <p className="text-lg font-semibold tabular-nums">{mock.contact.phone}</p>
+      {/* Body */}
+      <section className="relative" style={{ background: t.bg2, color: t.ink }}>
+        <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={pattern} />
+        <div className="relative mx-auto max-w-5xl space-y-14 px-6 py-14">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            {facts.map(({ Icon, label, value }) => (
+              <div key={label} className="flex items-start gap-3 p-4" style={{ ...cardStyle, borderLeft: `8px solid ${t.accent}` }}>
+                <Icon className="mt-0.5 h-6 w-6 shrink-0" style={{ color: t.accent }} />
+                <div>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.25em] opacity-60">{label}</p>
+                  <p className="text-lg font-bold leading-tight">{value}</p>
+                </div>
+              </div>
+            ))}
           </div>
-          <p className="text-xs uppercase tracking-widest text-black/50">Sample details — all data is fictional.</p>
-        </section>
 
-        <Link href={`/events/${next.slug}`} className="inline-flex items-center gap-2 text-lg font-bold uppercase tracking-wider text-[#f5c928] hover:text-[#ff6a00]">
-          Next track: {next.name} <ArrowRight className="h-5 w-5" />
-        </Link>
-      </div>
+          <div className="grid gap-8 md:grid-cols-2">
+            <div>
+              <h2 className={`mb-4 text-4xl ${serif.className}`} style={{ color: t.accent2 === t.accent ? t.ink : t.ink }}>About</h2>
+              <p className="text-xl leading-snug">{mock.about}</p>
+              <p className="mt-4 border-l-4 pl-4 text-lg font-semibold italic" style={{ borderColor: t.accent, color: t.soft }}>
+                Inspired by {culture?.landmark} · {culture?.state}
+              </p>
+            </div>
+            <div>
+              <h2 className={`mb-4 text-4xl ${serif.className}`}>Rules</h2>
+              <ol className="divide-y-2 divide-dashed" style={{ ...cardStyle, borderColor: t.accent2 }}>
+                {mock.rules.map((r, i) => (
+                  <li key={r} className="flex gap-3 px-4 py-3" style={{ borderColor: `${t.accent2}55` }}>
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold" style={{ background: t.accent, color: t.accentInk }}>{i + 1}</span>
+                    <span className="text-lg leading-snug">{r}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
 
-      <TicketCta title={`Join ${event.name}`} text="Sign up with your OPJU email for free entry, then pick this event from your dashboard." href="/auth/signup" label="Register now" />
+          {event.subEvents.length > 0 && (
+            <div id="lineup" className="scroll-mt-24">
+              <h2 className={`mb-4 text-4xl ${serif.className}`}>The lineup</h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {event.subEvents.map((s, i) => (
+                  <div key={s} className="flex items-center gap-4 px-4 py-3" style={cardStyle}>
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-lg font-bold" style={{ background: t.accent, color: t.accentInk }}>{String(i + 1).padStart(2, "0")}</span>
+                    <span className="text-xl font-bold uppercase tracking-wide">{s}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-center justify-between gap-4 p-6" style={cardStyle}>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-60">Event coordinator</p>
+              <p className={`text-3xl ${serif.className}`}>{mock.contact.name}</p>
+              <p className="text-lg font-semibold tabular-nums">{mock.contact.phone}</p>
+            </div>
+            <p className="text-xs font-bold uppercase tracking-widest opacity-60">Sample details — all data is fictional.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Register + neighbours */}
+      <section className="relative" style={{ background: t.accent2, color: "#fff" }}>
+        <div aria-hidden className="absolute inset-0 opacity-20" style={patternStyle(t.pattern, "#ffffff")} />
+        <div className="relative mx-auto max-w-5xl px-6 py-14">
+          <div className="mx-auto max-w-2xl p-8 text-center" style={{ background: t.card, color: t.cardInk, border: "2px solid #000", boxShadow: "6px 6px 0 #000" }}>
+            <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-60">Admit one · {culture?.state}</p>
+            <h2 className={`mt-2 text-4xl sm:text-5xl ${serif.className}`}>Join {event.name}</h2>
+            <p className="mt-2 text-xl leading-snug">Sign up with your OPJU email for free entry, then pick this event from your dashboard.</p>
+            <Link href="/auth/signup" className="mt-5 inline-block px-8 py-3 text-lg font-bold uppercase tracking-widest transition hover:-translate-y-0.5" style={pill}>Register now</Link>
+          </div>
+
+          <div className="mt-10 flex flex-wrap items-center justify-between gap-4 text-lg font-bold uppercase tracking-wider">
+            <Link href={`/events/${prev.slug}`} className="flex items-center gap-2 hover:underline"><ArrowLeft className="h-5 w-5" /> {prev.name}</Link>
+            <Link href={`/events/${next.slug}`} className="flex items-center gap-2 hover:underline">{next.name} <ArrowRight className="h-5 w-5" /></Link>
+          </div>
+        </div>
+      </section>
     </PageShell>
   );
 }
