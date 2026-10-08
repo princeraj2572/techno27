@@ -1,15 +1,15 @@
 import { Band, BlockButton, PageShell, serif } from "@/components/indie";
+import { SPONSOR_TIERS } from "@/data/dummy";
 
 export const metadata = { title: "Sponsors | Techno-aiMBiAtion 2027" };
 
-// PLACEHOLDER tiers/slots — replace with real sponsors and logos.
-const TIERS = [
-  { name: "Title Sponsor", role: "Title partner", slots: 1, tile: "h-40 w-full max-w-sm" },
-  { name: "Co-Powered By", role: "Co-powered by", slots: 2, tile: "h-36 w-full max-w-xs" },
-  { name: "Gold Partners", role: "Gold partner", slots: 4, tile: "h-28 w-40" },
-  { name: "Silver Partners", role: "Silver partner", slots: 6, tile: "h-24 w-36" },
-  { name: "Associate Partners", role: "Associate", slots: 8, tile: "h-20 w-32" },
-];
+const TILE: Record<string, { box: string; mark: string; name: string }> = {
+  xl: { box: "w-full max-w-sm p-6", mark: "h-20 w-20 text-4xl", name: "text-3xl" },
+  lg: { box: "w-full max-w-xs p-5", mark: "h-16 w-16 text-3xl", name: "text-2xl" },
+  md: { box: "w-40 p-4", mark: "h-14 w-14 text-2xl", name: "text-xl" },
+  sm: { box: "w-36 p-3", mark: "h-12 w-12 text-xl", name: "text-lg" },
+  xs: { box: "w-32 p-3", mark: "h-10 w-10 text-lg", name: "text-base" },
+};
 
 export default function SponsorsPage() {
   return (
@@ -19,24 +19,33 @@ export default function SponsorsPage() {
         <p className="mt-2 text-xl font-semibold text-black/80">The brands and partners powering Techno-aiMBiAtion &apos;27.</p>
 
         <div className="mt-12 space-y-12">
-          {TIERS.map((t) => (
-            <div key={t.name}>
-              <h2 className={`mb-4 text-center text-2xl text-black ${serif.className}`}>{t.name}</h2>
-              <div className="flex flex-wrap justify-center gap-5">
-                {Array.from({ length: t.slots }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={`${t.tile} flex flex-col items-center justify-center rounded-xl border-2 border-black bg-[#ffd9c4] shadow-[4px_4px_0_0_#000] transition-transform hover:-translate-y-1`}
-                  >
-                    <span className="text-xl font-bold uppercase tracking-widest text-black/40">Logo</span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-black/50">{t.role}</span>
-                  </div>
-                ))}
+          {SPONSOR_TIERS.map((t) => {
+            const s = TILE[t.size];
+            return (
+              <div key={t.name}>
+                <h2 className={`mb-4 text-center text-2xl text-black ${serif.className}`}>{t.name}</h2>
+                <div className="flex flex-wrap justify-center gap-5">
+                  {t.sponsors.map((sp) => (
+                    <div
+                      key={sp.name}
+                      className={`${s.box} flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-black bg-[#ffd9c4] text-center shadow-[4px_4px_0_0_#000] transition-transform hover:-translate-y-1`}
+                    >
+                      <span
+                        className={`${s.mark} flex items-center justify-center rounded-full border-2 border-black font-bold text-white ${serif.className}`}
+                        style={{ backgroundColor: sp.color }}
+                      >
+                        {sp.name[0]}
+                      </span>
+                      <span className={`${s.name} font-bold leading-tight text-black`}>{sp.name}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-black/60">{t.role} · {sp.field}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-        <p className="mt-10 text-center text-xs uppercase tracking-widest text-black/60">Sponsors will be announced soon.</p>
+        <p className="mt-10 text-center text-xs uppercase tracking-widest text-black/60">Sample sponsors — all brands are fictional.</p>
       </Band>
 
       <Band tone="black">

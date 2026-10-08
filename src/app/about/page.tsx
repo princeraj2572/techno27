@@ -1,5 +1,6 @@
 import { Band, Marquee, Note, PageHero, PageShell, TicketCta, Vinyl, ACCENTS, CARD, display, serif } from "@/components/indie";
 import { PUBLIC_EVENTS } from "@/data/public-events";
+import { MILESTONES } from "@/data/dummy";
 
 export const metadata = { title: "About | Techno-aiMBiAtion 2027" };
 
@@ -58,6 +59,22 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
+      </Band>
+
+      {/* Journey */}
+      <Band tone="parchment" mandala>
+        <h2 className={`text-5xl text-[#7a1c1c] leading-none mb-10 ${serif.className}`}>Our journey</h2>
+        <ol className="relative border-l-4 border-dashed border-black/40 pl-8 space-y-8">
+          {MILESTONES.map((m) => (
+            <li key={m.year} className="relative">
+              <span aria-hidden className="absolute -left-[2.85rem] top-1 h-5 w-5 rounded-full border-2 border-black bg-[#f5c928]" />
+              <p className={`text-3xl text-[#7a1c1c] ${display.className}`}>{m.year}</p>
+              <p className="text-xl font-bold uppercase tracking-wide text-black">{m.title}</p>
+              <p className="text-lg leading-snug text-black/70">{m.text}</p>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-8 text-xs uppercase tracking-widest text-black/50">Sample timeline — figures are placeholders.</p>
       </Band>
 
       {/* Pillars */}

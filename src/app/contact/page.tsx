@@ -1,33 +1,15 @@
 import { Band, PageShell, serif } from "@/components/indie";
+import { DEPARTMENTS, initials } from "@/data/dummy";
 
 export const metadata = { title: "Contact | Techno-aiMBiAtion 2027" };
 
-// PLACEHOLDER team — replace with the real conveners, photos and contact numbers.
-const DEPARTMENTS = [
-  "Information, Publicity & Invitation",
-  "Design, Print & Media",
-  "Registration & Reception",
-  "Accommodation",
-  "Stage, Light, Sound & Stall",
-  "Catering",
-  "Venue Preparation",
-  "Transportation",
-  "Hospitality",
-  "Website Maintenance",
-  "Sponsorship",
-  "Certificate & Prize",
-  "Discipline",
-  "Stationery & Logistics",
-  "Health & First Aid",
-];
-
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-function Stamp({ initials, name, role, phone }: { initials: string; name: string; role: string; phone: string }) {
+function Stamp({ name, role, phone }: { name: string; role: string; phone: string }) {
   return (
     <div className="indie-stamp p-2 text-black shadow-[4px_4px_0_0_#000]">
       <div className="flex aspect-[4/3] items-center justify-center bg-[#fff3d6]">
-        <span className={`text-5xl text-[#c8421f] ${serif.className}`}>{initials}</span>
+        <span className={`text-5xl text-[#c8421f] ${serif.className}`}>{initials(name)}</span>
       </div>
       <div className="bg-[#d9d4c7] px-2 py-1.5">
         <p className="truncate text-base font-bold leading-tight">{name}</p>
@@ -49,9 +31,9 @@ export default function ContactPage() {
           <nav aria-label="Departments" className="md:sticky md:top-24 md:self-start">
             <ul className="flex gap-2 overflow-x-auto pb-2 md:flex-col md:gap-0 md:overflow-visible">
               {DEPARTMENTS.map((d) => (
-                <li key={d} className="shrink-0">
-                  <a href={`#${slugify(d)}`} className="block whitespace-nowrap px-3 py-1.5 text-sm font-bold uppercase tracking-wider text-black hover:bg-[#f5edd8] md:whitespace-normal">
-                    {d}
+                <li key={d.name} className="shrink-0">
+                  <a href={`#${slugify(d.name)}`} className="block whitespace-nowrap px-3 py-1.5 text-sm font-bold uppercase tracking-wider text-black hover:bg-[#f5edd8] md:whitespace-normal">
+                    {d.name}
                   </a>
                 </li>
               ))}
@@ -62,26 +44,26 @@ export default function ContactPage() {
             <div className="grid gap-4 sm:grid-cols-3">
               {[
                 ["Venue", "O.P. Jindal University, Raigarh, Chhattisgarh"],
-                ["Email", "contact@example.com"],
-                ["Phone", "+91 00000 00000"],
+                ["Email", "hello@technoaimbiation.example"],
+                ["Phone", "+91 98765 43210"],
               ].map(([l, v]) => (
                 <div key={l} className="border-2 border-black bg-[#f5edd8] p-4 shadow-[4px_4px_0_0_#000]">
                   <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-black/50">{l}</p>
-                  <p className="mt-1 font-semibold leading-snug text-black">{v}</p>
+                  <p className="mt-1 break-words font-semibold leading-snug text-black">{v}</p>
                 </div>
               ))}
             </div>
 
-            {DEPARTMENTS.map((d, i) => (
-              <section key={d} id={slugify(d)} className="scroll-mt-24">
-                <p className="mb-3 inline-block bg-black px-3 py-0.5 text-xs font-bold uppercase tracking-[0.3em] text-[#f5c928]">{d}</p>
+            {DEPARTMENTS.map((d) => (
+              <section key={d.name} id={slugify(d.name)} className="scroll-mt-24">
+                <p className="mb-3 inline-block bg-black px-3 py-0.5 text-xs font-bold uppercase tracking-[0.3em] text-[#f5c928]">{d.name}</p>
                 <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
-                  <Stamp initials="CN" name="Convener Name" role="Convener" phone={`+91 90000 000${String(i + 1).padStart(2, "0")}`} />
-                  <Stamp initials="CC" name="Co-Convener Name" role="Co-Convener" phone={`+91 80000 000${String(i + 1).padStart(2, "0")}`} />
+                  <Stamp name={d.convener.name} role="Convener" phone={d.convener.phone} />
+                  <Stamp name={d.coConvener.name} role="Co-Convener" phone={d.coConvener.phone} />
                 </div>
               </section>
             ))}
-            <p className="text-center text-xs uppercase tracking-widest text-black/50">Sample details — real contacts will be added.</p>
+            <p className="text-center text-xs uppercase tracking-widest text-black/50">Sample team — all names and numbers are fictional.</p>
           </div>
         </div>
       </Band>

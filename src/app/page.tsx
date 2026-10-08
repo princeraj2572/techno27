@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PUBLIC_EVENTS } from "@/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
+import { PRONITES } from "@/data/dummy";
 import {
   ACCENTS, Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif,
 } from "@/components/indie";
@@ -101,11 +102,11 @@ export default function HomePage() {
           </p>
         </div>
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {["Night 01", "Night 02", "Night 03"].map((n, i) => (
-            <div key={n} className={`rounded-2xl border border-white/20 bg-white/5 p-6 text-center ${i === 1 ? "sm:-translate-y-3" : ""}`}>
-              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#f5c928]">{n}</p>
-              <p className={`mt-3 text-2xl text-[#f5edd8] ${display.className}`}>Artist TBA</p>
-              <p className="mt-1 text-sm uppercase tracking-widest text-white/50">Lineup to be announced</p>
+          {PRONITES.map((n, i) => (
+            <div key={n.n} className={`rounded-2xl border border-white/20 bg-white/5 p-6 text-center ${i === 1 ? "sm:-translate-y-3" : ""}`}>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#f5c928]">Night {n.n} · {n.date.split(", ").slice(1).join(", ").replace(", 2027", "")}</p>
+              <p className={`mt-3 text-2xl text-[#f5edd8] ${display.className}`}>{n.artist}</p>
+              <p className="mt-1 text-sm uppercase tracking-widest text-white/50">{n.genre} · {n.time}</p>
             </div>
           ))}
         </div>

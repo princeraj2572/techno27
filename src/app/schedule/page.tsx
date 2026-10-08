@@ -12,7 +12,7 @@ export default function SchedulePage() {
       <Band tone="crimson" mandala className="!pt-4">
         <DeparturesBoard days={SCHEDULE} />
         <p className="mt-6 text-center text-xs uppercase tracking-widest text-white/60">
-          Sample timetable — timings and venues will be confirmed.
+          Sample timetable — all times and venues are placeholders.
         </p>
       </Band>
 

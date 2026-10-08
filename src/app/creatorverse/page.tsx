@@ -1,4 +1,5 @@
 import { Band, BlockButton, Marquee, PageShell, TicketCta, display } from "@/components/indie";
+import { CREATOR_PERKS } from "@/data/dummy";
 
 export const metadata = { title: "Creatorverse | Techno-aiMBiAtion 2027" };
 
@@ -48,6 +49,20 @@ export default function CreatorversePage() {
       </Band>
 
       <Marquee className="bg-white text-black font-bold uppercase tracking-widest text-lg py-1.5" text="Perks & rewards ✦ Features ✦ Merch ✦ Community ✦ " speed={40} />
+
+      <Band tone="cream" className="!py-12">
+        <h2 className={`text-4xl text-black mb-6 ${display.className}`}>Perks &amp; rewards</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {CREATOR_PERKS.map((p, i) => (
+            <div key={p.title} className="border-2 border-black bg-white p-5 shadow-[4px_4px_0_0_#000]">
+              <span className={`mb-3 flex h-10 w-10 items-center justify-center rounded-full border-2 border-black text-lg font-bold ${["bg-[#ffc107]","bg-[#ff6a00]","bg-[#ff2d8a]","bg-[#3b82f6] text-white"][i]}`}>{i + 1}</span>
+              <p className="text-xl font-bold uppercase tracking-wide text-black">{p.title}</p>
+              <p className="mt-1 text-base leading-snug text-black/70">{p.text}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-6 text-xs uppercase tracking-widest text-black/50">Sample perks — to be confirmed.</p>
+      </Band>
 
       {/* the road */}
       <div aria-hidden className="grid grid-cols-3 h-72 overflow-hidden border-b-2 border-black">
