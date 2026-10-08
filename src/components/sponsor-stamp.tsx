@@ -1,7 +1,6 @@
 import type { Sponsor } from "@/data/dummy";
 import { patternStyle, type PatternKind } from "@/data/event-themes";
 import { serif } from "@/components/indie";
-import { NimbuMirch } from "@/components/nimbu-mirch";
 
 export type StampSize = "xl" | "lg" | "md" | "sm" | "xs";
 
@@ -20,18 +19,15 @@ export function SponsorStamp({
   role,
   size,
   pattern,
-  charm = false,
 }: {
   sponsor: Sponsor;
   role: string;
   size: StampSize;
   pattern: PatternKind;
-  charm?: boolean; // hang a nazar-na-lage nimbu-mirch charm from the corner
 }) {
   const z = SIZES[size];
   const body = (
     <div className={`relative ${z.w}`}>
-      {charm && <NimbuMirch className="pointer-events-none absolute -left-9 -top-7 z-10 h-32 w-auto" delay="0.4s" />}
       <div className="stamp-shadow">
       <div className={`stamp-cut bg-[#fde9bd] ${z.pad}`}>
         <div className="bg-white p-1">
