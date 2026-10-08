@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Abril_Fatface, Barlow_Condensed, Dela_Gothic_One, Lora, Yatra_One } from "next/font/google";
+import { Abril_Fatface, Barlow_Condensed, Dela_Gothic_One, Lora, Sarpanch, Yatra_One } from "next/font/google";
 
 // Retro "indie" theme, inspired by the Rendezvous IITD site's structure:
 // full-bleed colour bands, torn paper edges, mandala + halftone texture,
@@ -10,6 +10,8 @@ export const body = Barlow_Condensed({ weight: ["500", "600", "700"], subsets: [
 export const serif = Abril_Fatface({ weight: "400", subsets: ["latin"] });
 export const paper = Lora({ subsets: ["latin"], style: ["normal", "italic"] });
 export const devanagari = Yatra_One({ weight: "400", subsets: ["devanagari", "latin"] });
+// Chunky, squared Devanagari (+ Latin) for logo-style lockups
+export const blockHindi = Sarpanch({ weight: ["800", "900"], subsets: ["devanagari", "latin"] });
 
 export const CARD = "bg-[#f5edd8] text-[#1a0505] border-2 border-black shadow-[4px_4px_0_0_#000]";
 export const TITLE_SHADOW = { textShadow: "3px 3px 0 #7a1c1c" };
@@ -210,17 +212,18 @@ function Mandala({ cx, cy, s, rot = 0 }: { cx: number; cy: number; s: number; ro
   );
 }
 
-export function MandalaArt() {
+export function MandalaArt({ variant = "orange" }: { variant?: "orange" | "gold" }) {
+  const gold = variant === "gold";
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" fill="none" stroke="#a8400b" strokeWidth="3" strokeLinejoin="round" opacity="0.55">
+      <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" fill="none" stroke={gold ? "#d9b54a" : "#a8400b"} strokeWidth="3" strokeLinejoin="round" opacity={gold ? 0.5 : 0.55}>
         <Mandala cx={1380} cy={120} s={1.15} rot={8} />
         <Mandala cx={140} cy={820} s={1.0} rot={-12} />
         <Mandala cx={820} cy={470} s={0.55} rot={20} />
         <Mandala cx={1560} cy={860} s={0.6} rot={0} />
         <Mandala cx={90} cy={60} s={0.5} rot={14} />
       </svg>
-      <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(rgba(120,30,0,0.38) 1px, transparent 1.3px)", backgroundSize: "6px 6px" }} />
+      <div className="absolute inset-0" style={{ backgroundImage: gold ? "radial-gradient(rgba(255,214,102,0.16) 1px, transparent 1.3px)" : "radial-gradient(rgba(120,30,0,0.38) 1px, transparent 1.3px)", backgroundSize: "6px 6px" }} />
     </div>
   );
 }
@@ -238,6 +241,7 @@ const BAND_TONES = {
   maroon: "bg-[#4a0e0e] text-[#f5edd8]",
   black: "bg-black text-[#f5edd8]",
   pink: "bg-[#ff2d8a] text-black",
+  teal: "bg-[#0e5b57] text-[#f5edd8]",
 } as const;
 export type BandTone = keyof typeof BAND_TONES;
 
@@ -250,13 +254,13 @@ export function Band({
   halftone?: boolean;
   ghost?: string;
   panel?: boolean;
-  art?: boolean;
+  art?: boolean | "gold";
   className?: string;
   children: ReactNode;
 }) {
   return (
     <section className={`relative overflow-hidden ${panel ? "panel" : ""} ${BAND_TONES[tone]} ${mandala ? "indie-mandala" : ""} ${halftone ? "indie-halftone" : ""}`}>
-      {art && <MandalaArt />}
+      {art && <MandalaArt variant={art === "gold" ? "gold" : "orange"} />}
       {zigzag && (
         <div
           aria-hidden
