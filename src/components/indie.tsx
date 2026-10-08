@@ -195,7 +195,7 @@ function Beads({ n, r, size }: { n: number; r: number; size: number }) {
   );
 }
 
-function Mandala({ cx, cy, s, rot = 0 }: { cx: number; cy: number; s: number; rot?: number }) {
+export function Mandala({ cx, cy, s, rot = 0 }: { cx: number; cy: number; s: number; rot?: number }) {
   return (
     <g transform={`translate(${cx} ${cy}) rotate(${rot}) scale(${s})`}>
       <Petals n={12} r={330} w={100} fill="rgba(160,50,0,0.10)" />
@@ -209,6 +209,17 @@ function Mandala({ cx, cy, s, rot = 0 }: { cx: number; cy: number; s: number; ro
       <circle r={42} />
       <circle r={14} fill="rgba(160,50,0,0.35)" />
     </g>
+  );
+}
+
+// A single big mandala that turns slowly (decorative, e.g. behind the vinyl).
+export function MandalaSpin({ className = "", stroke = "#a8400b", reverse = false }: { className?: string; stroke?: string; reverse?: boolean }) {
+  return (
+    <svg viewBox="-390 -390 780 780" className={className} fill="none" stroke={stroke} strokeWidth="3" strokeLinejoin="round" aria-hidden>
+      <g className={reverse ? "indie-spin-rev" : "indie-spin-slow"} style={{ transformOrigin: "0 0" }}>
+        <Mandala cx={0} cy={0} s={1} />
+      </g>
+    </svg>
   );
 }
 
@@ -246,7 +257,7 @@ const BAND_TONES = {
 export type BandTone = keyof typeof BAND_TONES;
 
 export function Band({
-  tone, zigzag, mandala = false, halftone = false, ghost, panel = false, art = false, artCenterRight = false, className = "", children,
+  tone, zigzag, mandala = false, halftone = false, ghost, panel = false, art = false, artCenterRight = false, toran = false, overlay, className = "", children,
 }: {
   tone: BandTone;
   zigzag?: string;
@@ -256,11 +267,25 @@ export function Band({
   panel?: boolean;
   art?: boolean | "gold";
   artCenterRight?: boolean; // move the middle mandala to the right edge
+  toran?: boolean; // marigold garland along the top edge
+  overlay?: ReactNode; // full-bleed decoration rendered behind the content
   className?: string;
   children: ReactNode;
 }) {
   return (
     <section className={`relative overflow-hidden ${panel ? "panel" : ""} ${BAND_TONES[tone]} ${mandala ? "indie-mandala" : ""} ${halftone ? "indie-halftone" : ""}`}>
+      {toran && (
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 z-10 h-9"
+          style={{
+            backgroundImage: "radial-gradient(circle at 16px 14px, #ffd000 0 7px, #ff8a00 7.5px 11px, transparent 11.5px), radial-gradient(circle at 16px 26px, #1f8a3a 0 4px, transparent 4.5px)",
+            backgroundSize: "32px 36px",
+            backgroundRepeat: "repeat-x",
+          }}
+        />
+      )}
+      {overlay}
       {art && <MandalaArt variant={art === "gold" ? "gold" : "orange"} centerRight={artCenterRight} />}
       {zigzag && (
         <div

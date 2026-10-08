@@ -1,13 +1,16 @@
 import Link from "next/link";
+import { IndianRupee, Medal, Ticket, Users } from "lucide-react";
 import { PUBLIC_EVENTS } from "@/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
 import { EVENT_MEDIA, JUNOON_ACTS, JUNOON_NIGHTS, MYSTERY_HINTS, TESTIMONIALS } from "@/data/dummy";
 import { CULTURES } from "@/components/culture-art";
-import { Stamp } from "@/components/stamp";
+import { Postmark, Stamp } from "@/components/stamp";
 import { CutoutTitle } from "@/components/cutout-title";
+import { NimbuMirch } from "@/components/nimbu-mirch";
+import { EVENT_THEMES, patternStyle } from "@/data/event-themes";
 import { CountUp, Reveal, Splash, TestimonialSlider } from "@/components/motion";
 import {
-  Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif,
+  Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif, MandalaSpin, blockHindi,
 } from "@/components/indie";
 
 const NOTES = [
@@ -15,6 +18,13 @@ const NOTES = [
   { tag: "Teams", date: "Dashboard", title: "Build your team", text: "Invite members from your dashboard and track who has accepted before the deadline." },
   { tag: "Stay", date: "Accommodation", title: "Need a place to stay?", text: "Apply for accommodation from your dashboard once you have registered for an event." },
 ];
+
+const STAT_LOOKS = [
+  { theme: "kalakriti", icon: Ticket },
+  { theme: "robovation", icon: Medal },
+  { theme: "masterchef", icon: Users },
+  { theme: "codigo", icon: IndianRupee },
+] as const;
 
 const STEPS = [
   { n: "1", title: "Sign up", desc: "Use your OPJU email for free entry." },
@@ -225,25 +235,50 @@ export default function HomePage() {
         </Band>
 
         {/* Numbers */}
-        <Band panel tone="cream">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
+        <Band panel tone="cream" toran overlay={<div aria-hidden className="absolute inset-0 opacity-[0.1]" style={patternStyle("diamonds", "#7a1c1c")} />}>
+          <div className="relative grid items-center gap-10 pt-6 md:grid-cols-[1.15fr_1fr]">
             <div>
-              <p className="text-5xl sm:text-6xl font-bold uppercase leading-none text-[#1a0505]">Fest by the</p>
-              <p className="text-6xl sm:text-8xl font-bold uppercase leading-none text-[#7a1c1c]">Numbers</p>
-              <div className="mt-8 grid grid-cols-2 gap-6">
-                {stats.map((s) => (
-                  <div key={s.label}>
-                    <p className="text-5xl sm:text-6xl font-bold leading-none text-[#7a1c1c]"><CountUp to={s.to} prefix={s.prefix} suffix={s.suffix} /></p>
-                    <p className="text-lg font-bold uppercase tracking-wider text-[#1a0505]">{s.label}</p>
-                  </div>
-                ))}
+              <p className="text-sm font-bold uppercase tracking-[0.4em] text-[#c8421f]">The fest, by the</p>
+              <CutoutTitle latin="Numbers" hindi="आँकड़े" color="#d62828" shadow="#4a0e0e" className="mt-1" />
+
+              <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8">
+                {stats.map((st, i) => {
+                  const look = STAT_LOOKS[i % STAT_LOOKS.length];
+                  const t = EVENT_THEMES[look.theme];
+                  const Icon = look.icon;
+                  return (
+                    <div key={st.label} className={`group ${i % 2 ? "rotate-1" : "-rotate-1"} transition-transform hover:rotate-0`}>
+                      <div className="stamp-shadow">
+                        <div className="stamp-cut bg-[#fde9bd] p-3">
+                          <div className="bg-white p-1">
+                            <div className="relative overflow-hidden px-3 py-3" style={{ background: `linear-gradient(160deg, ${t.bg}, ${t.bg2})`, color: t.ink }}>
+                              <div aria-hidden className="absolute inset-0 opacity-30" style={patternStyle(t.pattern, t.patternColor)} />
+                              <div className="relative flex items-start justify-between">
+                                <span className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-black bg-[#f5edd8]" style={{ color: t.accent }}><Icon className="h-5 w-5" /></span>
+                                <span className="text-[10px] font-bold tracking-[0.25em] opacity-70">{String(i + 1).padStart(2, "0")}</span>
+                              </div>
+                              <p className={`relative mt-2 text-[2.6rem] leading-none sm:text-5xl ${blockHindi.className}`} style={{ textShadow: "2px 2px 0 rgba(255,255,255,0.55)" }}>
+                                <CountUp to={st.to} prefix={st.prefix} suffix={st.suffix} />
+                              </p>
+                              <p className="relative mt-1 text-[11px] font-bold uppercase leading-tight tracking-[0.2em]" style={{ color: t.soft }}>{st.label}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            <div className="relative mx-auto w-64 sm:w-80 aspect-square">
-              <Vinyl className="w-full h-full drop-shadow-[8px_8px_0_rgba(0,0,0,0.35)]" slow />
-              <span className="indie-wobble absolute top-2 right-0 bg-[#f5c928] text-black text-sm font-bold uppercase tracking-widest px-3 py-1 border-2 border-black">
-                Hit record
-              </span>
+
+            {/* vinyl on a slowly turning mandala, with a postmark and a charm */}
+            <div className="relative mx-auto w-72 sm:w-96 aspect-square">
+              <MandalaSpin className="absolute -inset-16 h-[calc(100%+8rem)] w-[calc(100%+8rem)] opacity-60" stroke="#c8421f" reverse />
+              <Vinyl className="relative h-full w-full drop-shadow-[8px_8px_0_rgba(0,0,0,0.35)]" slow />
+              <Postmark lines={false} className="pointer-events-none absolute -bottom-3 -right-3 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
+              <NimbuMirch className="pointer-events-none absolute -left-4 -top-2 z-10 h-28 w-auto" delay="0.3s" />
+              <span className="indie-wobble absolute right-0 top-2 border-2 border-black bg-[#f5c928] px-3 py-1 text-sm font-bold uppercase tracking-widest text-black">★ 5 days of fest</span>
+              <span aria-hidden className="indie-float absolute bottom-6 left-0 border-2 border-black bg-[#f5edd8] px-3 py-1 text-xs font-bold uppercase tracking-widest text-black" style={{ ["--r" as string]: "-5deg" }}>TRX&apos;27</span>
             </div>
           </div>
         </Band>
