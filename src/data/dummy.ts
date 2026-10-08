@@ -268,3 +268,32 @@ export const MYSTERY_HINTS = [
   "Their debut single went viral last monsoon.",
   "Two words, and the crowd knows every lyric.",
 ];
+
+// ---------------------------------------------------------------------------
+// Artwork slots — add file paths (files go in /public) to show real pictures.
+// Leave a field out and a labelled placeholder keeps the space reserved.
+// ---------------------------------------------------------------------------
+export interface EventMedia {
+  image?: string; // card + spotlight picture, ~1200 x 675
+  logo?: string; // round event logo, square, ~256 x 256
+}
+export const EVENT_MEDIA: Record<string, EventMedia> = {
+  // robovation: { image: "/images/events/robovation.jpg", logo: "/images/events/robovation-logo.png" },
+};
+
+export const FESTIVAL_LOGO: string | undefined = undefined; // e.g. "/images/logo.png"
+export const EVENTS_BANNER: string | undefined = undefined; // e.g. "/images/events-banner.jpg", ~1600 x 600
+export const FEST_START = "2027-01-15T09:00:00+05:30";
+
+export const EVENT_STEPS = [
+  { n: "01", title: "Browse", text: "Filter by category or search to find the events that fit you." },
+  { n: "02", title: "Register", text: "Sign up with your OPJU email, or as an external participant." },
+  { n: "03", title: "Compete", text: "Show up with your QR pass, play fair and take home the prizes." },
+];
+
+export const EVENT_FAQ = [
+  { q: "Can I join more than one event?", a: "Yes. Just make sure the timings don't overlap — check the schedule before you register." },
+  { q: "Are team events open to mixed colleges?", a: "Yes. Teams can include members from different colleges, as long as everyone registers." },
+  { q: "What do I bring on the day?", a: "Your QR pass, a valid college ID and anything your event's rules ask for." },
+  { q: "Is there an entry fee?", a: "Free for OPJU students. External participants pay a small per-event fee." },
+];

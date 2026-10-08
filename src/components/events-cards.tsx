@@ -8,6 +8,7 @@ import {
   TrendingUp, type LucideIcon,
 } from "lucide-react";
 import { display } from "@/components/indie";
+import { ImageSlot, LogoSlot } from "@/components/media";
 import { EVENT_CATEGORIES, type EventCategory } from "@/data/public-events";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -16,11 +17,11 @@ const ICONS: Record<string, LucideIcon> = {
   mic: Mic, brain: Brain, code: Code2, pen: PenTool, star: Star,
 };
 
-const CATEGORY_STYLE: Record<EventCategory, { strip: string; text: string }> = {
-  Technical: { strip: "bg-[#f5c928]", text: "text-black" },
-  Cultural: { strip: "bg-[#ff6a00]", text: "text-black" },
-  Management: { strip: "bg-[#ff2d8a]", text: "text-black" },
-  Fun: { strip: "bg-[#3b82f6]", text: "text-white" },
+const CATEGORY_STYLE: Record<EventCategory, { badge: string; tone: string }> = {
+  Technical: { badge: "bg-[#f5c928] text-black", tone: "from-[#f5c928] to-[#c8421f]" },
+  Cultural: { badge: "bg-[#ff6a00] text-black", tone: "from-[#ff6a00] to-[#7a1c1c]" },
+  Management: { badge: "bg-[#ff2d8a] text-black", tone: "from-[#ff2d8a] to-[#7a1c1c]" },
+  Fun: { badge: "bg-[#3b82f6] text-white", tone: "from-[#3b82f6] to-[#0b2a6b]" },
 };
 
 export interface EventCard {
@@ -35,6 +36,8 @@ export interface EventCard {
   time: string;
   venue: string;
   prize: string;
+  image?: string;
+  logo?: string;
 }
 
 export function EventsCards({ events, initial = "All" }: { events: EventCard[]; initial?: string }) {
@@ -102,16 +105,33 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
               style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}
             >
               <article className="flex h-full flex-col overflow-hidden border-2 border-black bg-[#f5edd8] text-[#1a0505] shadow-[5px_5px_0_0_#000] transition-all duration-200 group-hover:-translate-y-1.5 group-hover:-rotate-[0.6deg] group-hover:shadow-[9px_9px_0_0_#000]">
-                {/* top strip */}
-                <div className={`relative flex items-center justify-between px-4 py-4 ${st.strip} ${st.text}`}>
-                  <span className="ml-14 text-lg font-bold tracking-[0.2em]">{String(e.number).padStart(2, "0")}</span>
-                  <span className="rounded-full border-2 border-black bg-black/10 px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest">{e.category}</span>
-                  <span className="absolute -bottom-6 left-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-black bg-[#f5edd8] text-[#7a1c1c] shadow-[2px_2px_0_0_#000] transition-transform group-hover:rotate-12 group-hover:scale-110">
-                    <Icon className="h-6 w-6" />
+                {/* image slot + badges + logo slot */}
+                <div className="relative">
+                  <ImageSlot
+                    src={e.image}
+                    alt={e.name}
+                    label="Event image"
+                    hint="1200 × 675"
+                    tone={st.tone}
+                    className="border-b-2 border-black transition-transform duration-300 group-hover:scale-[1.03]"
+                  />
+                  <span className="absolute left-3 top-3 border-2 border-black bg-[#f5edd8] px-2 py-0.5 text-sm font-bold tracking-[0.2em] shadow-[2px_2px_0_0_#000]">
+                    {String(e.number).padStart(2, "0")}
                   </span>
+                  <span className={`absolute right-3 top-3 flex items-center gap-1.5 border-2 border-black px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest shadow-[2px_2px_0_0_#000] ${st.badge}`}>
+                    <Icon className="h-3.5 w-3.5" />{e.category}
+                  </span>
+                  <LogoSlot
+                    src={e.logo}
+                    alt={`${e.name} logo`}
+                    label="Logo"
+                    size="h-14 w-14"
+                    shape="rounded-full"
+                    className="absolute -bottom-7 left-4 !border-solid border-black bg-[#f5edd8] text-[#7a1c1c] shadow-[2px_2px_0_0_#000] transition-transform group-hover:rotate-6"
+                  />
                 </div>
 
-                <div className="flex flex-1 flex-col gap-3 px-4 pb-4 pt-9">
+                <div className="flex flex-1 flex-col gap-3 px-4 pb-4 pt-10">
                   <div>
                     <h3 className={`text-2xl leading-tight ${display.className}`}>{e.name}</h3>
                     <p className="mt-0.5 text-lg font-semibold leading-snug text-[#7a1c1c]">{e.tagline}</p>
