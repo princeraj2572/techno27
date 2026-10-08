@@ -290,7 +290,6 @@ export const EVENT_MEDIA: Record<string, EventMedia> = {
   // robovation: { image: "/images/events/robovation.jpg", logo: "/images/events/robovation-logo.png" },
 };
 
-export const FESTIVAL_LOGO: string | undefined = undefined; // e.g. "/images/logo.png"
 export const EVENTS_BANNER: string | undefined = undefined; // e.g. "/images/events-banner.jpg", ~1600 x 600
 export const FEST_START = "2027-01-15T09:00:00+05:30";
 

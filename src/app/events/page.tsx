@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays, MapPin, Trophy, Users } from "lucide-react";
 import { PUBLIC_EVENTS } from "@/data/public-events";
 import {
-  EVENTS_BANNER, EVENT_FAQ, EVENT_MEDIA, EVENT_STEPS, FESTIVAL_LOGO, FEST_START,
+  EVENTS_BANNER, EVENT_FAQ, EVENT_MEDIA, EVENT_STEPS, FEST_START,
   SPONSOR_TIERS, getEventMock,
 } from "@/data/dummy";
 import { EventsCards } from "@/components/events-cards";
@@ -52,16 +52,13 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
 
   return (
     <PageShell>
-      {/* Header: logo slot + title + banner slot */}
+      {/* Header: title + banner slot */}
       <Band tone="crimson" mandala ghost="Something for every genre" className="!pb-10 !pt-12">
-        <div className="flex flex-wrap items-center gap-6">
-          <LogoSlot src={FESTIVAL_LOGO} alt="Techno-aiMBiAtion logo" label="Festival logo" size="h-28 w-28 sm:h-32 sm:w-32" className="text-[#f5c928]" />
-          <div>
-            <h1 className={`text-6xl sm:text-8xl leading-[0.9] indie-outline ${serif.className}`}>Events</h1>
-            <p className="mt-2 text-xl sm:text-2xl font-bold uppercase text-[#f5edd8]">
-              {PUBLIC_EVENTS.length} events · {totalSub}+ competitions · one fest
-            </p>
-          </div>
+        <div>
+          <h1 className={`text-6xl sm:text-8xl leading-[0.9] indie-outline ${serif.className}`}>Events</h1>
+          <p className="mt-2 text-xl sm:text-2xl font-bold uppercase text-[#f5edd8]">
+            {PUBLIC_EVENTS.length} events · {totalSub}+ competitions · one fest
+          </p>
         </div>
         <div className="relative mt-8">
           <ImageSlot
