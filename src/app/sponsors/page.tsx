@@ -36,11 +36,14 @@ export default function SponsorsPage() {
     <PageShell>
       {/* Header */}
       <Band tone="crimson" mandala ghost="Partners in the fest" className="!pb-10 !pt-12">
-        <p className="text-sm font-bold uppercase tracking-[0.35em] text-[#f5c928]">Partner · Support · Grow</p>
-        <h1 className={`mt-3 text-6xl leading-[0.9] sm:text-8xl indie-outline ${serif.className}`}>Sponsors</h1>
-        <p className="mt-3 text-xl font-bold uppercase text-[#f5edd8] sm:text-2xl">
-          The brands powering Techno-aiMBiAtion &apos;27
-        </p>
+        {/* Title block sits on the right; the left side stays free */}
+        <div className="ml-auto text-right md:w-1/2">
+          <p className="text-sm font-bold uppercase tracking-[0.35em] text-[#f5c928]">Partner · Support · Grow</p>
+          <h1 className={`mt-3 text-6xl leading-[0.9] sm:text-8xl indie-outline ${serif.className}`}>Sponsors</h1>
+          <p className="mt-3 text-xl font-bold uppercase text-[#f5edd8] sm:text-2xl">
+            The brands powering Techno-aiMBiAtion &apos;27
+          </p>
+        </div>
         <div className="relative mt-8">
           <ImageSlot
             src={SPONSORS_BANNER}
