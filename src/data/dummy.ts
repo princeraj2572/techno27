@@ -23,7 +23,9 @@ export const JUNOON_NIGHTS: JunoonNight[] = [
 export interface Sponsor {
   name: string;
   field: string;
-  color: string; // monogram tile colour (hex)
+  color: string; // stamp / monogram colour (hex)
+  logo?: string; // real logo, e.g. "/images/sponsors/aurora-motors.png" (put files in public/images/sponsors/)
+  url?: string; // optional website
 }
 
 export interface SponsorTier {
@@ -305,4 +307,20 @@ export const EVENT_FAQ = [
   { q: "Are team events open to mixed colleges?", a: "Yes. Teams can include members from different colleges, as long as everyone registers." },
   { q: "What do I bring on the day?", a: "Your QR pass, a valid college ID and anything your event's rules ask for." },
   { q: "Is there an entry fee?", a: "Free for OPJU students. External participants pay a small per-event fee." },
+];
+
+// ---------------------------------------------------------------------------
+// Sponsors page extras (all sample content)
+// ---------------------------------------------------------------------------
+export const PARTNER_BENEFITS = [
+  { title: "Stage presence", text: "Your brand on the main stage, Junoon nights and every event backdrop.", icon: "mic" },
+  { title: "Campus reach", text: "Direct access to 2,000+ students from OPJU and 20+ colleges.", icon: "users" },
+  { title: "Digital spotlight", text: "Featured on the website, social media and the official event app.", icon: "globe" },
+  { title: "On-ground stalls", text: "Dedicated stall space for demos, sampling and recruitment drives.", icon: "store" },
+];
+
+export const PARTNER_PACKAGES = [
+  { name: "Title Partner", price: "₹5,00,000", perks: ["Name in the fest title", "Main-stage branding", "Premium stall", "Social media takeover"], accent: "#c1121f" },
+  { name: "Gold Partner", price: "₹2,00,000", perks: ["Logo on all banners", "Stall space", "Event naming rights", "Website feature"], accent: "#f5c928" },
+  { name: "Silver Partner", price: "₹75,000", perks: ["Logo on website", "Shared stall", "Social media mention", "Certificate"], accent: "#2a7aa8" },
 ];
