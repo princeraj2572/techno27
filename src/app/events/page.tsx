@@ -1,12 +1,30 @@
 import { PUBLIC_EVENTS } from "@/data/public-events";
 import { getEventMock } from "@/data/dummy";
-import { RadioConsole } from "@/components/radio-console";
+import { EventsCards } from "@/components/events-cards";
 import { Band, Marquee, PageHero, PageShell, TicketCta } from "@/components/indie";
 
 export const metadata = { title: "Events | Techno-aiMBiAtion 2027" };
 
-export default function EventsPage() {
+export default async function EventsPage({ searchParams }: { searchParams: Promise<{ cat?: string }> }) {
+  const { cat } = await searchParams;
   const totalSub = PUBLIC_EVENTS.reduce((n, e) => n + e.subEvents.length, 0);
+
+  const cards = PUBLIC_EVENTS.map((e, i) => {
+    const m = getEventMock(e.slug, e.name, e.category, i);
+    return {
+      slug: e.slug,
+      number: i + 1,
+      name: e.name,
+      category: e.category,
+      iconKey: e.iconKey,
+      subEvents: e.subEvents,
+      tagline: m.tagline,
+      date: m.date,
+      time: m.time,
+      venue: m.venue,
+      prize: m.prize,
+    };
+  });
 
   return (
     <PageShell>
@@ -14,27 +32,13 @@ export default function EventsPage() {
         tone="crimson"
         outline
         title="Events"
-        sub={`Tune into the fest — ${PUBLIC_EVENTS.length} events, ${totalSub}+ competitions`}
+        sub={`${PUBLIC_EVENTS.length} events · ${totalSub}+ competitions`}
         ghost="Something for every genre"
       />
 
       <Band tone="crimson" mandala className="!pt-6">
-        <RadioConsole
-          events={PUBLIC_EVENTS.map((e, i) => {
-            const m = getEventMock(e.slug, e.name, e.category, i);
-            return {
-              slug: e.slug,
-              name: e.name,
-              category: e.category,
-              subEvents: e.subEvents,
-              tagline: m.tagline,
-              date: m.date,
-              time: m.time,
-              venue: m.venue,
-              prize: m.prize,
-            };
-          })}
-        />
+        <EventsCards events={cards} initial={cat} />
+        <p className="mt-10 text-center text-xs uppercase tracking-widest text-white/60">Sample details — dates, venues and prizes are placeholders.</p>
       </Band>
 
       <Marquee
