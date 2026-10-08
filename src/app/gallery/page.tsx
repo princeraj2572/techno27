@@ -1,54 +1,83 @@
-import { Band, Marquee, PageHero, PageShell, TicketCta, display } from "@/components/indie";
 import { GALLERY } from "@/data/dummy";
+import { CULTURES } from "@/components/culture-art";
+import { GalleryBoard } from "@/components/gallery-board";
+import { ImageSlot } from "@/components/media";
 import { Reveal } from "@/components/motion";
+import { Band, BlockButton, Marquee, PageShell, TicketCta, display, serif } from "@/components/indie";
 
 export const metadata = { title: "Gallery | Techno-aiMBiAtion 2027" };
 
-const TILTS = ["-rotate-2", "rotate-1", "rotate-2", "-rotate-1", "rotate-1", "-rotate-2"];
-const YEARS = ["2026", "2025"];
+// Optional wide picture for the header, e.g. "/images/gallery-banner.jpg" (~1600 x 600)
+const GALLERY_BANNER: string | undefined = undefined;
 
 export default function GalleryPage() {
+  const years = new Set(GALLERY.map((g) => g.year)).size;
+  const states = new Set(GALLERY.map((g) => CULTURES[g.scene]?.state).filter(Boolean)).size;
+
   return (
     <PageShell>
-      <PageHero tone="amber" title="The gallery" sub="Stuck to the wall, a little crooked" ghost="Say cheese" />
+      {/* Header */}
+      <Band tone="crimson" mandala ghost="Say cheese" className="!pb-10 !pt-12">
+        <p className="text-sm font-bold uppercase tracking-[0.35em] text-[#f5c928]">Moments · Memories · Magic</p>
+        <h1 className={`mt-3 text-6xl leading-[0.9] sm:text-8xl indie-outline ${serif.className}`}>Gallery</h1>
+        <p className="mt-3 text-xl font-bold uppercase text-[#f5edd8] sm:text-2xl">
+          {GALLERY.length} snapshots · {years} editions · {states} states of India
+        </p>
+        <div className="relative mt-8">
+          <ImageSlot
+            src={GALLERY_BANNER}
+            alt="Techno-aiMBiAtion gallery banner"
+            label="Banner image"
+            hint="1600 × 600"
+            ratio="aspect-[21/8]"
+            tone="from-[#ff6a00] to-[#7a1c1c]"
+            className="border-2 border-black shadow-[6px_6px_0_0_#000]"
+          />
+          <span aria-hidden className="indie-float absolute -top-3 right-6 border-2 border-black bg-[#f5c928] px-3 py-1 text-xs font-bold uppercase tracking-widest text-black" style={{ ["--r" as string]: "5deg" }}>
+            ★ {GALLERY.length} stamps
+          </span>
+          <span aria-hidden className="indie-float absolute -bottom-3 left-8 border-2 border-black bg-[#f5edd8] px-3 py-1 text-xs font-bold uppercase tracking-widest text-black" style={{ ["--r" as string]: "-4deg", animationDelay: "1.2s" }}>
+            #TechnoAimbiation27
+          </span>
+        </div>
+      </Band>
 
       <Marquee
-        className="bg-[#ff6a00] text-black font-bold uppercase tracking-wider text-xl py-1.5 -rotate-1"
-        text="Say cheese ✦ Capture the riot ✦ "
+        className="-rotate-1 bg-[#ff6a00] py-1.5 text-xl font-bold uppercase tracking-wider text-black"
+        text="Say cheese ✦ Capture the riot ✦ Collect them all ✦ "
       />
 
-      {YEARS.map((year, yi) => (
-        <Reveal key={year}><Band tone={yi === 0 ? "amber" : "parchment"} mandala>
-          <div className="mb-10 flex items-end justify-between gap-4">
-            <h2 className={`text-5xl sm:text-6xl text-white leading-none ${display.className}`} style={{ textShadow: "3px 3px 0 #7a1c1c" }}>
-              {year}
-            </h2>
-            <p className="text-sm font-bold uppercase tracking-widest text-black/60">
-              {GALLERY.filter((g) => g.year === year).length} snapshots
-            </p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-10">
-            {GALLERY.filter((g) => g.year === year).map((p, i) => (
-              <figure
-                key={p.caption}
-                className={`relative bg-[#f5edd8] text-[#1a0505] border-2 border-black shadow-[5px_5px_0_0_#000] p-3 pb-4 ${TILTS[i % TILTS.length]} hover:rotate-0 hover:-translate-y-1 hover:scale-[1.03] transition-all`}
-              >
-                <span aria-hidden className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-5 bg-[#f5c928]/90 border border-black/40 rotate-2" />
-                <div className={`aspect-[4/3] bg-gradient-to-br ${p.bg} border-2 border-black flex items-center justify-center overflow-hidden`}>
-                  <span className="text-5xl sm:text-6xl drop-shadow-[3px_3px_0_rgba(0,0,0,0.35)]" aria-hidden>{p.icon}</span>
-                </div>
-                <figcaption className="mt-3 flex items-center justify-between gap-2">
-                  <span className={`text-base sm:text-lg leading-tight ${display.className}`}>{p.caption}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest bg-black text-[#f5c928] px-2 py-0.5 rounded-full shrink-0">{p.tag}</span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </Band></Reveal>
-      ))}
-      <p className="bg-black py-3 text-center text-xs uppercase tracking-widest text-[#f5edd8]/60">Sample frames — real photos will replace these.</p>
+      <GalleryBoard items={GALLERY} />
 
-      <TicketCta title="Want to be in the next one?" text="Register for Techno-aiMBiAtion 2027 and make some memories of your own." href="/auth/signup" label="Register now" />
+      {/* Share your moments */}
+      <Reveal>
+        <Band tone="parchment" mandala className="!py-14">
+          <div className="grid items-center gap-8 md:grid-cols-[1fr_auto]">
+            <div className="space-y-4 text-[#1a0505]">
+              <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#c8421f]">Your turn</p>
+              <h2 className={`text-4xl leading-none sm:text-6xl ${display.className}`}>Share your moments</h2>
+              <p className="max-w-xl text-xl leading-snug text-black/75">
+                Got a great shot from the fest? Tag it <strong>#TechnoAimbiation27</strong> or send it to the media team and we may feature it as the next stamp in the collection.
+              </p>
+              <div className="flex flex-wrap gap-3 pt-1">
+                <BlockButton href="/contact">Send us your photos</BlockButton>
+                <BlockButton href="/events" tone="mustard">Browse events</BlockButton>
+              </div>
+            </div>
+            <div className="mx-auto w-52 -rotate-3 border-2 border-black bg-[#f5edd8] p-2.5 shadow-[6px_6px_0_0_#000]">
+              <ImageSlot label="Your photo" hint="900 × 1200" ratio="aspect-[3/4]" tone="from-[#f5c928] to-[#c8421f]" className="border-2 border-black" />
+              <p className="mt-2 text-center text-xs font-bold uppercase tracking-[0.3em] text-black/60">Next stamp?</p>
+            </div>
+          </div>
+        </Band>
+      </Reveal>
+
+      <TicketCta
+        title="Want to be in the next one?"
+        text="Register for Techno-aiMBiAtion 2027 and make some memories of your own."
+        href="/auth/signup"
+        label="Register now"
+      />
     </PageShell>
   );
 }

@@ -216,23 +216,24 @@ export interface GalleryItem {
   caption: string;
   tag: string;
   year: string;
-  bg: string; // tailwind gradient classes
-  icon: string;
+  scene: string; // event slug whose cultural illustration is shown until a real photo is added
+  image?: string; // real photo, e.g. "/images/gallery/hackathon-night.jpg" (portrait 3:4, ~900 x 1200)
 }
 
+// To use a real photo: put the file in public/images/gallery/ and set `image` on that item.
 export const GALLERY: GalleryItem[] = [
-  { caption: "Hackathon night", tag: "Technical", year: "2026", bg: "from-[#f5c928] to-[#c8421f]", icon: "💻" },
-  { caption: "Robo Race finals", tag: "Technical", year: "2026", bg: "from-[#ff6a00] to-[#7a1c1c]", icon: "🤖" },
-  { caption: "Opening night crowd", tag: "Junoon", year: "2026", bg: "from-[#6d28d9] to-[#0f0029]", icon: "🎤" },
-  { caption: "Fashion walk", tag: "Cultural", year: "2026", bg: "from-[#ff2d8a] to-[#7a1c1c]", icon: "👗" },
-  { caption: "Rangoli corner", tag: "Cultural", year: "2026", bg: "from-[#ffb10f] to-[#c8421f]", icon: "🎨" },
-  { caption: "Prize ceremony", tag: "Awards", year: "2026", bg: "from-[#f5c928] to-[#7a1c1c]", icon: "🏆" },
-  { caption: "Beat battle", tag: "Cultural", year: "2025", bg: "from-[#3b82f6] to-[#0b2a6b]", icon: "🥁" },
-  { caption: "Masterchef kitchen", tag: "Fun", year: "2025", bg: "from-[#ff6a00] to-[#a1001a]", icon: "🍳" },
-  { caption: "Ideathon pitches", tag: "Management", year: "2025", bg: "from-[#22c55e] to-[#14532d]", icon: "💡" },
-  { caption: "Campus trail", tag: "Fun", year: "2025", bg: "from-[#f5c928] to-[#15803d]", icon: "🧭" },
-  { caption: "Volunteers", tag: "Team", year: "2025", bg: "from-[#ff6a00] to-[#4a0e0e]", icon: "🙌" },
-  { caption: "Closing ceremony", tag: "Awards", year: "2025", bg: "from-[#6d28d9] to-[#a1001a]", icon: "🎆" },
+  { caption: "Hackathon night", tag: "Technical", year: "2026", scene: "codigo" },
+  { caption: "Robo Race finals", tag: "Technical", year: "2026", scene: "robovation" },
+  { caption: "Opening night crowd", tag: "Junoon", year: "2026", scene: "antaragni" },
+  { caption: "Fashion walk", tag: "Cultural", year: "2026", scene: "riwayat-fashion-show" },
+  { caption: "Rangoli corner", tag: "Cultural", year: "2026", scene: "kalakriti" },
+  { caption: "Prize ceremony", tag: "Awards", year: "2026", scene: "aima" },
+  { caption: "Beat battle", tag: "Cultural", year: "2025", scene: "beat-battle" },
+  { caption: "Masterchef kitchen", tag: "Fun", year: "2025", scene: "masterchef" },
+  { caption: "Ideathon pitches", tag: "Management", year: "2025", scene: "ideathon" },
+  { caption: "Campus trail", tag: "Fun", year: "2025", scene: "roadies" },
+  { caption: "Volunteers", tag: "Team", year: "2025", scene: "designathon" },
+  { caption: "Closing ceremony", tag: "Awards", year: "2025", scene: "techlab" },
 ];
 
 export const TESTIMONIALS = [
