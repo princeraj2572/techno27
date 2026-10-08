@@ -15,7 +15,11 @@ const NAV_LINKS = [
   { label: "About", href: "/about" },
   { label: "Events", href: "/events" },
   { label: "Schedule", href: "/schedule" },
+  { label: "Pronites", href: "/pronites" },
+  { label: "Creatorverse", href: "/creatorverse" },
   { label: "Gallery", href: "/gallery" },
+  { label: "Sponsors", href: "/sponsors" },
+  { label: "Contact", href: "/contact" },
 ];
 
 function isActive(pathname: string, href: string) {
@@ -61,7 +65,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden xl:flex items-center gap-5 2xl:gap-7">
           {NAV_LINKS.map((link) => {
             const active = isActive(pathname, link.href);
             return (
@@ -69,7 +73,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "relative text-[13px] font-semibold uppercase tracking-wider transition-colors",
+                  "relative whitespace-nowrap text-[12px] 2xl:text-[13px] font-semibold uppercase tracking-wider transition-colors",
                   active ? "text-[#1c0b09]" : "text-[#1c0b09]/70 hover:text-[#9b111e]"
                 )}
               >
@@ -81,7 +85,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop right side */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-3">
           {user ? (
             <UserDropdown
               user={{
@@ -92,12 +96,12 @@ export default function Navbar() {
             />
           ) : (
             <>
-              <Link href="/auth/login" className="text-[13px] font-semibold uppercase tracking-wider text-[#1c0b09]/70 hover:text-[#9b111e]">
+              <Link href="/auth/login" className="whitespace-nowrap text-[12px] 2xl:text-[13px] font-semibold uppercase tracking-wider text-[#1c0b09]/70 hover:text-[#9b111e]">
                 Sign in
               </Link>
               <Link
                 href="/auth/signup"
-                className="inline-flex items-center gap-2 rounded-lg bg-[#1c0b09] px-5 py-2.5 text-[13px] font-semibold uppercase tracking-wider text-white hover:bg-[#7a0c14] transition-colors"
+                className="inline-flex items-center gap-2 whitespace-nowrap rounded-lg bg-[#1c0b09] px-4 py-2.5 text-[12px] 2xl:text-[13px] font-semibold uppercase tracking-wider text-white hover:bg-[#7a0c14] transition-colors"
               >
                 Register now <ArrowRight className="h-4 w-4" />
               </Link>
@@ -107,7 +111,7 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-2 text-[#1c0b09]"
+          className="xl:hidden p-2 text-[#1c0b09]"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
@@ -118,7 +122,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-[#fbf3e6] border-t border-[#9b111e]/15">
+        <div className="xl:hidden bg-[#fbf3e6] border-t border-[#9b111e]/15">
           <div className="px-5 py-4 space-y-1">
             {NAV_LINKS.map((link) => (
               <Link

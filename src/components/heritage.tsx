@@ -141,7 +141,7 @@ export function SiteFooter() {
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-[#f08a24] mb-3">Explore</p>
           <ul className="space-y-1.5 text-sm">
-            {[["Home", "/"], ["About", "/about"], ["Events", "/events"], ["Schedule", "/schedule"], ["Gallery", "/gallery"]].map(([l, h]) => (
+            {[["Home", "/"], ["About", "/about"], ["Events", "/events"], ["Schedule", "/schedule"], ["Pronites", "/pronites"], ["Creatorverse", "/creatorverse"], ["Gallery", "/gallery"], ["Sponsors", "/sponsors"], ["Contact", "/contact"]].map(([l, h]) => (
               <li key={h}><Link href={h} className="hover:text-white">{l}</Link></li>
             ))}
           </ul>
