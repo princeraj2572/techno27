@@ -324,3 +324,52 @@ export const PARTNER_PACKAGES = [
   { name: "Gold Partner", price: "₹2,00,000", perks: ["Logo on all banners", "Stall space", "Event naming rights", "Website feature"], accent: "#f5c928" },
   { name: "Silver Partner", price: "₹75,000", perks: ["Logo on website", "Shared stall", "Social media mention", "Certificate"], accent: "#2a7aa8" },
 ];
+
+// ---------------------------------------------------------------------------
+// Team page — each department's title, captions and look (all sample copy)
+// ---------------------------------------------------------------------------
+export interface DeptFlavor {
+  title: string; // poster headline
+  caption: string; // default Hinglish caption
+  alt: string; // cheekier caption shown on hover
+  hindi: [string, string]; // the headline in Devanagari, split for the two sides of the poster
+  icon: string; // key into the icon map in dept-poster.tsx
+  emoji: string;
+}
+
+export const DEPT_FLAVOR: Record<string, DeptFlavor> = {
+  "Information, Publicity & Invitation": { title: "Publicity ka Theka", caption: "Bulana humara kaam hai, aana tumhari zimmedari.", alt: "Fest mein nahi aaye? Humne bulaya toh tha.", hindi: ["पब्लिसिटी", "का ठेका"], icon: "megaphone", emoji: "📢" },
+  "Design, Print & Media": { title: "Creative Dimaag", caption: "Poster se publicity tak, sab hum sambhalenge.", alt: "Tum idea do, aesthetic hum kar denge.", hindi: ["क्रिएटिव", "दिमाग"], icon: "palette", emoji: "🎨" },
+  "Registration & Reception": { title: "Entry Gate ke Sultaan", caption: "Naam likhwao, entry pao, andar jao.", alt: "Naam batao, entry le jao.", hindi: ["एंट्री गेट", "के सुल्तान"], icon: "clipboard", emoji: "📝" },
+  "Accommodation": { title: "Room Ka Jugaad", caption: "Sone ki tension mat lo, room hum de denge.", alt: "Ghar nahi hai? Hostel hai na.", hindi: ["रूम का", "जुगाड़"], icon: "bed", emoji: "🛏️" },
+  "Stage, Light, Sound & Stall": { title: "Stage Tera Bhai Banayega", caption: "Light, mic, stage… sab chamkega.", alt: "Stage tera bhai banayega, spotlight bhi.", hindi: ["स्टेज तेरा भाई", "बनाएगा"], icon: "mic", emoji: "🎤" },
+  "Catering": { title: "Khaana Department", caption: "Khaana kha ke jaana, bhookha mat jaana.", alt: "Event baad mein, pehle khaana.", hindi: ["खाना", "डिपार्टमेंट"], icon: "utensils", emoji: "🍕" },
+  "Venue Preparation": { title: "Jagaah Hum Bana Denge", caption: "Khaali ground ko fest bana denge.", alt: "Ground mila tha, fest hum banayenge.", hindi: ["जगह हम", "बना देंगे"], icon: "hammer", emoji: "🏗️" },
+  "Transportation": { title: "Lana Leja Hum Kar Lenge", caption: "Tum bas aao, baaki hum dekh lenge.", alt: "Gaadi ka jugaad hum kar lenge.", hindi: ["लाना ले जाना", "हम कर लेंगे"], icon: "bus", emoji: "🚗" },
+  "Hospitality": { title: "Mehmaan Nawazi Squad", caption: "Mehmaan ho tum, tension humari.", alt: "Guest tumhare, tension humari.", hindi: ["मेहमान नवाज़ी", "स्क्वॉड"], icon: "handshake", emoji: "🤝" },
+  "Website Maintenance": { title: "Website Tera Bhai Chalayega", caption: "Code phatega tab bhi website chalegi.", alt: "Code patega tab bhi website chalega.", hindi: ["वेबसाइट तेरा भाई", "चलाएगा"], icon: "code", emoji: "💻" },
+  "Sponsorship": { title: "Paise Wale Dost", caption: "Paise toh hum hi dalenge.", alt: "Paise toh hum hi dalenge. (Sponsors ke.)", hindi: ["पैसे वाले", "दोस्त"], icon: "rupee", emoji: "💰" },
+  "Certificate & Prize": { title: "Jeet Ki Rasid", caption: "Jeeto tum, certificate hum denge.", alt: "Jeet ka proof hum denge.", hindi: ["जीत की", "रसीद"], icon: "award", emoji: "🏆" },
+  "Discipline": { title: "Shanti Rakho Bhai", caption: "Masti karo, panga mat lena.", alt: "Rules hum banayenge, todna mat.", hindi: ["शांति रखो", "भाई"], icon: "shield", emoji: "🚨" },
+  "Stationery & Logistics": { title: "Samaan Ka Sultaan", caption: "Jo chahiye, woh milega.", alt: "Samaan chahiye? Naam batao.", hindi: ["सामान का", "सुल्तान"], icon: "package", emoji: "📦" },
+  "Health & First Aid": { title: "Doctor Nahi, Par Kaam Chala Denge", caption: "Chot lage toh seedha humare paas aana.", alt: "Chot lage toh hero mat banna.", hindi: ["डॉक्टर नहीं", "पर काम चला देंगे"], icon: "heart", emoji: "🩹" },
+};
+
+// Poster colour families, cycled across the departments.
+export interface PosterPalette {
+  main: string; // frame / background
+  accent: string; // arched banner
+  line: string; // thin inner line, dots
+  ink: string; // body text on main
+  bannerInk: string;
+  bannerShadow: string;
+  sky: string; // oval backdrop
+  shape: string; // oval geometric shape
+}
+export const POSTER_PALETTES: PosterPalette[] = [
+  { main: "#5b2a8c", accent: "#e8479a", line: "#ffd9ee", ink: "#fff0f7", bannerInk: "#ffd9ee", bannerShadow: "#5b2a8c", sky: "#33c4ea", shape: "#ffd23a" },
+  { main: "#0e5b57", accent: "#ffb800", line: "#ffe9a8", ink: "#fff6d8", bannerInk: "#0a3f3c", bannerShadow: "#fff1b8", sky: "#ff7a59", shape: "#f7e6b0" },
+  { main: "#8a1020", accent: "#ff7a1a", line: "#ffd9a8", ink: "#fff0dc", bannerInk: "#fff0dc", bannerShadow: "#8a1020", sky: "#ffd23a", shape: "#2aa6a0" },
+  { main: "#1d3a8a", accent: "#ff2d8a", line: "#ffd0e6", ink: "#fff0f7", bannerInk: "#fff0f7", bannerShadow: "#1d3a8a", sky: "#7fe0d0", shape: "#ffd23a" },
+  { main: "#1f6b3a", accent: "#ffd23a", line: "#fff0a8", ink: "#fffbe0", bannerInk: "#14502b", bannerShadow: "#fff7b0", sky: "#ff8fb5", shape: "#ff6a00" },
+];

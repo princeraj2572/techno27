@@ -1,24 +1,10 @@
-import { Band, PageShell, blockHindi, serif } from "@/components/indie";
-import { DEPARTMENTS, initials } from "@/data/dummy";
+import { Band, PageShell, blockHindi } from "@/components/indie";
+import { DEPARTMENTS, DEPT_FLAVOR } from "@/data/dummy";
+import { DeptPoster } from "@/components/dept-poster";
 
 export const metadata = { title: "Contact | Techno-aiMBiAtion 2027" };
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-
-function Stamp({ name, role, phone }: { name: string; role: string; phone: string }) {
-  return (
-    <div className="indie-stamp p-2 text-black shadow-[4px_4px_0_0_#000]">
-      <div className="flex aspect-[4/3] items-center justify-center bg-[#fff3d6]">
-        <span className={`text-5xl text-[#c8421f] ${serif.className}`}>{initials(name)}</span>
-      </div>
-      <div className="bg-[#d9d4c7] px-2 py-1.5">
-        <p className="truncate text-base font-bold leading-tight">{name}</p>
-        <p className="truncate text-xs uppercase tracking-wider text-black/60">{role}</p>
-        <p className="text-xs font-semibold tabular-nums">{phone}</p>
-      </div>
-    </div>
-  );
-}
 
 export default function ContactPage() {
   return (
@@ -78,7 +64,7 @@ export default function ContactPage() {
               {DEPARTMENTS.map((d) => (
                 <li key={d.name} className="shrink-0">
                   <a href={`#${slugify(d.name)}`} className="block whitespace-nowrap px-3 py-1.5 text-sm font-bold uppercase tracking-wider text-black hover:bg-[#f5edd8] md:whitespace-normal">
-                    {d.name}
+                    <span aria-hidden className="mr-1.5">{DEPT_FLAVOR[d.name]?.emoji}</span>{d.name}
                   </a>
                 </li>
               ))}
@@ -99,16 +85,12 @@ export default function ContactPage() {
               ))}
             </div>
 
-            {DEPARTMENTS.map((d) => (
-              <section key={d.name} id={slugify(d.name)} className="scroll-mt-24">
-                <p className="mb-3 inline-block bg-black px-3 py-0.5 text-xs font-bold uppercase tracking-[0.3em] text-[#f5c928]">{d.name}</p>
-                <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
-                  <Stamp name={d.convener.name} role="Convener" phone={d.convener.phone} />
-                  <Stamp name={d.coConvener.name} role="Co-Convener" phone={d.coConvener.phone} />
-                </div>
-              </section>
-            ))}
-            <p className="text-center text-xs uppercase tracking-widest text-black/50">Sample team — all names and numbers are fictional.</p>
+            <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2">
+              {DEPARTMENTS.map((d, i) => (
+                <DeptPoster key={d.name} dept={d} index={i} id={slugify(d.name)} />
+              ))}
+            </div>
+            <p className="text-center text-xs uppercase tracking-widest text-black/50">Sample team — all names, numbers and captions are fictional. Hover a poster for the cheekier caption.</p>
           </div>
         </div>
       </Band>
