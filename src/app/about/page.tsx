@@ -1,4 +1,5 @@
 import { PUBLIC_EVENTS } from "@/data/public-events";
+import { MILESTONES } from "@/data/dummy";
 import { CtaBand, PageShell, SceneHeader, SectionHead, serif } from "@/components/heritage";
 
 export const metadata = { title: "About | Techno-aiMBiAtion 2027" };
@@ -66,6 +67,21 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Journey */}
+      <section className="max-w-3xl mx-auto px-6 pb-16">
+        <SectionHead title="Our journey" className="mb-10" />
+        <ol className="relative border-l-2 border-[#9b111e]/40 pl-8 space-y-8">
+          {MILESTONES.map((m) => (
+            <li key={m.year} className="relative">
+              <span aria-hidden className="absolute -left-[2.6rem] top-1.5 h-4 w-4 rounded-full border-2 border-[#9b111e] bg-[#fbf3e6]" />
+              <p className={`text-2xl font-bold text-[#7a0c14] ${serif.className}`}>{m.year} · {m.title}</p>
+              <p className="text-[#1c0b09]/75 leading-snug">{m.text}</p>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-6 text-center text-xs text-[#1c0b09]/50">Sample timeline — figures are placeholders.</p>
       </section>
 
       {/* Pillars */}

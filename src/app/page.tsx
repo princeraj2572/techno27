@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { EVENT_CATEGORIES, PUBLIC_EVENTS } from "@/data/public-events";
 import { EventIcon } from "@/components/event-icons";
 import { SCHEDULE } from "@/data/schedule";
+import { SPONSOR_TIERS } from "@/data/dummy";
 import {
   BTN_INK, BTN_RED, CtaBand, MAROON_GRADIENT, PageShell, SectionHead, blackletter, serif,
 } from "@/components/heritage";
@@ -178,9 +179,10 @@ export default function HomePage() {
       <section className="max-w-5xl mx-auto px-6 pb-20 text-center">
         <p className="text-[11px] uppercase tracking-[0.45em] text-[#1c0b09]/60">Our partners</p>
         <div className="mt-5 flex flex-wrap justify-center gap-4">
-          {[0, 1, 2, 3].map((i) => (
-            <div key={i} className="h-16 w-40 rounded-xl border-2 border-dashed border-[#c9a27a] bg-[#fffaf0]/70 flex items-center justify-center text-[10px] uppercase tracking-[0.25em] text-[#1c0b09]/40">
-              Logo here
+          {SPONSOR_TIERS[2].sponsors.map((sp) => (
+            <div key={sp.name} className="flex h-16 w-44 items-center gap-3 rounded-xl border border-[#c9a27a]/60 bg-[#fffaf0]/90 px-3">
+              <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-lg font-bold text-white ${serif.className}`} style={{ backgroundColor: sp.color }}>{sp.name[0]}</span>
+              <span className={`text-left text-sm font-bold leading-tight ${serif.className}`}>{sp.name}</span>
             </div>
           ))}
         </div>

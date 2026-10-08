@@ -1,5 +1,6 @@
 import { EventIcon } from "@/components/event-icons";
 import { CtaBand, PageShell, SceneHeader, SectionHead, serif } from "@/components/heritage";
+import { CREATOR_PERKS } from "@/data/dummy";
 
 export const metadata = { title: "Creatorverse | Techno-aiMBiAtion 2027" };
 
@@ -35,7 +36,20 @@ export default function CreatorversePage() {
           </div>
         ))}
       </section>
-      <p className="-mt-6 pb-12 text-center text-xs text-[#1c0b09]/50">Details for creators will be shared soon.</p>
+      <p className="-mt-6 pb-12 text-center text-xs text-[#1c0b09]/50">Sample programme — details are placeholders.</p>
+
+      <section className="max-w-5xl mx-auto px-6 pb-14">
+        <h2 className={`text-3xl font-bold mb-6 text-center ${serif.className}`}>Perks &amp; rewards</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {CREATOR_PERKS.map((p, i) => (
+            <div key={p.title} className="rounded-xl border border-[#c9a27a]/60 bg-[#fffaf0]/90 p-5 text-center">
+              <span className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-b from-[#c1121f] to-[#6e0b12] text-white text-sm font-bold">{i + 1}</span>
+              <p className={`font-bold ${serif.className}`}>{p.title}</p>
+              <p className="mt-1 text-sm text-[#1c0b09]/70 leading-snug">{p.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       <CtaBand title="Got something to show?" text="Register and join the creator community at Techno-aiMBiAtion." href="/auth/signup" label="Register now" />
     </PageShell>
