@@ -1,4 +1,4 @@
-import { SCHEDULE } from "./schedule";
+import { ALL_EVENTS, getEvent } from "./all-events";
 
 // DUMMY DATA — every name, brand, number and date below is fictional sample content
 // for previewing the design. Replace with real information before launch.
@@ -156,37 +156,9 @@ export const CREATOR_PERKS = [
 ];
 
 // ---------------------------------------------------------------------------
-// Per-event mock details (date, venue, prize, rules ...) — derived from the slug.
+// Per-event details (date, venue, prize, rules ...)
+// The values live with each event in src/app/events/<slug>/data.ts — edit them there.
 // ---------------------------------------------------------------------------
-
-const TAGLINES: Record<string, string> = {
-  backtrace: "Trace the clues, crack the code.",
-  kalakriti: "Where art meets culture.",
-  robovation: "Machines, meet your match.",
-  masterchef: "Cook up a storm.",
-  antaragni: "Express what lies within.",
-  ideathon: "Ideas for a better tomorrow.",
-  "beat-battle": "Let the beats decide.",
-  techlab: "Hands-on tech, live.",
-  "startup-business-plan": "Pitch it. Fund it. Build it.",
-  "riwayat-fashion-show": "Tradition on the runway.",
-  roadies: "Survive the campus trail.",
-  "voice-of-youth": "Speak up, be heard.",
-  aima: "Think like a manager.",
-  codigo: "Code. Compete. Conquer.",
-  designathon: "Design that moves people.",
-};
-
-const VENUES = ["CSE Block", "Main Auditorium", "Seminar Hall", "Open Air Stage", "Innovation Lab", "Design Studio", "Sports Arena", "Food Court"];
-const TIMES = ["10:00 AM", "11:30 AM", "2:30 PM", "4:00 PM", "5:30 PM"];
-const PRIZES = ["₹25,000", "₹20,000", "₹15,000", "₹12,000", "₹10,000", "₹8,000"];
-const TEAM_BY_CATEGORY: Record<string, string> = {
-  Technical: "2–4 members",
-  Cultural: "Solo or group",
-  Management: "1–3 members",
-  Fun: "Teams of 3–5",
-};
-
 export interface EventMock {
   tagline: string;
   about: string;
@@ -200,26 +172,10 @@ export interface EventMock {
   contact: { name: string; phone: string };
 }
 
-export function getEventMock(slug: string, name: string, category: string, index: number): EventMock {
-  const day = SCHEDULE[index % SCHEDULE.length];
-  const person = PEOPLE[(index * 3 + 5) % PEOPLE.length];
-  return {
-    tagline: TAGLINES[slug] ?? "Be part of the fest.",
-    about: `${name} is one of the flagship ${category.toLowerCase()} events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.`,
-    date: day.date,
-    time: TIMES[index % TIMES.length],
-    venue: VENUES[index % VENUES.length],
-    teamSize: TEAM_BY_CATEGORY[category] ?? "Open",
-    fee: "Free for OPJU · ₹199 for external",
-    prize: PRIZES[index % PRIZES.length],
-    rules: [
-      "Carry your TRX27 QR pass and a valid college ID.",
-      "Report to the venue 20 minutes before the start time.",
-      "Judges' decisions are final; any misconduct leads to disqualification.",
-      "Use of unfair means or outside help is not permitted.",
-    ],
-    contact: { name: person, phone: `+91 98765 5${String(1000 + index).slice(1)}0` },
-  };
+export function getEventMock(slug: string): EventMock {
+  const e = getEvent(slug);
+  if (!e) throw new Error(`Unknown event: ${slug}`);
+  return { tagline: e.tagline, about: e.about, date: e.date, time: e.time, venue: e.venue, teamSize: e.teamSize, fee: e.fee, prize: e.prize, rules: e.rules, contact: e.contact };
 }
 
 // ---------------------------------------------------------------------------
@@ -288,21 +244,16 @@ export const MYSTERY_HINTS = [
 //
 // HOW TO CHANGE AN EVENT'S PICTURE LATER
 //   1. Put the file in  public/images/events/   (e.g. robovation.jpg)
-//   2. Add one line to EVENT_MEDIA below, using the event's slug:
-//        robovation: { image: "/images/events/robovation.jpg", logo: "/images/events/robovation-logo.png" },
+//   2. In src/app/events/<slug>/data.ts set  media: { image: "/images/events/robovation.jpg", logo: "..." }
 //   The picture then replaces the cultural illustration on that event's stamp card (and in the
-//   Spotlight, if it is the featured event). Remove the line to bring the illustration back.
-//   Slugs: backtrace, kalakriti, robovation, masterchef, antaragni, ideathon, beat-battle, techlab,
-//          startup-business-plan, riwayat-fashion-show, roadies, voice-of-youth, aima, codigo, designathon
+//   Spotlight, if it is the featured event). Clear it to bring the illustration back.
 //   Image tips: portrait 3:4 (about 900 x 1200) fits the stamp best; logos should be square (256 x 256).
 // ---------------------------------------------------------------------------
 export interface EventMedia {
   image?: string; // stamp picture, portrait 3:4 (~900 x 1200)
   logo?: string; // round event logo, square, ~256 x 256
 }
-export const EVENT_MEDIA: Record<string, EventMedia> = {
-  // robovation: { image: "/images/events/robovation.jpg", logo: "/images/events/robovation-logo.png" },
-};
+export const EVENT_MEDIA: Record<string, EventMedia> = Object.fromEntries(ALL_EVENTS.map((e) => [e.slug, e.media ?? {}]));
 
 export const EVENTS_BANNER: string | undefined = undefined; // e.g. "/images/events-banner.jpg", ~1600 x 600
 export const FEST_START = "2027-01-15T09:00:00+05:30";

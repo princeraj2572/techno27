@@ -1,36 +1,31 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, CalendarDays, Clock, MapPin, Trophy, Users, Wallet } from "lucide-react";
-import { PUBLIC_EVENTS, getPublicEvent } from "@/data/public-events";
-import { EVENT_MEDIA, getEventMock } from "@/data/dummy";
-import { DEFAULT_THEME, EVENT_THEMES, patternStyle } from "@/data/event-themes";
+import { ALL_EVENTS } from "@/data/all-events";
+import type { EventData } from "@/data/event-types";
+import { patternStyle } from "@/data/event-themes";
 import { CULTURES } from "@/components/culture-art";
 import { Postmark, Stamp } from "@/components/stamp";
 import { LogoSlot } from "@/components/media";
 import { Marquee, PageShell, serif } from "@/components/indie";
 
-// The shared event page. Each folder under src/app/events/<slug>/ renders this with its own slug,
-// so an individual event page can be customised (or replaced entirely) without touching the others.
-export function EventPage({ slug }: { slug: string }) {
-  const event = getPublicEvent(slug);
-  if (!event) notFound();
-
-  const index = PUBLIC_EVENTS.findIndex((e) => e.slug === slug);
-  const next = PUBLIC_EVENTS[(index + 1) % PUBLIC_EVENTS.length];
-  const prev = PUBLIC_EVENTS[(index + PUBLIC_EVENTS.length - 1) % PUBLIC_EVENTS.length];
-  const mock = getEventMock(event.slug, event.name, event.category, index);
-  const media = EVENT_MEDIA[event.slug] ?? {};
-  const t = EVENT_THEMES[slug] ?? DEFAULT_THEME;
-  const culture = CULTURES[slug];
+// The shared event page layout. Each folder under src/app/events/<slug>/ passes in its own data.ts,
+// so one event can be customised (or its page replaced entirely) without touching the others.
+export function EventPage({ event }: { event: EventData }) {
+  const index = ALL_EVENTS.findIndex((e) => e.slug === event.slug);
+  const next = ALL_EVENTS[(index + 1) % ALL_EVENTS.length];
+  const prev = ALL_EVENTS[(index + ALL_EVENTS.length - 1) % ALL_EVENTS.length];
+  const media = event.media ?? {};
+  const t = event.theme;
+  const culture = CULTURES[event.slug];
   const pattern = patternStyle(t.pattern, t.patternColor);
 
   const facts = [
-    { Icon: CalendarDays, label: "Date", value: mock.date },
-    { Icon: Clock, label: "Time", value: mock.time },
-    { Icon: MapPin, label: "Venue", value: mock.venue },
-    { Icon: Users, label: "Team size", value: mock.teamSize },
-    { Icon: Trophy, label: "Prize pool", value: mock.prize },
-    { Icon: Wallet, label: "Entry fee", value: mock.fee },
+    { Icon: CalendarDays, label: "Date", value: event.date },
+    { Icon: Clock, label: "Time", value: event.time },
+    { Icon: MapPin, label: "Venue", value: event.venue },
+    { Icon: Users, label: "Team size", value: event.teamSize },
+    { Icon: Trophy, label: "Prize pool", value: event.prize },
+    { Icon: Wallet, label: "Entry fee", value: event.fee },
   ];
 
   const cardStyle = { background: t.card, color: t.cardInk, border: `2px solid ${t.accent2}`, boxShadow: `5px 5px 0 ${t.accent2}` };
@@ -65,12 +60,12 @@ export function EventPage({ slug }: { slug: string }) {
             </div>
 
             <h1 className="text-6xl font-extrabold uppercase leading-[0.9] tracking-tight sm:text-8xl break-words">{event.name}</h1>
-            <p className="text-2xl font-semibold sm:text-3xl" style={{ color: t.soft }}>{mock.tagline}</p>
+            <p className="text-2xl font-semibold sm:text-3xl" style={{ color: t.soft }}>{event.tagline}</p>
 
             <p className="flex flex-wrap gap-x-5 gap-y-1 text-lg font-semibold">
-              <span className="flex items-center gap-1.5"><CalendarDays className="h-5 w-5" />{mock.date}</span>
-              <span className="flex items-center gap-1.5"><MapPin className="h-5 w-5" />{mock.venue}</span>
-              <span className="flex items-center gap-1.5"><Trophy className="h-5 w-5" />{mock.prize}</span>
+              <span className="flex items-center gap-1.5"><CalendarDays className="h-5 w-5" />{event.date}</span>
+              <span className="flex items-center gap-1.5"><MapPin className="h-5 w-5" />{event.venue}</span>
+              <span className="flex items-center gap-1.5"><Trophy className="h-5 w-5" />{event.prize}</span>
             </p>
 
             <div className="flex flex-wrap gap-3 pt-1">
@@ -115,7 +110,7 @@ export function EventPage({ slug }: { slug: string }) {
           <div className="grid gap-8 md:grid-cols-2">
             <div>
               <h2 className={`mb-4 text-4xl ${serif.className}`} style={{ color: t.accent2 === t.accent ? t.ink : t.ink }}>About</h2>
-              <p className="text-xl leading-snug">{mock.about}</p>
+              <p className="text-xl leading-snug">{event.about}</p>
               <p className="mt-4 border-l-4 pl-4 text-lg font-semibold italic" style={{ borderColor: t.accent, color: t.soft }}>
                 Inspired by {culture?.landmark} · {culture?.state}
               </p>
@@ -123,7 +118,7 @@ export function EventPage({ slug }: { slug: string }) {
             <div>
               <h2 className={`mb-4 text-4xl ${serif.className}`}>Rules</h2>
               <ol className="divide-y-2 divide-dashed" style={{ ...cardStyle, borderColor: t.accent2 }}>
-                {mock.rules.map((r, i) => (
+                {event.rules.map((r, i) => (
                   <li key={r} className="flex gap-3 px-4 py-3" style={{ borderColor: `${t.accent2}55` }}>
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold" style={{ background: t.accent, color: t.accentInk }}>{i + 1}</span>
                     <span className="text-lg leading-snug">{r}</span>
@@ -150,8 +145,8 @@ export function EventPage({ slug }: { slug: string }) {
           <div className="flex flex-wrap items-center justify-between gap-4 p-6" style={cardStyle}>
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-60">Event coordinator</p>
-              <p className={`text-3xl ${serif.className}`}>{mock.contact.name}</p>
-              <p className="text-lg font-semibold tabular-nums">{mock.contact.phone}</p>
+              <p className={`text-3xl ${serif.className}`}>{event.contact.name}</p>
+              <p className="text-lg font-semibold tabular-nums">{event.contact.phone}</p>
             </div>
             <p className="text-xs font-bold uppercase tracking-widest opacity-60">Sample details — all data is fictional.</p>
           </div>
@@ -179,7 +174,6 @@ export function EventPage({ slug }: { slug: string }) {
   );
 }
 
-export function eventMetadata(slug: string) {
-  const event = getPublicEvent(slug);
-  return { title: event ? `${event.name} | Techno-aiMBiAtion 2027` : "Event | Techno-aiMBiAtion 2027" };
+export function eventMetadata(event: EventData) {
+  return { title: `${event.name} | Techno-aiMBiAtion 2027` };
 }

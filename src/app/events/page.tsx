@@ -20,7 +20,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
   const totalSub = PUBLIC_EVENTS.reduce((n, e) => n + e.subEvents.length, 0);
 
   const cards = PUBLIC_EVENTS.map((e, i) => {
-    const m = getEventMock(e.slug, e.name, e.category, i);
+    const m = getEventMock(e.slug);
     const media = EVENT_MEDIA[e.slug] ?? {};
     return {
       slug: e.slug,

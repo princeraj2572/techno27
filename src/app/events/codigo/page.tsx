@@ -1,7 +1,8 @@
 import { EventPage, eventMetadata } from "@/components/event-page";
+import { codigo } from "./data";
 
-export const metadata = eventMetadata("codigo");
+export const metadata = eventMetadata(codigo);
 
 export default function Page() {
-  return <EventPage slug="codigo" />;
+  return <EventPage event={codigo} />;
 }
