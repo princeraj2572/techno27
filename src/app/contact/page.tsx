@@ -1,6 +1,6 @@
 import { Band, PageShell, blockHindi } from "@/components/indie";
 import { DEPARTMENTS, DEPT_FLAVOR } from "@/data/dummy";
-import { DeptPoster } from "@/components/dept-poster";
+import { DeptSection } from "@/components/dept-section";
 
 export const metadata = { title: "Contact | Techno-aiMBiAtion 2027" };
 
@@ -57,43 +57,46 @@ export default function ContactPage() {
         </div>
       </Band>
 
-      <Band tone="amber" mandala className="!max-w-6xl !pt-12">
-        <div className="grid gap-8 md:grid-cols-[230px_1fr]">
-          <nav aria-label="Departments" className="md:sticky md:top-24 md:self-start">
-            <ul className="flex gap-2 overflow-x-auto pb-2 md:flex-col md:gap-0 md:overflow-visible">
-              {DEPARTMENTS.map((d) => (
-                <li key={d.name} className="shrink-0">
-                  <a href={`#${slugify(d.name)}`} className="block whitespace-nowrap px-3 py-1.5 text-sm font-bold uppercase tracking-wider text-black hover:bg-[#f5edd8] md:whitespace-normal">
-                    <span aria-hidden className="mr-1.5">{DEPT_FLAVOR[d.name]?.emoji}</span>{d.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="space-y-10">
-            <div className="grid gap-4 sm:grid-cols-3">
-              {[
-                ["Venue", "O.P. Jindal University, Raigarh, Chhattisgarh"],
-                ["Email", "hello@technoaimbiation.example"],
-                ["Phone", "+91 98765 43210"],
-              ].map(([l, v]) => (
-                <div key={l} className="border-2 border-black bg-[#f5edd8] p-4 shadow-[4px_4px_0_0_#000]">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-black/50">{l}</p>
-                  <p className="mt-1 break-words font-semibold leading-snug text-black">{v}</p>
-                </div>
-              ))}
+      {/* Venue / email / phone */}
+      <Band tone="amber" mandala className="!py-10">
+        <div className="grid gap-4 sm:grid-cols-3">
+          {[
+            ["Venue", "O.P. Jindal University, Raigarh, Chhattisgarh"],
+            ["Email", "hello@technoaimbiation.example"],
+            ["Phone", "+91 98765 43210"],
+          ].map(([l, v]) => (
+            <div key={l} className="border-2 border-black bg-[#f5edd8] p-4 shadow-[4px_4px_0_0_#000]">
+              <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-black/50">{l}</p>
+              <p className="mt-1 break-words font-semibold leading-snug text-black">{v}</p>
             </div>
-
-            <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2">
-              {DEPARTMENTS.map((d, i) => (
-                <DeptPoster key={d.name} dept={d} index={i} id={slugify(d.name)} />
-              ))}
-            </div>
-            <p className="text-center text-xs uppercase tracking-widest text-black/50">Sample team — all names, numbers and captions are fictional. Hover a poster for the cheekier caption.</p>
-          </div>
+          ))}
         </div>
       </Band>
+
+      {/* Sticky strip to jump between departments */}
+      <nav aria-label="Departments" className="sticky top-16 z-30 border-y-2 border-black bg-[#1a0f08]/95 backdrop-blur">
+        <ul className="indie-hscroll mx-auto flex max-w-6xl gap-2 overflow-x-auto px-6 py-2.5">
+          {DEPARTMENTS.map((d) => (
+            <li key={d.name} className="shrink-0">
+              <a
+                href={`#${slugify(d.name)}`}
+                className="block whitespace-nowrap border-2 border-[#f5c928]/70 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#f5edd8] transition hover:bg-[#f5c928] hover:text-black"
+              >
+                <span aria-hidden className="mr-1.5">{DEPT_FLAVOR[d.name]?.emoji}</span>{d.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* One section per department */}
+      {DEPARTMENTS.map((d, i) => (
+        <DeptSection key={d.name} dept={d} index={i} total={DEPARTMENTS.length} id={slugify(d.name)} />
+      ))}
+
+      <p className="bg-black py-3 text-center text-xs uppercase tracking-widest text-[#f5edd8]/60">
+        Sample team — all names, photos, numbers and captions are fictional. Hover a card for the cheekier caption.
+      </p>
     </PageShell>
   );
 }

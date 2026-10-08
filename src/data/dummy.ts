@@ -85,12 +85,15 @@ export const SPONSOR_TIERS: SponsorTier[] = [
 export interface TeamMember {
   name: string;
   phone: string;
+  email: string;
+  photo?: string; // real photo, e.g. "/images/team/aarav-mehta.jpg" (portrait 4:5, ~800 x 1000)
 }
 
 export interface Department {
   name: string;
   convener: TeamMember;
   coConvener: TeamMember;
+  member: TeamMember; // core team member
 }
 
 const DEPARTMENT_NAMES = [
@@ -117,12 +120,20 @@ const PEOPLE = [
   "Yash Chauhan", "Riya Sen", "Dev Malhotra", "Pooja Reddy", "Kunal Bhatt", "Naina Gupta",
   "Samar Khanna", "Zoya Ali", "Aditya Rane", "Kiara Bose", "Ishaan Pillai", "Mira Sharma",
   "Ritvik Sood", "Alisha Kohli", "Pranav Desai", "Nisha Rawat", "Harsh Vora", "Simran Gill",
+  "Tanvi Joshi", "Rehan Qureshi", "Gauri Nambiar", "Vikram Sethi", "Ananya Bhatt", "Karan Dhillon",
+  "Pallavi Kulkarni", "Rudra Tripathi", "Sneha Pandey", "Aryan Bajaj", "Divya Menon", "Manav Arora",
+  "Esha Trivedi", "Jai Solanki", "Lavanya Iyer",
 ];
+
+const emailFor = (name: string) => `${name.toLowerCase().replace(/[^a-z ]/g, "").trim().replace(/\s+/g, ".")}@technoaimbiation.example`;
+const phoneFor = (n: number) => `+91 98765 4${String(1000 + n).slice(1)}0`;
+const member = (name: string, n: number): TeamMember => ({ name, phone: phoneFor(n), email: emailFor(name) });
 
 export const DEPARTMENTS: Department[] = DEPARTMENT_NAMES.map((name, i) => ({
   name,
-  convener: { name: PEOPLE[i * 2], phone: `+91 98765 4${String(1000 + i * 2).slice(1)}0` },
-  coConvener: { name: PEOPLE[i * 2 + 1], phone: `+91 98765 4${String(1000 + i * 2 + 1).slice(1)}0` },
+  convener: member(PEOPLE[i * 2], i * 3),
+  coConvener: member(PEOPLE[i * 2 + 1], i * 3 + 1),
+  member: member(PEOPLE[30 + i], i * 3 + 2),
 }));
 
 export function initials(name: string): string {
