@@ -10,7 +10,7 @@ import { NimbuMirch } from "@/components/nimbu-mirch";
 import { EVENT_THEMES, patternStyle } from "@/data/event-themes";
 import { CountUp, Reveal, Splash, TestimonialSlider } from "@/components/motion";
 import {
-  Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif, MandalaSpin, blockHindi,
+  Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif, MandalaSpin, MandalaArt, blockHindi,
 } from "@/components/indie";
 
 const NOTES = [
@@ -110,18 +110,33 @@ export default function HomePage() {
       {/* Pinned sections: each slides up over the previous one (large screens) */}
       <div className="relative">
         {/* Hero */}
-        <section className="panel relative overflow-hidden indie-mandala bg-[#7a1c1c]">
-          <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(58,8,8,0.85) 0%, rgba(122,28,28,0.55) 50%, rgba(246,95,0,0.85) 100%)" }} />
+        <section className="panel relative overflow-hidden bg-[#7a1c1c]">
+          <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(58,8,8,0.92) 0%, rgba(122,28,28,0.6) 50%, rgba(246,95,0,0.88) 100%)" }} />
+          <MandalaArt variant="gold" centerRight />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-0 z-10 h-9"
+            style={{
+              backgroundImage: "radial-gradient(circle at 16px 14px, #ffd000 0 7px, #ff8a00 7.5px 11px, transparent 11.5px), radial-gradient(circle at 16px 26px, #1f8a3a 0 4px, transparent 4.5px)",
+              backgroundSize: "32px 36px",
+              backgroundRepeat: "repeat-x",
+            }}
+          />
           <HeroScene />
           <div className="panel-inner relative max-w-6xl mx-auto px-6 pt-16 pb-48 md:pb-44 grid md:grid-cols-2 gap-6 items-center">
             <div className="space-y-6 text-center md:text-left">
               <p className="inline-block bg-[#ff6a00] text-black text-sm font-bold uppercase tracking-[0.25em] px-3 py-1 border-2 border-black -rotate-1">
                 Op Jindal University • 2027
               </p>
-              <h1 className={`text-5xl sm:text-7xl leading-[0.95] text-[#f5c928] break-words ${serif.className}`} style={{ textShadow: "4px 4px 0 #3a0808" }}>
-                Techno-<span className="text-[#f5edd8]">aiMBiAtion</span>
-                <span className="block text-[#ff6a00]">&apos;27</span>
-              </h1>
+              <CutoutTitle
+                as="h1"
+                size="hero"
+                latin={["Techno-", "aiMBiAtion", "'27"]}
+                lineColors={["#ffd21f", "#f5edd8", "#ff6a00"]}
+                hindi="टेक्नो-एम्बिएशन"
+                shadow="#3a0808"
+                className="justify-center md:justify-start"
+              />
               <p className="max-w-lg text-xl sm:text-2xl font-semibold leading-snug text-[#f5edd8]/90 mx-auto md:mx-0">
                 The annual flagship festival of O.P. Jindal University. Compete, collaborate and create — across Tech, Robotics, Culture &amp; more.
               </p>
@@ -134,7 +149,9 @@ export default function HomePage() {
             <span aria-hidden className="indie-float absolute left-4 top-6 hidden md:block bg-[#f5c928] text-black text-xs font-bold uppercase tracking-widest px-3 py-1 border-2 border-black" style={{ ["--r" as string]: "-6deg" }}>★ Vol. 1</span>
 
             <div className="relative mx-auto w-72 sm:w-96 md:w-[28rem] md:-mr-20 aspect-square">
-              <Wheel className="h-full w-full drop-shadow-[10px_10px_0_rgba(0,0,0,0.45)]" />
+              <MandalaSpin className="absolute -inset-14 h-[calc(100%+7rem)] w-[calc(100%+7rem)] opacity-40" stroke="#d9b54a" />
+              <Wheel className="relative h-full w-full drop-shadow-[10px_10px_0_rgba(0,0,0,0.45)]" />
+              <Postmark lines={false} className="pointer-events-none absolute -bottom-2 -left-2 z-10 h-24 w-24 rotate-12 opacity-80 mix-blend-screen invert" />
               <Link
                 href="/auth/signup"
                 className="absolute left-1/2 top-1/2 flex h-[34%] w-[34%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-center text-[10px] sm:text-sm font-bold uppercase tracking-widest text-[#f5c928] hover:text-white"
