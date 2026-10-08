@@ -79,14 +79,14 @@ export function UserDropdown({ user }: UserDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2">
+        <Button variant="ghost" size="sm" className="gap-2 rounded-lg border border-[#6e0b12]/50 bg-transparent text-[#6e0b12] hover:bg-[#6e0b12] hover:text-white text-[13px] font-semibold uppercase tracking-wider">
           <User className="h-4 w-4" />
           <span className="hidden sm:inline max-w-[120px] truncate">
             {user.fullName.split(" ")[0]}
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" className="w-56 bg-[#fffaf0] text-[#1c0b09] border border-[#c9a27a] shadow-lg rounded-xl">
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user.fullName}</p>

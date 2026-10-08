@@ -1,34 +1,30 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Cog, Menu, X } from "lucide-react";
 import { UserDropdown } from "@/components/user-dropdown";
 import useFetch from "@/hooks/use-fetch";
 import { getUser } from "@/actions/user-actions";
 import { cn } from "@/lib/utils";
-
-const EVENT_LINKS = [
-  { label: "Hackathon", href: "/events/hackathon" },
-  { label: "Coding Contest", href: "/events/coding" },
-  { label: "Robo Race", href: "/events/roborace" },
-  { label: "UI/UX Design", href: "/events/uiux" },
-  { label: "Quiz", href: "/events/quiz" },
-  { label: "All Events", href: "/events" },
-];
+import { blackletter } from "@/components/heritage";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  { label: "Events", href: "/events" },
+  { label: "Schedule", href: "/schedule" },
   { label: "Gallery", href: "/gallery" },
 ];
+
+function isActive(pathname: string, href: string) {
+  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+}
 
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [eventsOpen, setEventsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   const { data: user, fn: fetchUser } = useFetch(getUser);
@@ -36,6 +32,10 @@ export default function Navbar() {
   useEffect(() => {
     fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  useEffect(() => {
+    setMobileOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -47,61 +47,37 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-background/95 backdrop-blur-sm border-b border-border shadow-sm"
-          : "bg-transparent"
+        "fixed top-0 left-0 right-0 z-50 bg-[#fbf3e6]/95 backdrop-blur border-b transition-shadow",
+        scrolled ? "border-[#9b111e]/25 shadow-[0_6px_20px_-12px_rgba(110,11,18,0.5)]" : "border-[#9b111e]/10"
       )}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link href="/" className="font-bold text-lg tracking-wider">
-          Techno-aiMBiAtion<span className="text-primary"> 27</span>
+        <Link href="/" className="flex items-center gap-2 shrink-0 text-[#1c0b09]">
+          <Cog className="h-7 w-7" aria-hidden />
+          <span className={cn("text-2xl leading-none text-[#6e0b12]", blackletter.className)}>
+            Techno-aiMBiAtion <span className="text-[#c1121f]">&apos;27</span>
+          </span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-6">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "text-sm transition-colors hover:text-primary",
-                pathname === link.href ? "text-primary font-medium" : "text-muted-foreground"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-
-          {/* Events dropdown */}
-          <div className="relative">
-            <button
-              className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
-              onMouseEnter={() => setEventsOpen(true)}
-              onMouseLeave={() => setEventsOpen(false)}
-            >
-              Events
-              <ChevronDown className={cn("h-4 w-4 transition-transform", eventsOpen && "rotate-180")} />
-            </button>
-            {eventsOpen && (
-              <div
-                className="absolute top-full left-0 mt-1 w-48 bg-popover border border-border rounded-md shadow-md py-1"
-                onMouseEnter={() => setEventsOpen(true)}
-                onMouseLeave={() => setEventsOpen(false)}
+        <div className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map((link) => {
+            const active = isActive(pathname, link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "relative text-[13px] font-semibold uppercase tracking-wider transition-colors",
+                  active ? "text-[#1c0b09]" : "text-[#1c0b09]/70 hover:text-[#9b111e]"
+                )}
               >
-                {EVENT_LINKS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="block px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-accent transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
+                {link.label}
+                {active && <span className="absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[#c1121f]" />}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Desktop right side */}
@@ -116,11 +92,14 @@ export default function Navbar() {
             />
           ) : (
             <>
-              <Link href="/auth/login">
-                <Button variant="ghost" size="sm">Sign in</Button>
+              <Link href="/auth/login" className="text-[13px] font-semibold uppercase tracking-wider text-[#1c0b09]/70 hover:text-[#9b111e]">
+                Sign in
               </Link>
-              <Link href="/auth/signup">
-                <Button size="sm">Register</Button>
+              <Link
+                href="/auth/signup"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#1c0b09] px-5 py-2.5 text-[13px] font-semibold uppercase tracking-wider text-white hover:bg-[#7a0c14] transition-colors"
+              >
+                Register now <ArrowRight className="h-4 w-4" />
               </Link>
             </>
           )}
@@ -128,53 +107,33 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+          className="md:hidden p-2 text-[#1c0b09]"
           onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </nav>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-background border-b border-border">
-          <div className="px-4 py-4 space-y-3">
+        <div className="md:hidden bg-[#fbf3e6] border-t border-[#9b111e]/15">
+          <div className="px-5 py-4 space-y-1">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="block text-sm text-muted-foreground hover:text-primary py-1"
-                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "block py-2.5 text-sm font-semibold uppercase tracking-wider border-b border-[#9b111e]/10",
+                  isActive(pathname, link.href) ? "text-[#c1121f]" : "text-[#1c0b09]"
+                )}
               >
                 {link.label}
               </Link>
             ))}
 
-            <div>
-              <button
-                className="flex items-center gap-1 text-sm text-muted-foreground py-1"
-                onClick={() => setEventsOpen(!eventsOpen)}
-              >
-                Events
-                <ChevronDown className={cn("h-4 w-4 transition-transform", eventsOpen && "rotate-180")} />
-              </button>
-              {eventsOpen && (
-                <div className="ml-4 mt-1 space-y-1">
-                  {EVENT_LINKS.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="block text-sm text-muted-foreground hover:text-primary py-1"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="pt-2 border-t border-border flex flex-col gap-2">
+            <div className="pt-4 flex flex-col gap-2">
               {user ? (
                 <UserDropdown
                   user={{
@@ -185,11 +144,17 @@ export default function Navbar() {
                 />
               ) : (
                 <>
-                  <Link href="/auth/login" onClick={() => setMobileOpen(false)}>
-                    <Button variant="outline" size="sm" className="w-full">Sign in</Button>
+                  <Link
+                    href="/auth/login"
+                    className="text-center rounded-lg border border-[#1c0b09]/40 py-2.5 text-sm font-semibold uppercase tracking-wider"
+                  >
+                    Sign in
                   </Link>
-                  <Link href="/auth/signup" onClick={() => setMobileOpen(false)}>
-                    <Button size="sm" className="w-full">Register</Button>
+                  <Link
+                    href="/auth/signup"
+                    className="text-center rounded-lg bg-[#1c0b09] text-white py-2.5 text-sm font-semibold uppercase tracking-wider"
+                  >
+                    Register now
                   </Link>
                 </>
               )}

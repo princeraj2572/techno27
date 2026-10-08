@@ -8,20 +8,36 @@ import { Badge } from "@/components/ui/badge";
 import {
   Users, CalendarDays, CreditCard, Hotel,
   CheckSquare, UsersRound, ShieldCheck, BarChart2,
-  ArrowRight, Megaphone,
+  ArrowRight, Megaphone, Contact,
 } from "lucide-react";
 import Link from "next/link";
 
-const NAV_ITEMS = [
-  { label: "Participants",    href: "/admin/participants",    icon: Users,       desc: "View and search registrants",     color: "bg-teal-600" },
-  { label: "Events",          href: "/admin/events",          icon: CalendarDays,desc: "Monitor event registrations",      color: "bg-sky-600" },
-  { label: "Payments",        href: "/admin/payments",        icon: CreditCard,  desc: "Review payment submissions",       color: "bg-violet-600" },
-  { label: "Accommodation",   href: "/admin/accommodation",   icon: Hotel,       desc: "Accommodation applications",       color: "bg-amber-500" },
-  { label: "Check-In",        href: "/admin/checkin",         icon: CheckSquare, desc: "Manage event check-in",            color: "bg-emerald-600" },
-  { label: "Teams",           href: "/admin/teams",           icon: UsersRound,  desc: "All registered teams",             color: "bg-rose-500" },
-  { label: "Event Managers",  href: "/admin/event-managers",  icon: ShieldCheck, desc: "Assign event manager access",      color: "bg-orange-500" },
-  { label: "Reports",         href: "/admin/reports",         icon: BarChart2,   desc: "Export data and reports",          color: "bg-indigo-600" },
-  { label: "Announcements",   href: "/admin/announcements",   icon: Megaphone,   desc: "Post fest announcements",          color: "bg-pink-500" },
+const NAV_GROUPS = [
+  {
+    title: "People",
+    items: [
+      { label: "Participants",    href: "/admin/participants",    icon: Users,       desc: "View and search registrants",     color: "bg-teal-600" },
+      { label: "Teams",           href: "/admin/teams",           icon: UsersRound,  desc: "All registered teams",             color: "bg-rose-500" },
+      { label: "Event Managers",  href: "/admin/event-managers",  icon: ShieldCheck, desc: "Assign event manager access",      color: "bg-orange-500" },
+      { label: "Fest Team",       href: "/admin/team",            icon: Contact,     desc: "Conveners & co-conveners",         color: "bg-cyan-600" },
+    ],
+  },
+  {
+    title: "Fest Operations",
+    items: [
+      { label: "Events",          href: "/admin/events",          icon: CalendarDays,desc: "Monitor event registrations",      color: "bg-sky-600" },
+      { label: "Check-In",        href: "/admin/checkin",         icon: CheckSquare, desc: "Manage event check-in",            color: "bg-emerald-600" },
+      { label: "Accommodation",   href: "/admin/accommodation",   icon: Hotel,       desc: "Accommodation applications",       color: "bg-amber-500" },
+    ],
+  },
+  {
+    title: "Money & Communication",
+    items: [
+      { label: "Payments",        href: "/admin/payments",        icon: CreditCard,  desc: "Review payment submissions",       color: "bg-violet-600" },
+      { label: "Reports",         href: "/admin/reports",         icon: BarChart2,   desc: "Export data and reports",          color: "bg-indigo-600" },
+      { label: "Announcements",   href: "/admin/announcements",   icon: Megaphone,   desc: "Post fest announcements",          color: "bg-pink-500" },
+    ],
+  },
 ];
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
@@ -155,23 +171,30 @@ export default async function AdminDashboardPage() {
           style={{ animationDelay: "0.1s" }}
         >
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Manage</p>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-            {NAV_ITEMS.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link key={item.href + item.label} href={item.href} className="group">
-                  <div className="bg-white border border-slate-200 hover:border-teal-300 hover:shadow-md rounded-2xl px-4 py-4 transition-all h-full flex flex-col gap-3">
-                    <div className={`w-8 h-8 rounded-xl ${item.color} flex items-center justify-center shrink-0`}>
-                      <Icon className="h-4 w-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-slate-800 leading-tight">{item.label}</p>
-                      <p className="text-xs text-slate-400 mt-0.5 leading-snug hidden sm:block">{item.desc}</p>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="space-y-5">
+            {NAV_GROUPS.map((group) => (
+              <div key={group.title}>
+                <p className="text-[11px] font-medium text-slate-400 mb-2">{group.title}</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {group.items.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Link key={item.href + item.label} href={item.href} className="group">
+                        <div className="bg-white border border-slate-200 hover:border-teal-300 hover:shadow-md rounded-2xl px-4 py-4 transition-all h-full flex flex-col gap-3">
+                          <div className={`w-8 h-8 rounded-xl ${item.color} flex items-center justify-center shrink-0`}>
+                            <Icon className="h-4 w-4 text-white" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-slate-800 leading-tight">{item.label}</p>
+                            <p className="text-xs text-slate-400 mt-0.5 leading-snug hidden sm:block">{item.desc}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
