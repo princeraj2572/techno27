@@ -5,11 +5,11 @@ import { display } from "@/components/indie";
 import type { ScheduleDay, ScheduleKind } from "@/data/schedule";
 
 const FILTERS: { label: "All" | ScheduleKind; cls: string }[] = [
-  { label: "All", cls: "bg-[#2563eb] text-white" },
-  { label: "Technical", cls: "bg-[#f5c928] text-black" },
-  { label: "Cultural", cls: "bg-[#ff4d4d] text-white" },
-  { label: "Management", cls: "bg-[#f5edd8] text-black" },
-  { label: "Fun", cls: "bg-[#22c55e] text-black" },
+  { label: "All", cls: "bg-[#a1001a] text-[#f5edd8]" },
+  { label: "Technical", cls: "bg-[#f5c928] text-[#3a0808]" },
+  { label: "Cultural", cls: "bg-[#7a1c1c] text-[#f5edd8]" },
+  { label: "Management", cls: "bg-[#f5edd8] text-[#3a0808]" },
+  { label: "Fun", cls: "bg-[#3a0808] text-[#f5c928]" },
 ];
 
 export function DeparturesBoard({ days }: { days: ScheduleDay[] }) {
@@ -29,8 +29,8 @@ export function DeparturesBoard({ days }: { days: ScheduleDay[] }) {
               aria-selected={day === i}
               onClick={() => setDay(i)}
               className={`shrink-0 border-2 border-black px-4 py-2 text-left shadow-[3px_3px_0_0_#000] transition ${
-                day === i ? "bg-[#f5c928] -rotate-1" : "bg-[#f5edd8] hover:-translate-y-0.5"
-              } text-black`}
+                day === i ? "bg-[#a1001a] -rotate-1 text-[#f5edd8]" : "bg-[#f5edd8] hover:-translate-y-0.5 text-[#3a0808]"
+              }`}
             >
               <span className="block text-sm font-bold uppercase tracking-wider">{d.label}</span>
               <span className="block text-xs opacity-70">{d.date}</span>
@@ -52,20 +52,20 @@ export function DeparturesBoard({ days }: { days: ScheduleDay[] }) {
       </div>
 
       {/* the board */}
-      <div className="rounded-lg border-4 border-black bg-[#161616] shadow-[6px_6px_0_0_#000] overflow-hidden">
-        <div className="flex items-center justify-between border-b border-white/15 bg-[#0d0d0d] px-4 py-3">
+      <div className="rounded-lg border-4 border-black bg-[#2a0b06] shadow-[6px_6px_0_0_#000] overflow-hidden">
+        <div className="flex items-center justify-between border-b border-[#f5c928]/25 bg-[#1a0604] px-4 py-3">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-white/40">Departures</p>
-            <p className="text-sm font-bold uppercase tracking-widest text-[#8ab4ff]">Techno Junction · All lines</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#f5edd8]/55">Departures</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-[#f5c928]">Techno Junction · All lines</p>
           </div>
           <div className="text-right">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-white/40">{days[day].label}</p>
-            <p className={`text-xl text-[#ffb000] ${display.className}`}>{days[day].date}</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#f5edd8]/55">{days[day].label}</p>
+            <p className={`text-xl text-[#ff8a1f] ${display.className}`}>{days[day].date}</p>
           </div>
         </div>
 
         {/* mobile filters */}
-        <div className="flex gap-1.5 overflow-x-auto border-b border-white/10 px-3 py-2 md:hidden">
+        <div className="flex gap-1.5 overflow-x-auto border-b border-[#f5edd8]/15 px-3 py-2 md:hidden">
           {FILTERS.map((f) => (
             <button
               key={f.label}
@@ -77,21 +77,21 @@ export function DeparturesBoard({ days }: { days: ScheduleDay[] }) {
           ))}
         </div>
 
-        <div className="grid grid-cols-[64px_1fr_auto] gap-x-3 px-4 py-2 text-[10px] uppercase tracking-[0.25em] text-white/40 border-b border-white/10">
+        <div className="grid grid-cols-[64px_1fr_auto] gap-x-3 px-4 py-2 text-[10px] uppercase tracking-[0.25em] text-[#f5edd8]/55 border-b border-[#f5edd8]/15">
           <span>Start</span><span>Event</span><span className="text-right">Platform</span>
         </div>
-        <ul className="max-h-[26rem] overflow-y-auto divide-y divide-white/10">
+        <ul className="max-h-[26rem] overflow-y-auto divide-y divide-[#f5edd8]/12">
           {rows.map((r) => (
             <li key={r.time + r.title} className="grid grid-cols-[64px_1fr_auto] items-center gap-x-3 px-4 py-3">
-              <span className="text-lg font-bold text-[#ffb000] tabular-nums">{r.time}</span>
+              <span className="text-lg font-bold text-[#f5c928] tabular-nums">{r.time}</span>
               <span className="min-w-0">
-                <span className="block truncate text-lg font-bold uppercase tracking-wide text-white">{r.title}</span>
-                <span className="text-[11px] uppercase tracking-widest text-white/45">{r.kind}</span>
+                <span className="block truncate text-lg font-bold uppercase tracking-wide text-[#f5edd8]">{r.title}</span>
+                <span className="text-[11px] font-semibold uppercase tracking-widest text-[#ff8a1f]">{r.kind}</span>
               </span>
-              <span className="border border-white/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-white/80">{r.venue}</span>
+              <span className="border border-[#f5c928]/60 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-[#f5c928]">{r.venue}</span>
             </li>
           ))}
-          {rows.length === 0 && <li className="px-4 py-8 text-center text-white/50 uppercase tracking-widest text-sm">No departures on this line today</li>}
+          {rows.length === 0 && <li className="px-4 py-8 text-center text-[#f5edd8]/60 uppercase tracking-widest text-sm">No departures on this line today</li>}
         </ul>
       </div>
     </div>
