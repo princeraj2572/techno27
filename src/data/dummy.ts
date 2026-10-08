@@ -3,7 +3,7 @@ import { SCHEDULE } from "./schedule";
 // DUMMY DATA — every name, brand, number and date below is fictional sample content
 // for previewing the design. Replace with real information before launch.
 
-export interface Pronite {
+export interface JunoonNight {
   n: string;
   title: string;
   artist: string;
@@ -14,7 +14,7 @@ export interface Pronite {
   desc: string;
 }
 
-export const PRONITES: Pronite[] = [
+export const JUNOON_NIGHTS: JunoonNight[] = [
   { n: "01", title: "Opening Night", artist: "The Midnight Ragas", genre: "Indie fusion band", date: "Fri, Jan 15, 2027", time: "7:30 PM", venue: "Main Ground", desc: "Live indie fusion to kick off the fest under the lights." },
   { n: "02", title: "Beats & Bass", artist: "DJ Nova", genre: "Electronic · live set", date: "Sun, Jan 17, 2027", time: "8:00 PM", venue: "Main Ground", desc: "A high-energy electronic set that turns the campus into a dance floor." },
   { n: "03", title: "Closing Night", artist: "Echo & The Monsoon", genre: "Rock · live band", date: "Tue, Jan 19, 2027", time: "7:00 PM", venue: "Main Ground", desc: "A grand rock finale to close the festival with a roar." },
@@ -130,7 +130,7 @@ export function initials(name: string): string {
 export const MILESTONES = [
   { year: "2023", title: "The first edition", text: "800 participants, 8 events, and one very loud stage." },
   { year: "2024", title: "Going inter-college", text: "20 colleges joined, with 12 events across tech and culture." },
-  { year: "2025", title: "Pronites arrive", text: "Live music nights drew the biggest crowds yet." },
+  { year: "2025", title: "Junoon begins", text: "Live music nights drew the biggest crowds yet." },
   { year: "2026", title: "Prize pool grows", text: "Over ₹3 lakh in prizes and 1,500 participants." },
   { year: "2027", title: "The biggest one yet", text: "15 flagship events, 5 days, and a new home for creators." },
 ];
@@ -223,7 +223,7 @@ export interface GalleryItem {
 export const GALLERY: GalleryItem[] = [
   { caption: "Hackathon night", tag: "Technical", year: "2026", bg: "from-[#f5c928] to-[#c8421f]", icon: "💻" },
   { caption: "Robo Race finals", tag: "Technical", year: "2026", bg: "from-[#ff6a00] to-[#7a1c1c]", icon: "🤖" },
-  { caption: "Opening night crowd", tag: "Pronite", year: "2026", bg: "from-[#6d28d9] to-[#0f0029]", icon: "🎤" },
+  { caption: "Opening night crowd", tag: "Junoon", year: "2026", bg: "from-[#6d28d9] to-[#0f0029]", icon: "🎤" },
   { caption: "Fashion walk", tag: "Cultural", year: "2026", bg: "from-[#ff2d8a] to-[#7a1c1c]", icon: "👗" },
   { caption: "Rangoli corner", tag: "Cultural", year: "2026", bg: "from-[#ffb10f] to-[#c8421f]", icon: "🎨" },
   { caption: "Prize ceremony", tag: "Awards", year: "2026", bg: "from-[#f5c928] to-[#7a1c1c]", icon: "🏆" },
@@ -236,7 +236,7 @@ export const GALLERY: GalleryItem[] = [
 ];
 
 export const TESTIMONIALS = [
-  { quote: "Five days that felt like a whole semester of learning — and the Pronites were unreal.", name: PEOPLE[3], role: "Participant, CSE" },
+  { quote: "Five days that felt like a whole semester of learning — and the Junoon nights were unreal.", name: PEOPLE[3], role: "Participant, CSE" },
   { quote: "Our robot lost in the finals, but we left with new friends and a hundred ideas to improve.", name: PEOPLE[8], role: "Team Robovation" },
   { quote: "The organisation was spotless. Registration to check-in took under two minutes.", name: PEOPLE[13], role: "Visitor, external college" },
   { quote: "Creatorverse gave my photography a real audience. I'm already planning next year's series.", name: PEOPLE[18], role: "Creator" },

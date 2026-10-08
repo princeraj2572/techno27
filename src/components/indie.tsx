@@ -241,7 +241,7 @@ export function Vinyl({ className = "", label = "TRX'27", slow = false }: { clas
 
 // The big black wheel with rotating words (home hero).
 export function Wheel({ className = "" }: { className?: string }) {
-  const words = "EVENTS • SCHEDULE • PRONITES • CREATORVERSE • SPONSORS • ";
+  const words = "EVENTS • SCHEDULE • JUNOON • CREATORVERSE • SPONSORS • ";
   return (
     <svg viewBox="0 0 200 200" className={className} aria-hidden>
       <circle cx="100" cy="100" r="98" fill="#2e2e2e" stroke="#000" strokeWidth="2" />

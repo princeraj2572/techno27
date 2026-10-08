@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PUBLIC_EVENTS } from "@/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
-import { PRONITES, TESTIMONIALS } from "@/data/dummy";
+import { JUNOON_NIGHTS, TESTIMONIALS } from "@/data/dummy";
 import { CountUp, Reveal, TestimonialSlider } from "@/components/motion";
 import {
   ACCENTS, Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif,
@@ -97,17 +97,17 @@ export default function HomePage() {
         </div>
       </Band></Reveal>
 
-      {/* Pronites — purple band */}
+      {/* Junoon — purple band */}
       <Reveal><Band tone="indigo">
         <div className="text-center">
           <p className="inline-block border border-[#f5c928]/60 px-3 py-0.5 text-xs font-bold uppercase tracking-[0.35em] text-[#f5c928]">After dark</p>
-          <h2 className="mt-4 text-6xl sm:text-8xl font-bold uppercase leading-none text-[#f5edd8]">Pronites</h2>
+          <h2 className="mt-4 text-6xl sm:text-8xl font-bold uppercase leading-none text-[#f5edd8]">Junoon &apos;27</h2>
           <p className="mt-2 text-2xl sm:text-4xl font-bold uppercase">
             The nights that <span className="text-[#f5c928]">light up</span> the campus
           </p>
         </div>
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {PRONITES.map((n, i) => (
+          {JUNOON_NIGHTS.map((n, i) => (
             <div key={n.n} className={`rounded-2xl border border-white/20 bg-white/5 p-6 text-center ${i === 1 ? "sm:-translate-y-3" : ""}`}>
               <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#f5c928]">Night {n.n} · {n.date.split(", ").slice(1).join(", ").replace(", 2027", "")}</p>
               <p className={`mt-3 text-2xl text-[#f5edd8] ${display.className}`}>{n.artist}</p>
@@ -116,7 +116,7 @@ export default function HomePage() {
           ))}
         </div>
         <div className="mt-8 text-center">
-          <Link href="/pronites" className="inline-block border-2 border-[#f5edd8] px-6 py-2 text-sm font-bold uppercase tracking-widest hover:bg-[#f5edd8] hover:text-black transition-colors">
+          <Link href="/junoon" className="inline-block border-2 border-[#f5edd8] px-6 py-2 text-sm font-bold uppercase tracking-widest hover:bg-[#f5edd8] hover:text-black transition-colors">
             Enter after dark ↗
           </Link>
         </div>

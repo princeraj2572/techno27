@@ -30,7 +30,7 @@ export const SCHEDULE: ScheduleDay[] = [
       { time: "14:30", title: "Ideathon", kind: "Technical", venue: "Seminar Hall", iconKey: "bulb" },
       { time: "16:00", title: "Kalakriti — Rangoli", kind: "Cultural", venue: "Open Court", iconKey: "palette" },
       { time: "18:00", title: "Beat Battle", kind: "Cultural", venue: "Open Air Stage", iconKey: "music" },
-      { time: "19:30", title: "Pronite 1 — The Midnight Ragas", kind: "Special", venue: "Main Ground", iconKey: "music" },
+      { time: "19:30", title: "Junoon Night 1 — The Midnight Ragas", kind: "Special", venue: "Main Ground", iconKey: "music" },
     ],
   },
   {
@@ -55,7 +55,7 @@ export const SCHEDULE: ScheduleDay[] = [
       { time: "15:00", title: "Roadies", kind: "Fun", venue: "Campus Trail", iconKey: "compass" },
       { time: "16:30", title: "Riwayat — Fashion Show", kind: "Cultural", venue: "Main Auditorium", iconKey: "shirt" },
       { time: "18:30", title: "Kalakriti — Art Exhibition", kind: "Cultural", venue: "Art Gallery", iconKey: "palette" },
-      { time: "20:00", title: "Pronite 2 — DJ Nova", kind: "Special", venue: "Main Ground", iconKey: "music" },
+      { time: "20:00", title: "Junoon Night 2 — DJ Nova", kind: "Special", venue: "Main Ground", iconKey: "music" },
     ],
   },
   {
@@ -79,7 +79,7 @@ export const SCHEDULE: ScheduleDay[] = [
       { time: "15:00", title: "Roadies — Finale", kind: "Fun", venue: "Campus Trail", iconKey: "compass" },
       { time: "16:30", title: "Prize Distribution", kind: "Special", venue: "Main Auditorium", iconKey: "star" },
       { time: "17:30", title: "Closing Ceremony", kind: "Special", venue: "Main Ground", iconKey: "flame" },
-      { time: "19:00", title: "Pronite 3 — Echo & The Monsoon", kind: "Special", venue: "Main Ground", iconKey: "music" },
+      { time: "19:00", title: "Junoon Night 3 — Echo & The Monsoon", kind: "Special", venue: "Main Ground", iconKey: "music" },
     ],
   },
 ];

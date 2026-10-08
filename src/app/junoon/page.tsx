@@ -1,8 +1,8 @@
 import { Reveal } from "@/components/motion";
 import { Band, Marquee, PageHero, PageShell, TicketCta, display, serif } from "@/components/indie";
-import { PRONITES } from "@/data/dummy";
+import { JUNOON_NIGHTS } from "@/data/dummy";
 
-export const metadata = { title: "Pronites | Techno-aiMBiAtion 2027" };
+export const metadata = { title: "Junoon '27 | Techno-aiMBiAtion 2027" };
 
 const FRONTS = [
   { grad: "from-[#ff6a00] to-[#a1001a]", emoji: "🎸" },
@@ -10,17 +10,17 @@ const FRONTS = [
   { grad: "from-[#f5c928] to-[#c8421f]", emoji: "🎆" },
 ];
 
-export default function PronitesPage() {
+export default function JunoonPage() {
   return (
     <PageShell>
-      <PageHero tone="indigo" title="Pronites" sub="The nights that light up the campus" ghost="After dark" />
+      <PageHero tone="indigo" title="Junoon '27" sub="The nights that light up the campus" ghost="Junoon after dark" />
 
       <Reveal><Band tone="indigo" halftone className="!pt-4">
         <p className="mb-8 max-w-xl text-xl text-[#f5edd8]/85">
           When the competitions end, the stage lights up. Hover (or tap) a card to meet the act.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {PRONITES.map((n, i) => (
+          {JUNOON_NIGHTS.map((n, i) => (
             <div key={n.n} tabIndex={0} className="flip h-96 outline-none">
               <div className="flip-inner h-full w-full">
                 <div className={`flip-face flex flex-col justify-between rounded-2xl border-2 border-black bg-gradient-to-br ${FRONTS[i].grad} p-6 shadow-[6px_6px_0_0_#000]`}>

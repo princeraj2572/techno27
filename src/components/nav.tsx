@@ -15,7 +15,7 @@ const NAV_LINKS = [
   { label: "About", href: "/about" },
   { label: "Events", href: "/events" },
   { label: "Schedule", href: "/schedule" },
-  { label: "Pronites", href: "/pronites" },
+  { label: "Junoon '27", href: "/junoon" },
   { label: "Creatorverse", href: "/creatorverse" },
   { label: "Gallery", href: "/gallery" },
   { label: "Sponsors", href: "/sponsors" },
