@@ -24,7 +24,7 @@ Open `src/app/events/<slug>/data.ts`. It holds, in order:
 | `tagline`, `about` | line under the title, "About" paragraph |
 | `date`, `time`, `venue`, `teamSize`, `fee`, `prize` | the fact cards |
 | `rules` | numbered rules list |
-| `contact` | event coordinator |
+| `contact`, `moreContacts` | event coordinator(s): `{ name, phone, image? }`. `image` is a square photo in `/public`, e.g. `/images/coordinators/name.jpg`; add more people with `moreContacts: [ ... ]` |
 | `subEvents` | "The lineup" competitions |
 | `theme` | page colours, background pattern, scrolling tape text |
 | `media` | real `image` / `logo` (otherwise the cultural illustration is used) |

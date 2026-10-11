@@ -1,8 +1,7 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/actions/user-actions";
-import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
+import AppShell from "@/components/app-shell";
 import QRDisplay from "./QRDisplay";
 
 export default async function DashboardQRPage() {
@@ -13,31 +12,14 @@ export default async function DashboardQRPage() {
   const userId = String(user._id ?? "");
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-sm mx-auto px-4 py-8 space-y-7">
-
-        <div className="animate-slide-up" style={{ animationDelay: "0s" }}>
-          <Link
-            href="/dashboard"
-            className={`inline-flex items-center gap-1 text-xs text-slate-400 transition-colors mb-1 ${
-              user.role === "EXTERNAL_USER" ? "hover:text-violet-600" : "hover:text-sky-600"
-            }`}
-          >
-            <ChevronLeft className="h-3.5 w-3.5" /> Dashboard
-          </Link>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">My QR Code</h1>
-          <p className="text-xs text-slate-400 mt-0.5">Show this at the event check-in counter</p>
-        </div>
-
-        <QRDisplay
-          userId={userId}
-          fullName={user.fullName}
-          email={user.email}
-          role={user.role}
-          identifier={user.enrollmentNumber ?? user.participantId ?? ""}
-        />
-
-      </div>
-    </div>
+    <AppShell title="My QR" crumbs={[{ label: "Home", href: "/" }, { label: "Dashboard", href: "/dashboard" }, { label: "My QR" }]} back={{ href: "/dashboard", label: "Back to dashboard" }} sub="Show this at the event check-in counter" width="max-w-sm">
+      <QRDisplay
+        userId={userId}
+        fullName={user.fullName}
+        email={user.email}
+        role={user.role}
+        identifier={user.enrollmentNumber ?? user.participantId ?? ""}
+      />
+    </AppShell>
   );
 }

@@ -5,6 +5,14 @@ export type EventCategory = "Technical" | "Cultural" | "Management" | "Fun";
 // Everything the website knows about ONE event. Each event keeps its own copy in
 //   src/app/events/<slug>/data.ts
 // and src/data/all-events.ts lists them in the order they appear on the site.
+// A person to contact for an event. `image` is a square photo in /public,
+// e.g. "/images/coordinators/sanya-kapoor.jpg" (~400 x 400). Without it, an initial is shown.
+export interface Coordinator {
+  name: string;
+  phone: string;
+  image?: string;
+}
+
 export interface EventData {
   slug: string; // the URL: /events/<slug>  (must match the folder name)
   name: string; // display name
@@ -21,7 +29,8 @@ export interface EventData {
   fee: string;
   prize: string;
   rules: string[];
-  contact: { name: string; phone: string }; // event coordinator
+  contact: Coordinator; // main event coordinator
+  moreContacts?: Coordinator[]; // optional extra coordinators, shown beside the main one
   subEvents: string[]; // competitions inside the event (can be empty)
 
   // ---- look ----

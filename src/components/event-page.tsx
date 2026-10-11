@@ -18,6 +18,7 @@ export function EventPage({ event }: { event: EventData }) {
   const t = event.theme;
   const culture = CULTURES[event.slug];
   const pattern = patternStyle(t.pattern, t.patternColor);
+  const coordinators = [event.contact, ...(event.moreContacts ?? [])];
 
   const facts = [
     { Icon: CalendarDays, label: "Date", value: event.date },
@@ -142,13 +143,33 @@ export function EventPage({ event }: { event: EventData }) {
             </div>
           )}
 
-          <div className="flex flex-wrap items-center justify-between gap-4 p-6" style={cardStyle}>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-60">Event coordinator</p>
-              <p className={`text-3xl ${serif.className}`}>{event.contact.name}</p>
-              <p className="text-lg font-semibold tabular-nums">{event.contact.phone}</p>
+          <div className="p-6" style={cardStyle}>
+            <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-60">
+              Event coordinator{coordinators.length > 1 ? "s" : ""}
+            </p>
+            <div className="mt-4 grid gap-5 sm:grid-cols-2">
+              {coordinators.map((c) => (
+                <div key={`${c.name}-${c.phone}`} className="flex items-center gap-4">
+                  {c.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={c.image} alt={c.name} className="h-20 w-20 shrink-0 border-2 border-black object-cover shadow-[3px_3px_0_0_#000]" />
+                  ) : (
+                    <div
+                      aria-hidden
+                      className={`flex h-20 w-20 shrink-0 items-center justify-center border-2 border-black text-4xl shadow-[3px_3px_0_0_#000] ${serif.className}`}
+                      style={{ background: t.accent, color: t.accentInk }}
+                    >
+                      {c.name[0]?.toUpperCase()}
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <p className={`text-2xl leading-tight ${serif.className}`}>{c.name}</p>
+                    <a href={`tel:${c.phone.replace(/[^+\d]/g, "")}`} className="text-lg font-semibold tabular-nums hover:underline">{c.phone}</a>
+                  </div>
+                </div>
+              ))}
             </div>
-            <p className="text-xs font-bold uppercase tracking-widest opacity-60">Sample details — all data is fictional.</p>
+            <p className="mt-4 text-xs font-bold uppercase tracking-widest opacity-60">Sample details — all data is fictional.</p>
           </div>
         </div>
       </section>
