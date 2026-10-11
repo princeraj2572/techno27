@@ -1,9 +1,9 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
-import { getAccommodationDetailsAction } from "@/actions/accommodation-actions";
+import { getUser } from "@/features/users/user-actions";
+import { getAccommodationDetailsAction } from "@/features/accommodation/accommodation-actions";
 import { Hotel } from "lucide-react";
-import AppShell from "@/components/app-shell";
+import AppShell from "@/components/layout/app-shell";
 import AccommodationClient from "./AccommodationClient";
 
 export default async function AccommodationPage() {

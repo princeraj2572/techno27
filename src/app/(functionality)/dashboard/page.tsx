@@ -1,15 +1,15 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
-import { getRegisteredEventsAction } from "@/actions/event-actions";
-import { getPaymentSummaryForUser } from "@/actions/payment-actions";
-import { getParticipatingTeams, getInvitedTeams } from "@/actions/team-actions";
+import { getUser } from "@/features/users/user-actions";
+import { getRegisteredEventsAction } from "@/features/events/event-actions";
+import { getPaymentSummaryForUser } from "@/features/payments/payment-actions";
+import { getParticipatingTeams, getInvitedTeams } from "@/features/teams/team-actions";
 import {
   AlertCircle, AlertTriangle, Calendar, Users, CalendarDays, Trophy, QrCode,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { Crumbs, BackButton } from "@/components/app-shell";
+import { Crumbs, BackButton } from "@/components/layout/app-shell";
 import { Band, CARD, Marquee, PageShell, display, serif } from "@/components/indie";
 
 function greeting() {

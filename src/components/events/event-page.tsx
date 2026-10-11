@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, CalendarDays, Clock, MapPin, Trophy, Users, Wallet } from "lucide-react";
-import { ALL_EVENTS } from "@/data/all-events";
-import type { EventData } from "@/data/event-types";
-import { patternStyle } from "@/data/event-themes";
-import { CULTURES } from "@/components/culture-art";
-import { Postmark, Stamp } from "@/components/stamp";
-import { LogoSlot } from "@/components/media";
+import { ALL_EVENTS } from "@/features/events/data/all-events";
+import type { EventData } from "@/features/events/data/event-types";
+import { patternStyle } from "@/features/events/data/event-themes";
+import { CULTURES } from "@/components/indie/culture-art";
+import { Postmark, Stamp } from "@/components/indie/stamp";
+import { LogoSlot } from "@/components/indie/media";
 import { Marquee, PageShell, serif } from "@/components/indie";
 
 // The shared event page layout. Each folder under src/app/events/<slug>/ passes in its own data.ts,

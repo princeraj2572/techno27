@@ -29,18 +29,18 @@ Open `src/app/events/<slug>/data.ts`. It holds, in order:
 | `theme` | page colours, background pattern, scrolling tape text |
 | `media` | real `image` / `logo` (otherwise the cultural illustration is used) |
 
-The shape is defined in `src/data/event-types.ts`, so the editor will tell you if a field is missing.
+The shape is defined in `src/features/events/data/event-types.ts`, so the editor will tell you if a field is missing.
 
 ## Add a new event
 1. Copy an existing folder, e.g. `kalakriti/` -> `my-event/`, and edit its `data.ts` (`slug` must equal the folder name).
-2. Add it to the list in `src/data/all-events.ts` (the order there is the order on the site).
-3. Optional: add its stamp illustration to `CULTURES` in `src/components/culture-art.tsx`.
+2. Add it to the list in `src/features/events/data/all-events.ts` (the order there is the order on the site).
+3. Optional: add its stamp illustration to `CULTURES` in `src/components/indie/culture-art.tsx`.
 
 ## Custom layout for one event
 Replace `<EventPage event={...} />` in that event's `page.tsx` with your own JSX. Other events are unaffected.
-To change the layout for **all** events, edit `src/components/event-page.tsx`.
+To change the layout for **all** events, edit `src/components/events/event-page.tsx`.
 
 ## Not here
-- `src/data/event-subeventData.ts` holds the database IDs used by registration (`src/actions/event-actions.ts`).
+- `src/data/event-subeventData.ts` holds the database IDs used by registration (`src/features/events/event-actions.ts`).
   It is backend data; the competition names shown on the website come from `subEvents` in each `data.ts`.
-- The stamp illustrations are code, in `src/components/culture-art.tsx`.
+- The stamp illustrations are code, in `src/components/indie/culture-art.tsx`.

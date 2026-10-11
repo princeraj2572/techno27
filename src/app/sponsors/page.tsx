@@ -1,10 +1,10 @@
 import { Check, Globe, Mic, Store, Users, type LucideIcon } from "lucide-react";
 import { PARTNER_BENEFITS, PARTNER_PACKAGES, SPONSOR_TIERS } from "@/data/dummy";
-import { EVENT_THEMES, patternStyle } from "@/data/event-themes";
-import { SponsorStamp, type StampSize } from "@/components/sponsor-stamp";
-import { ImageSlot } from "@/components/media";
-import { CountUp, Reveal } from "@/components/motion";
-import { NimbuMirch } from "@/components/nimbu-mirch";
+import { EVENT_THEMES, patternStyle } from "@/features/events/data/event-themes";
+import { SponsorStamp, type StampSize } from "@/components/indie/sponsor-stamp";
+import { ImageSlot } from "@/components/indie/media";
+import { CountUp, Reveal } from "@/components/indie/motion";
+import { NimbuMirch } from "@/components/indie/nimbu-mirch";
 import { Band, BlockButton, Marquee, PageShell, devanagari, display, serif } from "@/components/indie";
 
 export const metadata = { title: "Sponsors | Techno-aiMBiAtion 2027" };

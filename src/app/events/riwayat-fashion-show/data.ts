@@ -1,4 +1,4 @@
-import type { EventData } from "@/data/event-types";
+import type { EventData } from "@/features/events/data/event-types";
 
 // Riwayat (Fashion Show) — everything shown at /events/riwayat-fashion-show lives in this file.
 // (Its stamp illustration is drawn separately in src/components/culture-art.tsx.)

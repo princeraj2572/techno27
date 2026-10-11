@@ -1,10 +1,10 @@
 ﻿export const dynamic = "force-dynamic";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
+import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
-import { Transaction } from "@/models/transaction.model";
+import { User } from "@/features/users/user.model";
+import { Transaction } from "@/features/payments/transaction.model";
 import { Button } from "@/components/ui/button";
 import FilterForm from "../FilterForm";
 import { ChevronLeft, CreditCard, Download, ChevronRight, CheckCircle2, Clock } from "lucide-react";

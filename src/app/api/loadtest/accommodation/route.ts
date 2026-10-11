@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { setAccommodationDetailsAction } from "@/actions/accommodation-actions";
+import { setAccommodationDetailsAction } from "@/features/accommodation/accommodation-actions";
 import { assertLoadtestEnabled, errorResponse, impersonate } from "../_guard";
 
 export async function POST(req: NextRequest) {

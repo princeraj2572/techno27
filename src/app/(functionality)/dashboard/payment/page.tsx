@@ -1,10 +1,10 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
-import { getPaymentSummaryForUser } from "@/actions/payment-actions";
+import { getUser } from "@/features/users/user-actions";
+import { getPaymentSummaryForUser } from "@/features/payments/payment-actions";
 import { CreditCard } from "lucide-react";
 import Link from "next/link";
-import AppShell from "@/components/app-shell";
+import AppShell from "@/components/layout/app-shell";
 import PaymentClient from "./PaymentClient";
 
 export default async function DashboardPaymentPage() {

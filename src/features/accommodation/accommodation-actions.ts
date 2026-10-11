@@ -1,9 +1,9 @@
 "use server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { Accommodation, IAccommodation } from "@/models/accommodation.model";
-import { IUser, User } from "@/models/user.model";
-import { ITeam, Team } from "@/models/team.model";
-import { getUser } from "./user-actions";
+import { Accommodation, IAccommodation } from "@/features/accommodation/accommodation.model";
+import { IUser, User } from "@/features/users/user.model";
+import { ITeam, Team } from "@/features/teams/team.model";
+import { getUser } from "@/features/users/user-actions";
 
 interface AccommodationDetails {
   arrivalTime: Date;

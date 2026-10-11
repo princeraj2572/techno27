@@ -1,11 +1,11 @@
 ﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
-import { getEventStatsAction } from "@/actions/event-actions";
+import { getUser } from "@/features/users/user-actions";
+import { getEventStatsAction } from "@/features/events/event-actions";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
-import { ManagementAssignment } from "@/models/managementAssignment.model";
-import { Event } from "@/models/event.model";
+import { User } from "@/features/users/user.model";
+import { ManagementAssignment } from "@/features/management/managementAssignment.model";
+import { Event } from "@/features/events/event.model";
 import {
   CalendarDays, Users, Shield, Sprout,
   CreditCard, Hotel, FileText, Database,

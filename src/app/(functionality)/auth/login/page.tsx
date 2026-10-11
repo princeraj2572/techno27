@@ -10,7 +10,7 @@ import { Eye, EyeOff, CheckCircle2, Zap, MapPin, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useFetch from "@/hooks/use-fetch";
-import { userLogin } from "@/actions/user-actions";
+import { userLogin } from "@/features/users/user-actions";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),

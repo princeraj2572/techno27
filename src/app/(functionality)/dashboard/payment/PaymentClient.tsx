@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { addTransactionIdAction } from "@/actions/payment-actions";
-import type { IPaymentSummary } from "@/actions/payment-actions";
+import { addTransactionIdAction } from "@/features/payments/payment-actions";
+import type { IPaymentSummary } from "@/features/payments/payment-actions";
 import { AlertTriangle, CheckCircle2, Clock, ExternalLink, X, QrCode, ChevronDown, Users, User } from "lucide-react";
 import { CARD, display } from "@/components/indie";
 

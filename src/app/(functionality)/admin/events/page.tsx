@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
-import { getEventsWithRegistrationCountsAction } from "@/actions/event-actions";
+import { getUser } from "@/features/users/user-actions";
+import { getEventsWithRegistrationCountsAction } from "@/features/events/event-actions";
 import { ChevronLeft, CalendarDays, Users, Trophy, UsersRound, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import StatTile from "./StatTile";

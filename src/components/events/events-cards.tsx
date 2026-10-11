@@ -4,10 +4,10 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CalendarDays, MapPin, Search, Trophy } from "lucide-react";
 import { display, serif } from "@/components/indie";
-import { LogoSlot } from "@/components/media";
-import { CULTURES } from "@/components/culture-art";
-import { Stamp } from "@/components/stamp";
-import { EVENT_CATEGORIES, type EventCategory } from "@/data/public-events";
+import { LogoSlot } from "@/components/indie/media";
+import { CULTURES } from "@/components/indie/culture-art";
+import { Stamp } from "@/components/indie/stamp";
+import { EVENT_CATEGORIES, type EventCategory } from "@/features/events/data/public-events";
 
 export interface EventCard {
   slug: string;

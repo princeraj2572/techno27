@@ -1,4 +1,4 @@
-import { ALL_EVENTS, getEvent } from "./all-events";
+import { ALL_EVENTS, getEvent } from "@/features/events/data/all-events";
 
 // DUMMY DATA — every name, brand, number and date below is fictional sample content
 // for previewing the design. Replace with real information before launch.

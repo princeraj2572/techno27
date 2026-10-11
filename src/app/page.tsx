@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { IndianRupee, Medal, Ticket, Users } from "lucide-react";
-import { PUBLIC_EVENTS } from "@/data/public-events";
+import { PUBLIC_EVENTS } from "@/features/events/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
 import { EVENT_MEDIA, JUNOON_ACTS, JUNOON_NIGHTS, MYSTERY_HINTS, TESTIMONIALS } from "@/data/dummy";
-import { CULTURES } from "@/components/culture-art";
-import { Postmark, Stamp } from "@/components/stamp";
-import { CutoutTitle } from "@/components/cutout-title";
-import { NimbuMirch } from "@/components/nimbu-mirch";
-import { EVENT_THEMES, patternStyle } from "@/data/event-themes";
-import { CountUp, Reveal, Splash, TestimonialSlider } from "@/components/motion";
+import { CULTURES } from "@/components/indie/culture-art";
+import { Postmark, Stamp } from "@/components/indie/stamp";
+import { CutoutTitle } from "@/components/indie/cutout-title";
+import { NimbuMirch } from "@/components/indie/nimbu-mirch";
+import { EVENT_THEMES, patternStyle } from "@/features/events/data/event-themes";
+import { CountUp, Reveal, Splash, TestimonialSlider } from "@/components/indie/motion";
 import {
   Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif, MandalaSpin, blockHindi,
 } from "@/components/indie";

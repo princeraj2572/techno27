@@ -1,4 +1,4 @@
-import type { EventData } from "@/data/event-types";
+import type { EventData } from "@/features/events/data/event-types";
 
 // Voice Of Youth — everything shown at /events/voice-of-youth lives in this file.
 // (Its stamp illustration is drawn separately in src/components/culture-art.tsx.)

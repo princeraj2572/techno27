@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { Event } from "@/models/event.model";
-import { getUser } from "@/actions/user-actions";
+import { Event } from "@/features/events/event.model";
+import { getUser } from "@/features/users/user-actions";
 
 export async function GET() {
   const currentUser = await getUser();

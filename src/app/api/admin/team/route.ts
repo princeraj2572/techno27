@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { Team } from "@/models/team.model";
-import { Event } from "@/models/event.model";
-import { User } from "@/models/user.model";
-import { getUser } from "@/actions/user-actions";
+import { Team } from "@/features/teams/team.model";
+import { Event } from "@/features/events/event.model";
+import { User } from "@/features/users/user.model";
+import { getUser } from "@/features/users/user-actions";
 
 // POST /api/admin/team — create a team for a user (admin-privileged)
 export async function POST(req: NextRequest) {

@@ -1,5 +1,5 @@
 import { SCHEDULE } from "@/data/schedule";
-import { DeparturesBoard } from "@/components/departures-board";
+import { DeparturesBoard } from "@/components/events/departures-board";
 import { Band, PageShell, TicketCta, serif } from "@/components/indie";
 
 export const metadata = { title: "Schedule | Techno-aiMBiAtion 2027" };

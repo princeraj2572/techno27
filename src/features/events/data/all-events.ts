@@ -1,4 +1,4 @@
-import type { EventData } from "@/data/event-types";
+import type { EventData } from "@/features/events/data/event-types";
 import { backtrace } from "@/app/events/backtrace/data";
 import { kalakriti } from "@/app/events/kalakriti/data";
 import { robovation } from "@/app/events/robovation/data";

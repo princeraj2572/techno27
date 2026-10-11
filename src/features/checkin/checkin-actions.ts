@@ -1,8 +1,8 @@
 "use server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { CheckIn } from "@/models/checkIn.model";
-import { Team } from "@/models/team.model";
-import { User, IUser } from "@/models/user.model";
+import { CheckIn } from "@/features/checkin/checkIn.model";
+import { Team } from "@/features/teams/team.model";
+import { User, IUser } from "@/features/users/user.model";
 import mongoose from "mongoose";
 
 export interface CheckInResult {

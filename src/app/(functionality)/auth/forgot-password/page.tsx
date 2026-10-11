@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { sendResetPasswordEmail } from "@/actions/mailer";
-import { resetPassword } from "@/actions/user-actions";
+import { sendResetPasswordEmail } from "@/lib/mailer";
+import { resetPassword } from "@/features/users/user-actions";
 
 type Step = "email" | "otp" | "password";
 

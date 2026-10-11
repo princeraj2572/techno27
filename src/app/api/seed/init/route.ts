@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
-import { Event } from "@/models/event.model";
+import { User } from "@/features/users/user.model";
+import { Event } from "@/features/events/event.model";
 
 // One-time seed endpoint — creates test accounts if they don't exist.
 // Hit GET /api/seed/init once in dev, then remove this file.

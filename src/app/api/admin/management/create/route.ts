@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
-import { getUser } from "@/actions/user-actions";
+import { User } from "@/features/users/user.model";
+import { getUser } from "@/features/users/user-actions";
 
 export async function POST(req: NextRequest) {
   const currentUser = await getUser();

@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
+import { getUser } from "@/features/users/user-actions";
 import { ArrowLeft, Phone, Users } from "lucide-react";
 import Link from "next/link";
 

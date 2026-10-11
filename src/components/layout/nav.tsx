@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { UserDropdown } from "@/components/user-dropdown";
+import { UserDropdown } from "@/components/layout/user-dropdown";
 import useFetch from "@/hooks/use-fetch";
-import { getUser } from "@/actions/user-actions";
+import { getUser } from "@/features/users/user-actions";
 import { cn } from "@/lib/utils";
 import { body, display } from "@/components/indie";
 
@@ -58,8 +58,8 @@ export default function Navbar() {
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
-          <svg viewBox="0 0 100 100" className="h-9 w-9" aria-hidden>
+        <Link href="/" className="group flex items-center gap-2.5 shrink-0">
+          <svg viewBox="0 0 100 100" className="h-10 w-10 transition-transform duration-500 group-hover:rotate-180" aria-hidden>
             <circle cx="50" cy="50" r="46" fill="#7a1c1c" stroke="#f5c928" strokeWidth="4" />
             {[34, 26, 18].map((r) => (
               <circle key={r} cx="50" cy="50" r={r} fill="none" stroke="#000" strokeWidth="1.5" />
@@ -79,10 +79,10 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               className={cn(
-                "whitespace-nowrap text-[15px] 2xl:text-lg font-bold uppercase tracking-wider border-b-2 transition-colors",
+                "whitespace-nowrap px-2.5 py-1 text-[15px] 2xl:text-lg font-bold uppercase tracking-wider transition",
                 isActive(pathname, link.href)
-                  ? "text-[#f5c928] border-[#f5c928]"
-                  : "text-white border-transparent hover:text-[#ff6a00]"
+                  ? "-rotate-2 border-2 border-black bg-[#f5c928] text-black shadow-[2px_2px_0_0_#ff6a00]"
+                  : "border-2 border-transparent text-white hover:-translate-y-0.5 hover:border-[#f5edd8]/40 hover:text-[#f5c928]"
               )}
             >
               {link.label}
@@ -104,13 +104,13 @@ export default function Navbar() {
             <>
               <Link
                 href="/auth/login"
-                className="whitespace-nowrap text-base 2xl:text-lg font-bold uppercase tracking-wider text-white hover:text-[#ff6a00] transition-colors"
+                className="whitespace-nowrap border-2 border-[#f5edd8] px-4 py-1 text-base 2xl:text-lg font-bold uppercase tracking-wider text-[#f5edd8] transition hover:bg-[#f5edd8] hover:text-black"
               >
                 Sign in
               </Link>
               <Link
                 href="/auth/signup"
-                className="whitespace-nowrap bg-[#f5edd8] text-black hover:bg-[#f5c928] transition-colors px-5 py-1 text-base 2xl:text-lg font-bold uppercase tracking-wider rounded-full"
+                className="whitespace-nowrap border-2 border-black bg-[#f5c928] px-5 py-1 text-base 2xl:text-lg font-bold uppercase tracking-wider text-black shadow-[3px_3px_0_0_#ff6a00] transition hover:-translate-y-0.5 hover:bg-[#ff6a00] hover:shadow-[3px_3px_0_0_#f5edd8]"
               >
                 Register
               </Link>
@@ -138,8 +138,8 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "block text-xl font-bold uppercase tracking-wider py-2",
-                  isActive(pathname, link.href) ? "text-[#f5c928]" : "text-white hover:text-[#ff6a00]"
+                  "block border-b border-dashed border-[#f5edd8]/20 px-3 py-2.5 text-xl font-bold uppercase tracking-wider",
+                  isActive(pathname, link.href) ? "border-black bg-[#f5c928] text-black" : "text-white hover:bg-[#f5edd8]/10 hover:text-[#f5c928]"
                 )}
               >
                 {link.label}
@@ -159,13 +159,13 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/auth/login"
-                    className="text-center border-2 border-[#f5edd8] text-[#f5edd8] py-1.5 text-lg font-bold uppercase tracking-wider rounded-full"
+                    className="border-2 border-[#f5edd8] py-2 text-center text-lg font-bold uppercase tracking-wider text-[#f5edd8] transition hover:bg-[#f5edd8] hover:text-black"
                   >
                     Sign in
                   </Link>
                   <Link
                     href="/auth/signup"
-                    className="text-center bg-[#f5c928] text-black py-1.5 text-lg font-bold uppercase tracking-wider rounded-full"
+                    className="border-2 border-black bg-[#f5c928] py-2 text-center text-lg font-bold uppercase tracking-wider text-black shadow-[3px_3px_0_0_#ff6a00]"
                   >
                     Register
                   </Link>

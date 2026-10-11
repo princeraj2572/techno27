@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { ALL_EVENTS, getEvent } from "@/data/all-events";
-import { EventPage, eventMetadata } from "@/components/event-page";
+import { ALL_EVENTS, getEvent } from "@/features/events/data/all-events";
+import { EventPage, eventMetadata } from "@/components/events/event-page";
 
 // Fallback: an event listed in src/data/all-events.ts that has no folder of its own yet
 // still gets a page from the shared template.

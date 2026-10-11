@@ -1,5 +1,5 @@
 import type { Sponsor } from "@/data/dummy";
-import { patternStyle, type PatternKind } from "@/data/event-themes";
+import { patternStyle, type PatternKind } from "@/features/events/data/event-themes";
 import { serif } from "@/components/indie";
 
 export type StampSize = "xl" | "lg" | "md" | "sm" | "xs";

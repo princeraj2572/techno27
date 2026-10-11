@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
+import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
-import { AuditLog } from "@/models/auditLog.model";
+import { AuditLog } from "@/features/management/auditLog.model";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, FileText, ChevronRight } from "lucide-react";
 import Link from "next/link";

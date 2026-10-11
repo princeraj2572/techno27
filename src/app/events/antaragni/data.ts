@@ -1,4 +1,4 @@
-import type { EventData } from "@/data/event-types";
+import type { EventData } from "@/features/events/data/event-types";
 
 // Antaragni — everything shown at /events/antaragni lives in this file.
 // (Its stamp illustration is drawn separately in src/components/culture-art.tsx.)

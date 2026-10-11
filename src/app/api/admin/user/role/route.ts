@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUser, updateUserRole } from "@/actions/user-actions";
+import { getUser, updateUserRole } from "@/features/users/user-actions";
 
 export async function POST(req: NextRequest) {
   const currentUser = await getUser();

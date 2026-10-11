@@ -1,9 +1,9 @@
 ﻿export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
+import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
-import { ManagementAssignment } from "@/models/managementAssignment.model";
-import { getAllEventsAction } from "@/actions/event-actions";
+import { ManagementAssignment } from "@/features/management/managementAssignment.model";
+import { getAllEventsAction } from "@/features/events/event-actions";
 import { CalendarDays, Users, CheckSquare, UsersRound, ArrowRight, ClipboardList } from "lucide-react";
 import Link from "next/link";
 

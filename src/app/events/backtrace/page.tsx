@@ -1,4 +1,4 @@
-import { EventPage, eventMetadata } from "@/components/event-page";
+import { EventPage, eventMetadata } from "@/components/events/event-page";
 import { backtrace } from "./data";
 
 export const metadata = eventMetadata(backtrace);

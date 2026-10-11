@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
-import { Team } from "@/models/team.model";
-import { Event } from "@/models/event.model";
-import { Invitation } from "@/models/invitation.model";
-import { getUser } from "@/actions/user-actions";
+import { User } from "@/features/users/user.model";
+import { Team } from "@/features/teams/team.model";
+import { Event } from "@/features/events/event.model";
+import { Invitation } from "@/features/teams/invitation.model";
+import { getUser } from "@/features/users/user-actions";
 
 export async function GET(
   _req: NextRequest,

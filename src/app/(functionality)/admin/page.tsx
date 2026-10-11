@@ -1,10 +1,10 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { Barlow_Condensed, Dela_Gothic_One } from "next/font/google";
-import { getUser } from "@/actions/user-actions";
-import { getEventsWithRegistrationCountsAction } from "@/actions/event-actions";
+import { getUser } from "@/features/users/user-actions";
+import { getEventsWithRegistrationCountsAction } from "@/features/events/event-actions";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
+import { User } from "@/features/users/user.model";
 import {
   Users, CalendarDays, CreditCard, Hotel,
   CheckSquare, UsersRound, ShieldCheck, BarChart2,

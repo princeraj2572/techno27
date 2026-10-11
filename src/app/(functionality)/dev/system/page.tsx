@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
+import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import mongoose from "mongoose";
 import { ChevronLeft, Database, CheckCircle2, XCircle } from "lucide-react";

@@ -25,8 +25,8 @@ What to change:
 
 Suggested files:
 
-- `src/actions/user-actions.ts`
-- `src/models/user.model.ts`
+- `src/features/users/user-actions.ts`
+- `src/features/*/user.model.ts`
 
 ### 2. Protect auth cookies
 
@@ -43,7 +43,7 @@ What to change:
 
 Suggested files:
 
-- `src/actions/user-actions.ts`
+- `src/features/users/user-actions.ts`
 - `src/lib/utils.ts` if logout is handled there
 
 ### 3. Remove unsafe JWT fallback
@@ -60,7 +60,7 @@ What to change:
 
 Suggested files:
 
-- `src/actions/user-actions.ts`
+- `src/features/users/user-actions.ts`
 
 ### 4. Use server-only env names for secrets
 
@@ -77,7 +77,7 @@ What to change:
 Suggested files:
 
 - `src/lib/mongodb.ts`
-- `src/actions/user-actions.ts`
+- `src/features/users/user-actions.ts`
 - `.env.local`
 
 ## Priority 2: Authorization Fixes
@@ -99,7 +99,7 @@ What to change:
 
 Suggested files:
 
-- `src/actions/invite-actions.ts`
+- `src/features/teams/invite-actions.ts`
 
 ### 6. Add role guards for admin pages and actions
 
@@ -115,7 +115,7 @@ What to change:
 
 Suggested files:
 
-- `src/actions/user-actions.ts`
+- `src/features/users/user-actions.ts`
 - `src/middleware.ts`
 - `src/app/(functionality)/admin/**`
 
@@ -154,7 +154,7 @@ What to change:
 
 Suggested files:
 
-- `src/actions/payment-actions.ts`
+- `src/features/payments/payment-actions.ts`
 
 ### 9. Centralize business rules
 
@@ -170,8 +170,8 @@ What to change:
 
 Suggested files:
 
-- `src/actions/event-actions.ts`
-- `src/actions/invite-actions.ts`
+- `src/features/events/event-actions.ts`
+- `src/features/teams/invite-actions.ts`
 - `src/lib/utils.ts`
 
 ### 10. Add schema indexes and uniqueness rules
@@ -190,10 +190,10 @@ What to change:
 
 Suggested files:
 
-- `src/models/user.model.ts`
-- `src/models/team.model.ts`
-- `src/models/invitation.model.ts`
-- `src/models/transaction.model.ts`
+- `src/features/*/user.model.ts`
+- `src/features/*/team.model.ts`
+- `src/features/*/invitation.model.ts`
+- `src/features/*/transaction.model.ts`
 
 ## Priority 4: Frontend Fixes
 
@@ -294,7 +294,7 @@ What to change:
 Suggested files:
 
 - `src/lib/utils.ts`
-- `src/actions/*`
+- `src/features/*/*`
 
 ### 17. Clean up naming and spelling
 

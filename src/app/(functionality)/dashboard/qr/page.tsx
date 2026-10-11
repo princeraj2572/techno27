@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
-import AppShell from "@/components/app-shell";
+import { getUser } from "@/features/users/user-actions";
+import AppShell from "@/components/layout/app-shell";
 import QRDisplay from "./QRDisplay";
 
 export default async function DashboardQRPage() {

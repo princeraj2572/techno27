@@ -1,9 +1,9 @@
 ﻿"use server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { Event } from "@/models/event.model";
-import { User } from "@/models/user.model";
-import { seedEvents } from "@/data/seed-events";
-import { getUser } from "./user-actions";
+import { Event } from "@/features/events/event.model";
+import { User } from "@/features/users/user.model";
+import { seedEvents } from "@/features/events/data/seed-events";
+import { getUser } from "@/features/users/user-actions";
 
 export async function seedEventsAction() {
   await connectToDatabase();

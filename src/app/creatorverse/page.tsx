@@ -1,6 +1,6 @@
 import { Band, BlockButton, Marquee, PageShell, TicketCta, display } from "@/components/indie";
 import { CREATOR_PERKS, FEATURED_CREATIONS } from "@/data/dummy";
-import { Reveal } from "@/components/motion";
+import { Reveal } from "@/components/indie/motion";
 
 export const metadata = { title: "Creatorverse | Techno-aiMBiAtion 2027" };
 

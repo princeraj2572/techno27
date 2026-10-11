@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getAllEventsAction, getRegisteredEventsAction, submitEventsAction } from "@/actions/event-actions";
+import { getAllEventsAction, getRegisteredEventsAction, submitEventsAction } from "@/features/events/event-actions";
 import { CalendarDays, CheckCircle2, Trophy, Users } from "lucide-react";
-import AppShell from "@/components/app-shell";
+import AppShell from "@/components/layout/app-shell";
 import { CARD, PageShell, display } from "@/components/indie";
 
 type Event = {

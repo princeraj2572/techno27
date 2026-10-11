@@ -1,10 +1,10 @@
 "use server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { Event, IEvent } from "@/models/event.model";
-import { Team, ITeam } from "@/models/team.model";
-import { Transaction, ITransaction } from "@/models/transaction.model";
-import { User, IUser } from "@/models/user.model";
-import { SOLO_FEE_1, TEAM_FEE, calculatePayAmount } from "@/lib/payment-constants";
+import { Event, IEvent } from "@/features/events/event.model";
+import { Team, ITeam } from "@/features/teams/team.model";
+import { Transaction, ITransaction } from "@/features/payments/transaction.model";
+import { User, IUser } from "@/features/users/user.model";
+import { SOLO_FEE_1, TEAM_FEE, calculatePayAmount } from "@/features/payments/payment-constants";
 
 // ─── Submit a transaction ID (external user) ──────────────────────────────
 export async function addTransactionIdAction(

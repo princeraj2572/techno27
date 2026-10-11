@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { setAccommodationDetailsAction } from "@/actions/accommodation-actions";
+import { setAccommodationDetailsAction } from "@/features/accommodation/accommodation-actions";
 import {
   Hotel, CheckCircle2, Pencil, Calendar, User2, Building2,
   AlignLeft, Users, Phone,

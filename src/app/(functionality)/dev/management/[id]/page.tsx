@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser, getUserById } from "@/actions/user-actions";
-import { getAssignmentForUser } from "@/actions/management-actions";
-import { getAllEventsAction } from "@/actions/event-actions";
+import { getUser, getUserById } from "@/features/users/user-actions";
+import { getAssignmentForUser } from "@/features/management/management-actions";
+import { getAllEventsAction } from "@/features/events/event-actions";
 import { ChevronLeft, Shield } from "lucide-react";
 import Link from "next/link";
 import AssignForm from "./AssignForm";

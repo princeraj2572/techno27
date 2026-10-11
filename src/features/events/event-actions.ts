@@ -1,13 +1,13 @@
 "use server";
 
 import { connectToDatabase } from "@/lib/mongodb";
-import { Event, IEvent } from "@/models/event.model";
-import { ITeam, Team } from "@/models/team.model";
-import { IUser, User } from "@/models/user.model";
-import { Invitation } from "@/models/invitation.model";
-import { AuditLog } from "@/models/auditLog.model";
-import { eventSubEventData } from "@/data/event-subeventData";
-import { getUser } from "./user-actions";
+import { Event, IEvent } from "@/features/events/event.model";
+import { ITeam, Team } from "@/features/teams/team.model";
+import { IUser, User } from "@/features/users/user.model";
+import { Invitation } from "@/features/teams/invitation.model";
+import { AuditLog } from "@/features/management/auditLog.model";
+import { eventSubEventData } from "@/features/events/data/event-subeventData";
+import { getUser } from "@/features/users/user-actions";
 
 export async function getAllEventsAction() {
   await connectToDatabase();

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import { connectToDatabase } from "@/lib/mongodb";
-import { Accommodation } from "@/models/accommodation.model";
+import { Accommodation } from "@/features/accommodation/accommodation.model";
 import * as XLSX from "xlsx";
 
 function getSecret() {

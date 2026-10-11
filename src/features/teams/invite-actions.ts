@@ -1,11 +1,11 @@
 "use server";
 
 import { connectToDatabase } from "@/lib/mongodb";
-import { Invitation } from "@/models/invitation.model";
-import { Team } from "@/models/team.model";
-import { User } from "@/models/user.model";
-import { getUser } from "./user-actions";
-import { getParticipatingEventsCountAction } from "./event-actions";
+import { Invitation } from "@/features/teams/invitation.model";
+import { Team } from "@/features/teams/team.model";
+import { User } from "@/features/users/user.model";
+import { getUser } from "@/features/users/user-actions";
+import { getParticipatingEventsCountAction } from "@/features/events/event-actions";
 
 export async function sendTeamInviteAction({
   teamId,

@@ -1,7 +1,7 @@
 import { Band, Marquee, Note, PageHero, PageShell, TicketCta, Vinyl, ACCENTS, CARD, display, serif } from "@/components/indie";
-import { PUBLIC_EVENTS } from "@/data/public-events";
+import { PUBLIC_EVENTS } from "@/features/events/data/public-events";
 import { MILESTONES, TESTIMONIALS } from "@/data/dummy";
-import { CountUp, Reveal, TestimonialSlider } from "@/components/motion";
+import { CountUp, Reveal, TestimonialSlider } from "@/components/indie/motion";
 
 export const metadata = { title: "About | Techno-aiMBiAtion 2027" };
 

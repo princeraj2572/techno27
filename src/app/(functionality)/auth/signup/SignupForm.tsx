@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { userSignup } from "@/actions/user-actions";
+import { userSignup } from "@/features/users/user-actions";
 import { OPJU_DEPARTMENTS, OPJU_BRANCHES } from "@/data/opju-academics";
 
 interface Props {

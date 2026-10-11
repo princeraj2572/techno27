@@ -1,11 +1,11 @@
 "use server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { IUser, User } from "@/models/user.model";
+import { IUser, User } from "@/features/users/user.model";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE, authCookieOptions, JWT_SECRET } from "@/lib/auth";
 import { generateParticipantId } from "@/lib/server-utils";
-import { AuditLog } from "@/models/auditLog.model";
+import { AuditLog } from "@/features/management/auditLog.model";
 
 interface SignupData {
   email: string;

@@ -5,8 +5,8 @@ import {
 import {
   DEPT_FLAVOR, POSTER_PALETTES, initials, type Department, type PosterPalette, type TeamMember,
 } from "@/data/dummy";
-import { patternStyle, type PatternKind } from "@/data/event-themes";
-import { NimbuMirch } from "@/components/nimbu-mirch";
+import { patternStyle, type PatternKind } from "@/features/events/data/event-themes";
+import { NimbuMirch } from "@/components/indie/nimbu-mirch";
 import { blockHindi, paper, serif } from "@/components/indie";
 
 const ICONS: Record<string, LucideIcon> = {

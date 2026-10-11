@@ -1,4 +1,4 @@
-import { Reveal } from "@/components/motion";
+import { Reveal } from "@/components/indie/motion";
 import { Band, Marquee, PageHero, PageShell, TicketCta, display, serif } from "@/components/indie";
 import { JUNOON_NIGHTS } from "@/data/dummy";
 

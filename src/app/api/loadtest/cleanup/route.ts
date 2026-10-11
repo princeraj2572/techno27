@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
-import { Team } from "@/models/team.model";
-import { Invitation } from "@/models/invitation.model";
-import { CheckIn } from "@/models/checkIn.model";
-import { Accommodation } from "@/models/accommodation.model";
-import { Transaction } from "@/models/transaction.model";
-import { Event } from "@/models/event.model";
+import { User } from "@/features/users/user.model";
+import { Team } from "@/features/teams/team.model";
+import { Invitation } from "@/features/teams/invitation.model";
+import { CheckIn } from "@/features/checkin/checkIn.model";
+import { Accommodation } from "@/features/accommodation/accommodation.model";
+import { Transaction } from "@/features/payments/transaction.model";
+import { Event } from "@/features/events/event.model";
 import { assertLoadtestEnabled, errorResponse } from "../_guard";
 
 const LOADTEST_EMAIL_RE = /^loadtest-/;

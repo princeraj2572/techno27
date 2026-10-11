@@ -1,6 +1,6 @@
 import { Band, PageShell, blockHindi } from "@/components/indie";
 import { DEPARTMENTS, DEPT_FLAVOR } from "@/data/dummy";
-import { DeptSection } from "@/components/dept-section";
+import { DeptSection } from "@/components/events/dept-section";
 
 export const metadata = { title: "Contact | Techno-aiMBiAtion 2027" };
 

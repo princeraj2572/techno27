@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { assignEventManager, revokeEventManager } from "@/actions/management-actions";
+import { assignEventManager, revokeEventManager } from "@/features/management/management-actions";
 import { CalendarDays, CheckSquare, Square, Trash2 } from "lucide-react";
 import Link from "next/link";
 

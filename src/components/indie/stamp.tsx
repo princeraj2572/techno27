@@ -1,5 +1,5 @@
-import type { EventCategory } from "@/data/public-events";
-import { CULTURES, CultureScene } from "@/components/culture-art";
+import type { EventCategory } from "@/features/events/data/public-events";
+import { CULTURES, CultureScene } from "@/components/indie/culture-art";
 
 export const CATEGORY_BADGE: Record<EventCategory, string> = {
   Technical: "bg-[#f5c928] text-black",

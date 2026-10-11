@@ -1,8 +1,8 @@
 import { GALLERY } from "@/data/dummy";
-import { CULTURES } from "@/components/culture-art";
-import { GalleryBoard } from "@/components/gallery-board";
-import { ImageSlot } from "@/components/media";
-import { Reveal } from "@/components/motion";
+import { CULTURES } from "@/components/indie/culture-art";
+import { GalleryBoard } from "@/components/events/gallery-board";
+import { ImageSlot } from "@/components/indie/media";
+import { Reveal } from "@/components/indie/motion";
 import { Band, BlockButton, Marquee, PageShell, TicketCta, display, serif } from "@/components/indie";
 
 export const metadata = { title: "Gallery | Techno-aiMBiAtion 2027" };

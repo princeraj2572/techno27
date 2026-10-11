@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { userLogout } from "@/actions/user-actions";
+import { userLogout } from "@/features/users/user-actions";
 import useFetch from "@/hooks/use-fetch";
 
 interface UserDropdownProps {

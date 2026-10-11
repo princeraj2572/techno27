@@ -1,11 +1,11 @@
 "use server";
 
 import { connectToDatabase } from "@/lib/mongodb";
-import { ITeam, Team } from "@/models/team.model";
-import { Event, IEvent } from "@/models/event.model";
-import { User } from "@/models/user.model";
-import { IInvitation, Invitation } from "@/models/invitation.model";
-import { getUser } from "./user-actions";
+import { ITeam, Team } from "@/features/teams/team.model";
+import { Event, IEvent } from "@/features/events/event.model";
+import { User } from "@/features/users/user.model";
+import { IInvitation, Invitation } from "@/features/teams/invitation.model";
+import { getUser } from "@/features/users/user-actions";
 
 export async function getCurrentUserEmailAction(): Promise<string> {
   await connectToDatabase();

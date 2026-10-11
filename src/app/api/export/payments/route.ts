@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
-import { Transaction } from "@/models/transaction.model";
+import { User } from "@/features/users/user.model";
+import { Transaction } from "@/features/payments/transaction.model";
 import * as XLSX from "xlsx";
 
 function getSecret() {

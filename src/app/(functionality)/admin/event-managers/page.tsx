@@ -1,10 +1,10 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
+import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
-import { ManagementAssignment } from "@/models/managementAssignment.model";
-import { Event } from "@/models/event.model";
+import { User } from "@/features/users/user.model";
+import { ManagementAssignment } from "@/features/management/managementAssignment.model";
+import { Event } from "@/features/events/event.model";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ShieldCheck, Plus, ChevronRight } from "lucide-react";
 import Link from "next/link";

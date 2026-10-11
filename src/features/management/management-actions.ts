@@ -1,9 +1,9 @@
 "use server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { ManagementAssignment } from "@/models/managementAssignment.model";
-import { User } from "@/models/user.model";
-import { Event, IEvent } from "@/models/event.model";
-import { AuditLog } from "@/models/auditLog.model";
+import { ManagementAssignment } from "@/features/management/managementAssignment.model";
+import { User } from "@/features/users/user.model";
+import { Event, IEvent } from "@/features/events/event.model";
+import { AuditLog } from "@/features/management/auditLog.model";
 
 export async function assignEventManager(
   targetUserId: string,

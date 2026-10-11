@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { ArrowRight, CalendarDays, MapPin, Trophy, Users } from "lucide-react";
-import { PUBLIC_EVENTS } from "@/data/public-events";
+import { PUBLIC_EVENTS } from "@/features/events/data/public-events";
 import {
   EVENTS_BANNER, EVENT_FAQ, EVENT_MEDIA, EVENT_STEPS, FEST_START,
   SPONSOR_TIERS, getEventMock,
 } from "@/data/dummy";
-import { EventsCards } from "@/components/events-cards";
-import { Countdown } from "@/components/countdown";
-import { CountUp, Reveal } from "@/components/motion";
-import { ImageSlot, LogoSlot } from "@/components/media";
-import { CULTURES } from "@/components/culture-art";
-import { Postmark, Stamp } from "@/components/stamp";
+import { EventsCards } from "@/components/events/events-cards";
+import { Countdown } from "@/components/events/countdown";
+import { CountUp, Reveal } from "@/components/indie/motion";
+import { ImageSlot, LogoSlot } from "@/components/indie/media";
+import { CULTURES } from "@/components/indie/culture-art";
+import { Postmark, Stamp } from "@/components/indie/stamp";
 import { Band, BlockButton, Marquee, PageShell, TicketCta, display, serif } from "@/components/indie";
 
 export const metadata = { title: "Events | Techno-aiMBiAtion 2027" };

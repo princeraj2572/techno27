@@ -1,15 +1,15 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getParticipatingTeams, getInvitedTeams, deleteTeamAction, leaveTeamAction, getCurrentUserEmailAction, removeTeamMemberAction, checkUserExistsAction } from "@/actions/team-actions";
-import { sendTeamInviteAction, acceptInviteAction, rejectInviteAction, cancelInviteAction } from "@/actions/invite-actions";
+import { getParticipatingTeams, getInvitedTeams, deleteTeamAction, leaveTeamAction, getCurrentUserEmailAction, removeTeamMemberAction, checkUserExistsAction } from "@/features/teams/team-actions";
+import { sendTeamInviteAction, acceptInviteAction, rejectInviteAction, cancelInviteAction } from "@/features/teams/invite-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { AlertCircle, Users, UserPlus, CheckCircle2, X, Clock, Trash2, LogOut } from "lucide-react";
 import Link from "next/link";
-import AppShell from "@/components/app-shell";
+import AppShell from "@/components/layout/app-shell";
 import { PageShell, TITLE_SHADOW, display } from "@/components/indie";
 
 type Member = { fullName: string; email: string; role: string };

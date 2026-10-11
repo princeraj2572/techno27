@@ -13,7 +13,7 @@ The backend is responsible for a full set of event-management workflows:
 - accommodation submission and admin aggregation
 - email notifications for onboarding and password reset flows
 
-Most of the logic lives under `src/actions`, while persistence is handled through MongoDB with Mongoose models in `src/models`. The backend is not exposed as a REST API; instead, the app calls server actions directly from the Next.js UI.
+Most of the logic lives under `src/features/*` (`*-actions.ts`), while persistence is handled through MongoDB with Mongoose models in `src/features/*` (`*.model.ts`). The backend is not exposed as a REST API; instead, the app calls server actions directly from the Next.js UI.
 
 ## Technology Stack
 
@@ -33,8 +33,8 @@ The backend follows a layered, action-driven architecture:
 
 1. The UI triggers a server action from the App Router.
 2. The action opens a MongoDB connection through `src/lib/mongodb.ts`.
-3. The action reads or writes data through a Mongoose model in `src/models`.
-4. Auth-sensitive actions resolve the current user with `src/actions/user-actions.ts`.
+3. The action reads or writes data through a Mongoose model in `src/features/*` (`*.model.ts`).
+4. Auth-sensitive actions resolve the current user with `src/features/users/user-actions.ts`.
 5. Middleware blocks protected routes early when a token is missing.
 6. The action returns JSON-safe data back to the caller.
 
@@ -46,13 +46,13 @@ This gives the project a backend that is fully integrated with Next.js rather th
 Browser / React component
 	|
 	v
-Next.js server action in src/actions
+Next.js server action in src/features/*
 	|
 	v
 MongoDB connection cache in src/lib/mongodb.ts
 	|
 	v
-Mongoose model in src/models
+Mongoose model in src/features/*
 	|
 	v
 Database read or write
@@ -63,9 +63,9 @@ JSON-safe response back to the UI
 
 ```mermaid
 flowchart TD
-	UI[React UI / App Router page] --> SA[Server action in src/actions]
+	UI[React UI / App Router page] --> SA[Server action in src/features/*]
 	SA --> DB[Connection cache in src/lib/mongodb.ts]
-	DB --> MM[Mongoose model in src/models]
+	DB --> MM[Mongoose model in src/features/*]
 	MM --> M[(MongoDB)]
 	M --> MM
 	MM --> SA
@@ -86,17 +86,17 @@ The MongoDB connection is centralized in `src/lib/mongodb.ts`. It:
 
 The application uses server actions instead of traditional REST controllers. The main action groups are:
 
-- `src/actions/user-actions.ts` for signup, login, password reset, and user lookup
-- `src/actions/team-actions.ts` for team details and participation flows
-- `src/actions/event-actions.ts` for event registration, event lookup, participant counts, and export helpers
-- `src/actions/invite-actions.ts` for sending and handling team invites
-- `src/actions/payment-actions.ts` for transaction storage and payment aggregation
-- `src/actions/accomodation-actions.ts` for accommodation data
-- `src/actions/mailer.ts` for welcome and reset-password emails
+- `src/features/users/user-actions.ts` for signup, login, password reset, and user lookup
+- `src/features/teams/team-actions.ts` for team details and participation flows
+- `src/features/events/event-actions.ts` for event registration, event lookup, participant counts, and export helpers
+- `src/features/teams/invite-actions.ts` for sending and handling team invites
+- `src/features/payments/payment-actions.ts` for transaction storage and payment aggregation
+- `src/features/*/accomodation-actions.ts` for accommodation data
+- `src/lib/mailer.ts` for welcome and reset-password emails
 
 ### What Each Backend Module Does
 
-#### `src/actions/user-actions.ts`
+#### `src/features/users/user-actions.ts`
 
 This module handles the entire auth and user lifecycle:
 
@@ -109,7 +109,7 @@ This module handles the entire auth and user lifecycle:
 - `getOutsiderUsers()` returns users flagged as outsiders.
 - `getUsersByEmailsPaginated(emails, page, limit)` returns the same email-based lookup with pagination metadata.
 
-#### `src/actions/event-actions.ts`
+#### `src/features/events/event-actions.ts`
 
 This module drives event browsing, registration, reporting, and export utilities:
 
@@ -128,7 +128,7 @@ This module drives event browsing, registration, reporting, and export utilities
 - `getTeamsByEventIdPaginated(...)` returns event teams in a paginated form.
 - `generateEventParticipantsExcel(eventId)` exports participant data for a single event.
 
-#### `src/actions/team-actions.ts`
+#### `src/features/teams/team-actions.ts`
 
 This module manages team membership and team cleanup:
 
@@ -137,7 +137,7 @@ This module manages team membership and team cleanup:
 - `getInvitedTeams()` returns pending invite records for the current user, decorated with team, leader, and event data.
 - `deleteTeamAction(teamId)` removes a team, removes that team from each member’s `teams` array, and deletes related invitations.
 
-#### `src/actions/invite-actions.ts`
+#### `src/features/teams/invite-actions.ts`
 
 This module owns invite state transitions:
 
@@ -146,7 +146,7 @@ This module owns invite state transitions:
 - `acceptInviteAction(inviteId)` adds the invitee to the team, adds the team to the invitee’s user record, and enforces outsider event limits.
 - `rejectInviteAction(inviteId)` marks the invite as rejected.
 
-#### `src/actions/payment-actions.ts`
+#### `src/features/payments/payment-actions.ts`
 
 This module handles all payment-related storage and admin summaries:
 
@@ -154,7 +154,7 @@ This module handles all payment-related storage and admin summaries:
 - `getTransactionsByUserEmail(userEmail)` returns all transactions for one user.
 - `getPaymentData()` builds a payment dashboard dataset for admins, including event names, schema counts, transaction counts, acknowledged amounts, and clearance status.
 
-#### `src/actions/accomodation-actions.ts`
+#### `src/features/*/accomodation-actions.ts`
 
 This module handles accommodation submission and admin reporting:
 
@@ -162,7 +162,7 @@ This module handles accommodation submission and admin reporting:
 - `setAccommodationDetailsAction(details)` creates or updates the user’s accommodation entry.
 - `getAllAccommodationsWithUsers()` returns all accommodation records with the related user record and a list of team leaders connected to that user.
 
-#### `src/actions/mailer.ts`
+#### `src/lib/mailer.ts`
 
 This module contains email helpers used by the auth flows:
 
@@ -258,8 +258,8 @@ The architecture is intentionally simple:
 
 - `src/app` renders the UI and calls backend actions when the user submits a form or opens a protected page.
 - `src/middleware.ts` acts as the first gate for protected routes.
-- `src/actions/user-actions.ts` is the main auth boundary because almost every other module needs the current user.
-- `src/models` is the single source of truth for schema rules and persistence.
+- `src/features/users/user-actions.ts` is the main auth boundary because almost every other module needs the current user.
+- `src/features/*` (`*.model.ts`) is the single source of truth for schema rules and persistence.
 - `src/lib/mongodb.ts` keeps database connection management out of the business logic.
 
 Because the app uses server actions, there is no dedicated controller or route-handler layer for most flows. The action itself is the controller, service, and use-case entry point in one place.
@@ -314,7 +314,7 @@ Protected routes are guarded in `src/middleware.ts`. Requests to dashboard, admi
 
 ## Data Models
 
-The backend uses Mongoose models in `src/models`:
+The backend uses Mongoose models in `src/features/*` (`*.model.ts`):
 
 - `user.model.ts` stores user identity, login credentials, admin flags, permissions, and team references.
 - `team.model.ts` stores team leader, member emails, event reference, size, and invite references.

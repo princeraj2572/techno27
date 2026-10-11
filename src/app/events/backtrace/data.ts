@@ -1,4 +1,4 @@
-import type { EventData } from "@/data/event-types";
+import type { EventData } from "@/features/events/data/event-types";
 
 // Backtrace — everything shown at /events/backtrace lives in this file.
 // (Its stamp illustration is drawn separately in src/components/culture-art.tsx.)

@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { X, ZoomIn } from "lucide-react";
 import { display, paper, serif } from "@/components/indie";
-import { CULTURES, CultureScene } from "@/components/culture-art";
-import { EVENT_THEMES, patternStyle, type EventTheme } from "@/data/event-themes";
+import { CULTURES, CultureScene } from "@/components/indie/culture-art";
+import { EVENT_THEMES, patternStyle, type EventTheme } from "@/features/events/data/event-themes";
 import type { GalleryItem } from "@/data/dummy";
 
 // Each year gets its own palette + pattern, borrowed from the event themes.

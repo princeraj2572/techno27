@@ -1,4 +1,4 @@
-import type { EventTheme } from "@/data/event-themes";
+import type { EventTheme } from "@/features/events/data/event-themes";
 
 export type EventCategory = "Technical" | "Cultural" | "Management" | "Fun";
 

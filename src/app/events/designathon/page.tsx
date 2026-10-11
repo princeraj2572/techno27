@@ -1,4 +1,4 @@
-import { EventPage, eventMetadata } from "@/components/event-page";
+import { EventPage, eventMetadata } from "@/components/events/event-page";
 import { designathon } from "./data";
 
 export const metadata = eventMetadata(designathon);

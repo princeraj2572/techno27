@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { submitEventsAction } from "@/actions/event-actions";
-import { getUser } from "@/actions/user-actions";
+import { submitEventsAction } from "@/features/events/event-actions";
+import { getUser } from "@/features/users/user-actions";
 import { assertLoadtestEnabled, errorResponse, impersonate } from "../../_guard";
 
 export async function POST(req: NextRequest) {
