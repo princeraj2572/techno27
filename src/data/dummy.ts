@@ -15,9 +15,9 @@ export interface JunoonNight {
 }
 
 export const JUNOON_NIGHTS: JunoonNight[] = [
-  { n: "01", title: "Opening Night", artist: "The Midnight Ragas", genre: "Indie fusion band", date: "Fri, Jan 15, 2027", time: "7:30 PM", venue: "Main Ground", desc: "Live indie fusion to kick off the fest under the lights." },
-  { n: "02", title: "Beats & Bass", artist: "DJ Nova", genre: "Electronic · live set", date: "Sun, Jan 17, 2027", time: "8:00 PM", venue: "Main Ground", desc: "A high-energy electronic set that turns the campus into a dance floor." },
-  { n: "03", title: "Closing Night", artist: "Echo & The Monsoon", genre: "Rock · live band", date: "Tue, Jan 19, 2027", time: "7:00 PM", venue: "Main Ground", desc: "A grand rock finale to close the festival with a roar." },
+  { n: "01", title: "Opening Night", artist: "The Midnight Ragas", genre: "Indie fusion band", date: "Thu, Feb 18, 2027", time: "7:30 PM", venue: "Main Ground", desc: "Live indie fusion to kick off the fest under the lights." },
+  { n: "02", title: "Beats & Bass", artist: "DJ Nova", genre: "Electronic · live set", date: "Sat, Feb 20, 2027", time: "8:00 PM", venue: "Main Ground", desc: "A high-energy electronic set that turns the campus into a dance floor." },
+  { n: "03", title: "Closing Night", artist: "Echo & The Monsoon", genre: "Rock · live band", date: "Fri, Feb 19, 2027", time: "7:00 PM", venue: "Main Ground", desc: "A grand rock finale to close the festival with a roar." },
 ];
 
 export interface Sponsor {
@@ -141,11 +141,12 @@ export function initials(name: string): string {
 }
 
 export const MILESTONES = [
-  { year: "2023", title: "The first edition", text: "800 participants, 8 events, and one very loud stage." },
-  { year: "2024", title: "Going inter-college", text: "20 colleges joined, with 12 events across tech and culture." },
-  { year: "2025", title: "Junoon begins", text: "Live music nights drew the biggest crowds yet." },
-  { year: "2026", title: "Prize pool grows", text: "Over ₹3 lakh in prizes and 1,500 participants." },
-  { year: "2027", title: "The biggest one yet", text: "15 flagship events, 5 days, and a new home for creators." },
+  { year: "2011", title: "Technorollix begins", text: "OP Jindal University's annual techno-cultural fest takes its first steps." },
+  { year: "2020", title: "Technorollix'20", text: "Four days in February (18–21) with students from colleges across India." },
+  { year: "2023", title: "12th edition", text: "Three days (1–3 March) of events, a Techlab prototype showcase and a celebrity DJ night." },
+  { year: "2024", title: "13th edition", text: "Technorollix returned in March for its 13th year." },
+  { year: "2025", title: "14th edition", text: "Central India's biggest techno-cultural fest ran from 20 to 22 March." },
+  { year: "2027", title: "16th edition", text: "The newest chapter of a fest that has been running since 2011." },
 ];
 
 export const CREATOR_PERKS = [
@@ -256,7 +257,8 @@ export interface EventMedia {
 export const EVENT_MEDIA: Record<string, EventMedia> = Object.fromEntries(ALL_EVENTS.map((e) => [e.slug, e.media ?? {}]));
 
 export const EVENTS_BANNER: string | undefined = undefined; // e.g. "/images/events-banner.jpg", ~1600 x 600
-export const FEST_START = "2027-01-15T09:00:00+05:30";
+export const REVEAL_DATE = "2026-11-20T00:00:00+05:30";
+export const FEST_START = "2027-02-18T09:00:00+05:30";
 
 export const EVENT_STEPS = [
   { n: "01", title: "Browse", text: "Filter by category or search to find the events that fit you." },

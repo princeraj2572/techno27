@@ -2,7 +2,9 @@ import Link from "next/link";
 import { IndianRupee, Medal, Ticket, Users } from "lucide-react";
 import { PUBLIC_EVENTS } from "@/features/events/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
-import { EVENT_MEDIA, JUNOON_ACTS, JUNOON_NIGHTS, MYSTERY_HINTS, TESTIMONIALS } from "@/data/dummy";
+import { TicketCountdown } from "@/components/events/ticket-countdown";
+import { RevealPopup } from "@/components/indie/reveal-popup";
+import { EVENT_MEDIA, FEST_START, JUNOON_ACTS, JUNOON_NIGHTS, MYSTERY_HINTS, TESTIMONIALS } from "@/data/dummy";
 import { CULTURES } from "@/components/indie/culture-art";
 import { Postmark, Stamp } from "@/components/indie/stamp";
 import { CutoutTitle } from "@/components/indie/cutout-title";
@@ -10,7 +12,7 @@ import { NimbuMirch } from "@/components/indie/nimbu-mirch";
 import { EVENT_THEMES, patternStyle } from "@/features/events/data/event-themes";
 import { CountUp, Reveal, Splash, TestimonialSlider } from "@/components/indie/motion";
 import {
-  Band, BlockButton, Marquee, Note, PageShell, Vinyl, Wheel, display, serif, MandalaSpin, blockHindi,
+  Band, BlockButton, Marquee, Note, PageShell, Vinyl, display, serif, MandalaSpin, blockHindi,
 } from "@/components/indie";
 
 const NOTES = [
@@ -53,46 +55,6 @@ function ActColumn({ acts, dir }: { acts: typeof JUNOON_ACTS; dir: "up" | "down"
   );
 }
 
-// The skyline rises on load; clouds bob; a train drives across.
-function HeroScene() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-40 sm:h-52 overflow-hidden">
-      {[
-        { l: "8%", t: "8%", w: "9rem", d: "0s" },
-        { l: "42%", t: "0%", w: "11rem", d: "1s" },
-        { l: "70%", t: "14%", w: "8rem", d: "0.5s" },
-      ].map((c, i) => (
-        <span
-          key={i}
-          className="indie-cloud absolute block h-6 rounded-full bg-[#fad68e]/35 blur-[1px]"
-          style={{ left: c.l, top: c.t, width: c.w, animationDelay: c.d }}
-        />
-      ))}
-      <svg viewBox="0 0 1200 200" preserveAspectRatio="xMidYMax slice" className="indie-rise absolute bottom-0 h-full w-full">
-        <circle cx="620" cy="190" r="110" fill="#ff9d2e" opacity="0.55" />
-        <g fill="#2a0606">
-          <path d="M70 200 V152 H130 V122 H160 V92 L190 48 L220 92 V122 H250 V152 H310 V200 Z" />
-          <path d="M500 200 V90 a100 100 0 0 1 200 0 V200 H655 V104 a55 55 0 0 0 -110 0 V200 Z" />
-          <path d="M880 200 V132 H1000 V200 Z M898 132 a42 42 0 0 1 84 0 Z M938 70 h4 v28 h-4 Z" />
-          <path d="M1060 200 V150 H1130 V200 Z M1070 150 a25 25 0 0 1 50 0 Z" />
-          <circle cx="360" cy="168" r="26" /><circle cx="404" cy="176" r="20" /><circle cx="760" cy="172" r="22" />
-          <rect x="0" y="186" width="1200" height="14" />
-        </g>
-      </svg>
-      <div className="indie-metro absolute bottom-3 left-0 flex">
-        {[0, 1, 2, 3].map((c) => (
-          <div key={c} className="relative mr-1 h-10 w-36 rounded-md border-2 border-black bg-[#e9e6df]">
-            <div className="absolute inset-x-0 top-1/2 h-1 bg-[#c1121f]" />
-            <div className="absolute left-2 right-2 top-1.5 flex gap-1.5">
-              {[0, 1, 2, 3].map((w) => <span key={w} className="h-3 flex-1 rounded-sm border border-black bg-[#1a2a44]" />)}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function HomePage() {
   const totalSub = PUBLIC_EVENTS.reduce((n, e) => n + e.subEvents.length, 0);
   const stats = [
@@ -106,17 +68,17 @@ export default function HomePage() {
   return (
     <PageShell>
       <Splash />
+      <RevealPopup />
 
       {/* Pinned sections: each slides up over the previous one (large screens) */}
       <div className="relative">
         {/* Hero */}
-        <section className="panel relative overflow-hidden indie-mandala bg-[#7a1c1c]">
+        <section className="panel relative overflow-hidden indie-mandala bg-[#7a1c1c]" style={{ minHeight: "calc(100vh - 4rem)" }}>
           <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(58,8,8,0.85) 0%, rgba(122,28,28,0.55) 50%, rgba(246,95,0,0.85) 100%)" }} />
-          <HeroScene />
           <div className="panel-inner relative max-w-6xl mx-auto px-6 pt-16 pb-48 md:pb-44 grid md:grid-cols-2 gap-6 items-center">
             <div className="space-y-6 text-center md:text-left">
               <p className="inline-block bg-[#ff6a00] text-black text-sm font-bold uppercase tracking-[0.25em] px-3 py-1 border-2 border-black -rotate-1">
-                Op Jindal University • 2027
+                Op Jindal University • 16th Edition • Since 2011
               </p>
               <h1 className={`text-5xl sm:text-7xl leading-[0.95] text-[#f5c928] break-words ${serif.className}`} style={{ textShadow: "4px 4px 0 #3a0808" }}>
                 Techno-<span className="text-[#f5edd8]">aiMBiAtion</span>
@@ -133,15 +95,7 @@ export default function HomePage() {
 
             <span aria-hidden className="indie-float absolute left-4 top-6 hidden md:block bg-[#f5c928] text-black text-xs font-bold uppercase tracking-widest px-3 py-1 border-2 border-black" style={{ ["--r" as string]: "-6deg" }}>★ Vol. 1</span>
 
-            <div className="relative mx-auto w-72 sm:w-96 md:w-[28rem] md:-mr-20 aspect-square">
-              <Wheel className="h-full w-full drop-shadow-[10px_10px_0_rgba(0,0,0,0.45)]" />
-              <Link
-                href="/auth/signup"
-                className="absolute left-1/2 top-1/2 flex h-[34%] w-[34%] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-center text-[10px] sm:text-sm font-bold uppercase tracking-widest text-[#f5c928] hover:text-white"
-              >
-                Register
-              </Link>
-            </div>
+            <TicketCountdown to={FEST_START} />
           </div>
           <Marquee
             className="absolute inset-x-0 bottom-0 z-10 bg-[#ff6a00] text-black font-bold uppercase tracking-wider text-xl py-1.5 -rotate-1 scale-[1.02]"
@@ -235,7 +189,7 @@ export default function HomePage() {
         </Band>
 
         {/* Numbers */}
-        <Band panel tone="cream" toran overlay={<div aria-hidden className="absolute inset-0 opacity-[0.1]" style={patternStyle("diamonds", "#7a1c1c")} />}>
+        <Band panel tone="cream" overlay={<div aria-hidden className="absolute inset-0 opacity-[0.1]" style={patternStyle("diamonds", "#7a1c1c")} />}>
           <div className="relative grid items-center gap-10 pt-6 md:grid-cols-[1.15fr_1fr]">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.4em] text-[#c8421f]">The fest, by the</p>
@@ -277,7 +231,7 @@ export default function HomePage() {
               <Vinyl className="relative h-full w-full drop-shadow-[8px_8px_0_rgba(0,0,0,0.35)]" slow />
               <Postmark lines={false} className="pointer-events-none absolute -bottom-3 -right-3 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
               <NimbuMirch className="pointer-events-none absolute -left-4 -top-2 z-10 h-28 w-auto" delay="0.3s" />
-              <span className="indie-wobble absolute right-0 top-2 border-2 border-black bg-[#f5c928] px-3 py-1 text-sm font-bold uppercase tracking-widest text-black">★ 5 days of fest</span>
+              <span className="indie-wobble absolute right-0 top-2 border-2 border-black bg-[#f5c928] px-3 py-1 text-sm font-bold uppercase tracking-widest text-black">★ 3 days of fest</span>
               <span aria-hidden className="indie-float absolute bottom-6 left-0 border-2 border-black bg-[#f5edd8] px-3 py-1 text-xs font-bold uppercase tracking-widest text-black" style={{ ["--r" as string]: "-5deg" }}>TRX&apos;27</span>
             </div>
           </div>

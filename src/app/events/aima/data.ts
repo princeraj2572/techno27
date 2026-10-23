@@ -11,7 +11,7 @@ export const aima: EventData = {
   // ---- details ----
   tagline: "Think like a manager.",
   about: "AIMA is one of the flagship management events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Jan 17, 2027",
+  date: "Feb 20, 2027",
   time: "2:30 PM",
   venue: "Innovation Lab",
   teamSize: "1–3 members",

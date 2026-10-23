@@ -88,7 +88,6 @@ export function DeptSection({ dept, index, total, id }: { dept: Department; inde
           <span className="border-2 border-black bg-[#f5c928] px-2.5 py-0.5 text-sm font-bold tracking-[0.2em] shadow-[2px_2px_0_0_#000]">
             {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
-          <span aria-hidden className="text-2xl">{f.emoji}</span>
           <h2 className={`text-2xl sm:text-3xl ${serif.className}`}>{dept.name}</h2>
           <span className="ml-auto text-xs font-bold uppercase tracking-[0.3em] opacity-60">{people.length} people</span>
         </div>

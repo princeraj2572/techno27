@@ -11,7 +11,7 @@ export const riwayatFashionShow: EventData = {
   // ---- details ----
   tagline: "Tradition on the runway.",
   about: "Riwayat (Fashion Show) is one of the flagship cultural events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Jan 19, 2027",
+  date: "Feb 20, 2027",
   time: "5:30 PM",
   venue: "Main Auditorium",
   teamSize: "Solo or group",

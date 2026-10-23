@@ -11,7 +11,7 @@ export const ideathon: EventData = {
   // ---- details ----
   tagline: "Ideas for a better tomorrow.",
   about: "Ideathon is one of the flagship technical events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Jan 15, 2027",
+  date: "Feb 18, 2027",
   time: "10:00 AM",
   venue: "Design Studio",
   teamSize: "2–4 members",

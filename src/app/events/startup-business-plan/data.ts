@@ -11,7 +11,7 @@ export const startupBusinessPlan: EventData = {
   // ---- details ----
   tagline: "Pitch it. Fund it. Build it.",
   about: "Startup Business Plan is one of the flagship management events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Jan 18, 2027",
+  date: "Feb 19, 2027",
   time: "4:00 PM",
   venue: "CSE Block",
   teamSize: "1–3 members",

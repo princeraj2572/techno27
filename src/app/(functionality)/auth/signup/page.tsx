@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AuthCard, AuthShell } from "../auth-shell";
 import EnterEmail from "./EnterEmail";
 import VerifyOtp from "./VerifyOtp";
 import SignupForm from "./SignupForm";
@@ -23,64 +23,27 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-16">
-      <Card className="w-full max-w-2xl">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Create Account</CardTitle>
-          <CardDescription>Join Techno-aiMBiAtion 2027</CardDescription>
+    <AuthShell>
+      <AuthCard tag="Join the riot" title="Create Account" description="Join Techno-aiMBiAtion 2027" steps={STEP_LABELS} current={step - 1}>
+        {step === 1 && <EnterEmail onNext={handleEmailNext} />}
+        {step === 2 && (
+          <VerifyOtp
+            email={email}
+            onNext={() => setStep(3)}
+            onBack={() => setStep(1)}
+          />
+        )}
+        {step === 3 && <SignupForm email={email} isInternal={isInternal} />}
 
-          {/* Step indicator */}
-          <div className="flex items-center justify-center gap-2 mt-4">
-            {STEP_LABELS.map((label, i) => {
-              const n = (i + 1) as Step;
-              return (
-                <div key={n} className="flex items-center gap-2">
-                  <div
-                    className={`flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold transition-colors ${
-                      step === n
-                        ? "bg-primary text-primary-foreground"
-                        : step > n
-                          ? "bg-primary/30 text-primary"
-                          : "bg-muted text-muted-foreground"
-                    }`}
-                  >
-                    {n}
-                  </div>
-                  <span
-                    className={`text-xs hidden sm:block ${step === n ? "text-foreground font-medium" : "text-muted-foreground"}`}
-                  >
-                    {label}
-                  </span>
-                  {i < STEP_LABELS.length - 1 && (
-                    <div className={`h-px w-8 ${step > n ? "bg-primary/50" : "bg-border"}`} />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </CardHeader>
-
-        <CardContent>
-          {step === 1 && <EnterEmail onNext={handleEmailNext} />}
-          {step === 2 && (
-            <VerifyOtp
-              email={email}
-              onNext={() => setStep(3)}
-              onBack={() => setStep(1)}
-            />
-          )}
-          {step === 3 && <SignupForm email={email} isInternal={isInternal} />}
-
-          {step === 1 && (
-            <p className="text-center text-sm text-muted-foreground mt-4">
-              Already have an account?{" "}
-              <Link href="/auth/login" className="text-primary hover:underline">
-                Sign in
-              </Link>
-            </p>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+        {step === 1 && (
+          <p className="text-center text-sm text-muted-foreground mt-4">
+            Already have an account?{" "}
+            <Link href="/auth/login" className="font-bold text-[#a1001a] underline underline-offset-4 hover:text-[#ff6a00]">
+              Sign in
+            </Link>
+          </p>
+        )}
+      </AuthCard>
+    </AuthShell>
   );
 }

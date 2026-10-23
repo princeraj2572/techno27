@@ -21,7 +21,7 @@ const lunch: ScheduleItem = { time: "13:30", title: "Lunch Break", kind: "Genera
 
 export const SCHEDULE: ScheduleDay[] = [
   {
-    label: "Day 1", date: "Jan 15, 2027",
+    label: "Day 1", date: "Feb 18, 2027",
     items: [
       { time: "09:00", title: "Inauguration Ceremony", kind: "Special", venue: "Main Auditorium", iconKey: "flame" },
       { time: "10:30", title: "Codigo — Round 1", kind: "Technical", venue: "CSE Block", iconKey: "code" },
@@ -34,7 +34,7 @@ export const SCHEDULE: ScheduleDay[] = [
     ],
   },
   {
-    label: "Day 2", date: "Jan 16, 2027",
+    label: "Day 2", date: "Feb 19, 2027",
     items: [
       { time: "09:30", title: "Backtrace", kind: "Technical", venue: "Computer Lab", iconKey: "terminal" },
       { time: "11:00", title: "Techlab", kind: "Technical", venue: "Innovation Lab", iconKey: "flask" },
@@ -46,7 +46,7 @@ export const SCHEDULE: ScheduleDay[] = [
     ],
   },
   {
-    label: "Day 3", date: "Jan 17, 2027",
+    label: "Day 3", date: "Feb 20, 2027",
     items: [
       { time: "09:30", title: "AIMA", kind: "Management", venue: "Conference Room", iconKey: "brain" },
       { time: "11:00", title: "Robovation — Robo Soccer", kind: "Technical", venue: "Sports Arena", iconKey: "bot" },
@@ -55,31 +55,8 @@ export const SCHEDULE: ScheduleDay[] = [
       { time: "15:00", title: "Roadies", kind: "Fun", venue: "Campus Trail", iconKey: "compass" },
       { time: "16:30", title: "Riwayat — Fashion Show", kind: "Cultural", venue: "Main Auditorium", iconKey: "shirt" },
       { time: "18:30", title: "Kalakriti — Art Exhibition", kind: "Cultural", venue: "Art Gallery", iconKey: "palette" },
+      { time: "19:00", title: "Prize Distribution & Closing Ceremony", kind: "Special", venue: "Main Auditorium", iconKey: "star" },
       { time: "20:00", title: "Junoon Night 2 — DJ Nova", kind: "Special", venue: "Main Ground", iconKey: "music" },
-    ],
-  },
-  {
-    label: "Day 4", date: "Jan 18, 2027",
-    items: [
-      { time: "10:00", title: "Codigo — Finals", kind: "Technical", venue: "CSE Block", iconKey: "code" },
-      { time: "11:30", title: "Ideathon — Pitch Round", kind: "Technical", venue: "Seminar Hall", iconKey: "bulb" },
-      lunch,
-      { time: "14:30", title: "Techlab — Showcase", kind: "Technical", venue: "Innovation Lab", iconKey: "flask" },
-      { time: "16:00", title: "Voice of Youth — Finals", kind: "Management", venue: "Main Auditorium", iconKey: "mic" },
-      { time: "17:30", title: "Beat Battle — Finals", kind: "Cultural", venue: "Open Air Stage", iconKey: "music" },
-      { time: "19:00", title: "Cultural Night", kind: "Special", venue: "Main Ground", iconKey: "flame" },
-    ],
-  },
-  {
-    label: "Day 5", date: "Jan 19, 2027",
-    items: [
-      { time: "10:00", title: "Robovation — Finals", kind: "Technical", venue: "Sports Arena", iconKey: "bot" },
-      { time: "12:00", title: "Startup Business Plan — Finals", kind: "Management", venue: "Seminar Hall", iconKey: "trend" },
-      lunch,
-      { time: "15:00", title: "Roadies — Finale", kind: "Fun", venue: "Campus Trail", iconKey: "compass" },
-      { time: "16:30", title: "Prize Distribution", kind: "Special", venue: "Main Auditorium", iconKey: "star" },
-      { time: "17:30", title: "Closing Ceremony", kind: "Special", venue: "Main Ground", iconKey: "flame" },
-      { time: "19:00", title: "Junoon Night 3 — Echo & The Monsoon", kind: "Special", venue: "Main Ground", iconKey: "music" },
     ],
   },
 ];

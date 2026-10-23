@@ -38,7 +38,7 @@ export default async function AccommodationPage() {
         <ul className="list-inside list-disc space-y-1 text-base leading-snug">
           <li>Accommodation is provided free of charge for registered external participants.</li>
           <li>Separate dormitories for male and female participants.</li>
-          <li>Meals included during the fest days (27–28 Feb 2027).</li>
+          <li>Meals included during the fest days (18–20 Feb 2027).</li>
           <li>Bring your own bedding / sleeping bag if possible.</li>
         </ul>
       </div>

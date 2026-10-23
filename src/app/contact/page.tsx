@@ -1,5 +1,5 @@
 import { Band, PageShell, blockHindi } from "@/components/indie";
-import { DEPARTMENTS, DEPT_FLAVOR } from "@/data/dummy";
+import { DEPARTMENTS } from "@/data/dummy";
 import { DeptSection } from "@/components/events/dept-section";
 
 export const metadata = { title: "Contact | Techno-aiMBiAtion 2027" };
@@ -82,7 +82,7 @@ export default function ContactPage() {
                 href={`#${slugify(d.name)}`}
                 className="block whitespace-nowrap border-2 border-[#f5c928]/70 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#f5edd8] transition hover:bg-[#f5c928] hover:text-black"
               >
-                <span aria-hidden className="mr-1.5">{DEPT_FLAVOR[d.name]?.emoji}</span>{d.name}
+                {d.name}
               </a>
             </li>
           ))}

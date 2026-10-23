@@ -31,7 +31,7 @@ export async function sendWelcomeEmail(recipientEmail: string, otp: string): Pro
         <div class="container">
           <div class="header"><h1>Techno-aiMBiAtion 2027</h1></div>
           <p>Dear Participant,</p>
-          <p>Thank you for registering for Techno-aiMBiAtion 2027! Please use the following OTP to verify your email:</p>
+          <p>Thank you for registering for Techno-aiMBiAtion 2027, the 16th edition! Please use the following OTP to verify your email:</p>
           <div class="otp">${otp}</div>
           <p>This OTP is valid for 10 minutes. If you did not register, please ignore this email.</p>
           <p>Best regards,<br/>The Techno-aiMBiAtion 2027 Team</p>

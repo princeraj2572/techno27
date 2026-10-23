@@ -11,7 +11,7 @@ export const voiceOfYouth: EventData = {
   // ---- details ----
   tagline: "Speak up, be heard.",
   about: "Voice Of Youth is one of the flagship management events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Jan 16, 2027",
+  date: "Feb 19, 2027",
   time: "11:30 AM",
   venue: "Open Air Stage",
   teamSize: "1–3 members",

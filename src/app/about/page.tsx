@@ -38,7 +38,7 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-3 gap-10 items-center">
           <div className="md:col-span-2 grid sm:grid-cols-2 gap-8">
             <Note tag="Story" title="Where it started" tilt="-rotate-2">
-              Techno-aiMBiAtion brings OPJU&apos;s students together around the things they build and the things they love. Every year it grows — more events, more colleges, more people on stage.
+              Running since 2011, Techno-aiMBiAtion 2027 is the 16th edition of OPJU&apos;s fest, bringing students together around the things they build and the things they love. Every year it grows — more events, more colleges, more people on stage.
             </Note>
             <Note tag="People" title="Run by students" tilt="rotate-1">
               From the website and registrations to stage, sound and hospitality, every department has a convener and a co-convener who make it happen.
