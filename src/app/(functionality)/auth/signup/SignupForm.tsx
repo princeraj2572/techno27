@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { userSignup } from "@/actions/user-actions";
+import { userSignup } from "@/features/users/user-actions";
 import { OPJU_DEPARTMENTS, OPJU_BRANCHES } from "@/data/opju-academics";
 
 interface Props {
@@ -84,9 +84,6 @@ export default function SignupForm({ email, isInternal }: Props) {
     }
     if (form.password.length < 8) {
       return setError("Password must be at least 8 characters");
-    }
-    if (!isInternal && !photoUrl) {
-      return setError("Profile photo is required for external participants");
     }
     if (!form.department) {
       return setError("Please select a department");
@@ -315,14 +312,7 @@ export default function SignupForm({ email, isInternal }: Props) {
 
       {/* Profile Photo */}
       <div className="space-y-2 border-t border-border pt-4">
-        <Label>
-          Profile Photo {!isInternal ? "*" : "(Optional)"}
-          {!isInternal && (
-            <span className="ml-2 text-xs text-muted-foreground font-normal">
-              Required — shown at entrance for identity verification
-            </span>
-          )}
-        </Label>
+        <Label>Profile Photo (Optional)</Label>
         <div className="flex items-center gap-3">
           <Button
             type="button"

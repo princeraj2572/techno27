@@ -1,10 +1,10 @@
 ﻿export const dynamic = "force-dynamic";
 import { redirect, notFound } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
+import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
-import { Team } from "@/models/team.model";
-import { Transaction } from "@/models/transaction.model";
+import { User } from "@/features/users/user.model";
+import { Team } from "@/features/teams/team.model";
+import { Transaction } from "@/features/payments/transaction.model";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { ChevronLeft, User as UserIcon, CheckCircle2, Clock } from "lucide-react";

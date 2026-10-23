@@ -1,9 +1,10 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
-import { getPaymentSummaryForUser } from "@/actions/payment-actions";
-import { ChevronLeft, CreditCard } from "lucide-react";
+import { getUser } from "@/features/users/user-actions";
+import { getPaymentSummaryForUser } from "@/features/payments/payment-actions";
+import { CreditCard } from "lucide-react";
 import Link from "next/link";
+import AppShell from "@/components/layout/app-shell";
 import PaymentClient from "./PaymentClient";
 
 export default async function DashboardPaymentPage() {
@@ -14,40 +15,23 @@ export default async function DashboardPaymentPage() {
   const summary = await getPaymentSummaryForUser(user.email).catch(() => null);
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-2xl mx-auto px-4 py-8 space-y-7">
-
-        {/* Header */}
-        <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
-          <div>
-            <Link href="/dashboard" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-violet-600 transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Dashboard
-            </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Payment</h1>
-            <p className="text-xs text-slate-400 mt-0.5">Techno-aiMBiAtion 2027 Â· External participant</p>
-          </div>
-          <div className="w-10 h-10 rounded-2xl bg-violet-100 flex items-center justify-center shrink-0">
-            <CreditCard className="h-5 w-5 text-violet-600" />
-          </div>
+    <AppShell
+      title="Payment" crumbs={[{ label: "Home", href: "/" }, { label: "Dashboard", href: "/dashboard" }, { label: "Payment" }]} back={{ href: "/dashboard", label: "Back to dashboard" }}
+      sub="Techno-aiMBiAtion 2027 · External participant"
+      icon={<CreditCard className="h-6 w-6" />}
+    >
+      {summary === null || summary.eventRows.length === 0 ? (
+        <div className="border-2 border-dashed border-[#f5edd8]/40 py-14 text-center">
+          <CreditCard className="mx-auto mb-3 h-9 w-9 text-[#f5c928]" />
+          <p className="text-xl font-bold uppercase text-[#f5edd8]">No events registered yet</p>
+          <p className="mt-1 text-sm text-[#f5edd8]/70">Register for events first to see your payment details.</p>
+          <Link href="/events-selection" className="mt-2 block text-sm font-bold uppercase tracking-wider text-[#f5c928] hover:underline">
+            Browse events →
+          </Link>
         </div>
-
-        {summary === null || summary.eventRows.length === 0 ? (
-          <div className="rounded-2xl border-2 border-dashed border-slate-100 py-14 text-center">
-            <CreditCard className="h-8 w-8 mx-auto mb-3 text-slate-200" />
-            <p className="text-sm font-medium text-slate-500">No events registered yet</p>
-            <p className="text-xs text-slate-400 mt-1">Register for events first to see your payment details.</p>
-            <Link href="/events-selection" className="text-xs text-violet-600 hover:underline mt-2 block">
-              Browse events â†’
-            </Link>
-          </div>
-        ) : (
-          <PaymentClient
-            userEmail={user.email}
-            summary={summary}
-          />
-        )}
-
-      </div>
-    </div>
+      ) : (
+        <PaymentClient userEmail={user.email} summary={summary} />
+      )}
+    </AppShell>
   );
 }

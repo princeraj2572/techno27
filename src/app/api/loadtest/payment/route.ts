@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { addTransactionIdAction } from "@/actions/payment-actions";
+import { addTransactionIdAction } from "@/features/payments/payment-actions";
 import { assertLoadtestEnabled, errorResponse } from "../_guard";
 
 export async function POST(req: NextRequest) {

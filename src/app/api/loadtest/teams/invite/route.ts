@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendTeamInviteAction } from "@/actions/invite-actions";
+import { sendTeamInviteAction } from "@/features/teams/invite-actions";
 import { assertLoadtestEnabled, errorResponse, impersonate } from "../../_guard";
 
 export async function POST(req: NextRequest) {

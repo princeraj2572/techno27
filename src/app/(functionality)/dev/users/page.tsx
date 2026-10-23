@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser, getAllUsersPaginated, searchUsers } from "@/actions/user-actions";
+import { getUser, getAllUsersPaginated, searchUsers } from "@/features/users/user-actions";
 import { ChevronLeft, Users, Search, ChevronRight, ChevronLeft as ChevLeft } from "lucide-react";
 import Link from "next/link";
 import ExtraFilters from "../../admin/participants/ExtraFilters";

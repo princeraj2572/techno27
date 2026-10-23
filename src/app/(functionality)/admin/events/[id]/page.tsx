@@ -1,10 +1,10 @@
 ﻿export const dynamic = "force-dynamic";
 import { redirect, notFound } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
-import { getEventByIdAction } from "@/actions/event-actions";
+import { getUser } from "@/features/users/user-actions";
+import { getEventByIdAction } from "@/features/events/event-actions";
 import { connectToDatabase } from "@/lib/mongodb";
-import { Team } from "@/models/team.model";
-import { User } from "@/models/user.model";
+import { Team } from "@/features/teams/team.model";
+import { User } from "@/features/users/user.model";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, CalendarDays, Users, Trophy, UsersRound, ChevronRight } from "lucide-react";

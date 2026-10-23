@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { seedEventsAction, createDevAdminIfNotExists } from "@/actions/seed-actions";
+import { seedEventsAction, createDevAdminIfNotExists } from "@/features/management/seed-actions";
 import { ChevronLeft, Sprout, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 

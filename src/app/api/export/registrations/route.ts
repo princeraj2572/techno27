@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
-import { Team } from "@/models/team.model";
+import { User } from "@/features/users/user.model";
+import { Team } from "@/features/teams/team.model";
 import * as XLSX from "xlsx";
 import { branchFilterValue } from "@/data/opju-academics";
 

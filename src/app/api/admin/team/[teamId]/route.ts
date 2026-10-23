@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { Team } from "@/models/team.model";
-import { User } from "@/models/user.model";
-import { Invitation } from "@/models/invitation.model";
-import { getUser } from "@/actions/user-actions";
+import { Team } from "@/features/teams/team.model";
+import { User } from "@/features/users/user.model";
+import { Invitation } from "@/features/teams/invitation.model";
+import { getUser } from "@/features/users/user-actions";
 
 // DELETE /api/admin/team/[teamId] — delete a team (admin-privileged)
 export async function DELETE(

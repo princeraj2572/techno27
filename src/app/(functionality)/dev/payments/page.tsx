@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
-import { getPaymentData, getPaymentStatusCounts } from "@/actions/payment-actions";
-import { MAX_PAYMENT } from "@/lib/payment-constants";
+import { getUser } from "@/features/users/user-actions";
+import { getPaymentData, getPaymentStatusCounts } from "@/features/payments/payment-actions";
+import { MAX_PAYMENT } from "@/features/payments/payment-constants";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, CreditCard, ChevronRight } from "lucide-react";
 import Link from "next/link";

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { deleteTeamAction } from "@/actions/team-actions";
+import { deleteTeamAction } from "@/features/teams/team-actions";
 import { assertLoadtestEnabled, errorResponse, impersonate } from "../../_guard";
 
 export async function POST(req: NextRequest) {

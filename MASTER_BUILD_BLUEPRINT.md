@@ -1142,7 +1142,7 @@
         8. Middleware & RBAC
                 - Harden `src/middleware.ts` to validate tokens and enforce role checks; add `roles` to `user` model (devAdmin, managementAdmin).
         9. User actions & validation
-                - Implement `src/actions/user-actions.ts` with Zod schemas; return sanitized user payloads.
+                - Implement `src/features/users/user-actions.ts` with Zod schemas; return sanitized user payloads.
         10. Event, team & invite flows
                 - Implement business rules: outsider limits, team size enforcement, invite lifecycle and ownership checks.
         11. Payment & accommodation flows

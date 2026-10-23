@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
-import { getUser } from "@/actions/user-actions";
-import { getAccommodationCounts, getAccommodationsByGender } from "@/actions/accommodation-actions";
+import { getUser } from "@/features/users/user-actions";
+import { getAccommodationCounts, getAccommodationsByGender } from "@/features/accommodation/accommodation-actions";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Hotel, Building2, Calendar, Phone, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";

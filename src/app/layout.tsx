@@ -2,7 +2,7 @@
 import type { ReactElement } from "react";
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
-import Navbar from "@/components/nav";
+import Navbar from "@/components/layout/nav";
 
 import "./globals.css";
 

@@ -1,5 +1,5 @@
 import { connectToDatabase } from "@/lib/mongodb";
-import { User } from "@/models/user.model";
+import { User } from "@/features/users/user.model";
 
 export async function generateParticipantId(): Promise<string> {
   await connectToDatabase();

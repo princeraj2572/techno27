@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { userSignup } from "@/actions/user-actions";
+import { userSignup } from "@/features/users/user-actions";
 import { assertLoadtestEnabled, errorResponse } from "../_guard";
 
 export async function POST(req: NextRequest) {

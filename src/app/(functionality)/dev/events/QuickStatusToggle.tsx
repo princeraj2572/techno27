@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { updateEventStatusAction } from "@/actions/event-actions";
+import { updateEventStatusAction } from "@/features/events/event-actions";
 
 interface Props {
   eventId: string;
@@ -18,7 +18,7 @@ export default function QuickStatusToggle({ eventId, currentStatus, currentUserI
     const next = isOpen ? "REGISTRATION_CLOSED" : "REGISTRATION_OPEN";
     setLoading(true);
     try {
-      await updateEventStatusAction(eventId, next as import("@/models/event.model").IEvent["status"], currentUserId);
+      await updateEventStatusAction(eventId, next as import("@/features/events/event.model").IEvent["status"], currentUserId);
       setStatus(next);
     } catch {
       // revert optimistic update on error

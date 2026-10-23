@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllEventsAction } from "@/actions/event-actions";
+import { getAllEventsAction } from "@/features/events/event-actions";
 import { assertLoadtestEnabled, errorResponse } from "../_guard";
 
 export async function GET() {

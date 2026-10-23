@@ -1,14 +1,16 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getParticipatingTeams, getInvitedTeams, deleteTeamAction, leaveTeamAction, getCurrentUserEmailAction, removeTeamMemberAction, checkUserExistsAction } from "@/actions/team-actions";
-import { sendTeamInviteAction, acceptInviteAction, rejectInviteAction, cancelInviteAction } from "@/actions/invite-actions";
+import { getParticipatingTeams, getInvitedTeams, deleteTeamAction, leaveTeamAction, getCurrentUserEmailAction, removeTeamMemberAction, checkUserExistsAction } from "@/features/teams/team-actions";
+import { sendTeamInviteAction, acceptInviteAction, rejectInviteAction, cancelInviteAction } from "@/features/teams/invite-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { AlertCircle, Users, UserPlus, ChevronLeft, CheckCircle2, X, Clock, Trash2, LogOut } from "lucide-react";
+import { AlertCircle, Users, UserPlus, CheckCircle2, X, Clock, Trash2, LogOut } from "lucide-react";
 import Link from "next/link";
+import AppShell from "@/components/layout/app-shell";
+import { PageShell, TITLE_SHADOW, display } from "@/components/indie";
 
 type Member = { fullName: string; email: string; role: string };
 type PendingInvite = { _id: string; inviteeEmail: string };
@@ -47,15 +49,15 @@ function ConfirmDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4">
-        <h2 className="text-base font-bold text-slate-900">{title}</h2>
-        <p className="text-sm text-slate-500 leading-relaxed">{description}</p>
+      <div className="relative bg-[#f5edd8] text-[#1a0505] border-2 border-black shadow-[6px_6px_0_0_#000] max-w-sm w-full p-6 space-y-4">
+        <h2 className="text-base font-bold text-[#1a0505]">{title}</h2>
+        <p className="text-sm text-black/55 leading-relaxed">{description}</p>
         <div className="flex gap-3 justify-end">
-          <Button size="sm" variant="outline" onClick={onCancel}>Cancel</Button>
+          <Button size="sm" variant="outline" onClick={onCancel} className="rounded-none border-2 border-black bg-transparent text-black hover:bg-black/10">Cancel</Button>
           <Button
             size="sm"
             onClick={onConfirm}
-            className={danger ? "bg-red-600 hover:bg-red-700 text-white" : ""}
+            className={`rounded-none border-2 border-black text-white ${danger ? "bg-[#a1001a] hover:bg-[#7a0013]" : "bg-[#7a1c1c] hover:bg-[#5a1212]"}`}
           >
             {confirmLabel}
           </Button>
@@ -207,28 +209,28 @@ function TeamCard({
         danger={confirm === "delete" || (typeof confirm === "string" && confirm !== "leave")}
       />
 
-      <div className="bg-white border border-slate-100 border-l-4 border-l-sky-500 rounded-2xl overflow-hidden">
+      <div className="bg-[#f5edd8] text-[#1a0505] border-2 border-black border-l-8 border-l-[#7a1c1c] shadow-[4px_4px_0_0_#000] overflow-hidden">
         {/* Header */}
         <div className="px-5 pt-5 pb-3">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <h3 className="text-sm font-bold text-slate-900 truncate">
+              <h3 className="text-sm font-bold text-[#1a0505] truncate">
                 {team.event?.name ?? "Unknown Event"}
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-black/55 mt-0.5">
                 {members.length} of {team.size} members
                 {isLeader && (
-                  <span className="ml-1.5 text-sky-500 font-medium">· you&apos;re the leader</span>
+                  <span className="ml-1.5 text-[#7a1c1c] font-medium">· you&apos;re the leader</span>
                 )}
               </p>
             </div>
             <button
               onClick={() => setConfirm(isLeader ? "delete" : "leave")}
               disabled={actionLoading}
-              className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-xl transition-colors shrink-0 ${
+              className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-none transition-colors shrink-0 ${
                 isLeader
                   ? "text-red-600 hover:bg-red-50 hover:text-red-700"
-                  : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                  : "text-black/55 hover:bg-black/10 hover:text-[#1a0505]"
               } disabled:opacity-50`}
             >
               {actionLoading ? (
@@ -243,7 +245,7 @@ function TeamCard({
           </div>
 
           {/* Fill bar — pending (amber) behind confirmed (sky/emerald) */}
-          <div className="mt-3 h-1.5 bg-slate-100 rounded-full overflow-hidden relative">
+          <div className="mt-3 h-1.5 bg-black/10 rounded-full overflow-hidden relative">
             {/* pending layer */}
             <div
               className="absolute inset-y-0 left-0 rounded-full bg-amber-300 transition-all"
@@ -251,7 +253,7 @@ function TeamCard({
             />
             {/* confirmed layer */}
             <div
-              className={`absolute inset-y-0 left-0 rounded-full transition-all ${isFull && pendingInvites.length === 0 ? "bg-emerald-500" : "bg-sky-500"}`}
+              className={`absolute inset-y-0 left-0 rounded-full transition-all ${isFull && pendingInvites.length === 0 ? "bg-emerald-500" : "bg-[#f5c928]/300"}`}
               style={{ width: `${confirmedPct}%` }}
             />
           </div>
@@ -275,33 +277,33 @@ function TeamCard({
             return (
               <div key={m.email} className="flex items-center gap-2.5">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                  isExternal ? "bg-amber-100 text-amber-700" : "bg-sky-100 text-sky-700"
+                  isExternal ? "bg-amber-100 text-amber-700" : "bg-[#dbe7ff] text-[#0b2a6b]"
                 }`}>
                   {m.fullName[0]?.toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <p className="text-sm font-medium text-slate-900 truncate">{m.fullName}</p>
+                    <p className="text-sm font-medium text-[#1a0505] truncate">{m.fullName}</p>
                     <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full border shrink-0 ${
                       isExternal
                         ? "bg-amber-50 text-amber-700 border-amber-200"
-                        : "bg-sky-50 text-sky-700 border-sky-200"
+                        : "bg-[#dbe7ff] text-[#0b2a6b] border-[#0b2a6b]"
                     }`}>
                       {isExternal ? "External" : "OPJU"}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 truncate">{m.email}</p>
+                  <p className="text-xs text-black/55 truncate">{m.email}</p>
                 </div>
                 {isTeamLeader ? (
-                  <Badge className="text-xs h-5 shrink-0">Leader</Badge>
+                  <Badge className="h-5 shrink-0 rounded-none bg-[#7a1c1c] text-xs text-[#f5edd8]">Leader</Badge>
                 ) : isLeader && !isSelf ? (
                   <button
                     onClick={() => setConfirm(m.email)}
                     disabled={removingEmail === m.email}
-                    className="shrink-0 inline-flex items-center gap-1 text-[10px] font-medium text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors px-2 py-1 rounded-lg disabled:opacity-40"
+                    className="shrink-0 inline-flex items-center gap-1 text-[10px] font-medium text-black/55 hover:text-red-500 hover:bg-red-50 transition-colors px-2 py-1 rounded-none disabled:opacity-40"
                   >
                     {removingEmail === m.email
-                      ? <div className="w-3 h-3 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                      ? <div className="w-3 h-3 border-2 border-black/50 border-t-transparent rounded-full animate-spin" />
                       : <X className="h-3 w-3" />
                     }
                     Remove
@@ -317,22 +319,22 @@ function TeamCard({
 
           {/* Pending invite rows (visible to everyone; cancel only for leader) */}
           {pendingInvites.map((inv) => (
-            <div key={inv._id} className="flex items-center gap-2.5 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
+            <div key={inv._id} className="flex items-center gap-2.5 bg-amber-50 border border-amber-100 rounded-none px-3 py-2">
               <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
                 <Clock className="h-3.5 w-3.5 text-amber-500" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-slate-700 truncate">{inv.inviteeEmail}</p>
+                <p className="text-xs font-medium text-[#1a0505] truncate">{inv.inviteeEmail}</p>
                 <p className="text-[10px] text-amber-600">Invite pending · awaiting response</p>
               </div>
               {isLeader && (
                 <button
                   onClick={() => handleCancelInvite(inv._id)}
                   disabled={cancelingId === inv._id}
-                  className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-400 hover:text-red-500 transition-colors disabled:opacity-40 shrink-0 px-2 py-1 rounded-lg hover:bg-red-50"
+                  className="inline-flex items-center gap-1 text-[10px] font-medium text-black/55 hover:text-red-500 transition-colors disabled:opacity-40 shrink-0 px-2 py-1 rounded-none hover:bg-red-50"
                 >
                   {cancelingId === inv._id
-                    ? <div className="w-3 h-3 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                    ? <div className="w-3 h-3 border-2 border-black/50 border-t-transparent rounded-full animate-spin" />
                     : <X className="h-3 w-3" />
                   }
                   Cancel
@@ -346,7 +348,7 @@ function TeamCard({
             <div key={`slot-${i}`}>
               {isLeader && inviteOpenSlot === i ? (
                 /* Expanded inline invite form */
-                <div className="border border-sky-200 bg-sky-50 rounded-xl px-3 py-2.5 space-y-1.5">
+                <div className="border border-[#7a1c1c] bg-[#f5c928]/30 rounded-none px-3 py-2.5 space-y-1.5">
                   <div className="flex gap-2">
                     <div className="flex-1 relative">
                       <Input
@@ -356,21 +358,21 @@ function TeamCard({
                         onChange={(e) => handleEmailChange(e.target.value)}
                         onKeyDown={(e) => { if (e.key === "Enter") handleInvite(i); if (e.key === "Escape") { setInviteOpenSlot(null); setInviteEmail(""); setInviteMsg(null); setInvitePreview(null); } }}
                         autoFocus
-                        className="h-8 text-sm bg-white w-full"
+                        className="h-8 text-sm bg-[#f5edd8] w-full"
                       />
                       {validating && (
-                        <div className="absolute right-2 top-2 w-4 h-4 border-2 border-sky-400 border-t-transparent rounded-full animate-spin" />
+                        <div className="absolute right-2 top-2 w-4 h-4 border-2 border-[#7a1c1c] border-t-transparent rounded-full animate-spin" />
                       )}
                     </div>
                     <Button
                       size="sm"
                       onClick={() => handleInvite(i)}
                       disabled={inviting || !invitePreview}
-                      className="h-8 px-3 text-xs shrink-0"
+                      className="h-8 px-3 text-xs shrink-0 rounded-none border-2 border-black bg-[#7a1c1c] text-white hover:bg-[#5a1212]"
                     >
                       {inviting ? <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Send"}
                     </Button>
-                    <button onClick={() => { setInviteOpenSlot(null); setInviteEmail(""); setInviteMsg(null); setInvitePreview(null); }} className="text-slate-400 hover:text-slate-600 px-1 shrink-0">
+                    <button onClick={() => { setInviteOpenSlot(null); setInviteEmail(""); setInviteMsg(null); setInvitePreview(null); }} className="text-black/55 hover:text-[#1a0505] px-1 shrink-0">
                       <X className="h-3.5 w-3.5" />
                     </button>
                   </div>
@@ -388,22 +390,22 @@ function TeamCard({
                 <button
                   onClick={() => { if (isLeader) { setInviteEmail(""); setInviteMsg(null); setInvitePreview(null); setInviteOpenSlot(i); } }}
                   disabled={!isLeader}
-                  className={`w-full flex items-center gap-2.5 border-2 border-dashed rounded-xl px-3 py-2 transition-colors ${
+                  className={`w-full flex items-center gap-2.5 border-2 border-dashed rounded-none px-3 py-2 transition-colors ${
                     isLeader
-                      ? "border-slate-200 hover:border-sky-300 hover:bg-sky-50 group cursor-pointer"
-                      : "border-slate-100 cursor-default"
+                      ? "border-black/40 hover:border-[#7a1c1c] hover:bg-[#f5c928]/40 group cursor-pointer"
+                      : "border-black/40 cursor-default"
                   }`}
                 >
                   <div className={`w-8 h-8 rounded-full border-2 border-dashed flex items-center justify-center shrink-0 transition-colors ${
-                    isLeader ? "border-slate-300 group-hover:border-sky-400" : "border-slate-200"
+                    isLeader ? "border-black/40 group-hover:border-[#7a1c1c]" : "border-black/40"
                   }`}>
-                    <UserPlus className={`h-3.5 w-3.5 transition-colors ${isLeader ? "text-slate-300 group-hover:text-sky-500" : "text-slate-200"}`} />
+                    <UserPlus className={`h-3.5 w-3.5 transition-colors ${isLeader ? "text-black/55 group-hover:text-[#7a1c1c]" : "text-black/25"}`} />
                   </div>
-                  <span className={`text-xs transition-colors ${isLeader ? "text-slate-400 group-hover:text-sky-600 font-medium" : "text-slate-300"}`}>
+                  <span className={`text-xs transition-colors ${isLeader ? "text-black/55 group-hover:text-[#7a1c1c] font-medium" : "text-black/55"}`}>
                     {isLeader ? "Invite teammate" : "Open slot"}
                   </span>
                   {isLeader && (
-                    <span className="ml-auto text-[10px] font-semibold text-sky-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="ml-auto text-[10px] font-semibold text-[#7a1c1c] opacity-0 group-hover:opacity-100 transition-opacity">
                       + Invite
                     </span>
                   )}
@@ -450,7 +452,7 @@ function InviteCard({
   if (invite.status !== "PENDING") return null;
 
   return (
-    <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
+    <div className="bg-[#fff1c2] border-2 border-black shadow-[4px_4px_0_0_#000] px-5 py-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-sm font-bold text-amber-900 truncate">
@@ -466,7 +468,7 @@ function InviteCard({
         <div className="flex gap-2 shrink-0">
           <Button
             size="sm"
-            className="h-8 px-3 text-xs"
+            className="h-8 px-3 text-xs rounded-none border-2 border-black bg-[#1f8a3a] text-white hover:bg-[#166b2c]"
             onClick={() => handle("accept")}
             disabled={loading !== null}
           >
@@ -476,7 +478,7 @@ function InviteCard({
           <Button
             size="sm"
             variant="outline"
-            className="h-8 px-3 text-xs border-amber-300 text-amber-800 hover:bg-amber-100"
+            className="h-8 px-3 text-xs rounded-none border-2 border-black bg-transparent text-black hover:bg-black/10"
             onClick={() => handle("reject")}
             disabled={loading !== null}
           >
@@ -491,14 +493,14 @@ function InviteCard({
 
 function Skeleton() {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-2xl mx-auto px-4 py-8 space-y-3">
-        <div className="h-8 w-32 bg-slate-100 rounded-xl animate-pulse" />
+    <PageShell footer={false}>
+      <div className="mx-auto max-w-2xl space-y-3 px-4 py-16">
+        <div className="h-10 w-40 animate-pulse bg-[#f5edd8]/20" />
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-36 rounded-2xl bg-slate-100 animate-pulse" />
+          <div key={i} className="h-36 animate-pulse bg-[#f5edd8]/15" />
         ))}
       </div>
-    </div>
+    </PageShell>
   );
 }
 
@@ -547,101 +549,71 @@ function TeamDetailsContent() {
     : teams;
   const filteredEvent = eventFilter ? (visibleTeams[0]?.event?.name ?? null) : null;
 
+  const crumbs = filteredEvent
+    ? [{ label: "Home", href: "/" }, { label: "Dashboard", href: "/dashboard" }, { label: "My teams", href: "/team-details" }, { label: filteredEvent }]
+    : [{ label: "Home", href: "/" }, { label: "Dashboard", href: "/dashboard" }, { label: "My teams" }];
+  const back = filteredEvent
+    ? { href: "/team-details", label: "Back to all teams" }
+    : { href: "/dashboard", label: "Back to dashboard" };
+
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-2xl mx-auto px-4 py-8 space-y-7">
-
-        {/* ── Header ─────────────────────────────────────────── */}
-        <div
-          className="flex items-center justify-between animate-slide-up"
-          style={{ animationDelay: "0s" }}
-        >
-          <div>
-            <Link
-              href={filteredEvent ? "/dashboard" : "/dashboard"}
-              className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-sky-600 transition-colors mb-1"
-            >
-              <ChevronLeft className="h-3.5 w-3.5" /> Dashboard
-            </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-              {filteredEvent ?? "My teams"}
-            </h1>
-            {filteredEvent && (
-              <Link href="/team-details" className="text-xs text-sky-600 hover:underline mt-0.5 block">
-                ← All teams
-              </Link>
-            )}
+    <AppShell
+      title={filteredEvent ?? "My teams"}
+      sub={filteredEvent ? "Team for this event" : "Manage your teams and invitations"}
+      icon={<Users className="h-6 w-6" />}
+      crumbs={crumbs}
+      back={back}
+    >
+      {/* Pending invitations */}
+      {!filteredEvent && pendingInvites.length > 0 && (
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="h-5 w-5 text-[#f5c928]" />
+            <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={TITLE_SHADOW}>Pending invitations</p>
+            <span className="bg-[#f5c928] px-2 py-0.5 text-sm font-bold text-black">{pendingInvites.length}</span>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-sky-100 flex items-center justify-center">
-            <Users className="h-5 w-5 text-sky-600" />
-          </div>
+          {pendingInvites.map((invite) => (
+            <InviteCard
+              key={invite._id}
+              invite={invite}
+              onAccept={() => reload()}
+              onReject={() => reload()}
+            />
+          ))}
         </div>
+      )}
 
-        {/* ── Pending invitations ─────────────────────────────── */}
-        {!filteredEvent && pendingInvites.length > 0 && (
-          <div
-            className="space-y-2 animate-slide-up"
-            style={{ animationDelay: "0.05s" }}
-          >
-            <div className="flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 text-amber-500" />
-              <p className="text-sm font-semibold text-slate-900">
-                Pending invitations
-              </p>
-              <span className="text-xs bg-amber-100 text-amber-700 font-semibold px-1.5 py-0.5 rounded-full">
-                {pendingInvites.length}
-              </span>
-            </div>
-            {pendingInvites.map((invite) => (
-              <InviteCard
-                key={invite._id}
-                invite={invite}
-                onAccept={() => reload()}
-                onReject={() => reload()}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* ── My teams ─────────────────────────────────────────── */}
+      {/* Teams */}
+      <div className="space-y-4">
         {!filteredEvent && (
-        <div
-          className="space-y-3 animate-slide-up"
-          style={{ animationDelay: pendingInvites.length > 0 ? "0.1s" : "0.05s" }}
-        >
-          <p className="text-sm font-semibold text-slate-900">
-            Registered teams
-            <span className="ml-1.5 text-slate-400 font-normal">({teams.length})</span>
+          <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={TITLE_SHADOW}>
+            Registered teams <span className="text-[#f5c928]">({teams.length})</span>
           </p>
-          </div>
         )}
 
-        <div className="space-y-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-          {visibleTeams.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
-              <Users className="h-8 w-8 mx-auto mb-3 text-slate-200" />
-              <p className="text-sm font-medium text-slate-500">No team found for this event</p>
-              <Link
-                href="/events-selection"
-                className="text-xs text-sky-600 hover:underline mt-1 block"
-              >
-                Register for an event to create or join a team
-              </Link>
-            </div>
-          ) : (
-            visibleTeams.map((team) => (
-              <TeamCard
-                key={team._id}
-                team={team}
-                currentEmail={currentEmail}
-                onDelete={(id) => setTeams((prev) => prev.filter((t) => t._id !== id))}
-                onInviteSent={reload}
-              />
-            ))
-          )}
-        </div>
-
+        {visibleTeams.length === 0 ? (
+          <div className="border-2 border-dashed border-[#f5edd8]/40 py-12 text-center">
+            <Users className="mx-auto mb-3 h-9 w-9 text-[#f5c928]" />
+            <p className="text-xl font-bold uppercase text-[#f5edd8]">No team found{filteredEvent ? " for this event" : ""}</p>
+            <Link
+              href="/events-selection"
+              className="mt-1 block text-sm font-bold uppercase tracking-wider text-[#f5c928] hover:underline"
+            >
+              Register for an event to create or join a team
+            </Link>
+          </div>
+        ) : (
+          visibleTeams.map((team) => (
+            <TeamCard
+              key={team._id}
+              team={team}
+              currentEmail={currentEmail}
+              onDelete={(id) => setTeams((prev) => prev.filter((t) => t._id !== id))}
+              onInviteSent={reload}
+            />
+          ))
+        )}
       </div>
-    </div>
+    </AppShell>
   );
 }

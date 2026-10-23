@@ -3,13 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, CheckCircle2, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { sendResetPasswordEmail } from "@/actions/mailer";
-import { resetPassword } from "@/actions/user-actions";
+import { sendResetPasswordEmail } from "@/lib/mailer";
+import { resetPassword } from "@/features/users/user-actions";
+import { AuthCard, AuthShell } from "../auth-shell";
 
 type Step = "email" | "otp" | "password";
 
@@ -77,50 +77,15 @@ export default function ForgotPasswordPage() {
     }
   };
 
-  return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-16">
-      <div className="w-full max-w-md space-y-4">
-        {/* Step indicator */}
-        <div className="flex items-center justify-center gap-2 mb-2">
-          {STEPS.map((s, i) => (
-            <div key={s.key} className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5">
-                <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
-                    i < stepIndex
-                      ? "bg-primary/30 text-primary"
-                      : i === stepIndex
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {i < stepIndex ? <CheckCircle2 className="h-3.5 w-3.5" /> : i + 1}
-                </div>
-                <span
-                  className={`text-xs hidden sm:block ${
-                    i === stepIndex ? "text-foreground font-medium" : "text-muted-foreground"
-                  }`}
-                >
-                  {s.label}
-                </span>
-              </div>
-              {i < STEPS.length - 1 && (
-                <div className={`h-px w-8 transition-colors ${i < stepIndex ? "bg-primary/40" : "bg-border"}`} />
-              )}
-            </div>
-          ))}
-        </div>
+  const description =
+    step === "email" ? "Enter your email and we'll send a one-time code."
+    : step === "otp" ? `We sent a 6-digit code to ${email}`
+    : "Choose a new password for your account.";
 
-        <Card>
-          <CardHeader className="text-center pb-4">
-            <CardTitle className="text-2xl font-semibold tracking-tight">Reset password</CardTitle>
-            <CardDescription>
-              {step === "email" && "Enter your email and we'll send a one-time code."}
-              {step === "otp" && `We sent a 6-digit code to ${email}`}
-              {step === "password" && "Choose a new password for your account."}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+  return (
+    <AuthShell>
+      <AuthCard tag="No worries" title="Reset password" description={description} steps={STEPS.map((x) => x.label)} current={stepIndex} maxWidth="max-w-md">
+        <div>
             {step === "email" && (
               <form onSubmit={handleSendOtp} className="space-y-4">
                 <div className="space-y-2">
@@ -144,7 +109,7 @@ export default function ForgotPasswordPage() {
                   {loading ? "Sending code…" : "Send code"}
                 </Button>
                 <p className="text-center text-sm text-muted-foreground">
-                  <Link href="/auth/login" className="inline-flex items-center gap-1 text-primary hover:underline">
+                  <Link href="/auth/login" className="inline-flex items-center gap-1 font-bold text-[#a1001a] underline underline-offset-4 hover:text-[#ff6a00]">
                     <ArrowLeft className="h-3 w-3" /> Back to sign in
                   </Link>
                 </p>
@@ -239,9 +204,8 @@ export default function ForgotPasswordPage() {
                 </Button>
               </form>
             )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+        </div>
+      </AuthCard>
+    </AuthShell>
   );
 }

@@ -20,44 +20,35 @@ export default function QRDisplay({ userId, fullName, email, role, identifier }:
     QRCode.toCanvas(canvasRef.current, userId, {
       width: 256,
       margin: 2,
-      color: {
-        dark: isExternal ? "#4c1d95" : "#0c4a6e", // violet-900 : sky-900
-        light: "#ffffff",
-      },
+      color: { dark: "#1a0505", light: "#ffffff" },
     });
-  }, [userId, isExternal]);
-
-  const cardBg    = isExternal ? "bg-violet-600" : "bg-sky-600";
-  const subText   = isExternal ? "text-violet-200" : "text-sky-200";
-  const codeText  = isExternal ? "text-violet-100" : "text-sky-100";
-  const badgeCls  = isExternal
-    ? "bg-violet-400/40 text-violet-100"
-    : "bg-sky-400/40 text-sky-100";
+  }, [userId]);
 
   return (
-    <div className="space-y-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+    <div className="space-y-6">
 
-      {/* QR card */}
-      <div className={`${cardBg} rounded-3xl p-6 flex flex-col items-center gap-4`}>
-        <div className="bg-white rounded-2xl p-3 shadow-lg">
-          <canvas ref={canvasRef} className="block" />
+      {/* QR ticket */}
+      <div className="relative overflow-hidden rounded-2xl border-2 border-black bg-[#f5c928] text-black shadow-[6px_6px_0_0_#000]">
+        <span aria-hidden className="absolute -left-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-2 border-black bg-[#4a0e0e]" />
+        <span aria-hidden className="absolute -right-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-2 border-black bg-[#4a0e0e]" />
+        <div className="flex flex-col items-center gap-4 px-8 py-6">
+          <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-70">Admit one · All access</p>
+          <div className="border-2 border-black bg-white p-3 shadow-[4px_4px_0_0_#000]">
+            <canvas ref={canvasRef} className="block" />
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-bold uppercase leading-tight">{fullName}</p>
+            <p className="text-sm text-black/65">{email}</p>
+            {identifier && <code className="mt-1 block font-mono text-sm font-bold">{identifier}</code>}
+          </div>
+          <span className="bg-[#7a1c1c] px-2 py-1 text-xs font-bold uppercase tracking-widest text-[#f5edd8]">
+            {isExternal ? "External participant" : "OPJU student"}
+          </span>
         </div>
-        <div className="text-center">
-          <p className="text-base font-bold text-white">{fullName}</p>
-          <p className={`text-xs ${subText} mt-0.5`}>{email}</p>
-          {identifier && (
-            <code className={`text-xs font-mono ${codeText} mt-1 block`}>{identifier}</code>
-          )}
-        </div>
-        <span className={`text-xs font-semibold px-3 py-1 rounded-full ${badgeCls}`}>
-          {isExternal ? "External participant" : "OPJU student"}
-        </span>
       </div>
 
-      <div className={`border rounded-2xl px-5 py-4 text-center ${
-        isExternal ? "bg-violet-50 border-violet-100" : "bg-sky-50 border-sky-100"
-      }`}>
-        <p className={`text-xs leading-relaxed ${isExternal ? "text-violet-700" : "text-sky-700"}`}>
+      <div className="border-2 border-black bg-[#f5edd8] px-5 py-4 text-center text-[#1a0505] shadow-[4px_4px_0_0_#000]">
+        <p className="text-base leading-snug">
           Present this QR code to the event manager at each event check-in counter.
           They will scan it to mark your attendance.
         </p>

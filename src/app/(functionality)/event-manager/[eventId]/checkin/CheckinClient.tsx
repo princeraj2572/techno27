@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { BrowserQRCodeReader, IScannerControls } from "@zxing/browser";
-import { checkInByQRAction, checkInManualAction } from "@/actions/checkin-actions";
+import { checkInByQRAction, checkInManualAction } from "@/features/checkin/checkin-actions";
 import { CheckCircle2, QrCode, Camera, CameraOff, AlertCircle, X, CheckSquare, UserCheck, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

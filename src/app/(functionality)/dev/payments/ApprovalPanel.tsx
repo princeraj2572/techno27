@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { acknowledgeTransactionAction, recordPaymentAction } from "@/actions/payment-actions";
+import { acknowledgeTransactionAction, recordPaymentAction } from "@/features/payments/payment-actions";
 import { CheckCircle2, Clock, ChevronDown, ChevronUp, PlusCircle, AlertCircle } from "lucide-react";
 
 interface TxRow {

@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { updateEventStatusAction, updateEventFeesAction, getEventByIdAction } from "@/actions/event-actions";
-import { generateEventManagerAction, getEventManagerForEvent } from "@/actions/management-actions";
-import { getUser } from "@/actions/user-actions";
+import { updateEventStatusAction, updateEventFeesAction, getEventByIdAction } from "@/features/events/event-actions";
+import { generateEventManagerAction, getEventManagerForEvent } from "@/features/management/management-actions";
+import { getUser } from "@/features/users/user-actions";
 import { useRouter } from "next/navigation";
 import { Copy, Check, UserCog, RefreshCw, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
@@ -112,7 +112,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
     setActionLoading(status);
     setError("");
     try {
-      await updateEventStatusAction(event._id, status as import("@/models/event.model").IEvent["status"], userId);
+      await updateEventStatusAction(event._id, status as import("@/features/events/event.model").IEvent["status"], userId);
       setEvent((prev) => prev ? { ...prev, status } : prev);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to update status");

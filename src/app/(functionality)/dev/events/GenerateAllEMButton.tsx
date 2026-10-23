@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { generateAllEventManagersAction } from "@/actions/management-actions";
+import { generateAllEventManagersAction } from "@/features/management/management-actions";
 import { UserCog, CheckCircle2 } from "lucide-react";
 
 interface Props { userId: string }

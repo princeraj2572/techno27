@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 import { useState } from "react";
-import { addTransactionIdAction } from "@/actions/payment-actions";
-import type { IPaymentSummary } from "@/actions/payment-actions";
-import { CheckCircle2, Clock, ExternalLink, X, QrCode, ChevronDown, Users, User } from "lucide-react";
+import { addTransactionIdAction } from "@/features/payments/payment-actions";
+import type { IPaymentSummary } from "@/features/payments/payment-actions";
+import { AlertTriangle, CheckCircle2, Clock, ExternalLink, X, QrCode, ChevronDown, Users, User } from "lucide-react";
+import { CARD, display } from "@/components/indie";
 
 // Update this URL when the 2027 Easebuzz payment link is set up
 const EASEBUZZ_URL = "https://smartpay.easebuzz.in/125084/Techno-aiMBiAtion-2026";
@@ -10,6 +11,15 @@ const EASEBUZZ_URL = "https://smartpay.easebuzz.in/125084/Techno-aiMBiAtion-2026
 interface Props {
   userEmail: string;
   summary: IPaymentSummary;
+}
+
+// Maroon heading that sits directly on the page background
+function Heading({ children }: { children: React.ReactNode }) {
+  return (
+    <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={{ textShadow: "3px 3px 0 #7a1c1c" }}>
+      {children}
+    </p>
+  );
 }
 
 export default function PaymentClient({ userEmail, summary: initial }: Props) {
@@ -55,214 +65,215 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-8">
 
-      {/* â”€â”€ 1. STATUS HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* 1. Status */}
       <div
-        className={`rounded-2xl px-5 py-5 animate-slide-up ${payClearance ? "bg-emerald-500" : "bg-violet-600"}`}
-        style={{ animationDelay: "0.04s" }}
+        className={`border-2 border-black px-6 py-6 shadow-[6px_6px_0_0_#000] ${
+          payClearance ? "bg-[#1f8a3a] text-white" : "bg-[#f5c928] text-black"
+        }`}
       >
         {payClearance ? (
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-emerald-400/40 flex items-center justify-center shrink-0">
-              <CheckCircle2 className="h-5 w-5 text-white" />
-            </div>
+          <div className="flex items-center gap-4">
+            <CheckCircle2 className="h-10 w-10 shrink-0" />
             <div>
-              <p className="text-xs font-medium text-emerald-100">Payment status</p>
-              <p className="text-lg font-bold text-white leading-tight">Fully cleared â€” you&apos;re all set!</p>
+              <p className="text-sm font-bold uppercase tracking-widest">Payment status</p>
+              <p className={`text-2xl leading-tight ${display.className}`}>Fully cleared — you&apos;re all set!</p>
             </div>
           </div>
         ) : (
-          <div className="flex items-end justify-between">
+          <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-medium text-violet-200 mb-0.5">Amount due</p>
-              <p className="text-5xl font-bold text-white tabular-nums leading-none">â‚¹{remaining}</p>
-              <p className="text-xs text-violet-300 mt-2">
-                Total: â‚¹{payableAmount}
-                {isCapped && <span className="ml-1.5 bg-emerald-500/30 text-emerald-200 text-[10px] font-semibold px-1.5 py-0.5 rounded-full">cap applied</span>}
+              <p className="text-sm font-bold uppercase tracking-widest">Amount due</p>
+              <p className={`text-6xl leading-none tabular-nums ${display.className}`}>₹{remaining}</p>
+              <p className="mt-2 text-base font-semibold">
+                Total fee: ₹{payableAmount}
+                {isCapped && (
+                  <span className="ml-2 bg-black px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-[#f5c928]">Cap applied</span>
+                )}
               </p>
             </div>
             {acknowledgedAmount > 0 && (
-              <div className="text-right bg-violet-500/30 rounded-xl px-3 py-2">
-                <p className="text-[10px] text-violet-300 font-medium">Received</p>
-                <p className="text-xl font-bold text-white tabular-nums">â‚¹{acknowledgedAmount}</p>
+              <div className="border-2 border-black bg-[#f5edd8] px-4 py-2 text-right">
+                <p className="text-xs font-bold uppercase tracking-widest text-black/60">Received</p>
+                <p className={`text-3xl tabular-nums ${display.className}`}>₹{acknowledgedAmount}</p>
               </div>
             )}
           </div>
         )}
       </div>
 
-      {/* â”€â”€ 2. REGISTERED EVENTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden animate-slide-up" style={{ animationDelay: "0.07s" }}>
-        <div className="px-5 pt-4 pb-3">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Your registrations</p>
-        </div>
-        <div className="divide-y divide-slate-50">
-          {initial.eventRows.map((ev) => (
-            <div key={ev.eventId} className="flex items-center justify-between px-5 py-3 gap-3">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                  ev.isIndividual ? "bg-violet-50" : "bg-teal-50"
-                }`}>
-                  {ev.isIndividual
-                    ? <User className="h-3.5 w-3.5 text-violet-500" />
-                    : <Users className="h-3.5 w-3.5 text-teal-500" />}
+      {/* 2. Registered events */}
+      <div className="space-y-3">
+        <Heading>Your registrations</Heading>
+        <div className={`${CARD} overflow-hidden`}>
+          <div className="divide-y-2 divide-black/15">
+            {initial.eventRows.map((ev) => (
+              <div key={ev.eventId} className="flex items-center justify-between gap-3 px-5 py-4">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black ${ev.isIndividual ? "bg-[#f5c928]" : "bg-[#0e5b57] text-white"}`}>
+                    {ev.isIndividual ? <User className="h-5 w-5" /> : <Users className="h-5 w-5" />}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="truncate text-lg font-bold uppercase leading-tight">{ev.name}</p>
+                    <span className="text-sm font-bold uppercase tracking-wider text-[#7a1c1c]">
+                      {ev.isIndividual ? "Individual" : "Team"}
+                    </span>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-slate-900 truncate">{ev.name}</p>
-                  <span className={`text-[10px] font-semibold ${ev.isIndividual ? "text-violet-500" : "text-teal-600"}`}>
-                    {ev.isIndividual ? "Individual" : "Team"}
-                  </span>
-                </div>
+                <span className={`shrink-0 text-2xl ${display.className}`}>₹{ev.fee}</span>
               </div>
-              <span className={`text-sm font-bold shrink-0 ${ev.isIndividual ? "text-violet-700" : "text-teal-700"}`}>
-                â‚¹{ev.fee}
-              </span>
-            </div>
-          ))}
-        </div>
-        <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-          {isCapped ? (
-            <p className="text-xs text-emerald-600 font-medium flex items-center gap-1">
-              <CheckCircle2 className="h-3.5 w-3.5" /> Bundle cap applied (4+ events)
+            ))}
+          </div>
+          <div className="flex items-center justify-between gap-3 border-t-2 border-black bg-[#e8d9ae] px-5 py-3">
+            {isCapped ? (
+              <p className="flex items-center gap-1.5 text-sm font-bold uppercase tracking-wide text-[#0d5a24]">
+                <CheckCircle2 className="h-4 w-4" /> Bundle cap applied (4+ events)
+              </p>
+            ) : (
+              <p className="text-sm font-bold uppercase tracking-wide text-black/65">
+                {initial.eventRows.length} event{initial.eventRows.length !== 1 ? "s" : ""} registered
+              </p>
+            )}
+            <p className="text-base font-bold uppercase">
+              Total <span className={`ml-1 text-2xl text-[#7a1c1c] tabular-nums ${display.className}`}>₹{payableAmount}</span>
             </p>
-          ) : (
-            <p className="text-xs text-slate-400">{initial.eventRows.length} event{initial.eventRows.length !== 1 ? "s" : ""} registered</p>
-          )}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-slate-500">Total</span>
-            <span className="text-base font-bold text-violet-600 tabular-nums">â‚¹{payableAmount}</span>
           </div>
         </div>
       </div>
 
-      {/* â”€â”€ 3. FEE GUIDE (collapsible) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <div className="bg-fuchsia-50 border border-fuchsia-200 rounded-2xl overflow-hidden animate-slide-up" style={{ animationDelay: "0.09s" }}>
-        <button
-          type="button"
-          onClick={() => setShowFeeGuide((v) => !v)}
-          className="w-full flex items-center justify-between px-4 py-3 text-left"
-        >
-          <span className="text-xs font-semibold text-fuchsia-700">Registration fee structure</span>
-          <ChevronDown className={`h-4 w-4 text-fuchsia-400 transition-transform ${showFeeGuide ? "rotate-180" : ""}`} />
-        </button>
-        {showFeeGuide && (
-          <div className="px-4 pb-4 space-y-3 border-t border-fuchsia-200">
-            <div className="grid grid-cols-2 gap-2 pt-3">
-              {/* Individual */}
-              <div className="bg-white rounded-xl px-3 py-2.5 border border-fuchsia-200">
-                <div className="flex items-center gap-1.5 mb-2">
-                  <User className="h-3 w-3 text-fuchsia-500" />
-                  <p className="text-[10px] font-bold text-fuchsia-700 uppercase tracking-wide">Individual</p>
-                </div>
-                <div className="space-y-1">
-                  {[["1 event", "â‚¹99"], ["2â€“3 events", "â‚¹199"], ["4â€“7 events", "â‚¹499"]].map(([label, price]) => (
-                    <div key={label} className="flex justify-between text-xs">
-                      <span className="text-slate-500">{label}</span>
-                      <span className="font-bold text-slate-800">{price}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Team */}
-              <div className="bg-white rounded-xl px-3 py-2.5 border border-fuchsia-200">
-                <div className="flex items-center gap-1.5 mb-2">
-                  <Users className="h-3 w-3 text-fuchsia-500" />
-                  <p className="text-[10px] font-bold text-fuchsia-700 uppercase tracking-wide">Team</p>
-                </div>
-                <div className="space-y-1">
-                  {[["Per event", "â‚¹299"], ["4â€“7 events", "â‚¹499"]].map(([label, price]) => (
-                    <div key={label} className="flex justify-between text-xs">
-                      <span className="text-slate-500">{label}</span>
-                      <span className="font-bold text-slate-800">{price}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <ul className="text-xs text-fuchsia-700 space-y-0.5 pl-1">
-              <li>â€¢ Only team leaders pay the registration fee.</li>
-              <li>â€¢ Events with team size of 1 count as individual.</li>
-              <li>â€¢ â‚¹499 is the maximum cap across all events.</li>
-            </ul>
-          </div>
-        )}
-      </div>
-
-      {/* â”€â”€ 4. HOW TO PAY STEPS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <div className="bg-amber-50 border border-amber-200 rounded-2xl px-4 py-4 animate-slide-up" style={{ animationDelay: "0.11s" }}>
-        <p className="text-xs font-bold text-amber-800 mb-3">How to pay</p>
-        <div className="space-y-2.5">
-          {[
-            { n: "1", text: "Click Pay below â€” opens the Easebuzz payment page." },
-            { n: "2", text: <>Use <span className="font-semibold text-amber-900">{userEmail}</span> on the payment page.</> },
-            { n: "3", text: "After payment, Easebuzz emails you a transaction ID." },
-            { n: "4", text: "Come back here, enter the transaction ID, and submit." },
-          ].map(({ n, text }) => (
-            <div key={n} className="flex items-start gap-2.5">
-              <span className="w-5 h-5 rounded-full bg-amber-200 text-amber-800 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
-                {n}
-              </span>
-              <p className="text-xs text-amber-800 leading-relaxed">{text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* â”€â”€ 5. PAY CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      {!payClearance && (
-        <div className="animate-slide-up" style={{ animationDelay: "0.13s" }}>
+      {/* 3. Fee structure */}
+      <div className="space-y-3">
+        <Heading>Fee structure</Heading>
+        <div className={`${CARD} overflow-hidden`}>
           <button
-            onClick={() => setShowModal(true)}
-            className="w-full h-12 rounded-xl bg-violet-600 hover:bg-violet-700 active:scale-[0.98] text-white text-sm font-bold tracking-wide transition-all shadow-sm shadow-indigo-200"
+            type="button"
+            onClick={() => setShowFeeGuide((v) => !v)}
+            className="flex w-full items-center justify-between px-5 py-3 text-left hover:bg-[#f5c928]/40"
+            aria-expanded={showFeeGuide}
           >
-            Pay â‚¹{remaining} via Easebuzz
+            <span className="text-base font-bold uppercase tracking-wide">Registration fee structure</span>
+            <ChevronDown className={`h-5 w-5 transition-transform ${showFeeGuide ? "rotate-180" : ""}`} />
           </button>
+          {showFeeGuide && (
+            <div className="space-y-4 border-t-2 border-black px-5 py-4">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {[
+                  { title: "Individual", icon: User, rows: [["1 event", "₹99"], ["2–3 events", "₹199"], ["4–7 events", "₹499"]] },
+                  { title: "Team", icon: Users, rows: [["Per event", "₹299"], ["4–7 events", "₹499"]] },
+                ].map(({ title, icon: Icon, rows }) => (
+                  <div key={title} className="border-2 border-black bg-white/60 px-4 py-3">
+                    <div className="mb-2 flex items-center gap-2 border-b-2 border-black/20 pb-2">
+                      <Icon className="h-4 w-4 text-[#7a1c1c]" />
+                      <p className="text-base font-bold uppercase tracking-wide text-[#7a1c1c]">{title}</p>
+                    </div>
+                    <div className="space-y-1.5">
+                      {rows.map(([label, price]) => (
+                        <div key={label} className="flex justify-between text-base">
+                          <span className="text-black/70">{label}</span>
+                          <span className="font-bold">{price}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <ul className="space-y-1.5 text-base leading-snug">
+                <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> Only team leaders pay the registration fee.</li>
+                <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> Events with team size of 1 count as individual.</li>
+                <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> ₹499 is the maximum cap across all events.</li>
+              </ul>
+            </div>
+          )}
         </div>
+      </div>
+
+      {/* 4. How to pay */}
+      <div className="space-y-3">
+        <Heading>How to pay</Heading>
+        <div className={`${CARD} px-5 py-5`}>
+          <ol className="space-y-4">
+            {[
+              { n: "1", text: "Click “Pay” below — it opens the Easebuzz payment page." },
+              { n: "2", text: <>Use this email on the payment page: <span className="break-all border-2 border-black bg-[#f5c928] px-2 py-0.5 font-bold text-black">{userEmail}</span></> },
+              { n: "3", text: "After payment, Easebuzz emails you a transaction ID." },
+              { n: "4", text: "Come back here, enter the transaction ID, and submit." },
+            ].map(({ n, text }) => (
+              <li key={n} className="flex items-start gap-3">
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center border-2 border-black bg-[#7a1c1c] text-lg text-[#f5edd8] ${display.className}`}>
+                  {n}
+                </span>
+                <p className="pt-1 text-lg leading-snug">{text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        {/* Important note */}
+        <div className="flex items-start gap-3 border-2 border-black bg-[#f5c928] px-5 py-4 text-black shadow-[4px_4px_0_0_#000]">
+          <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0" />
+          <div>
+            <p className="text-lg font-bold uppercase tracking-wide">Important</p>
+            <p className="text-base leading-snug">
+              Use the same email as your account on the payment page, and keep your transaction ID safe.
+              Your payment shows as <strong>Pending</strong> until the admin approves it.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Pay CTA */}
+      {!payClearance && (
+        <button
+          onClick={() => setShowModal(true)}
+          className={`h-16 w-full border-2 border-black bg-[#ff6a00] text-2xl uppercase tracking-wide text-black shadow-[6px_6px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#f5c928] active:translate-y-0 ${display.className}`}
+        >
+          Pay ₹{remaining} via Easebuzz
+        </button>
       )}
 
-      {/* â”€â”€ 6. SUCCESS TOAST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* 6. Success */}
       {success && (
-        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-xs font-medium">
-          <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-          {success}
+        <div role="status" className="flex items-start gap-3 border-2 border-black bg-[#c9f0c9] px-5 py-4 text-[#0d3d1a] shadow-[4px_4px_0_0_#000]">
+          <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0" />
+          <p className="text-lg font-semibold leading-snug">{success}</p>
         </div>
       )}
 
-      {/* â”€â”€ 7. TRANSACTION HISTORY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* 7. Transaction history */}
       {transactions.length > 0 && (
-        <div className="animate-slide-up" style={{ animationDelay: "0.15s" }}>
-          <p className="text-xs font-semibold text-slate-400 mb-2 px-1">Transaction history</p>
-          <div className="space-y-2">
+        <div className="space-y-3">
+          <Heading>Transaction history</Heading>
+          <div className="space-y-3">
             {transactions.map((tx) => (
               <div
                 key={tx.transactionId}
-                className={`bg-white border border-slate-100 border-l-4 rounded-xl px-4 py-3 ${
+                className={`${CARD} border-l-8 px-5 py-4 ${
                   tx.clearanceApproval
-                    ? "border-l-emerald-400"
+                    ? "border-l-[#1f8a3a]"
                     : tx.acknowledgementByAdmin
-                    ? "border-l-indigo-400"
-                    : "border-l-amber-300"
+                    ? "border-l-[#0b2a6b]"
+                    : "border-l-[#e8851a]"
                 }`}
               >
-                <div className="flex items-center justify-between gap-2">
-                  <code className="text-xs font-mono text-slate-600 truncate">{tx.transactionId}</code>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <code className="min-w-0 truncate font-mono text-base font-bold">{tx.transactionId}</code>
                   {tx.clearanceApproval ? (
-                    <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1 shrink-0">
-                      <CheckCircle2 className="h-3 w-3" /> Cleared
+                    <span className="flex shrink-0 items-center gap-1 bg-[#1f8a3a] px-2 py-1 text-sm font-bold uppercase tracking-wider text-white">
+                      <CheckCircle2 className="h-4 w-4" /> Cleared
                     </span>
                   ) : tx.acknowledgementByAdmin ? (
-                    <span className="text-[11px] font-semibold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-full flex items-center gap-1 shrink-0">
-                      <CheckCircle2 className="h-3 w-3" /> â‚¹{tx.amountAtAdmin} received
+                    <span className="flex shrink-0 items-center gap-1 bg-[#0b2a6b] px-2 py-1 text-sm font-bold uppercase tracking-wider text-white">
+                      <CheckCircle2 className="h-4 w-4" /> ₹{tx.amountAtAdmin} received
                     </span>
                   ) : (
-                    <span className="text-[11px] font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full flex items-center gap-1 shrink-0">
-                      <Clock className="h-3 w-3" /> Pending
+                    <span className="flex shrink-0 items-center gap-1 bg-[#e8851a] px-2 py-1 text-sm font-bold uppercase tracking-wider text-black">
+                      <Clock className="h-4 w-4" /> Pending
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-slate-400 mt-1">
-                  â‚¹{tx.currentPayAmount} submitted Â· {new Date(tx.createdAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                <p className="mt-1 text-base text-black/65">
+                  ₹{tx.currentPayAmount} submitted · {new Date(tx.createdAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
                 </p>
               </div>
             ))}
@@ -270,39 +281,40 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
         </div>
       )}
 
-      {/* â”€â”€ 8. PAYMENT MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* 8. Payment modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-sm shadow-xl animate-slide-up">
-            {/* Modal header */}
-            <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-slate-100">
-              <p className="text-sm font-bold text-slate-900">Complete payment</p>
-              <button onClick={() => setShowModal(false)} className="w-7 h-7 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors">
-                <X className="h-4 w-4" />
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-4 sm:items-center" role="dialog" aria-modal="true" aria-label="Complete payment">
+          <div className="max-h-[92vh] w-full max-w-md overflow-y-auto border-2 border-black bg-[#f5edd8] text-[#1a0505] shadow-[8px_8px_0_0_#000]">
+            <div className="flex items-center justify-between border-b-2 border-black bg-[#7a1c1c] px-5 py-4 text-[#f5edd8]">
+              <p className={`text-xl ${display.className}`}>Complete payment</p>
+              <button
+                onClick={() => setShowModal(false)}
+                aria-label="Close"
+                className="flex h-9 w-9 items-center justify-center border-2 border-black bg-[#f5c928] text-black hover:bg-[#ff6a00]"
+              >
+                <X className="h-5 w-5" />
               </button>
             </div>
 
-            <div className="px-5 py-5 space-y-4">
-              {/* Amount pill */}
-              <div className="bg-violet-600 rounded-2xl px-4 py-4 flex items-center justify-between">
+            <div className="space-y-5 px-5 py-5">
+              <div className="flex items-center justify-between gap-3 border-2 border-black bg-[#f5c928] px-4 py-4 text-black">
                 <div>
-                  <p className="text-xs text-violet-200 font-medium">Pay now</p>
-                  <p className="text-3xl font-bold text-white tabular-nums">â‚¹{remaining}</p>
+                  <p className="text-sm font-bold uppercase tracking-widest">Pay now</p>
+                  <p className={`text-4xl tabular-nums ${display.className}`}>₹{remaining}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-[10px] text-violet-300">Use this email</p>
-                  <p className="text-xs text-indigo-100 font-medium max-w-[140px] truncate">{userEmail}</p>
+                <div className="min-w-0 text-right">
+                  <p className="text-xs font-bold uppercase tracking-widest">Use this email</p>
+                  <p className="truncate text-sm font-bold">{userEmail}</p>
                 </div>
               </div>
 
-              {/* QR hint */}
-              <div className="flex items-center gap-3 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5">
-                <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
-                  <QrCode className="h-4 w-4 text-indigo-500" />
+              <div className="flex items-center gap-3 border-2 border-black bg-white/60 px-3 py-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black bg-[#f5c928]">
+                  <QrCode className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-slate-800">Scan QR at venue or pay online</p>
-                  <p className="text-[10px] text-slate-400">Click the button below to open Easebuzz</p>
+                  <p className="text-base font-bold">Scan QR at venue or pay online</p>
+                  <p className="text-sm text-black/65">Click the button below to open Easebuzz</p>
                 </div>
               </div>
 
@@ -310,14 +322,15 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
                 href={EASEBUZZ_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full h-11 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold transition-colors"
+                className="flex h-12 w-full items-center justify-center gap-2 border-2 border-black bg-[#7a1c1c] text-lg font-bold uppercase tracking-wider text-white shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#5a1212]"
               >
-                Open Easebuzz <ExternalLink className="h-3.5 w-3.5" />
+                Open Easebuzz <ExternalLink className="h-4 w-4" />
               </a>
 
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100" /></div>
-                <div className="relative flex justify-center"><span className="bg-white px-3 text-[10px] text-slate-400 font-medium">then enter your transaction ID</span></div>
+              <div className="flex items-center gap-3">
+                <div className="h-px flex-1 bg-black/30" />
+                <span className="text-sm font-bold uppercase tracking-wider text-black/65">then enter your transaction ID</span>
+                <div className="h-px flex-1 bg-black/30" />
               </div>
 
               <input
@@ -325,19 +338,20 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
                 value={txInput}
                 onChange={(e) => setTxInput(e.target.value)}
                 placeholder="Paste transaction ID here"
-                className="w-full h-10 px-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400 font-mono transition"
+                aria-label="Transaction ID"
+                className="h-12 w-full border-2 border-black bg-white px-3 font-mono text-base text-black placeholder:text-black/40 focus:outline-none focus:ring-4 focus:ring-[#f5c928]"
               />
 
               {error && (
-                <p className="text-xs text-red-600 bg-red-50 border border-red-100 px-3 py-2 rounded-lg">{error}</p>
+                <p role="alert" className="border-2 border-black bg-[#ffd0d0] px-3 py-2 text-base font-semibold text-[#6b0010]">{error}</p>
               )}
 
               <button
                 onClick={handleSubmit}
                 disabled={!txInput.trim() || submitting}
-                className="w-full h-11 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold transition-colors"
+                className="h-12 w-full border-2 border-black bg-[#1f8a3a] text-lg font-bold uppercase tracking-wider text-white shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#166b2c] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
               >
-                {submitting ? "Submittingâ€¦" : "Submit transaction ID"}
+                {submitting ? "Submitting…" : "Submit transaction ID"}
               </button>
             </div>
           </div>
