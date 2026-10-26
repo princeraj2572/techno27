@@ -95,7 +95,7 @@ export default function ContactPage() {
       ))}
 
       <p className="bg-black py-3 text-center text-xs uppercase tracking-widest text-[#f5edd8]/60">
-        Sample team — all names, photos, numbers and captions are fictional. Hover a card for the cheekier caption.
+        Organizing team for Techno-aiMBiAtion 2027 (18–20 February). Hover a card for the cheekier caption.
       </p>
     </PageShell>
   );

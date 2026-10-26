@@ -53,9 +53,11 @@ function PersonCard({ person, role, p }: { person: TeamMember; role: string; p: 
         <a href={`tel:${person.phone.replace(/\s/g, "")}`} className="flex items-center gap-1.5 text-sm font-semibold tabular-nums opacity-95 hover:underline">
           <Phone className="h-3.5 w-3.5 shrink-0" style={{ color: p.line }} />{person.phone}
         </a>
-        <a href={`mailto:${person.email}`} className="flex items-center gap-1.5 text-xs font-semibold opacity-90 hover:underline">
-          <Mail className="h-3.5 w-3.5 shrink-0" style={{ color: p.line }} /><span className="truncate">{person.email}</span>
-        </a>
+        {person.email && (
+          <a href={`mailto:${person.email}`} className="flex items-center gap-1.5 text-xs font-semibold opacity-90 hover:underline">
+            <Mail className="h-3.5 w-3.5 shrink-0" style={{ color: p.line }} /><span className="truncate">{person.email}</span>
+          </a>
+        )}
       </div>
     </li>
   );
@@ -68,11 +70,7 @@ export function DeptSection({ dept, index, total, id }: { dept: Department; inde
   const p = POSTER_PALETTES[index % POSTER_PALETTES.length];
   const Icon = ICONS[f.icon] ?? Megaphone;
   const titleSize = f.title.length <= 18 ? "text-4xl" : f.title.length <= 24 ? "text-3xl" : "text-[1.7rem]";
-  const people: [TeamMember, string][] = [
-    [dept.convener, "Convener"],
-    [dept.coConvener, "Co-Convener"],
-    [dept.member, "Core team"],
-  ];
+  const people = dept.people.slice(0, 3); // conveners are listed first
 
   return (
     <section
@@ -142,9 +140,10 @@ export function DeptSection({ dept, index, total, id }: { dept: Department; inde
                   <p className={`text-2xl ${serif.className}`}>{f.title}</p>
                 </div>
               </div>
+              {!people.length && <p className="text-lg font-semibold">Student convenors of Junoon and Techno-aiMBiAtion.</p>}
               <ul className="grid grid-cols-1 gap-5 min-[480px]:grid-cols-3">
                 {people.map(([person, role]) => (
-                  <PersonCard key={role} person={person} role={role} p={p} />
+                  <PersonCard key={person.name + role} person={person} role={role} p={p} />
                 ))}
               </ul>
             </div>

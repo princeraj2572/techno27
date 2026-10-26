@@ -85,33 +85,78 @@ export const SPONSOR_TIERS: SponsorTier[] = [
 export interface TeamMember {
   name: string;
   phone: string;
-  email: string;
+  email?: string;
   photo?: string; // real photo, e.g. "/images/team/aarav-mehta.jpg" (portrait 4:5, ~800 x 1000)
 }
 
 export interface Department {
   name: string;
-  convener: TeamMember;
-  coConvener: TeamMember;
-  member: TeamMember; // core team member
+  people: [TeamMember, string][]; // [person, role badge]
 }
 
-const DEPARTMENT_NAMES = [
-  "Information, Publicity & Invitation",
-  "Design, Print & Media",
-  "Registration & Reception",
-  "Accommodation",
-  "Stage, Light, Sound & Stall",
-  "Catering",
-  "Venue Preparation",
-  "Transportation",
-  "Hospitality",
-  "Website Maintenance",
-  "Sponsorship",
-  "Certificate & Prize",
-  "Discipline",
-  "Stationery & Logistics",
-  "Health & First Aid",
+// Source: official Techno-aiMBiAtion 2027 Organizing Team list (student team only).
+const ph = (d: string) => `+91 ${d.slice(0, 5)} ${d.slice(5)}`;
+const P = (role: string) => (name: string, phone: string): [TeamMember, string] => [{ name, phone: ph(phone) }, role];
+const conv = P("Convener"), team = P("Team");
+
+export const DEPARTMENTS: Department[] = [
+  { name: "Finance", people: [conv("Kshitij Chandrakar", "8959029244")] },
+  { name: "Information, Publicity, Invitation & Session Management", people: [
+    conv("Kshitij Chandrakar", "8959029244"), conv("Priyanshu Dash", "9078942095"), conv("Khilesh Sahu", "7806075045"), conv("Vanshika Gupta", "9039896991"),
+    team("Samarth Shadangi", "8803529573"),
+  ] },
+  { name: "Registration & Reception", people: [
+    conv("Sakshi Sinha", "7846997617"), conv("Shnaya Thakur", "9343489230"), conv("Pavneet Kaur", "9302764946"), conv("Elga Binu", "7846865321"),
+    team("Khushal Bhoi", "6261735415"), team("Kumkum Pradhan", "8839939115"), team("Ankit Sahu", "9098700801"), team("Shourya Pratap Singh", "9329232221"),
+    team("Nimmi Kumari", "9546924923"), team("Garima Sahu", "7880212481"), team("Shurti Mandol", "9926367827"),
+  ] },
+  { name: "Certificate & Prize", people: [
+    conv("Manya Agrawal", "7999235549"), conv("Leekesh Rana", "7477088432"), conv("Niharika Sahu", "9244495076"),
+    team("Ridhima Sharma", "8910331540"), team("Kriti Kumari Gupta", "8839983255"), team("Shriti Ekka", "7024373471"),
+  ] },
+  { name: "Transportation", people: [
+    conv("Mayanak Sharma", "7024189586"), conv("Ansh Arpan Bagh", "7828374135"), conv("Suraj Das", "7974639663"), conv("Vedant Sharma", "7024448682"),
+    team("Yash Chaturvedi", "9439969703"), team("Sameer Patel", "9770696621"), team("Chandrashakar Jaiswal", "9302030396"), team("Shristi Behra", "6264871831"),
+  ] },
+  { name: "Accommodation", people: [
+    conv("Chandan Yadav", "9348745508"), conv("Pradeep Rathore", "6265958049"), conv("Richa Rani", "9304994394"),
+    team("Rohani Kumari", "8789669019"), team("Rambha Shukla", "7647980745"), team("Lalit Kumar", "9650947789"),
+  ] },
+  { name: "Catering", people: [
+    conv("Harpeet Singh", "9109478251"), conv("Shruti Kharre", "9301933038"),
+    team("Priyanka Kumari", "9508662598"), team("Saurabh Sukhla", "7571942698"),
+  ] },
+  { name: "Hospitality", people: [
+    conv("Parinita Behra", "8817361247"), conv("Pranav Sinha", "7667733427"),
+    team("Ankita Verma", "8871801160"), team("Lucky Jha", "9109881981"),
+  ] },
+  { name: "Venue Preparation", people: [
+    conv("Shishir Santosh Mishra", "7223869251"), conv("Anisha Sudhir Vikhar", "9571305506"), conv("Priya Kumari", "9234531358"),
+    team("Arjun Tiwari", "7974650487"), team("Yuvraj Agrawal", "9926324840"), team("Gaurav Tiwari", "789886970"), team("Vaishnavi Singh", "8092592475"),
+  ] },
+  { name: "Website Maintenance", people: [
+    conv("Prince Raj", "7970834551"), conv("Aryan Mishra", "7205993715"), conv("Shristy Choudhary", "9343142449"),
+    team("Anirudh Gautam", "6260225774"), team("Ritesh Yadav", "8144603832"),
+  ] },
+  { name: "Stationery & Logistics", people: [
+    conv("Mahendra Kumar Shini", "8658499974"), conv("Bhoomika Agrawal", "7580827172"), conv("Jay Malakar", "7772999883"),
+    team("Kunal Yadav", "6266681974"), team("Shivangi Kumari", "6200085381"),
+  ] },
+  { name: "Stage, Light, Sound & Stall", people: [
+    conv("Pratham Panchal", "8109771525"), conv("Aaditya Soni", "9425252484"), conv("Sakshi Agrawal", "9329069535"), conv("Vidhi Sahu", "9302480966"),
+    team("Mukul Deshmukh", "8965821165"),
+  ] },
+  { name: "Sponsorship", people: [] },
+  { name: "Design, Print & Media", people: [
+    conv("Ashutosh Sahu", "9776565942"), conv("Shristi Sahu", "7028856915"),
+    team("Tusarika Singh", "8797978792"), team("Bhupati Sinha", "799141191"), team("Rinesh Mohanty", "9907708949"), team("Sunil Kumar Paital", "7991050855"),
+  ] },
+  { name: "Discipline", people: [
+    conv("Manish Jha", "9993278810"), conv("Sneha Kumari", "9117803303"), P("Co-Convener")("Aryan Yadav", "7389269693"), team("Yuvraj Singh", "8319937677"),
+  ] },
+  { name: "Health & First Aid", people: [
+    conv("Samriddhi Sahu", "7974963551"), team("Pranjal Kumar Sinha", "9301322809"),
+  ] },
 ];
 
 const PEOPLE = [
@@ -124,17 +169,6 @@ const PEOPLE = [
   "Pallavi Kulkarni", "Rudra Tripathi", "Sneha Pandey", "Aryan Bajaj", "Divya Menon", "Manav Arora",
   "Esha Trivedi", "Jai Solanki", "Lavanya Iyer",
 ];
-
-const emailFor = (name: string) => `${name.toLowerCase().replace(/[^a-z ]/g, "").trim().replace(/\s+/g, ".")}@technoaimbiation.example`;
-const phoneFor = (n: number) => `+91 98765 4${String(1000 + n).slice(1)}0`;
-const member = (name: string, n: number): TeamMember => ({ name, phone: phoneFor(n), email: emailFor(name) });
-
-export const DEPARTMENTS: Department[] = DEPARTMENT_NAMES.map((name, i) => ({
-  name,
-  convener: member(PEOPLE[i * 2], i * 3),
-  coConvener: member(PEOPLE[i * 2 + 1], i * 3 + 1),
-  member: member(PEOPLE[30 + i], i * 3 + 2),
-}));
 
 export function initials(name: string): string {
   return name.split(" ").map((p) => p[0]).slice(0, 2).join("").toUpperCase();
@@ -302,7 +336,8 @@ export interface DeptFlavor {
 }
 
 export const DEPT_FLAVOR: Record<string, DeptFlavor> = {
-  "Information, Publicity & Invitation": { title: "Publicity ka Theka", caption: "Bulana humara kaam hai, aana tumhari zimmedari.", alt: "Fest mein nahi aaye? Humne bulaya toh tha.", hindi: ["पब्लिसिटी", "का ठेका"], icon: "megaphone", emoji: "📢" },
+  "Finance": { title: "Hisaab Kitaab", caption: "Har paisa ka hisaab, ek ek rupaiya gin ke.", alt: "Budget bol ke kharcha mat badhao.", hindi: ["हिसाब", "किताब"], icon: "rupee", emoji: "🧾" },
+  "Information, Publicity, Invitation & Session Management": { title: "Publicity ka Theka", caption: "Bulana humara kaam hai, aana tumhari zimmedari.", alt: "Fest mein nahi aaye? Humne bulaya toh tha.", hindi: ["पब्लिसिटी", "का ठेका"], icon: "megaphone", emoji: "📢" },
   "Design, Print & Media": { title: "Creative Dimaag", caption: "Poster se publicity tak, sab hum sambhalenge.", alt: "Tum idea do, aesthetic hum kar denge.", hindi: ["क्रिएटिव", "दिमाग"], icon: "palette", emoji: "🎨" },
   "Registration & Reception": { title: "Entry Gate ke Sultaan", caption: "Naam likhwao, entry pao, andar jao.", alt: "Naam batao, entry le jao.", hindi: ["एंट्री गेट", "के सुल्तान"], icon: "clipboard", emoji: "📝" },
   "Accommodation": { title: "Room Ka Jugaad", caption: "Sone ki tension mat lo, room hum de denge.", alt: "Ghar nahi hai? Hostel hai na.", hindi: ["रूम का", "जुगाड़"], icon: "bed", emoji: "🛏️" },
