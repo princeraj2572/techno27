@@ -1,5 +1,6 @@
 "use server";
 
+import { unstable_noStore as noStore } from "next/cache";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Event, IEvent } from "@/features/events/event.model";
 import { ITeam, Team } from "@/features/teams/team.model";
@@ -48,6 +49,28 @@ export async function getEventsWithRegistrationCountsAction() {
   const totalTeams = allTeams.length;
 
   return JSON.parse(JSON.stringify({ eventsWithCounts, totalParticipants, totalInternal, totalExternal, totalTeams }));
+}
+
+// Unique people registered for one website event (its own DB event + any sub-events), split OPJU / external.
+export async function getEventRegistrationCountsAction(slug: string) {
+  noStore();
+  const zero = { total: 0, internal: 0, external: 0 };
+  const main = eventSubEventData.events.find((e) => e.eventName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") === slug);
+  const ids = main ? [main.event, ...main.subEvents.map((s) => s.subEvent)].filter(Boolean) : [];
+  if (!ids.length) return zero;
+  try {
+    await connectToDatabase();
+    const teams = await Team.find({ event: { $in: ids } }).select("members").lean<{ members: string[] }[]>();
+    const emails = [...new Set(teams.flatMap((t) => t.members))];
+    const users = await User.find({ email: { $in: emails } }).select("role").lean<{ role: string }[]>();
+    return {
+      total: emails.length,
+      internal: users.filter((u) => u.role === "INTERNAL_USER").length,
+      external: users.filter((u) => u.role === "EXTERNAL_USER").length,
+    };
+  } catch {
+    return zero; // DB unreachable: show zeros rather than break the public page
+  }
 }
 
 export async function getEventByIdAction(eventId: string) {

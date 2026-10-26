@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, CalendarDays, Clock, MapPin, Trophy, Users, Wallet } from "lucide-react";
+import { getEventRegistrationCountsAction } from "@/features/events/event-actions";
 import { ALL_EVENTS } from "@/features/events/data/all-events";
 import type { EventData } from "@/features/events/data/event-types";
 import { patternStyle } from "@/features/events/data/event-themes";
@@ -10,7 +11,7 @@ import { Marquee, PageShell, serif } from "@/components/indie";
 
 // The shared event page layout. Each folder under src/app/events/<slug>/ passes in its own data.ts,
 // so one event can be customised (or its page replaced entirely) without touching the others.
-export function EventPage({ event }: { event: EventData }) {
+export async function EventPage({ event }: { event: EventData }) {
   const index = ALL_EVENTS.findIndex((e) => e.slug === event.slug);
   const next = ALL_EVENTS[(index + 1) % ALL_EVENTS.length];
   const prev = ALL_EVENTS[(index + ALL_EVENTS.length - 1) % ALL_EVENTS.length];
@@ -18,6 +19,7 @@ export function EventPage({ event }: { event: EventData }) {
   const t = event.theme;
   const culture = CULTURES[event.slug];
   const pattern = patternStyle(t.pattern, t.patternColor);
+  const counts = await getEventRegistrationCountsAction(event.slug);
   const coordinators = [event.contact, ...(event.moreContacts ?? [])];
 
   const facts = [
@@ -68,6 +70,26 @@ export function EventPage({ event }: { event: EventData }) {
               <span className="flex items-center gap-1.5"><MapPin className="h-5 w-5" />{event.venue}</span>
               <span className="flex items-center gap-1.5"><Trophy className="h-5 w-5" />{event.prize}</span>
             </p>
+
+            {/* Registration ticket: total on the stub, OPJU / external split with bars on the right */}
+            <div className="flex w-fit items-stretch border-2 border-black shadow-[4px_4px_0_0_#000]" aria-label="Registrations so far">
+              <div className="flex flex-col items-center justify-center px-5 py-2.5" style={{ background: t.accent, color: t.accentInk }}>
+                <span className={`text-5xl leading-none tabular-nums ${serif.className}`}>{counts.total}</span>
+                <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.25em]">Registered</span>
+              </div>
+              <div className="flex min-w-[11rem] flex-col justify-center gap-2 border-l-2 border-dashed border-black px-4 py-2.5" style={{ background: t.card, color: t.cardInk }}>
+                {[["OPJU", counts.internal], ["External", counts.external]].map(([label, n]) => (
+                  <div key={label}>
+                    <p className="flex items-baseline justify-between text-xs font-bold uppercase tracking-widest">
+                      <span>{label}</span><span className="text-base tabular-nums">{n}</span>
+                    </p>
+                    <div className="mt-0.5 h-1.5 bg-black/10">
+                      <div className="h-full" style={{ width: `${counts.total ? (Number(n) / counts.total) * 100 : 0}%`, background: t.accent2 }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             <div className="flex flex-wrap gap-3 pt-1">
               <Link href="/auth/signup" className="inline-block px-8 py-3 text-lg font-bold uppercase tracking-widest transition hover:-translate-y-0.5" style={pill}>Register now</Link>
