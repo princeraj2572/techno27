@@ -4,7 +4,7 @@ import type { EventData } from "@/features/events/data/event-types";
 // (Its stamp illustration is drawn separately in src/components/culture-art.tsx.)
 export const masterchef: EventData = {
   slug: "masterchef",
-  name: "Masterchef",
+  name: "Master Chef",
   category: "Fun",
   iconKey: "chef",
 

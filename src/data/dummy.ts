@@ -231,7 +231,7 @@ export const GALLERY: GalleryItem[] = [
   { caption: "Opening night crowd", tag: "Junoon", year: "2026", scene: "antaragni" },
   { caption: "Fashion walk", tag: "Cultural", year: "2026", scene: "riwayat-fashion-show" },
   { caption: "Rangoli corner", tag: "Cultural", year: "2026", scene: "kalakriti" },
-  { caption: "Prize ceremony", tag: "Awards", year: "2026", scene: "aima" },
+  { caption: "Prize ceremony", tag: "Awards", year: "2026", scene: "business-quiz" },
   { caption: "Beat battle", tag: "Cultural", year: "2025", scene: "beat-battle" },
   { caption: "Masterchef kitchen", tag: "Fun", year: "2025", scene: "masterchef" },
   { caption: "Ideathon pitches", tag: "Management", year: "2025", scene: "ideathon" },

@@ -4,7 +4,7 @@ import type { EventData } from "@/features/events/data/event-types";
 // (Its stamp illustration is drawn separately in src/components/culture-art.tsx.)
 export const startupBusinessPlan: EventData = {
   slug: "startup-business-plan",
-  name: "Startup Business Plan",
+  name: "Start-up Business Plan",
   category: "Management",
   iconKey: "trend",
 

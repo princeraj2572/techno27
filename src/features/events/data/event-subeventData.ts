@@ -1,11 +1,6 @@
 export const eventSubEventData = {
   events: [
     {
-      eventName: "BACKTRACE",
-      event: "696e7207cd8b052c9846b6cb",
-      subEvents: [],
-    },
-    {
       eventName: "KALAKRITI",
       event: "",
       subEvents: [
@@ -86,11 +81,6 @@ export const eventSubEventData = {
     {
       eventName: "VOICE-OF-YOUTH",
       event: "696e7207cd8b052c9846b6cf",
-      subEvents: [],
-    },
-    {
-      eventName: "AIMA",
-      event: "696e7207cd8b052c9846b6d1",
       subEvents: [],
     },
     {

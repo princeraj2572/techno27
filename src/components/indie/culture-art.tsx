@@ -85,7 +85,7 @@ const Palm = ({ x, y, lean = 0, s = 1 }: { x: number; y: number; lean?: number; 
 
 export const CULTURES: Record<string, Culture> = {
   // Backtrace — a trail of clues through ruins: Hampi's stone chariot
-  backtrace: {
+  "game-paradise": {
     state: "Karnataka", landmark: "Hampi stone chariot", ink: "#5a2a10", sub: "#9a3d12", sky: ["#ffe2b0", "#f6a65a"],
     draw: () => (
       <>
@@ -383,7 +383,7 @@ export const CULTURES: Record<string, Culture> = {
     ),
   },
   // AIMA — strategy and city planning: Telangana's Charminar
-  aima: {
+  "business-quiz": {
     state: "Telangana", landmark: "Charminar", ink: "#6a3a16", sub: "#a8601e", sky: ["#6fc3e8", "#ffe6b8"],
     draw: () => (
       <>
@@ -396,6 +396,26 @@ export const CULTURES: Record<string, Culture> = {
           {[112, 138, 164].map((x) => <Arch key={x} x={x - 3} y={220} w={20} h={42} fill="#7a5a30" />)}
           {[74, 226].map((x) => <g key={x}><rect x={x - 8} y="164" width="16" height="188" fill="#f3e6c8" /><rect x={x - 11} y="160" width="22" height="9" fill="#ecdcbc" /><rect x={x - 11} y="226" width="22" height="7" fill="#ecdcbc" /><Dome cx={x} cy={160} r={10} fill="#f3e6c8" stroke="#6a4a22" /></g>)}
           {[108, 192].map((x) => <g key={x}><rect x={x - 6} y="176" width="12" height="32" fill="#f3e6c8" /><Dome cx={x} cy={176} r={8} fill="#f3e6c8" stroke="#6a4a22" /></g>)}
+        </g>
+      </>
+    ),
+  },
+  // Retail Sale & Visual Merchandise — a bazaar of striped stalls
+  "retail-sale-visual-merchandise": {
+    state: "Bazaar", landmark: "Stalls & displays", ink: "#5a1a3a", sub: "#b0366f", sky: ["#ffd0e6", "#fff0cf"],
+    draw: () => (
+      <>
+        <Cloud x={64} y={152} s={0.8} />
+        <rect y="352" width="300" height="48" fill="#c9a36a" />
+        <g stroke="#4a1230" strokeWidth="2.5" strokeLinejoin="round">
+          {[[34, "#e8479a"], [158, "#ffb800"]].map(([x, c]) => (
+            <g key={x as number}>
+              <rect x={(x as number) + 6} y="262" width="92" height="90" fill="#f3e6c8" />
+              <path d={`M${x} 262 L${(x as number) + 104} 262 L${(x as number) + 96} 222 L${(x as number) + 8} 222 Z`} fill={c as string} />
+              {[0, 1, 2, 3].map((i) => <path key={i} d={`M${(x as number) + 8 + i * 22} 222 L${(x as number) + 30 + i * 22} 222 L${(x as number) + 26 + i * 26} 262 L${(x as number) + i * 26} 262 Z`} fill="#fff7ea" />)}
+              {[0, 1, 2].map((i) => <rect key={i} x={(x as number) + 16 + i * 28} y="300" width="20" height="24" fill={["#5b2a8c", "#1f6b3a", "#c1121f"][i]} />)}
+            </g>
+          ))}
         </g>
       </>
     ),

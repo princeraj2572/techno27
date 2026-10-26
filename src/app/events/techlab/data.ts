@@ -4,7 +4,7 @@ import type { EventData } from "@/features/events/data/event-types";
 // (Its stamp illustration is drawn separately in src/components/culture-art.tsx.)
 export const techlab: EventData = {
   slug: "techlab",
-  name: "Techlab",
+  name: "Tech-Lab",
   category: "Technical",
   iconKey: "flask",
 

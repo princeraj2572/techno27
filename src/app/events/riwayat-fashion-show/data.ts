@@ -4,7 +4,7 @@ import type { EventData } from "@/features/events/data/event-types";
 // (Its stamp illustration is drawn separately in src/components/culture-art.tsx.)
 export const riwayatFashionShow: EventData = {
   slug: "riwayat-fashion-show",
-  name: "Riwayat (Fashion Show)",
+  name: "Fashion Show (Riwayat)",
   category: "Cultural",
   iconKey: "shirt",
 

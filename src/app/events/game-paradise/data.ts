@@ -1,16 +1,16 @@
 import type { EventData } from "@/features/events/data/event-types";
 
-// Backtrace — everything shown at /events/backtrace lives in this file.
+// Game Paradise — everything shown at /events/game-paradise lives in this file.
 // (Its stamp illustration is drawn separately in src/components/culture-art.tsx.)
-export const backtrace: EventData = {
-  slug: "backtrace",
-  name: "Backtrace",
-  category: "Technical",
-  iconKey: "terminal",
+export const gameParadise: EventData = {
+  slug: "game-paradise",
+  name: "Game Paradise",
+  category: "Fun",
+  iconKey: "bot",
 
   // ---- details ----
-  tagline: "Trace the clues, crack the code.",
-  about: "Backtrace is one of the flagship technical events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
+  tagline: "Play online. Play to win.",
+  about: "Game Paradise (Online Gaming) is one of the flagship fun events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
   date: "Feb 18, 2027",
   time: "10:00 AM",
   venue: "CSE Block",
@@ -39,8 +39,8 @@ export const backtrace: EventData = {
     cardInk: "#1a0f08",
     pattern: "diamonds",
     patternColor: "#b5521f",
-    motif: "Hampi ✦ Karnataka ✦ Stone chariot ✦ Trace the clues ✦ ",
+    motif: "Hampi ✦ Karnataka ✦ Stone chariot ✦ Online gaming ✦ ",
   },
-  // Set image / logo to show real artwork, e.g. { image: "/images/events/backtrace.jpg" }
+  // Set image / logo to show real artwork, e.g. { image: "/images/events/game-paradise.jpg" }
   media: {},
 };

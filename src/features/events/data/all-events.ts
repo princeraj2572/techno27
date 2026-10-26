@@ -1,5 +1,5 @@
 import type { EventData } from "@/features/events/data/event-types";
-import { backtrace } from "@/app/events/backtrace/data";
+import { gameParadise } from "@/app/events/game-paradise/data";
 import { kalakriti } from "@/app/events/kalakriti/data";
 import { robovation } from "@/app/events/robovation/data";
 import { masterchef } from "@/app/events/masterchef/data";
@@ -11,28 +11,30 @@ import { startupBusinessPlan } from "@/app/events/startup-business-plan/data";
 import { riwayatFashionShow } from "@/app/events/riwayat-fashion-show/data";
 import { roadies } from "@/app/events/roadies/data";
 import { voiceOfYouth } from "@/app/events/voice-of-youth/data";
-import { aima } from "@/app/events/aima/data";
+import { businessQuiz } from "@/app/events/business-quiz/data";
+import { retailSaleVisualMerchandise } from "@/app/events/retail-sale-visual-merchandise/data";
 import { codigo } from "@/app/events/codigo/data";
 import { designathon } from "@/app/events/designathon/data";
 
 // Every event on the site, in the order it appears on the landing page, the events list and the nav.
 // To add an event: create src/app/events/<slug>/{data.ts,page.tsx} (copy an existing folder) and add it here.
 export const ALL_EVENTS: EventData[] = [
-  backtrace,
-  kalakriti,
-  robovation,
-  masterchef,
-  antaragni,
-  ideathon,
-  beatBattle,
   techlab,
-  startupBusinessPlan,
-  riwayatFashionShow,
-  roadies,
-  voiceOfYouth,
-  aima,
+  ideathon,
+  robovation,
   codigo,
   designathon,
+  gameParadise,
+  startupBusinessPlan,
+  voiceOfYouth,
+  roadies,
+  businessQuiz,
+  beatBattle,
+  kalakriti,
+  riwayatFashionShow,
+  antaragni,
+  masterchef,
+  retailSaleVisualMerchandise,
 ];
 
 export function getEvent(slug: string): EventData | undefined {
