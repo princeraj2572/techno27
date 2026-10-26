@@ -9,6 +9,7 @@ import useFetch from "@/hooks/use-fetch";
 import { getUser } from "@/features/users/user-actions";
 import { cn } from "@/lib/utils";
 import { body, serif } from "@/components/indie";
+import { getEvent } from "@/features/events/data/all-events";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -21,6 +22,25 @@ const NAV_LINKS = [
   { label: "Sponsors", href: "/sponsors" },
   { label: "Contact", href: "/contact" },
 ];
+
+// Navbar colours per page, matching each page's top band. Event pages use their own event theme.
+type NavTheme = { bg: string; ink: string; accent: string; accentInk: string };
+const DEFAULT_THEME: NavTheme = { bg: "#3a0808", ink: "#f5edd8", accent: "#f5c928", accentInk: "#000000" };
+const CRIMSON: NavTheme = { bg: "#a1001a", ink: "#f5edd8", accent: "#f5c928", accentInk: "#000000" };
+const PAGE_THEMES: [string, NavTheme][] = [
+  ["/schedule", { bg: "#f65f00", ink: "#000000", accent: "#000000", accentInk: "#f5edd8" }],
+  ["/junoon", { bg: "#0f0029", ink: "#f5edd8", accent: "#f5c928", accentInk: "#000000" }],
+  ["/creatorverse", { bg: "#ff2d8a", ink: "#000000", accent: "#000000", accentInk: "#ffffff" }],
+  ["/contact", { bg: "#0e5b57", ink: "#f5edd8", accent: "#ffd34d", accentInk: "#000000" }],
+  ["/about", CRIMSON], ["/gallery", CRIMSON], ["/sponsors", CRIMSON],
+];
+
+function themeFor(pathname: string): NavTheme {
+  const event = pathname.startsWith("/events/") ? getEvent(pathname.split("/")[2]) : undefined;
+  if (event) return { bg: event.theme.bg, ink: event.theme.ink, accent: event.theme.accent, accentInk: event.theme.accentInk };
+  if (pathname === "/events") return CRIMSON;
+  return PAGE_THEMES.find(([prefix]) => pathname.startsWith(prefix))?.[1] ?? DEFAULT_THEME;
+}
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -50,18 +70,24 @@ export default function Navbar() {
 
   const linkCls = (href: string) =>
     isActive(pathname, href)
-      ? "bg-[#f5c928] text-black shadow-[2px_2px_0_0_#ff6a00]"
-      : "text-[#f5edd8] hover:bg-[#f5edd8]/10 hover:text-[#f5c928]";
+      ? "bg-[var(--nav-accent)] text-[var(--nav-accent-ink)] shadow-[2px_2px_0_0_rgba(0,0,0,0.45)]"
+      : "text-[var(--nav-ink)] hover:bg-[color-mix(in_srgb,var(--nav-ink)_14%,transparent)]";
+
+  const theme = themeFor(pathname);
+  const navVars = {
+    "--nav-bg": theme.bg, "--nav-ink": theme.ink, "--nav-accent": theme.accent, "--nav-accent-ink": theme.accentInk,
+  } as React.CSSProperties;
 
   const user_ = user && { fullName: user.fullName, email: user.email, role: user.role };
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 border-b-4 border-[#f5c928] bg-[#3a0808] transition-shadow",
+        "fixed top-0 left-0 right-0 z-50 border-b-4 border-[var(--nav-accent)] text-[var(--nav-ink)] backdrop-blur-md transition-[box-shadow,background-color,border-color,color] duration-500",
         body.className,
-        scrolled && "shadow-[0_6px_0_0_rgba(0,0,0,0.5)]"
+        scrolled && "shadow-[0_6px_0_0_rgba(0,0,0,0.35)]"
       )}
+      style={{ ...navVars, background: `color-mix(in srgb, var(--nav-bg) ${scrolled ? 82 : 100}%, transparent)` }}
     >
       <nav className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         {/* Station board logo */}
@@ -74,9 +100,9 @@ export default function Navbar() {
             <circle cx="50" cy="50" r="11" fill="#f5c928" />
             <circle cx="50" cy="50" r="2.5" fill="#000" />
           </svg>
-          <span className={cn("whitespace-nowrap text-xl leading-none text-[#f5c928] sm:text-2xl", serif.className)} style={{ textShadow: "2px 2px 0 #000" }}>
-            Techno-<span className="text-[#f5edd8]">aiMBiAtion</span>
-            <span className="text-[#ff6a00]"> &apos;27</span>
+          <span className={cn("whitespace-nowrap text-xl leading-none text-[var(--nav-accent)] sm:text-2xl", serif.className)}>
+            Techno-<span className="text-[var(--nav-ink)]">aiMBiAtion</span>
+            <span className="text-[var(--nav-accent)]"> &apos;27</span>
           </span>
         </Link>
 
@@ -101,7 +127,7 @@ export default function Navbar() {
             <>
               <Link
                 href="/auth/login"
-                className="whitespace-nowrap border-2 border-[#f5edd8] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-[#f5edd8] transition hover:bg-[#f5edd8] hover:text-black"
+                className="whitespace-nowrap border-2 border-[var(--nav-ink)] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-[var(--nav-ink)] transition hover:bg-[var(--nav-ink)] hover:text-[var(--nav-bg)]"
               >
                 Sign in
               </Link>
@@ -117,7 +143,7 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <button
-          className="min-[1320px]:hidden p-2 text-[#f5c928] hover:text-[#ff6a00]"
+          className="min-[1320px]:hidden p-2 text-[var(--nav-accent)] hover:opacity-70"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
@@ -128,26 +154,26 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="min-[1320px]:hidden border-b-4 border-[#f5c928] bg-[#3a0808]">
+        <div className="min-[1320px]:hidden border-b-4 border-[var(--nav-accent)]" style={{ background: "color-mix(in srgb, var(--nav-bg) 94%, black)" }}>
           <div className="px-4 py-4 space-y-1">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn("block border-b border-dashed border-[#f5edd8]/20 px-3 py-2.5 text-xl font-bold uppercase tracking-wider", linkCls(link.href))}
+                className={cn("block border-b border-dashed border-[var(--nav-ink)]/30 px-3 py-2.5 text-xl font-bold uppercase tracking-wider", linkCls(link.href))}
               >
                 {link.label}
               </Link>
             ))}
 
-            <div className="mt-2 flex flex-col gap-2 border-t-2 border-dashed border-[#f5c928]/50 pt-3">
+            <div className="mt-2 flex flex-col gap-2 border-t-2 border-dashed border-[var(--nav-accent)] pt-3">
               {user_ ? (
                 <UserDropdown user={user_} />
               ) : (
                 <>
                   <Link
                     href="/auth/login"
-                    className="border-2 border-[#f5edd8] py-2 text-center text-lg font-bold uppercase tracking-wider text-[#f5edd8] transition hover:bg-[#f5edd8] hover:text-black"
+                    className="border-2 border-[var(--nav-ink)] py-2 text-center text-lg font-bold uppercase tracking-wider text-[var(--nav-ink)] transition hover:bg-[var(--nav-ink)] hover:text-[var(--nav-bg)]"
                   >
                     Sign in
                   </Link>
