@@ -1,5 +1,5 @@
 import { SCHEDULE } from "@/data/schedule";
-import { DeparturesBoard } from "@/components/events/departures-board";
+import { ScheduleGrid } from "@/components/events/schedule-grid";
 import { Band, PageShell, TicketCta, serif } from "@/components/indie";
 
 export const metadata = { title: "Schedule | Techno-aiMBiAtion 2027" };
@@ -15,7 +15,7 @@ export default function SchedulePage() {
           Schedule
         </h1>
         <p className="mt-3 mb-10 text-2xl sm:text-3xl font-bold uppercase text-white">All lines · All stations</p>
-        <DeparturesBoard days={SCHEDULE} />
+        <ScheduleGrid days={SCHEDULE} />
         <p className="mt-6 text-center text-xs font-bold uppercase tracking-widest text-white">
           Sample timetable — all times and venues are placeholders.
         </p>
