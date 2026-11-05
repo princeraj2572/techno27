@@ -56,7 +56,7 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
                 aria-selected={cat === c}
                 onClick={() => setCat(c)}
                 className={`border-2 border-black px-4 py-1.5 text-base font-bold uppercase tracking-wider shadow-[3px_3px_0_0_#000] transition ${
-                  cat === c ? "bg-[#f5c928] text-black -rotate-1" : "bg-[#f5edd8] text-black hover:-translate-y-0.5"
+                  cat === c ? "bg-[#ff7518] text-black -rotate-1" : "bg-[#f5edd8] text-black hover:-translate-y-0.5"
                 }`}
               >
                 {c} <span className="opacity-60">· {count}</span>
@@ -101,20 +101,20 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
                   label="Logo"
                   size="h-12 w-12"
                   shape="rounded-full"
-                  className="text-[#f5c928]"
+                  className="text-[#ff7518]"
                 />
                 <div className="min-w-0">
                   <p className={`text-xl leading-tight tracking-[0.18em] uppercase ${serif.className}`}>{culture?.state ?? "India"}</p>
                   <p className="text-[11px] font-bold uppercase tracking-[0.45em] text-[#f5edd8]/70">Bharat · {culture?.landmark}</p>
                 </div>
               </div>
-              <p className={`mt-3 text-lg leading-snug text-[#f5c928] ${display.className}`}>{e.tagline}</p>
+              <p className={`mt-3 text-lg leading-snug text-[#ff7518] ${display.className}`}>{e.tagline}</p>
               <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold text-[#f5edd8]/85">
-                <li className="flex items-center gap-1.5"><CalendarDays className="h-4 w-4 text-[#f5c928]" />{e.date}</li>
-                <li className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-[#f5c928]" />{e.venue}</li>
-                <li className="flex items-center gap-1.5"><Trophy className="h-4 w-4 text-[#f5c928]" />{e.prize}</li>
+                <li className="flex items-center gap-1.5"><CalendarDays className="h-4 w-4 text-[#ff7518]" />{e.date}</li>
+                <li className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-[#ff7518]" />{e.venue}</li>
+                <li className="flex items-center gap-1.5"><Trophy className="h-4 w-4 text-[#ff7518]" />{e.prize}</li>
               </ul>
-              <span className="mt-3 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#f5c928]">
+              <span className="mt-3 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#ff7518]">
                 {e.subEvents.length > 0 ? `${e.subEvents.length} competitions · ` : ""}View details
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </span>
@@ -125,7 +125,7 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
 
       {shown.length === 0 && (
         <div className="border-2 border-dashed border-[#f5edd8]/60 py-16 text-center">
-          <p className={`text-3xl text-[#f5c928] ${display.className}`}>No events found</p>
+          <p className={`text-3xl text-[#ff7518] ${display.className}`}>No events found</p>
           <p className="mt-2 text-lg text-[#f5edd8]/80">Try a different category or search term.</p>
         </div>
       )}

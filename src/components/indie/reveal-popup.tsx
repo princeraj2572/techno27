@@ -32,9 +32,9 @@ function Flap({ ch }: { ch: string }) {
     const id = setTimeout(() => setPrev(cur), 300);
     return () => clearTimeout(id);
   }, [cur]);
-  const face = "bg-[#f5edd8] text-[#1a0505]";
+  const face = "bg-[#f5edd8] text-[#12061f]";
   return (
-    <div className={`relative h-[1.35em] w-[1.05em] rounded-md border-2 border-black leading-none shadow-[0_6px_0_0_#ff6a00] ${face} ${display.className}`} style={{ perspective: "500px" }}>
+    <div className={`relative h-[1.35em] w-[1.05em] rounded-md border-2 border-black leading-none shadow-[0_6px_0_0_#9d4edd] ${face} ${display.className}`} style={{ perspective: "500px" }}>
       <div className={`${face} absolute inset-0 rounded-md`}>
         <Half ch={cur} />
         <Half ch={prev} bottom />
@@ -49,7 +49,7 @@ function Flap({ ch }: { ch: string }) {
           </div>
         </div>
       )}
-      <div aria-hidden className="absolute inset-x-0 top-1/2 z-10 h-[3px] -translate-y-1/2 bg-[#1a0505]" />
+      <div aria-hidden className="absolute inset-x-0 top-1/2 z-10 h-[3px] -translate-y-1/2 bg-[#12061f]" />
     </div>
   );
 }
@@ -99,7 +99,7 @@ export function RevealPopup() {
 
   return (
     <div
-      className={`${closing ? "rv-out" : "rv-in"} fixed inset-0 z-[9999] flex cursor-pointer flex-col overflow-hidden bg-[#2a0606] text-center`}
+      className={`${closing ? "rv-out" : "rv-in"} fixed inset-0 z-[9999] flex cursor-pointer flex-col overflow-hidden bg-[#1f0643] text-center`}
       onClick={close}
       role="dialog"
       aria-modal="true"
@@ -123,7 +123,7 @@ export function RevealPopup() {
 
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.07]" style={{ backgroundImage: "repeating-linear-gradient(0deg, #fff 0 1px, transparent 1px 4px)" }} />
 
-      <div className="relative flex items-center justify-between border-b-4 border-black bg-[#f5c928] px-4 py-3 text-black sm:px-8">
+      <div className="relative flex items-center justify-between border-b-4 border-black bg-[#ff7518] px-4 py-3 text-black sm:px-8">
         <span className={`text-xl uppercase tracking-[0.3em] sm:text-3xl ${display.className}`}>Departures</span>
         <button
           onClick={(e) => { e.stopPropagation(); close(); }}
@@ -138,10 +138,10 @@ export function RevealPopup() {
         <div className="rv-fade space-y-3" style={{ animationDelay: ".5s" }}>
           <p className="text-sm font-bold uppercase tracking-[0.35em] text-[#f5edd8]/70">Next service · Platform 20/11</p>
           <h2 className={`text-5xl leading-[0.95] text-[#f5edd8] sm:text-7xl lg:text-8xl ${serif.className}`}>
-            The website <span className="text-[#f5c928]">reveal</span>
+            The website <span className="text-[#ff7518]">reveal</span>
           </h2>
-          <p className="text-lg font-bold uppercase tracking-[0.3em] text-[#ff6a00] sm:text-2xl">
-            <span className="rv-blink mr-2 inline-block h-3 w-3 rounded-full bg-[#ff6a00]" aria-hidden />
+          <p className="text-lg font-bold uppercase tracking-[0.3em] text-[#9d4edd] sm:text-2xl">
+            <span className="rv-blink mr-2 inline-block h-3 w-3 rounded-full bg-[#9d4edd]" aria-hidden />
             Boarding · 20 November 2026
           </p>
         </div>
@@ -161,7 +161,7 @@ export function RevealPopup() {
         <div className="rv-fade" style={{ animationDelay: "1s" }}>
           <button
             onClick={(e) => { e.stopPropagation(); close(); }}
-            className="border-2 border-black bg-[#f5c928] px-10 py-4 text-xl font-bold uppercase tracking-widest text-black shadow-[5px_5px_0_0_#ff6a00] transition-transform hover:-translate-y-1 hover:bg-[#f5edd8]"
+            className="border-2 border-black bg-[#ff7518] px-10 py-4 text-xl font-bold uppercase tracking-widest text-black shadow-[5px_5px_0_0_#9d4edd] transition-transform hover:-translate-y-1 hover:bg-[#f5edd8]"
           >
             Enter website →
           </button>
@@ -170,7 +170,7 @@ export function RevealPopup() {
       </div>
 
       <Marquee
-        className="relative bg-[#ff6a00] py-1.5 text-lg font-bold uppercase tracking-wider text-black"
+        className="relative bg-[#9d4edd] py-1.5 text-lg font-bold uppercase tracking-wider text-black"
         text="Save the date ✦ 20 Nov website reveal ✦ 18–20 Feb 2027 fest ✦ "
       />
     </div>

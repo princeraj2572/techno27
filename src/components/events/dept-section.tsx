@@ -22,7 +22,7 @@ const SECTION_PATTERN: PatternKind[] = ["dots", "diamonds", "waves", "leaves", "
 const Rosette = ({ color, className }: { color: string; className: string }) => (
   <svg viewBox="0 0 24 24" className={`absolute h-5 w-5 ${className}`} fill={color} aria-hidden>
     {[0, 72, 144, 216, 288].map((a) => <ellipse key={a} cx="12" cy="6.5" rx="3.4" ry="5.2" transform={`rotate(${a} 12 12)`} />)}
-    <circle cx="12" cy="12" r="2.6" fill="#1a0f08" opacity="0.55" />
+    <circle cx="12" cy="12" r="2.6" fill="#150a24" opacity="0.55" />
   </svg>
 );
 
@@ -44,7 +44,7 @@ function PersonCard({ person, role, p }: { person: TeamMember; role: string; p: 
               </div>
             </>
           )}
-          <span className="absolute left-1.5 top-1.5 border border-black bg-[#f5c928] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest text-black">{role}</span>
+          <span className="absolute left-1.5 top-1.5 border border-black bg-[#ff7518] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest text-black">{role}</span>
         </div>
       </div>
 
@@ -82,8 +82,8 @@ export function DeptSection({ dept, index, total, id }: { dept: Department; inde
 
       <div className="relative mx-auto max-w-6xl px-6 py-12">
         {/* section header */}
-        <div className="mb-6 flex flex-wrap items-center gap-3 text-[#1a0f08]">
-          <span className="border-2 border-black bg-[#f5c928] px-2.5 py-0.5 text-sm font-bold tracking-[0.2em] shadow-[2px_2px_0_0_#000]">
+        <div className="mb-6 flex flex-wrap items-center gap-3 text-[#150a24]">
+          <span className="border-2 border-black bg-[#ff7518] px-2.5 py-0.5 text-sm font-bold tracking-[0.2em] shadow-[2px_2px_0_0_#000]">
             {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
           <h2 className={`text-2xl sm:text-3xl ${serif.className}`}>{dept.name}</h2>

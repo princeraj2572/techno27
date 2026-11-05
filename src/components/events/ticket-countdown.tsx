@@ -26,14 +26,14 @@ export function TicketCountdown({ to }: { to: string }) {
 
   return (
     <div role="timer" aria-label="Time until the fest starts" className="relative mx-auto w-full max-w-md text-center">
-      <p className={`text-3xl leading-none text-[#f5edd8] sm:text-4xl ${serif.className}`} style={{ textShadow: "3px 3px 0 #3a0808" }}>
+      <p className={`text-3xl leading-none text-[#f5edd8] sm:text-4xl ${serif.className}`} style={{ textShadow: "3px 3px 0 #1e0a38" }}>
         The fest starts in
       </p>
 
       <div className="relative mt-2">
         <span
-          className={`block text-[8.5rem] leading-[0.9] tabular-nums text-[#f5c928] sm:text-[11rem] ${display.className}`}
-          style={{ textShadow: "6px 6px 0 #000, 10px 10px 0 #ff6a00" }}
+          className={`block text-[8.5rem] leading-[0.9] tabular-nums text-[#ff7518] sm:text-[11rem] ${display.className}`}
+          style={{ textShadow: "6px 6px 0 #000, 10px 10px 0 #9d4edd" }}
         >
           {t.d}
         </span>
@@ -42,7 +42,7 @@ export function TicketCountdown({ to }: { to: string }) {
         </span>
       </div>
 
-      <div className="-mx-2 mt-4 -rotate-1 border-y-4 border-black bg-[#f5c928] py-2 text-black sm:mx-0">
+      <div className="-mx-2 mt-4 -rotate-1 border-y-4 border-black bg-[#ff7518] py-2 text-black sm:mx-0">
         <p className={`text-3xl tabular-nums tracking-wider sm:text-4xl ${display.className}`}>
           {pad(t.h)}<small className="mr-3 text-base">h</small>
           {pad(t.m)}<small className="mr-3 text-base">m</small>
@@ -53,7 +53,7 @@ export function TicketCountdown({ to }: { to: string }) {
       <p className={`mt-4 text-base font-bold uppercase tracking-[0.3em] text-[#f5edd8] sm:text-lg ${display.className}`}>18 – 20 February 2027</p>
       <Link
         href="/auth/signup"
-        className="mt-3 inline-block border-2 border-black bg-[#f5edd8] px-6 py-2 text-sm font-bold uppercase tracking-widest text-black shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#ff6a00]"
+        className="mt-3 inline-block border-2 border-black bg-[#f5edd8] px-6 py-2 text-sm font-bold uppercase tracking-widest text-black shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#9d4edd]"
       >
         Get your pass →
       </Link>

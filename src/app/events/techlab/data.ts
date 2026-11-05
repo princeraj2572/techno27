@@ -41,7 +41,7 @@ export const techlab: EventData = {
     accentInk: "#ffffff",
     accent2: "#f0a830",
     card: "#fffaf0",
-    cardInk: "#1a0f08",
+    cardInk: "#150a24",
     pattern: "zigzag",
     patternColor: "#d9534f",
     motif: "Tamil Nadu ✦ Gopuram ✦ Crafted to last ✦ Hands-on tech ✦ ",

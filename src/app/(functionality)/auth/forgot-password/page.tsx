@@ -109,7 +109,7 @@ export default function ForgotPasswordPage() {
                   {loading ? "Sending code…" : "Send code"}
                 </Button>
                 <p className="text-center text-sm text-muted-foreground">
-                  <Link href="/auth/login" className="inline-flex items-center gap-1 font-bold text-[#a1001a] underline underline-offset-4 hover:text-[#ff6a00]">
+                  <Link href="/auth/login" className="inline-flex items-center gap-1 font-bold text-[#6d28b8] underline underline-offset-4 hover:text-[#9d4edd]">
                     <ArrowLeft className="h-3 w-3" /> Back to sign in
                   </Link>
                 </p>

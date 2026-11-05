@@ -39,12 +39,12 @@ export default function AreaBar() {
   const parent = crumbs.length > 1 ? crumbs[crumbs.length - 2] : null;
 
   return (
-    <div className={`sticky top-16 z-40 border-b-2 border-black bg-[#4a0e0e] ${body.className}`}>
+    <div className={`sticky top-16 z-40 border-b-2 border-black bg-[#2a0f4a] ${body.className}`}>
       <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2.5 sm:px-6 lg:px-8">
         {parent && (
           <Link
             href={parent.href}
-            className="inline-flex items-center gap-2 border-2 border-black bg-[#f5c928] px-3 py-1 text-base font-bold uppercase tracking-wider text-black shadow-[3px_3px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#ff6a00]"
+            className="inline-flex items-center gap-2 border-2 border-black bg-[#ff7518] px-3 py-1 text-base font-bold uppercase tracking-wider text-black shadow-[3px_3px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#9d4edd]"
           >
             <ArrowLeft className="h-4 w-4" /> Back to {parent.label}
           </Link>
@@ -57,7 +57,7 @@ export default function AreaBar() {
                 {last ? (
                   <span aria-current="page" className="text-[#f5edd8]">{c.label}</span>
                 ) : (
-                  <Link href={c.href} className="text-[#f5c928] underline-offset-4 hover:underline">{c.label}</Link>
+                  <Link href={c.href} className="text-[#ff7518] underline-offset-4 hover:underline">{c.label}</Link>
                 )}
                 {!last && <ChevronRight className="h-4 w-4 text-[#f5edd8]/60" />}
               </span>

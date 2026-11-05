@@ -13,9 +13,9 @@ export const devanagari = Yatra_One({ weight: "400", subsets: ["devanagari", "la
 // Chunky, squared Devanagari (+ Latin) for logo-style lockups
 export const blockHindi = Sarpanch({ weight: ["800", "900"], subsets: ["devanagari", "latin"] });
 
-export const CARD = "bg-[#f5edd8] text-[#1a0505] border-2 border-black shadow-[4px_4px_0_0_#000]";
-export const TITLE_SHADOW = { textShadow: "3px 3px 0 #7a1c1c" };
-export const ACCENTS = ["bg-[#f5c928]", "bg-[#ff6a00]", "bg-[#ffb10f]", "bg-[#c8421f]"];
+export const CARD = "bg-[#f5edd8] text-[#12061f] border-2 border-black shadow-[4px_4px_0_0_#000]";
+export const TITLE_SHADOW = { textShadow: "3px 3px 0 #4b1d7a" };
+export const ACCENTS = ["bg-[#ff7518]", "bg-[#9d4edd]", "bg-[#ff8f2e]", "bg-[#e0661a]"];
 
 export function IndieStyles() {
   return (
@@ -58,7 +58,7 @@ export function IndieStyles() {
       .indie-qshake { animation: indie-qshake 2s ease-in-out infinite; transform-origin: 50% 80%; }
       .indie-vfade { -webkit-mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent); mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent); }
 
-      .splash { position: fixed; inset: 0; z-index: 100; background: #4a0e0e; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; transition: transform .75s cubic-bezier(.7,0,.3,1); animation: indie-splash-out .01s linear 6s forwards; }
+      .splash { position: fixed; inset: 0; z-index: 100; background: #2a0f4a; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; transition: transform .75s cubic-bezier(.7,0,.3,1); animation: indie-splash-out .01s linear 6s forwards; }
       .splash.out { transform: translateY(-100%); }
 
       /* Postage-stamp edge: scalloped holes cut along all four sides */
@@ -103,11 +103,11 @@ export function IndieStyles() {
         background-image: radial-gradient(circle, rgba(0,0,0,.28) 22%, transparent 24%);
         background-size: 16px 16px;
       }
-      .indie-outline { color: transparent; -webkit-text-stroke: 2px #fff; text-shadow: 4px 4px 0 #c1121f; }
+      .indie-outline { color: transparent; -webkit-text-stroke: 2px #fff; text-shadow: 4px 4px 0 #7a2bc9; }
       .indie-outline-dark { color: transparent; -webkit-text-stroke: 3px #000; }
-      .indie-hscroll { scrollbar-width: thin; scrollbar-color: #f5c928 transparent; }
+      .indie-hscroll { scrollbar-width: thin; scrollbar-color: #ff7518 transparent; }
       .indie-stamp { border: 5px dotted #000; background: #f5edd8; }
-      .indie-grille { background-image: radial-gradient(#2a1a10 1.6px, transparent 1.7px); background-size: 9px 9px; background-color: #b9a88c; }
+      .indie-grille { background-image: radial-gradient(#291a43 1.6px, transparent 1.7px); background-size: 9px 9px; background-color: #b9a88c; }
 
       .flip { perspective: 1000px; }
       .flip-inner { position: relative; transition: transform .6s; transform-style: preserve-3d; }
@@ -131,9 +131,9 @@ export function IndieStyles() {
 export function PageShell({ children, footer = true }: { children: ReactNode; footer?: boolean }) {
   return (
     <main
-      className={`min-h-screen bg-[#4a0e0e] text-[#f5edd8] overflow-x-clip ${body.className}`}
+      className={`min-h-screen bg-[#2a0f4a] text-[#f5edd8] overflow-x-clip ${body.className}`}
       style={{
-        backgroundImage: "radial-gradient(rgba(245,237,216,0.07) 1px, transparent 1px), linear-gradient(180deg, #3a0808 0%, #4a0e0e 35%, #5a1212 100%)",
+        backgroundImage: "radial-gradient(rgba(245,237,216,0.07) 1px, transparent 1px), linear-gradient(180deg, #1e0a38 0%, #2a0f4a 35%, #3a1666 100%)",
         backgroundSize: "6px 6px, 100% 100%",
       }}
     >
@@ -242,14 +242,14 @@ export function MandalaArt({ variant = "orange", centerRight = false }: { varian
 // ---- Full-bleed colour bands ----
 
 const BAND_TONES = {
-  crimson: "bg-[#a1001a] text-[#f5edd8]",
+  crimson: "bg-[#6d28b8] text-[#f5edd8]",
   indigo: "bg-[#0f0029] text-[#f5edd8]",
   blue: "bg-[#0b2a6b] text-[#f5edd8]",
-  cream: "bg-[#f5edd8] text-[#1a0505]",
-  parchment: "bg-[#fad68e] text-[#1a0505]",
+  cream: "bg-[#f5edd8] text-[#12061f]",
+  parchment: "bg-[#fad68e] text-[#12061f]",
   orange: "bg-[#f65f00] text-black",
   amber: "bg-[#e8851a] text-black",
-  maroon: "bg-[#4a0e0e] text-[#f5edd8]",
+  maroon: "bg-[#2a0f4a] text-[#f5edd8]",
   black: "bg-black text-[#f5edd8]",
   pink: "bg-[#ff2d8a] text-black",
   teal: "bg-[#0e5b57] text-[#f5edd8]",
@@ -326,8 +326,8 @@ export function PageHero({
   return (
     <Band tone={tone} art={art} mandala={tone !== "blue" && !art} ghost={ghost ?? `${title} `} className="!py-12 sm:!py-16">
       <h1
-        className={`text-5xl sm:text-7xl leading-[0.95] ${outline ? "indie-outline" : light ? "text-[#a1001a]" : "text-[#f5c928]"} ${serif.className}`}
-        style={outline ? undefined : { textShadow: light ? "3px 3px 0 rgba(255,236,200,0.8)" : "4px 4px 0 #5a0010" }}
+        className={`text-5xl sm:text-7xl leading-[0.95] ${outline ? "indie-outline" : light ? "text-[#6d28b8]" : "text-[#ff7518]"} ${serif.className}`}
+        style={outline ? undefined : { textShadow: light ? "3px 3px 0 rgba(255,236,200,0.8)" : "4px 4px 0 #2f0f59" }}
       >
         {title}
       </h1>
@@ -342,10 +342,10 @@ export function Note({
   tag, date, title, children, tilt = "-rotate-2",
 }: { tag: string; date?: string; title: string; children: ReactNode; tilt?: string }) {
   return (
-    <article className={`relative bg-[#f5edd8] text-[#1a0505] p-5 pt-6 shadow-[3px_4px_0_0_rgba(0,0,0,0.45)] ${tilt} hover:rotate-0 hover:-translate-y-1 transition-all`}>
+    <article className={`relative bg-[#f5edd8] text-[#12061f] p-5 pt-6 shadow-[3px_4px_0_0_rgba(0,0,0,0.45)] ${tilt} hover:rotate-0 hover:-translate-y-1 transition-all`}>
       <span aria-hidden className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-5 bg-[#d9b36a]/80 border border-black/20 rotate-2" />
       <div className="flex items-center gap-2 mb-2">
-        <span className="bg-[#7a1c1c] text-[#f5edd8] text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5">{tag}</span>
+        <span className="bg-[#4b1d7a] text-[#f5edd8] text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5">{tag}</span>
         {date && <span className="text-xs font-semibold uppercase tracking-wider text-black/50">{date}</span>}
       </div>
       <h3 className="text-xl font-bold uppercase leading-tight tracking-wide">{title}</h3>
@@ -357,9 +357,9 @@ export function Note({
 // Square black button (as on the reference site).
 export function BlockButton({ href, children, tone = "black" }: { href: string; children: ReactNode; tone?: "black" | "cream" | "mustard" }) {
   const tones = {
-    black: "bg-black text-white hover:bg-[#f5c928] hover:text-black",
-    cream: "bg-[#f5edd8] text-black hover:bg-[#f5c928]",
-    mustard: "bg-[#f5c928] text-black border-2 border-black shadow-[4px_4px_0_0_#000] hover:-translate-y-0.5",
+    black: "bg-black text-white hover:bg-[#ff7518] hover:text-black",
+    cream: "bg-[#f5edd8] text-black hover:bg-[#ff7518]",
+    mustard: "bg-[#ff7518] text-black border-2 border-black shadow-[4px_4px_0_0_#000] hover:-translate-y-0.5",
   };
   return (
     <Link href={href} className={`inline-block px-8 py-3 text-lg font-bold uppercase tracking-widest transition ${tones[tone]}`}>
@@ -373,12 +373,12 @@ export function Vinyl({ className = "", label = "TRX'27", slow = false }: { clas
   return (
     <svg viewBox="0 0 100 100" className={className} aria-hidden>
       <g className={slow ? "indie-spin-slow" : "indie-spin"} style={{ transformOrigin: "50px 50px" }}>
-        <circle cx="50" cy="50" r="48" fill="#1a0505" stroke="#000" strokeWidth="1.5" />
+        <circle cx="50" cy="50" r="48" fill="#12061f" stroke="#000" strokeWidth="1.5" />
         {[42, 37, 32, 27, 22].map((r) => (
-          <circle key={r} cx="50" cy="50" r={r} fill="none" stroke="#7a1c1c" strokeWidth="0.7" />
+          <circle key={r} cx="50" cy="50" r={r} fill="none" stroke="#4b1d7a" strokeWidth="0.7" />
         ))}
-        <circle cx="50" cy="50" r="15" fill="#f5c928" stroke="#000" strokeWidth="1.5" />
-        <text x="50" y="52" textAnchor="middle" fontSize="6" fontWeight="700" fill="#1a0505">{label}</text>
+        <circle cx="50" cy="50" r="15" fill="#ff7518" stroke="#000" strokeWidth="1.5" />
+        <text x="50" y="52" textAnchor="middle" fontSize="6" fontWeight="700" fill="#12061f">{label}</text>
         <circle cx="50" cy="50" r="1.6" fill="#000" />
       </g>
     </svg>
@@ -405,8 +405,8 @@ export function Wheel({ className = "" }: { className?: string }) {
           <textPath href="#wheel-mid">{"ENTRY PASS • TRX27 • QR PASS • "}</textPath>
         </text>
       </g>
-      <circle cx="100" cy="100" r="34" fill="#7a1c1c" stroke="#000" strokeWidth="1.5" />
-      <circle cx="100" cy="100" r="9" fill="#1a0505" />
+      <circle cx="100" cy="100" r="34" fill="#4b1d7a" stroke="#000" strokeWidth="1.5" />
+      <circle cx="100" cy="100" r="9" fill="#12061f" />
     </svg>
   );
 }
@@ -414,9 +414,9 @@ export function Wheel({ className = "" }: { className?: string }) {
 export function TicketCta({ title, text, href, label }: { title: string; text: string; href: string; label: string }) {
   return (
     <section className="max-w-3xl mx-auto px-6 py-16">
-      <div className="relative bg-[#f5c928] text-black border-2 border-black shadow-[6px_6px_0_0_#000] rounded-2xl overflow-hidden">
-        <span aria-hidden className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#4a0e0e] border-2 border-black" />
-        <span aria-hidden className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#4a0e0e] border-2 border-black" />
+      <div className="relative bg-[#ff7518] text-black border-2 border-black shadow-[6px_6px_0_0_#000] rounded-2xl overflow-hidden">
+        <span aria-hidden className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#2a0f4a] border-2 border-black" />
+        <span aria-hidden className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#2a0f4a] border-2 border-black" />
         <div className="px-8 py-8 space-y-3">
           <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-70">Admit one · All access</p>
           <h2 className={`text-3xl leading-tight ${display.className}`}>{title}</h2>
@@ -434,19 +434,19 @@ export function SiteFooter() {
       <div className="max-w-5xl mx-auto px-6 py-10 grid sm:grid-cols-2 gap-8">
         <div className="flex items-start gap-3">
           <svg viewBox="0 0 100 100" className="h-12 w-12 shrink-0" aria-hidden>
-            <circle cx="50" cy="50" r="46" fill="#7a1c1c" stroke="#f5c928" strokeWidth="4" />
+            <circle cx="50" cy="50" r="46" fill="#4b1d7a" stroke="#ff7518" strokeWidth="4" />
             <circle cx="50" cy="50" r="26" fill="none" stroke="#000" strokeWidth="1.5" />
-            <circle cx="50" cy="50" r="11" fill="#f5c928" />
+            <circle cx="50" cy="50" r="11" fill="#ff7518" />
           </svg>
           <div>
-            <p className={`text-2xl text-[#f5c928] ${serif.className}`}>Techno-aiMBiAtion &apos;27</p>
+            <p className={`text-2xl text-[#ff7518] ${serif.className}`}>Techno-aiMBiAtion &apos;27</p>
             <p className="text-sm uppercase tracking-widest text-[#f5edd8]/70">Where innovation meets culture</p>
           </div>
         </div>
         <div className="sm:text-right">
-          <p className="text-sm font-bold uppercase tracking-widest text-[#f5c928] mb-2">Contact us</p>
+          <p className="text-sm font-bold uppercase tracking-widest text-[#ff7518] mb-2">Contact us</p>
           <p className="text-[#f5edd8]/80">O.P. Jindal University, Raigarh</p>
-          <Link href="/contact" className="text-[#f5edd8]/80 underline hover:text-[#f5c928]">Meet the team</Link>
+          <Link href="/contact" className="text-[#f5edd8]/80 underline hover:text-[#ff7518]">Meet the team</Link>
         </div>
       </div>
       <div className="border-t border-white/15 py-3 text-center text-xs uppercase tracking-widest text-[#f5edd8]/50">

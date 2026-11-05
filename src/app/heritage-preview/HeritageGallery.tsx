@@ -682,7 +682,7 @@ export default function HeritageGallery({
         aria-live="polite"
         style={{
           position: "fixed", left: "50%", bottom: 24, translate: "-50% 0", zIndex: 200,
-          padding: "10px 18px", borderRadius: 999, background: "#e8b04b", color: "#2a1b08", fontWeight: 600,
+          padding: "10px 18px", borderRadius: 999, background: "#e8b04b", color: "#211b43", fontWeight: 600,
           opacity: toast ? 1 : 0, pointerEvents: "none", transition: "opacity .25s",
         }}
       >

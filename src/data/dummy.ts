@@ -38,7 +38,7 @@ export interface SponsorTier {
 export const SPONSOR_TIERS: SponsorTier[] = [
   {
     name: "Title Sponsor", role: "Title partner", size: "xl",
-    sponsors: [{ name: "Aurora Motors", field: "Automotive", color: "#c1121f" }],
+    sponsors: [{ name: "Aurora Motors", field: "Automotive", color: "#7a2bc9" }],
   },
   {
     name: "Co-Powered By", role: "Co-powered by", size: "lg",
@@ -248,9 +248,9 @@ export const TESTIMONIALS = [
 ];
 
 export const FEATURED_CREATIONS = [
-  { title: "Golden Hour at the Ghat", by: PEOPLE[4], kind: "Photography", bg: "from-[#ff6a00] to-[#7a1c1c]", icon: "📷" },
+  { title: "Golden Hour at the Ghat", by: PEOPLE[4], kind: "Photography", bg: "from-[#9d4edd] to-[#4b1d7a]", icon: "📷" },
   { title: "Rhythm of the Campus", by: PEOPLE[9], kind: "Short film", bg: "from-[#6d28d9] to-[#0f0029]", icon: "🎬" },
-  { title: "Poster: Techno Junction", by: PEOPLE[14], kind: "Design", bg: "from-[#f5c928] to-[#c8421f]", icon: "🖼️" },
+  { title: "Poster: Techno Junction", by: PEOPLE[14], kind: "Design", bg: "from-[#ff7518] to-[#e0661a]", icon: "🖼️" },
   { title: "Notes from the Night Stage", by: PEOPLE[21], kind: "Writing", bg: "from-[#3b82f6] to-[#0b2a6b]", icon: "✍️" },
 ];
 
@@ -318,8 +318,8 @@ export const PARTNER_BENEFITS = [
 ];
 
 export const PARTNER_PACKAGES = [
-  { name: "Title Partner", price: "₹5,00,000", perks: ["Name in the fest title", "Main-stage branding", "Premium stall", "Social media takeover"], accent: "#c1121f" },
-  { name: "Gold Partner", price: "₹2,00,000", perks: ["Logo on all banners", "Stall space", "Event naming rights", "Website feature"], accent: "#f5c928" },
+  { name: "Title Partner", price: "₹5,00,000", perks: ["Name in the fest title", "Main-stage branding", "Premium stall", "Social media takeover"], accent: "#7a2bc9" },
+  { name: "Gold Partner", price: "₹2,00,000", perks: ["Logo on all banners", "Stall space", "Event naming rights", "Website feature"], accent: "#ff7518" },
   { name: "Silver Partner", price: "₹75,000", perks: ["Logo on website", "Shared stall", "Social media mention", "Certificate"], accent: "#2a7aa8" },
 ];
 
@@ -366,9 +366,9 @@ export interface PosterPalette {
   shape: string; // oval geometric shape
 }
 export const POSTER_PALETTES: PosterPalette[] = [
-  { main: "#5b2a8c", accent: "#e8479a", line: "#ffd9ee", ink: "#fff0f7", bannerInk: "#ffd9ee", bannerShadow: "#5b2a8c", sky: "#33c4ea", shape: "#ffd23a" },
-  { main: "#0e5b57", accent: "#ffb800", line: "#ffe9a8", ink: "#fff6d8", bannerInk: "#0a3f3c", bannerShadow: "#fff1b8", sky: "#ff7a59", shape: "#f7e6b0" },
-  { main: "#8a1020", accent: "#ff7a1a", line: "#ffd9a8", ink: "#fff0dc", bannerInk: "#fff0dc", bannerShadow: "#8a1020", sky: "#ffd23a", shape: "#2aa6a0" },
-  { main: "#1d3a8a", accent: "#ff2d8a", line: "#ffd0e6", ink: "#fff0f7", bannerInk: "#fff0f7", bannerShadow: "#1d3a8a", sky: "#7fe0d0", shape: "#ffd23a" },
-  { main: "#1f6b3a", accent: "#ffd23a", line: "#fff0a8", ink: "#fffbe0", bannerInk: "#14502b", bannerShadow: "#fff7b0", sky: "#ff8fb5", shape: "#ff6a00" },
+  { main: "#5b2a8c", accent: "#e8479a", line: "#ffd9ee", ink: "#fff0f7", bannerInk: "#ffd9ee", bannerShadow: "#5b2a8c", sky: "#33c4ea", shape: "#ff8f2e" },
+  { main: "#0e5b57", accent: "#ffb800", line: "#ffc58a", ink: "#fff6d8", bannerInk: "#0a3f3c", bannerShadow: "#fff1b8", sky: "#ff7a59", shape: "#f7e6b0" },
+  { main: "#8a1020", accent: "#ff7a1a", line: "#ffd9a8", ink: "#fff0dc", bannerInk: "#fff0dc", bannerShadow: "#8a1020", sky: "#ff8f2e", shape: "#2aa6a0" },
+  { main: "#1d3a8a", accent: "#ff2d8a", line: "#ffd0e6", ink: "#fff0f7", bannerInk: "#fff0f7", bannerShadow: "#1d3a8a", sky: "#7fe0d0", shape: "#ff8f2e" },
+  { main: "#1f6b3a", accent: "#ff8f2e", line: "#fff0a8", ink: "#fffbe0", bannerInk: "#14502b", bannerShadow: "#fff7b0", sky: "#ff8fb5", shape: "#9d4edd" },
 ];

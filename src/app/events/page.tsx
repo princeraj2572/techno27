@@ -67,10 +67,10 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
             label="Banner image"
             hint="1600 × 600"
             ratio="aspect-[21/8]"
-            tone="from-[#ff6a00] to-[#7a1c1c]"
+            tone="from-[#9d4edd] to-[#4b1d7a]"
             className="border-2 border-black shadow-[6px_6px_0_0_#000]"
           />
-          <span aria-hidden className="indie-float absolute -top-3 right-6 border-2 border-black bg-[#f5c928] px-3 py-1 text-xs font-bold uppercase tracking-widest text-black" style={{ ["--r" as string]: "5deg" }}>
+          <span aria-hidden className="indie-float absolute -top-3 right-6 border-2 border-black bg-[#ff7518] px-3 py-1 text-xs font-bold uppercase tracking-widest text-black" style={{ ["--r" as string]: "5deg" }}>
             ★ {PUBLIC_EVENTS.length} events
           </span>
         </div>
@@ -81,13 +81,13 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
         <Band tone="cream" className="!py-10">
           <div className="grid items-center gap-8 md:grid-cols-2">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#7a1c1c]">The fest starts in</p>
+              <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#4b1d7a]">The fest starts in</p>
               <div className="mt-3"><Countdown to={FEST_START} /></div>
             </div>
             <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-center sm:grid-cols-4">
               {stats.map((s) => (
                 <div key={s.label}>
-                  <p className={`text-2xl sm:text-3xl text-[#7a1c1c] ${display.className}`}>
+                  <p className={`text-2xl sm:text-3xl text-[#4b1d7a] ${display.className}`}>
                     <CountUp to={s.to} prefix={s.prefix} suffix={s.suffix} />
                   </p>
                   <p className="mt-1 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/70">{s.label}</p>
@@ -110,19 +110,19 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
               <Postmark lines={false} className="pointer-events-none absolute -bottom-9 -right-9 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
             </div>
 
-            <div className="flex flex-col gap-5 text-[#1a0505]">
+            <div className="flex flex-col gap-5 text-[#12061f]">
               <div className="flex items-center gap-3">
-                <LogoSlot src={featured.logo} alt={`${featured.name} logo`} label="Logo" size="h-14 w-14" shape="rounded-full" className="text-[#7a1c1c]" />
+                <LogoSlot src={featured.logo} alt={`${featured.name} logo`} label="Logo" size="h-14 w-14" shape="rounded-full" className="text-[#4b1d7a]" />
                 <div>
-                  <p className={`text-2xl uppercase tracking-[0.18em] text-[#7a1c1c] ${serif.className}`}>{CULTURES[featured.slug]?.state}</p>
+                  <p className={`text-2xl uppercase tracking-[0.18em] text-[#4b1d7a] ${serif.className}`}>{CULTURES[featured.slug]?.state}</p>
                   <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-black/60">Bharat · {CULTURES[featured.slug]?.landmark}</p>
                 </div>
               </div>
 
               <div>
-                <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#c8421f]">{featured.category} · {featured.subEvents.length} competitions</p>
+                <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#e0661a]">{featured.category} · {featured.subEvents.length} competitions</p>
                 <h2 className={`mt-1 text-5xl sm:text-6xl leading-none ${display.className}`}>{featured.name}</h2>
-                <p className="mt-2 text-2xl font-semibold text-[#7a1c1c]">{featured.tagline}</p>
+                <p className="mt-2 text-2xl font-semibold text-[#4b1d7a]">{featured.tagline}</p>
               </div>
 
               <ul className="grid grid-cols-2 gap-3">
@@ -135,7 +135,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
                   const I = Icon as typeof CalendarDays;
                   return (
                     <li key={label as string} className="flex items-start gap-2.5 border-2 border-black bg-[#f5edd8] p-3 shadow-[3px_3px_0_0_#000]">
-                      <I className="mt-0.5 h-5 w-5 shrink-0 text-[#c8421f]" />
+                      <I className="mt-0.5 h-5 w-5 shrink-0 text-[#e0661a]" />
                       <div>
                         <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-black/55">{label as string}</p>
                         <p className="text-base font-bold leading-tight">{value as string}</p>
@@ -162,7 +162,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
 
       {/* All events */}
       <Band tone="crimson" mandala className="!pt-12">
-        <h2 className={`mb-8 text-4xl sm:text-5xl text-[#f5c928] ${serif.className}`} style={{ textShadow: "3px 3px 0 #5a0010" }}>All events</h2>
+        <h2 className={`mb-8 text-4xl sm:text-5xl text-[#ff7518] ${serif.className}`} style={{ textShadow: "3px 3px 0 #2f0f59" }}>All events</h2>
         <EventsCards events={cards} initial={cat} />
         <p className="mt-10 text-center text-xs uppercase tracking-widest text-white/60">Sample details — dates, venues and prizes are placeholders.</p>
       </Band>
@@ -180,7 +180,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
           <div className="grid gap-6 md:grid-cols-3">
             {EVENT_STEPS.map((s, i) => (
               <div key={s.n} className={`border-2 border-black bg-[#f5edd8] p-6 text-black shadow-[5px_5px_0_0_#000] ${i % 2 ? "rotate-1" : "-rotate-1"} transition-transform hover:rotate-0`}>
-                <span className={`mb-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-black bg-[#f5c928] text-xl ${display.className}`}>{s.n}</span>
+                <span className={`mb-4 flex h-12 w-12 items-center justify-center rounded-full border-2 border-black bg-[#ff7518] text-xl ${display.className}`}>{s.n}</span>
                 <p className="text-2xl font-bold uppercase tracking-wide">{s.title}</p>
                 <p className="mt-1 text-lg leading-snug text-black/70">{s.text}</p>
               </div>
@@ -192,17 +192,17 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
       {/* Presented by — logo slots */}
       <Reveal>
         <Band tone="cream" className="!py-12">
-          <p className="mb-6 text-center text-sm font-bold uppercase tracking-[0.35em] text-[#7a1c1c]">Presented by</p>
+          <p className="mb-6 text-center text-sm font-bold uppercase tracking-[0.35em] text-[#4b1d7a]">Presented by</p>
           <div className="flex flex-wrap justify-center gap-5">
             {presenters.map((p) => (
               <div key={p.name} className="text-center">
-                <LogoSlot label="Logo" size="h-20 w-36" className="text-[#7a1c1c]" />
+                <LogoSlot label="Logo" size="h-20 w-36" className="text-[#4b1d7a]" />
                 <p className="mt-2 text-xs font-bold uppercase tracking-widest text-black/60">{p.name}</p>
               </div>
             ))}
           </div>
           <div className="mt-6 text-center">
-            <Link href="/sponsors" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-[#7a1c1c] hover:text-[#c8421f]">
+            <Link href="/sponsors" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-[#4b1d7a] hover:text-[#e0661a]">
               All sponsors <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -212,13 +212,13 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
       {/* FAQ */}
       <Reveal>
         <Band tone="indigo">
-          <h2 className={`mb-8 text-4xl sm:text-5xl text-[#f5c928] ${display.className}`}>Questions?</h2>
-          <div className="divide-y-2 divide-dashed divide-black/30 overflow-hidden rounded-xl border-2 border-black bg-[#f5edd8] text-[#1a0505] shadow-[4px_4px_0_0_#000]">
+          <h2 className={`mb-8 text-4xl sm:text-5xl text-[#ff7518] ${display.className}`}>Questions?</h2>
+          <div className="divide-y-2 divide-dashed divide-black/30 overflow-hidden rounded-xl border-2 border-black bg-[#f5edd8] text-[#12061f] shadow-[4px_4px_0_0_#000]">
             {EVENT_FAQ.map((f) => (
-              <details key={f.q} className="group px-5 py-4 open:bg-[#f5c928]/25">
+              <details key={f.q} className="group px-5 py-4 open:bg-[#ff7518]/25">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-xl font-bold uppercase tracking-wide">
                   {f.q}
-                  <span className="text-2xl text-[#ff6a00] transition-transform group-open:rotate-45">+</span>
+                  <span className="text-2xl text-[#9d4edd] transition-transform group-open:rotate-45">+</span>
                 </summary>
                 <p className="mt-2 text-lg leading-snug text-black/75">{f.a}</p>
               </details>

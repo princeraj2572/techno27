@@ -49,15 +49,15 @@ function ConfirmDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
-      <div className="relative bg-[#f5edd8] text-[#1a0505] border-2 border-black shadow-[6px_6px_0_0_#000] max-w-sm w-full p-6 space-y-4">
-        <h2 className="text-base font-bold text-[#1a0505]">{title}</h2>
+      <div className="relative bg-[#f5edd8] text-[#12061f] border-2 border-black shadow-[6px_6px_0_0_#000] max-w-sm w-full p-6 space-y-4">
+        <h2 className="text-base font-bold text-[#12061f]">{title}</h2>
         <p className="text-sm text-black/55 leading-relaxed">{description}</p>
         <div className="flex gap-3 justify-end">
           <Button size="sm" variant="outline" onClick={onCancel} className="rounded-none border-2 border-black bg-transparent text-black hover:bg-black/10">Cancel</Button>
           <Button
             size="sm"
             onClick={onConfirm}
-            className={`rounded-none border-2 border-black text-white ${danger ? "bg-[#a1001a] hover:bg-[#7a0013]" : "bg-[#7a1c1c] hover:bg-[#5a1212]"}`}
+            className={`rounded-none border-2 border-black text-white ${danger ? "bg-[#6d28b8] hover:bg-[#7a0013]" : "bg-[#4b1d7a] hover:bg-[#3a1666]"}`}
           >
             {confirmLabel}
           </Button>
@@ -209,18 +209,18 @@ function TeamCard({
         danger={confirm === "delete" || (typeof confirm === "string" && confirm !== "leave")}
       />
 
-      <div className="bg-[#f5edd8] text-[#1a0505] border-2 border-black border-l-8 border-l-[#7a1c1c] shadow-[4px_4px_0_0_#000] overflow-hidden">
+      <div className="bg-[#f5edd8] text-[#12061f] border-2 border-black border-l-8 border-l-[#4b1d7a] shadow-[4px_4px_0_0_#000] overflow-hidden">
         {/* Header */}
         <div className="px-5 pt-5 pb-3">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <h3 className="text-sm font-bold text-[#1a0505] truncate">
+              <h3 className="text-sm font-bold text-[#12061f] truncate">
                 {team.event?.name ?? "Unknown Event"}
               </h3>
               <p className="text-xs text-black/55 mt-0.5">
                 {members.length} of {team.size} members
                 {isLeader && (
-                  <span className="ml-1.5 text-[#7a1c1c] font-medium">· you&apos;re the leader</span>
+                  <span className="ml-1.5 text-[#4b1d7a] font-medium">· you&apos;re the leader</span>
                 )}
               </p>
             </div>
@@ -230,7 +230,7 @@ function TeamCard({
               className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-none transition-colors shrink-0 ${
                 isLeader
                   ? "text-red-600 hover:bg-red-50 hover:text-red-700"
-                  : "text-black/55 hover:bg-black/10 hover:text-[#1a0505]"
+                  : "text-black/55 hover:bg-black/10 hover:text-[#12061f]"
               } disabled:opacity-50`}
             >
               {actionLoading ? (
@@ -253,7 +253,7 @@ function TeamCard({
             />
             {/* confirmed layer */}
             <div
-              className={`absolute inset-y-0 left-0 rounded-full transition-all ${isFull && pendingInvites.length === 0 ? "bg-emerald-500" : "bg-[#f5c928]/300"}`}
+              className={`absolute inset-y-0 left-0 rounded-full transition-all ${isFull && pendingInvites.length === 0 ? "bg-emerald-500" : "bg-[#ff7518]/300"}`}
               style={{ width: `${confirmedPct}%` }}
             />
           </div>
@@ -283,7 +283,7 @@ function TeamCard({
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <p className="text-sm font-medium text-[#1a0505] truncate">{m.fullName}</p>
+                    <p className="text-sm font-medium text-[#12061f] truncate">{m.fullName}</p>
                     <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full border shrink-0 ${
                       isExternal
                         ? "bg-amber-50 text-amber-700 border-amber-200"
@@ -295,7 +295,7 @@ function TeamCard({
                   <p className="text-xs text-black/55 truncate">{m.email}</p>
                 </div>
                 {isTeamLeader ? (
-                  <Badge className="h-5 shrink-0 rounded-none bg-[#7a1c1c] text-xs text-[#f5edd8]">Leader</Badge>
+                  <Badge className="h-5 shrink-0 rounded-none bg-[#4b1d7a] text-xs text-[#f5edd8]">Leader</Badge>
                 ) : isLeader && !isSelf ? (
                   <button
                     onClick={() => setConfirm(m.email)}
@@ -324,7 +324,7 @@ function TeamCard({
                 <Clock className="h-3.5 w-3.5 text-amber-500" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-[#1a0505] truncate">{inv.inviteeEmail}</p>
+                <p className="text-xs font-medium text-[#12061f] truncate">{inv.inviteeEmail}</p>
                 <p className="text-[10px] text-amber-600">Invite pending · awaiting response</p>
               </div>
               {isLeader && (
@@ -348,7 +348,7 @@ function TeamCard({
             <div key={`slot-${i}`}>
               {isLeader && inviteOpenSlot === i ? (
                 /* Expanded inline invite form */
-                <div className="border border-[#7a1c1c] bg-[#f5c928]/30 rounded-none px-3 py-2.5 space-y-1.5">
+                <div className="border border-[#4b1d7a] bg-[#ff7518]/30 rounded-none px-3 py-2.5 space-y-1.5">
                   <div className="flex gap-2">
                     <div className="flex-1 relative">
                       <Input
@@ -361,18 +361,18 @@ function TeamCard({
                         className="h-8 text-sm bg-[#f5edd8] w-full"
                       />
                       {validating && (
-                        <div className="absolute right-2 top-2 w-4 h-4 border-2 border-[#7a1c1c] border-t-transparent rounded-full animate-spin" />
+                        <div className="absolute right-2 top-2 w-4 h-4 border-2 border-[#4b1d7a] border-t-transparent rounded-full animate-spin" />
                       )}
                     </div>
                     <Button
                       size="sm"
                       onClick={() => handleInvite(i)}
                       disabled={inviting || !invitePreview}
-                      className="h-8 px-3 text-xs shrink-0 rounded-none border-2 border-black bg-[#7a1c1c] text-white hover:bg-[#5a1212]"
+                      className="h-8 px-3 text-xs shrink-0 rounded-none border-2 border-black bg-[#4b1d7a] text-white hover:bg-[#3a1666]"
                     >
                       {inviting ? <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : "Send"}
                     </Button>
-                    <button onClick={() => { setInviteOpenSlot(null); setInviteEmail(""); setInviteMsg(null); setInvitePreview(null); }} className="text-black/55 hover:text-[#1a0505] px-1 shrink-0">
+                    <button onClick={() => { setInviteOpenSlot(null); setInviteEmail(""); setInviteMsg(null); setInvitePreview(null); }} className="text-black/55 hover:text-[#12061f] px-1 shrink-0">
                       <X className="h-3.5 w-3.5" />
                     </button>
                   </div>
@@ -392,20 +392,20 @@ function TeamCard({
                   disabled={!isLeader}
                   className={`w-full flex items-center gap-2.5 border-2 border-dashed rounded-none px-3 py-2 transition-colors ${
                     isLeader
-                      ? "border-black/40 hover:border-[#7a1c1c] hover:bg-[#f5c928]/40 group cursor-pointer"
+                      ? "border-black/40 hover:border-[#4b1d7a] hover:bg-[#ff7518]/40 group cursor-pointer"
                       : "border-black/40 cursor-default"
                   }`}
                 >
                   <div className={`w-8 h-8 rounded-full border-2 border-dashed flex items-center justify-center shrink-0 transition-colors ${
-                    isLeader ? "border-black/40 group-hover:border-[#7a1c1c]" : "border-black/40"
+                    isLeader ? "border-black/40 group-hover:border-[#4b1d7a]" : "border-black/40"
                   }`}>
-                    <UserPlus className={`h-3.5 w-3.5 transition-colors ${isLeader ? "text-black/55 group-hover:text-[#7a1c1c]" : "text-black/25"}`} />
+                    <UserPlus className={`h-3.5 w-3.5 transition-colors ${isLeader ? "text-black/55 group-hover:text-[#4b1d7a]" : "text-black/25"}`} />
                   </div>
-                  <span className={`text-xs transition-colors ${isLeader ? "text-black/55 group-hover:text-[#7a1c1c] font-medium" : "text-black/55"}`}>
+                  <span className={`text-xs transition-colors ${isLeader ? "text-black/55 group-hover:text-[#4b1d7a] font-medium" : "text-black/55"}`}>
                     {isLeader ? "Invite teammate" : "Open slot"}
                   </span>
                   {isLeader && (
-                    <span className="ml-auto text-[10px] font-semibold text-[#7a1c1c] opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="ml-auto text-[10px] font-semibold text-[#4b1d7a] opacity-0 group-hover:opacity-100 transition-opacity">
                       + Invite
                     </span>
                   )}
@@ -568,9 +568,9 @@ function TeamDetailsContent() {
       {!filteredEvent && pendingInvites.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <AlertCircle className="h-5 w-5 text-[#f5c928]" />
+            <AlertCircle className="h-5 w-5 text-[#ff7518]" />
             <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={TITLE_SHADOW}>Pending invitations</p>
-            <span className="bg-[#f5c928] px-2 py-0.5 text-sm font-bold text-black">{pendingInvites.length}</span>
+            <span className="bg-[#ff7518] px-2 py-0.5 text-sm font-bold text-black">{pendingInvites.length}</span>
           </div>
           {pendingInvites.map((invite) => (
             <InviteCard
@@ -587,17 +587,17 @@ function TeamDetailsContent() {
       <div className="space-y-4">
         {!filteredEvent && (
           <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={TITLE_SHADOW}>
-            Registered teams <span className="text-[#f5c928]">({teams.length})</span>
+            Registered teams <span className="text-[#ff7518]">({teams.length})</span>
           </p>
         )}
 
         {visibleTeams.length === 0 ? (
           <div className="border-2 border-dashed border-[#f5edd8]/40 py-12 text-center">
-            <Users className="mx-auto mb-3 h-9 w-9 text-[#f5c928]" />
+            <Users className="mx-auto mb-3 h-9 w-9 text-[#ff7518]" />
             <p className="text-xl font-bold uppercase text-[#f5edd8]">No team found{filteredEvent ? " for this event" : ""}</p>
             <Link
               href="/events-selection"
-              className="mt-1 block text-sm font-bold uppercase tracking-wider text-[#f5c928] hover:underline"
+              className="mt-1 block text-sm font-bold uppercase tracking-wider text-[#ff7518] hover:underline"
             >
               Register for an event to create or join a team
             </Link>

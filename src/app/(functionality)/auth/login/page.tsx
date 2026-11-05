@@ -60,8 +60,8 @@ function LoginForm() {
     <AuthShell>
       <AuthCard tag="Welcome back" title="Sign In" description="Techno-aiMBiAtion 2027" maxWidth="max-w-md">
         {registered && (
-          <div className="mb-5 flex items-center gap-2.5 border-2 border-black bg-[#f5c928]/40 px-4 py-3">
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-[#1a0505]" />
+          <div className="mb-5 flex items-center gap-2.5 border-2 border-black bg-[#ff7518]/40 px-4 py-3">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-[#12061f]" />
             <p className="text-sm font-bold">Account created — sign in to continue.</p>
           </div>
         )}
@@ -70,13 +70,13 @@ function LoginForm() {
           <div className="space-y-1.5">
             <Label htmlFor="email">Email address</Label>
             <Input id="email" type="email" placeholder="you@opju.ac.in" autoComplete="email" {...register("email")} />
-            {errors.email && <p className="text-xs font-bold text-[#a1001a]">{errors.email.message}</p>}
+            {errors.email && <p className="text-xs font-bold text-[#6d28b8]">{errors.email.message}</p>}
           </div>
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
-              <Link href="/auth/forgot-password" className="text-xs font-bold text-[#a1001a] underline underline-offset-4 hover:text-[#ff6a00]">
+              <Link href="/auth/forgot-password" className="text-xs font-bold text-[#6d28b8] underline underline-offset-4 hover:text-[#9d4edd]">
                 Forgot password?
               </Link>
             </div>
@@ -98,12 +98,12 @@ function LoginForm() {
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
-            {errors.password && <p className="text-xs font-bold text-[#a1001a]">{errors.password.message}</p>}
+            {errors.password && <p className="text-xs font-bold text-[#6d28b8]">{errors.password.message}</p>}
           </div>
 
           {serverError && (
-            <div className="border-2 border-[#a1001a] bg-[#a1001a]/10 px-3 py-2">
-              <p className="text-sm font-bold text-[#a1001a]">{serverError}</p>
+            <div className="border-2 border-[#6d28b8] bg-[#6d28b8]/10 px-3 py-2">
+              <p className="text-sm font-bold text-[#6d28b8]">{serverError}</p>
             </div>
           )}
 
@@ -114,7 +114,7 @@ function LoginForm() {
 
         <p className="mt-5 border-t-2 border-dashed border-black/30 pt-4 text-center text-sm text-muted-foreground">
           New to Techno-aiMBiAtion?{" "}
-          <Link href="/auth/signup" className="font-bold text-[#a1001a] underline underline-offset-4 hover:text-[#ff6a00]">
+          <Link href="/auth/signup" className="font-bold text-[#6d28b8] underline underline-offset-4 hover:text-[#9d4edd]">
             Create an account
           </Link>
         </p>

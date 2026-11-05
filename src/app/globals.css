@@ -31,25 +31,25 @@
 :root {
   --radius: 0.5rem;
 
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #4f46e5;
-  --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #1e293b;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #ede9fe;
-  --accent-foreground: #4338ca;
+  --background: #12061f;
+  --foreground: #f5edd8;
+  --card: #1e0a38;
+  --card-foreground: #f5edd8;
+  --popover: #1e0a38;
+  --popover-foreground: #f5edd8;
+  --primary: #ff7518;
+  --primary-foreground: #12061f;
+  --secondary: #2a0f4a;
+  --secondary-foreground: #f5edd8;
+  --muted: #2a0f4a;
+  --muted-foreground: #b9a5d6;
+  --accent: #4b1d7a;
+  --accent-foreground: #ffc58a;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #4f46e5;
+  --border: #3a1666;
+  --input: #3a1666;
+  --ring: #ff7518;
 }
 
 /* ── Dark theme ────────────────────────────────────────────────────── */
@@ -118,4 +118,11 @@ body {
 
 @utility animate-slide-up {
   animation: slide-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Halloween decor ───────────────────────────────────────────────── */
+@keyframes bat-fly {
+  from { transform: translateX(-12vw) translateY(0); }
+  50% { transform: translateX(50vw) translateY(-6vh); }
+  to { transform: translateX(112vw) translateY(4vh); }
 }

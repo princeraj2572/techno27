@@ -13,7 +13,7 @@ export default function ContactPage() {
       <Band tone="teal" art="gold" artCenterRight className="!max-w-6xl !py-14">
         <div className="grid items-center gap-8 md:grid-cols-[1fr_auto]">
           <div>
-            <p className="mb-5 text-sm font-bold uppercase tracking-[0.4em] text-[#ffd34d]">Team · The people behind Techno-aiMBiAtion &apos;27</p>
+            <p className="mb-5 text-sm font-bold uppercase tracking-[0.4em] text-[#ff8f2e]">Team · The people behind Techno-aiMBiAtion &apos;27</p>
             <h1>
               <span className="sr-only">Team — Tera bhai sabkuch sambhal lega</span>
               <span aria-hidden className="relative block w-fit">
@@ -23,7 +23,7 @@ export default function ContactPage() {
                 >
                   तेरा भाई
                 </span>
-                {[["-right-6 top-3", "#ff2d8a"], ["left-24 -top-2", "#ffd34d"], ["right-8 bottom-6", "#ffd34d"]].map(([pos, c], i) => (
+                {[["-right-6 top-3", "#ff2d8a"], ["left-24 -top-2", "#ff8f2e"], ["right-8 bottom-6", "#ff8f2e"]].map(([pos, c], i) => (
                   <svg key={i} viewBox="0 0 20 20" className={`absolute h-5 w-5 ${pos}`} fill={c}><path d="M10 0 L13 7 L20 10 L13 13 L10 20 L7 13 L0 10 L7 7 Z" /></svg>
                 ))}
               </span>
@@ -35,7 +35,7 @@ export default function ContactPage() {
                 सबकुछ संभाल लेगा
               </span>
             </h1>
-            <p className="mt-5 text-sm font-bold uppercase tracking-[0.3em] text-[#ffd34d] sm:text-base">Tera bhai sabkuch sambhal lega — meet the crew keeping the fest running</p>
+            <p className="mt-5 text-sm font-bold uppercase tracking-[0.3em] text-[#ff8f2e] sm:text-base">Tera bhai sabkuch sambhal lega — meet the crew keeping the fest running</p>
           </div>
 
           {/* A tiffin of good things — decorative */}
@@ -51,7 +51,7 @@ export default function ContactPage() {
             <rect x="20" y="56" width="9" height="124" rx="4" fill="#7e939a" stroke="#4d646b" strokeWidth="2.5" />
             <rect x="141" y="56" width="9" height="124" rx="4" fill="#7e939a" stroke="#4d646b" strokeWidth="2.5" />
             {[[30, 196], [150, 190], [86, 12], [14, 20], [158, 22]].map(([x, y], i) => (
-              <path key={i} transform={`translate(${x - 7} ${y - 7})`} d="M7 0 L9.2 4.8 L14 7 L9.2 9.2 L7 14 L4.8 9.2 L0 7 L4.8 4.8 Z" fill={i % 2 ? "#ff2d8a" : "#ffd34d"} />
+              <path key={i} transform={`translate(${x - 7} ${y - 7})`} d="M7 0 L9.2 4.8 L14 7 L9.2 9.2 L7 14 L4.8 9.2 L0 7 L4.8 4.8 Z" fill={i % 2 ? "#ff2d8a" : "#ff8f2e"} />
             ))}
           </svg>
         </div>
@@ -74,13 +74,13 @@ export default function ContactPage() {
       </Band>
 
       {/* Sticky strip to jump between departments */}
-      <nav aria-label="Departments" className="sticky top-16 z-30 border-y-2 border-black bg-[#1a0f08]/95 backdrop-blur">
+      <nav aria-label="Departments" className="sticky top-16 z-30 border-y-2 border-black bg-[#150a24]/95 backdrop-blur">
         <ul className="indie-hscroll mx-auto flex max-w-6xl gap-2 overflow-x-auto px-6 py-2.5">
           {DEPARTMENTS.map((d) => (
             <li key={d.name} className="shrink-0">
               <a
                 href={`#${slugify(d.name)}`}
-                className="block whitespace-nowrap border-2 border-[#f5c928]/70 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#f5edd8] transition hover:bg-[#f5c928] hover:text-black"
+                className="block whitespace-nowrap border-2 border-[#ff7518]/70 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#f5edd8] transition hover:bg-[#ff7518] hover:text-black"
               >
                 {d.name}
               </a>

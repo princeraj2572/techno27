@@ -45,7 +45,7 @@ function ActColumn({ acts, dir }: { acts: typeof JUNOON_ACTS; dir: "up" | "down"
             {acts.map((a) => (
               <div key={a.name + rep} className="rounded-xl border border-white/20 bg-white/5 px-4 py-3">
                 <p className={`text-lg text-[#f5edd8] leading-tight ${display.className}`}>{a.name}</p>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f5c928]">{a.genre}</p>
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#ff7518]">{a.genre}</p>
               </div>
             ))}
           </div>
@@ -73,16 +73,16 @@ export default function HomePage() {
       {/* Pinned sections: each slides up over the previous one (large screens) */}
       <div className="relative">
         {/* Hero */}
-        <section className="panel relative overflow-hidden indie-mandala bg-[#7a1c1c]" style={{ minHeight: "calc(100vh - 4rem)" }}>
+        <section className="panel relative overflow-hidden indie-mandala bg-[#4b1d7a]" style={{ minHeight: "calc(100vh - 4rem)" }}>
           <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(58,8,8,0.85) 0%, rgba(122,28,28,0.55) 50%, rgba(246,95,0,0.85) 100%)" }} />
           <div className="panel-inner relative max-w-6xl mx-auto px-6 pt-16 pb-48 md:pb-44 grid md:grid-cols-2 gap-6 items-center">
             <div className="space-y-6 text-center md:text-left">
-              <p className="inline-block bg-[#ff6a00] text-black text-sm font-bold uppercase tracking-[0.25em] px-3 py-1 border-2 border-black -rotate-1">
+              <p className="inline-block bg-[#9d4edd] text-black text-sm font-bold uppercase tracking-[0.25em] px-3 py-1 border-2 border-black -rotate-1">
                 Op Jindal University • 16th Edition • Since 2011
               </p>
-              <h1 className={`text-5xl sm:text-7xl leading-[0.95] text-[#f5c928] break-words ${serif.className}`} style={{ textShadow: "4px 4px 0 #3a0808" }}>
+              <h1 className={`text-5xl sm:text-7xl leading-[0.95] text-[#ff7518] break-words ${serif.className}`} style={{ textShadow: "4px 4px 0 #1e0a38" }}>
                 Techno-<span className="text-[#f5edd8]">aiMBiAtion</span>
-                <span className="block text-[#ff6a00]">&apos;27</span>
+                <span className="block text-[#9d4edd]">&apos;27</span>
               </h1>
               <p className="max-w-lg text-xl sm:text-2xl font-semibold leading-snug text-[#f5edd8]/90 mx-auto md:mx-0">
                 The annual flagship festival of O.P. Jindal University. Compete, collaborate and create — across Tech, Robotics, Culture &amp; more.
@@ -93,12 +93,12 @@ export default function HomePage() {
               </div>
             </div>
 
-            <span aria-hidden className="indie-float absolute left-4 top-6 hidden md:block bg-[#f5c928] text-black text-xs font-bold uppercase tracking-widest px-3 py-1 border-2 border-black" style={{ ["--r" as string]: "-6deg" }}>★ Vol. 1</span>
+            <span aria-hidden className="indie-float absolute left-4 top-6 hidden md:block bg-[#ff7518] text-black text-xs font-bold uppercase tracking-widest px-3 py-1 border-2 border-black" style={{ ["--r" as string]: "-6deg" }}>★ Vol. 1</span>
 
             <TicketCountdown to={FEST_START} />
           </div>
           <Marquee
-            className="absolute inset-x-0 bottom-0 z-10 bg-[#ff6a00] text-black font-bold uppercase tracking-wider text-xl py-1.5 -rotate-1 scale-[1.02]"
+            className="absolute inset-x-0 bottom-0 z-10 bg-[#9d4edd] text-black font-bold uppercase tracking-wider text-xl py-1.5 -rotate-1 scale-[1.02]"
             text="Join the riot ✦ Compete ✦ Collaborate ✦ Create ✦ "
           />
           <span aria-hidden className="indie-bob absolute bottom-14 left-1/2 z-10 hidden md:flex h-10 w-6 items-start justify-center rounded-full border-2 border-[#f5edd8]/80 pt-1.5">
@@ -107,10 +107,10 @@ export default function HomePage() {
         </section>
 
         {/* What's new */}
-        <Band panel tone="crimson" zigzag="#f5c928" mandala>
+        <Band panel tone="crimson" zigzag="#ff7518" mandala>
           <div className="grid md:grid-cols-3 gap-10 items-start">
             <div className="md:col-span-2">
-              <h2 className={`text-5xl sm:text-6xl text-[#f5c928] leading-[0.95] ${serif.className}`} style={{ textShadow: "3px 3px 0 #5a0010" }}>
+              <h2 className={`text-5xl sm:text-6xl text-[#ff7518] leading-[0.95] ${serif.className}`} style={{ textShadow: "3px 3px 0 #2f0f59" }}>
                 What&apos;s<br />new
               </h2>
               <p className="text-xl font-bold text-white mt-3 mb-10">All the latest, pinned to the board.</p>
@@ -132,15 +132,15 @@ export default function HomePage() {
         <Band panel tone="indigo">
           <div className="grid gap-10 md:grid-cols-2 items-center">
             <div>
-              <p className="inline-block border border-[#f5c928]/60 px-3 py-0.5 text-xs font-bold uppercase tracking-[0.35em] text-[#f5c928]">After dark</p>
+              <p className="inline-block border border-[#ff7518]/60 px-3 py-0.5 text-xs font-bold uppercase tracking-[0.35em] text-[#ff7518]">After dark</p>
               <h2 className="mt-4 text-6xl sm:text-8xl font-bold uppercase leading-none text-[#f5edd8]">Junoon &apos;27</h2>
               <p className="mt-2 text-2xl sm:text-4xl font-bold uppercase">
-                The nights that <span className="text-[#f5c928]">light up</span> the campus
+                The nights that <span className="text-[#ff7518]">light up</span> the campus
               </p>
               <div className="mt-6 grid grid-cols-3 gap-3">
                 {JUNOON_NIGHTS.map((n) => (
                   <div key={n.n} className="rounded-lg border border-white/20 bg-white/5 p-3 text-center">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#f5c928]">Night {n.n}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#ff7518]">Night {n.n}</p>
                     <p className="mt-1 text-sm font-bold uppercase leading-tight">{n.artist}</p>
                   </div>
                 ))}
@@ -149,8 +149,8 @@ export default function HomePage() {
                 <Link href="/junoon" className="inline-block border-2 border-[#f5edd8] px-6 py-2 text-sm font-bold uppercase tracking-widest hover:bg-[#f5edd8] hover:text-black transition-colors">
                   Enter after dark ↗
                 </Link>
-                <div className="flex items-center gap-3 rounded-lg border border-dashed border-[#f5c928]/60 px-3 py-2" title={MYSTERY_HINTS.join(" · ")}>
-                  <span className={`indie-qshake inline-block text-4xl text-[#f5c928] ${display.className}`}>?</span>
+                <div className="flex items-center gap-3 rounded-lg border border-dashed border-[#ff7518]/60 px-3 py-2" title={MYSTERY_HINTS.join(" · ")}>
+                  <span className={`indie-qshake inline-block text-4xl text-[#ff7518] ${display.className}`}>?</span>
                   <span className="text-xs font-bold uppercase tracking-widest text-[#f5edd8]/80">Guess the headliner<br />— {MYSTERY_HINTS[0]}</span>
                 </div>
               </div>
@@ -168,7 +168,7 @@ export default function HomePage() {
             <div>
               <CutoutTitle latin="Events" hindi="इवेंट्स" />
               <p className="text-3xl font-bold uppercase text-[#f5edd8] mt-2">
-                Tune into the <span className="text-[#f5c928]">fest.</span>
+                Tune into the <span className="text-[#ff7518]">fest.</span>
               </p>
             </div>
             <BlockButton href="/events" tone="mustard">Browse all {PUBLIC_EVENTS.length} events →</BlockButton>
@@ -179,7 +179,7 @@ export default function HomePage() {
                 <Stamp slug={e.slug} name={e.name} category={e.category} number={i + 1} image={EVENT_MEDIA[e.slug]?.image} compact />
                 <div className="mt-4 text-[#f5edd8]">
                   <p className={`text-lg uppercase leading-tight tracking-[0.16em] ${serif.className}`}>{CULTURES[e.slug]?.state}</p>
-                  <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.3em] text-[#f5c928]">
+                  <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.3em] text-[#ff7518]">
                     {e.subEvents.length > 0 ? `${e.subEvents.length} competitions` : "Marquee event"} · {e.category}
                   </p>
                 </div>
@@ -189,11 +189,11 @@ export default function HomePage() {
         </Band>
 
         {/* Numbers */}
-        <Band panel tone="cream" overlay={<div aria-hidden className="absolute inset-0 opacity-[0.1]" style={patternStyle("diamonds", "#7a1c1c")} />}>
+        <Band panel tone="cream" overlay={<div aria-hidden className="absolute inset-0 opacity-[0.1]" style={patternStyle("diamonds", "#4b1d7a")} />}>
           <div className="relative grid items-center gap-10 pt-6 md:grid-cols-[1.15fr_1fr]">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.4em] text-[#c8421f]">The fest, by the</p>
-              <CutoutTitle latin="Numbers" hindi="आँकड़े" color="#d62828" shadow="#4a0e0e" className="mt-1" />
+              <p className="text-sm font-bold uppercase tracking-[0.4em] text-[#e0661a]">The fest, by the</p>
+              <CutoutTitle latin="Numbers" hindi="आँकड़े" color="#d62828" shadow="#2a0f4a" className="mt-1" />
 
               <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8">
                 {stats.map((st, i) => {
@@ -227,11 +227,11 @@ export default function HomePage() {
 
             {/* vinyl on a slowly turning mandala, with a postmark and a charm */}
             <div className="relative mx-auto w-72 sm:w-96 aspect-square">
-              <MandalaSpin className="absolute -inset-16 h-[calc(100%+8rem)] w-[calc(100%+8rem)] opacity-60" stroke="#c8421f" reverse />
+              <MandalaSpin className="absolute -inset-16 h-[calc(100%+8rem)] w-[calc(100%+8rem)] opacity-60" stroke="#e0661a" reverse />
               <Vinyl className="relative h-full w-full drop-shadow-[8px_8px_0_rgba(0,0,0,0.35)]" slow />
               <Postmark lines={false} className="pointer-events-none absolute -bottom-3 -right-3 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
               <NimbuMirch className="pointer-events-none absolute -left-4 -top-2 z-10 h-28 w-auto" delay="0.3s" />
-              <span className="indie-wobble absolute right-0 top-2 border-2 border-black bg-[#f5c928] px-3 py-1 text-sm font-bold uppercase tracking-widest text-black">★ 3 days of fest</span>
+              <span className="indie-wobble absolute right-0 top-2 border-2 border-black bg-[#ff7518] px-3 py-1 text-sm font-bold uppercase tracking-widest text-black">★ 3 days of fest</span>
               <span aria-hidden className="indie-float absolute bottom-6 left-0 border-2 border-black bg-[#f5edd8] px-3 py-1 text-xs font-bold uppercase tracking-widest text-black" style={{ ["--r" as string]: "-5deg" }}>TRX&apos;27</span>
             </div>
           </div>
@@ -254,7 +254,7 @@ export default function HomePage() {
         <Reveal><Band tone="crimson" mandala>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
             <div>
-              <h2 className={`text-5xl sm:text-6xl text-[#f5c928] leading-none ${serif.className}`} style={{ textShadow: "3px 3px 0 #5a0010" }}>Schedule</h2>
+              <h2 className={`text-5xl sm:text-6xl text-[#ff7518] leading-none ${serif.className}`} style={{ textShadow: "3px 3px 0 #2f0f59" }}>Schedule</h2>
               <p className="mt-2 text-xl font-bold uppercase">Next departures from Techno Junction</p>
             </div>
             <BlockButton href="/schedule" tone="cream">Full schedule →</BlockButton>
@@ -263,7 +263,7 @@ export default function HomePage() {
             <ul className="divide-y divide-white/10">
               {nextUp.map((r) => (
                 <li key={r.time + r.title} className="grid grid-cols-[64px_1fr_auto] items-center gap-3 px-4 py-3">
-                  <span className="text-lg font-bold text-[#ffb000] tabular-nums">{r.time}</span>
+                  <span className="text-lg font-bold text-[#ff8f2e] tabular-nums">{r.time}</span>
                   <span className="truncate text-lg font-bold uppercase tracking-wide text-white">{r.title}</span>
                   <span className="border border-white/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-white/80">{r.venue}</span>
                 </li>
@@ -294,7 +294,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {STEPS.map((s, i) => (
               <div key={s.n} className={`bg-[#f5edd8] border-2 border-black shadow-[4px_4px_0_0_#000] p-5 ${i % 2 ? "rotate-1" : "-rotate-1"} hover:rotate-0 transition-transform`}>
-                <div className={`w-10 h-10 rounded-full bg-[#f5c928] text-black border-2 border-black flex items-center justify-center text-lg mb-3 ${display.className}`}>{s.n}</div>
+                <div className={`w-10 h-10 rounded-full bg-[#ff7518] text-black border-2 border-black flex items-center justify-center text-lg mb-3 ${display.className}`}>{s.n}</div>
                 <p className="text-xl font-bold uppercase tracking-wide text-black">{s.title}</p>
                 <p className="text-base text-black/70 leading-snug mt-1">{s.desc}</p>
               </div>
@@ -302,21 +302,21 @@ export default function HomePage() {
           </div>
         </Band></Reveal>
 
-        <section className="relative grid md:grid-cols-5 overflow-hidden bg-[#a1001a]">
-          <div className="md:col-span-3 bg-[#f5edd8] text-[#1a0505] px-8 sm:px-14 py-16 md:rounded-r-[50%] md:pr-28 relative z-10">
-            <h2 className={`text-4xl sm:text-6xl text-[#7a1c1c] leading-[0.95] ${serif.className}`}>Ready<br />to compete?</h2>
+        <section className="relative grid md:grid-cols-5 overflow-hidden bg-[#6d28b8]">
+          <div className="md:col-span-3 bg-[#f5edd8] text-[#12061f] px-8 sm:px-14 py-16 md:rounded-r-[50%] md:pr-28 relative z-10">
+            <h2 className={`text-4xl sm:text-6xl text-[#4b1d7a] leading-[0.95] ${serif.className}`}>Ready<br />to compete?</h2>
             <p className="text-xl leading-snug mt-4 max-w-md">
               Register with your OPJU email to get free entry. External participants get a unique TRX27 ID.
             </p>
             <div className="mt-7"><BlockButton href="/auth/signup">Create your account</BlockButton></div>
           </div>
-          <div className="md:col-span-2 indie-mandala relative flex items-center justify-center py-12 md:border-l-4 md:border-dashed md:border-[#f5c928]">
+          <div className="md:col-span-2 indie-mandala relative flex items-center justify-center py-12 md:border-l-4 md:border-dashed md:border-[#ff7518]">
             <Vinyl className="w-48 h-48 sm:w-56 sm:h-56 drop-shadow-[6px_6px_0_rgba(0,0,0,0.4)]" />
           </div>
         </section>
 
         <Marquee
-          className="bg-[#ff6a00] text-black font-bold uppercase tracking-wider text-lg py-1.5"
+          className="bg-[#9d4edd] text-black font-bold uppercase tracking-wider text-lg py-1.5"
           text="Techno-aiMBiAtion 2027 ✦ O.P. Jindal University ✦ See you there ✦ "
           speed={40}
         />

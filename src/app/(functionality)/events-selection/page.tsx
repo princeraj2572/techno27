@@ -23,9 +23,9 @@ const STATUS_LABEL: Record<string, { text: string; cls: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      cls: "bg-[#1f8a3a] text-white" },
   EVENT_LIVE:          { text: "Live now",  cls: "bg-[#0b2a6b] text-white" },
   COMPLETED:           { text: "Completed", cls: "bg-black/15 text-black/60" },
-  CANCELLED:           { text: "Cancelled", cls: "bg-[#a1001a] text-white" },
+  CANCELLED:           { text: "Cancelled", cls: "bg-[#6d28b8] text-white" },
   REGISTRATION_CLOSED: { text: "Closed",    cls: "bg-[#e8851a] text-black" },
-  TEMPORARILY_CLOSED:  { text: "Paused",    cls: "bg-[#ff6a00] text-black" },
+  TEMPORARILY_CLOSED:  { text: "Paused",    cls: "bg-[#9d4edd] text-black" },
 };
 
 function Skeleton() {
@@ -116,7 +116,7 @@ export default function EventsSelectionPage() {
         {msg && (
           <div
             className={`border-2 border-black px-4 py-3 text-base font-semibold shadow-[4px_4px_0_0_#000] ${
-              msg.type === "success" ? "bg-[#c9f0c9] text-[#0d3d1a]" : "bg-[#ffd0d0] text-[#6b0010]"
+              msg.type === "success" ? "bg-[#c9f0c9] text-[#0d3d1a]" : "bg-[#ffd0d0] text-[#5000ab]"
             }`}
           >
             {msg.type === "success" && <CheckCircle2 className="mr-1.5 inline h-4 w-4" />}
@@ -127,7 +127,7 @@ export default function EventsSelectionPage() {
         {/* Events grid */}
         {openEvents.length === 0 && otherEvents.length === 0 ? (
           <div className="border-2 border-dashed border-[#f5edd8]/40 py-16 text-center">
-            <CalendarDays className="mx-auto mb-3 h-9 w-9 text-[#f5c928]" />
+            <CalendarDays className="mx-auto mb-3 h-9 w-9 text-[#ff7518]" />
             <p className="text-xl font-bold uppercase text-[#f5edd8]">No events available right now</p>
             <p className="mt-1 text-sm text-[#f5edd8]/70">Check back soon or contact the organizers.</p>
           </div>
@@ -141,7 +141,7 @@ export default function EventsSelectionPage() {
 
               let cardClass = `${CARD} p-4 transition `;
               if (isRegistered)    cardClass += "border-l-8 border-l-[#1f8a3a] cursor-default";
-              else if (isSelected) cardClass += "-translate-y-1 cursor-pointer !bg-[#f5c928] !shadow-[6px_6px_0_0_#000]";
+              else if (isSelected) cardClass += "-translate-y-1 cursor-pointer !bg-[#ff7518] !shadow-[6px_6px_0_0_#000]";
               else if (isOpen)     cardClass += "cursor-pointer hover:-translate-y-1";
               else                 cardClass += "cursor-not-allowed opacity-60";
 
@@ -165,7 +165,7 @@ export default function EventsSelectionPage() {
                   </div>
 
                   {event.category && (
-                    <p className="mb-2 text-sm font-bold uppercase tracking-widest text-[#7a1c1c]">{event.category}</p>
+                    <p className="mb-2 text-sm font-bold uppercase tracking-widest text-[#4b1d7a]">{event.category}</p>
                   )}
 
                   {event.description && (
@@ -180,7 +180,7 @@ export default function EventsSelectionPage() {
                     {event.internalFee !== undefined && <span>Internal ₹{event.internalFee}</span>}
                     {event.externalFee !== undefined && <span>External ₹{event.externalFee}</span>}
                     {event.prizeMoney && (
-                      <span className="flex items-center gap-1 text-[#a1001a]">
+                      <span className="flex items-center gap-1 text-[#6d28b8]">
                         <Trophy className="h-4 w-4" /> ₹{event.prizeMoney}
                       </span>
                     )}
@@ -210,7 +210,7 @@ export default function EventsSelectionPage() {
           <button
             onClick={handleRegister}
             disabled={submitting}
-            className={`pointer-events-auto border-2 border-black bg-[#f5c928] px-8 py-3 text-lg uppercase tracking-wider text-black shadow-[5px_5px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#ff6a00] disabled:opacity-60 ${display.className}`}
+            className={`pointer-events-auto border-2 border-black bg-[#ff7518] px-8 py-3 text-lg uppercase tracking-wider text-black shadow-[5px_5px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#9d4edd] disabled:opacity-60 ${display.className}`}
           >
             {submitting
               ? "Registering…"

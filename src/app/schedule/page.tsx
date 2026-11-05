@@ -9,7 +9,7 @@ export default function SchedulePage() {
     <PageShell>
       <Band tone="orange" art className="!pt-12">
         <h1
-          className={`text-5xl sm:text-7xl leading-[0.95] text-[#ffd60a] ${serif.className}`}
+          className={`text-5xl sm:text-7xl leading-[0.95] text-[#ff8f2e] ${serif.className}`}
           style={{ textShadow: "3px 3px 0 #c2410c" }}
         >
           Schedule

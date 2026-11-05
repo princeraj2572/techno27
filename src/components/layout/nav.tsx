@@ -25,13 +25,13 @@ const NAV_LINKS = [
 
 // Navbar colours per page, matching each page's top band. Event pages use their own event theme.
 type NavTheme = { bg: string; ink: string; accent: string; accentInk: string };
-const DEFAULT_THEME: NavTheme = { bg: "#3a0808", ink: "#f5edd8", accent: "#f5c928", accentInk: "#000000" };
-const CRIMSON: NavTheme = { bg: "#a1001a", ink: "#f5edd8", accent: "#f5c928", accentInk: "#000000" };
+const DEFAULT_THEME: NavTheme = { bg: "#1e0a38", ink: "#f5edd8", accent: "#ff7518", accentInk: "#000000" };
+const CRIMSON: NavTheme = { bg: "#6d28b8", ink: "#f5edd8", accent: "#ff7518", accentInk: "#000000" };
 const PAGE_THEMES: [string, NavTheme][] = [
   ["/schedule", { bg: "#f65f00", ink: "#000000", accent: "#000000", accentInk: "#f5edd8" }],
-  ["/junoon", { bg: "#0f0029", ink: "#f5edd8", accent: "#f5c928", accentInk: "#000000" }],
+  ["/junoon", { bg: "#0f0029", ink: "#f5edd8", accent: "#ff7518", accentInk: "#000000" }],
   ["/creatorverse", { bg: "#ff2d8a", ink: "#000000", accent: "#000000", accentInk: "#ffffff" }],
-  ["/contact", { bg: "#0e5b57", ink: "#f5edd8", accent: "#ffd34d", accentInk: "#000000" }],
+  ["/contact", { bg: "#0e5b57", ink: "#f5edd8", accent: "#ff8f2e", accentInk: "#000000" }],
   ["/about", CRIMSON], ["/gallery", CRIMSON], ["/sponsors", CRIMSON],
 ];
 
@@ -93,11 +93,11 @@ export default function Navbar() {
         {/* Station board logo */}
         <Link href="/" className="group flex items-center gap-2.5 shrink-0">
           <svg viewBox="0 0 100 100" className="h-10 w-10 transition-transform duration-500 group-hover:rotate-180" aria-hidden>
-            <circle cx="50" cy="50" r="46" fill="#a1001a" stroke="#f5c928" strokeWidth="5" />
+            <circle cx="50" cy="50" r="46" fill="#6d28b8" stroke="#ff7518" strokeWidth="5" />
             {[34, 26, 18].map((r) => (
               <circle key={r} cx="50" cy="50" r={r} fill="none" stroke="#000" strokeWidth="1.5" />
             ))}
-            <circle cx="50" cy="50" r="11" fill="#f5c928" />
+            <circle cx="50" cy="50" r="11" fill="#ff7518" />
             <circle cx="50" cy="50" r="2.5" fill="#000" />
           </svg>
           <span className={cn("whitespace-nowrap text-xl leading-none text-[var(--nav-accent)] sm:text-2xl", serif.className)}>
@@ -133,7 +133,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/auth/signup"
-                className="flex items-center gap-1.5 whitespace-nowrap border-2 border-black bg-[#f5c928] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-black shadow-[3px_3px_0_0_#ff6a00] transition hover:-translate-y-0.5 hover:bg-[#ff6a00]"
+                className="flex items-center gap-1.5 whitespace-nowrap border-2 border-black bg-[#ff7518] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-black shadow-[3px_3px_0_0_#9d4edd] transition hover:-translate-y-0.5 hover:bg-[#9d4edd]"
               >
                 <Ticket className="h-4 w-4" /> Register
               </Link>
@@ -179,7 +179,7 @@ export default function Navbar() {
                   </Link>
                   <Link
                     href="/auth/signup"
-                    className="border-2 border-black bg-[#f5c928] py-2 text-center text-lg font-bold uppercase tracking-wider text-black shadow-[3px_3px_0_0_#ff6a00]"
+                    className="border-2 border-black bg-[#ff7518] py-2 text-center text-lg font-bold uppercase tracking-wider text-black shadow-[3px_3px_0_0_#9d4edd]"
                   >
                     Register
                   </Link>

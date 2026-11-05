@@ -5,11 +5,11 @@ import { display } from "@/components/indie";
 import type { ScheduleDay, ScheduleKind } from "@/data/schedule";
 
 const FILTERS: { label: "All" | ScheduleKind; cls: string }[] = [
-  { label: "All", cls: "bg-[#a1001a] text-white" },
-  { label: "Technical", cls: "bg-[#f5c928] text-[#3a0808]" },
-  { label: "Cultural", cls: "bg-[#7a1c1c] text-[#ffd60a]" },
-  { label: "Management", cls: "bg-[#f5edd8] text-[#3a0808]" },
-  { label: "Fun", cls: "bg-[#3a0808] text-[#ffd60a]" },
+  { label: "All", cls: "bg-[#6d28b8] text-white" },
+  { label: "Technical", cls: "bg-[#ff7518] text-[#1e0a38]" },
+  { label: "Cultural", cls: "bg-[#4b1d7a] text-[#ff8f2e]" },
+  { label: "Management", cls: "bg-[#f5edd8] text-[#1e0a38]" },
+  { label: "Fun", cls: "bg-[#1e0a38] text-[#ff8f2e]" },
 ];
 
 export function DeparturesBoard({ days }: { days: ScheduleDay[] }) {
@@ -29,7 +29,7 @@ export function DeparturesBoard({ days }: { days: ScheduleDay[] }) {
               aria-selected={day === i}
               onClick={() => setDay(i)}
               className={`shrink-0 border-2 border-black px-4 py-2 text-left shadow-[3px_3px_0_0_#000] transition ${
-                day === i ? "bg-[#a1001a] -rotate-1 text-[#ffd60a]" : "bg-[#f5edd8] hover:-translate-y-0.5 text-[#3a0808]"
+                day === i ? "bg-[#6d28b8] -rotate-1 text-[#ff8f2e]" : "bg-[#f5edd8] hover:-translate-y-0.5 text-[#1e0a38]"
               }`}
             >
               <span className="block text-sm font-bold uppercase tracking-wider">{d.label}</span>
@@ -52,15 +52,15 @@ export function DeparturesBoard({ days }: { days: ScheduleDay[] }) {
       </div>
 
       {/* the board */}
-      <div className="rounded-lg border-4 border-black bg-[#2a0b06] shadow-[6px_6px_0_0_#000] overflow-hidden">
-        <div className="flex items-center justify-between border-b border-[#f5c928]/25 bg-[#1a0604] px-4 py-3">
+      <div className="rounded-lg border-4 border-black bg-[#1f0b43] shadow-[6px_6px_0_0_#000] overflow-hidden">
+        <div className="flex items-center justify-between border-b border-[#ff7518]/25 bg-[#130629] px-4 py-3">
           <div>
             <p className="text-[10px] uppercase tracking-[0.3em] text-white/80">Departures</p>
             <p className="text-sm font-bold uppercase tracking-widest text-white">Techno Junction · All lines</p>
           </div>
           <div className="text-right">
             <p className="text-[10px] uppercase tracking-[0.3em] text-white/80">{days[day].label}</p>
-            <p className={`text-xl text-[#ffd60a] ${display.className}`}>{days[day].date}</p>
+            <p className={`text-xl text-[#ff8f2e] ${display.className}`}>{days[day].date}</p>
           </div>
         </div>
 
@@ -85,10 +85,10 @@ export function DeparturesBoard({ days }: { days: ScheduleDay[] }) {
             <li key={r.time + r.title} className="grid grid-cols-[64px_1fr_auto] items-center gap-x-3 px-4 py-3">
               <span className="text-lg font-bold text-white tabular-nums">{r.time}</span>
               <span className="min-w-0">
-                <span className="block truncate text-lg font-bold uppercase tracking-wide text-[#ffd60a]">{r.title}</span>
+                <span className="block truncate text-lg font-bold uppercase tracking-wide text-[#ff8f2e]">{r.title}</span>
                 <span className="text-[11px] font-bold uppercase tracking-widest text-[#ff2e93]">{r.kind}</span>
               </span>
-              <span className="border border-[#f5c928]/60 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-white">{r.venue}</span>
+              <span className="border border-[#ff7518]/60 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-white">{r.venue}</span>
             </li>
           ))}
           {rows.length === 0 && <li className="px-4 py-8 text-center text-white/80 uppercase tracking-widest text-sm">No departures on this line today</li>}

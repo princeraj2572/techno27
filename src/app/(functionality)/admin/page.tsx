@@ -22,33 +22,33 @@ const NAV_GROUPS = [
   {
     title: "People",
     items: [
-      { label: "Participants",    href: "/admin/participants",    icon: Users,       desc: "View and search registrants",     color: "bg-[#f5c928]" },
-      { label: "Teams",           href: "/admin/teams",           icon: UsersRound,  desc: "All registered teams",             color: "bg-[#ff6a00]" },
-      { label: "Event Managers",  href: "/admin/event-managers",  icon: ShieldCheck, desc: "Assign event manager access",      color: "bg-[#c8421f]" },
-      { label: "Fest Team",       href: "/admin/team",            icon: Contact,     desc: "Conveners & co-conveners",         color: "bg-[#ffb10f]" },
+      { label: "Participants",    href: "/admin/participants",    icon: Users,       desc: "View and search registrants",     color: "bg-[#ff7518]" },
+      { label: "Teams",           href: "/admin/teams",           icon: UsersRound,  desc: "All registered teams",             color: "bg-[#9d4edd]" },
+      { label: "Event Managers",  href: "/admin/event-managers",  icon: ShieldCheck, desc: "Assign event manager access",      color: "bg-[#e0661a]" },
+      { label: "Fest Team",       href: "/admin/team",            icon: Contact,     desc: "Conveners & co-conveners",         color: "bg-[#ff8f2e]" },
     ],
   },
   {
     title: "Fest Operations",
     items: [
-      { label: "Events",          href: "/admin/events",          icon: CalendarDays,desc: "Monitor event registrations",      color: "bg-[#ff6a00]" },
-      { label: "Check-In",        href: "/admin/checkin",         icon: CheckSquare, desc: "Manage event check-in",            color: "bg-[#f5c928]" },
-      { label: "Accommodation",   href: "/admin/accommodation",   icon: Hotel,       desc: "Accommodation applications",       color: "bg-[#c8421f]" },
+      { label: "Events",          href: "/admin/events",          icon: CalendarDays,desc: "Monitor event registrations",      color: "bg-[#9d4edd]" },
+      { label: "Check-In",        href: "/admin/checkin",         icon: CheckSquare, desc: "Manage event check-in",            color: "bg-[#ff7518]" },
+      { label: "Accommodation",   href: "/admin/accommodation",   icon: Hotel,       desc: "Accommodation applications",       color: "bg-[#e0661a]" },
     ],
   },
   {
     title: "Money & Communication",
     items: [
-      { label: "Payments",        href: "/admin/payments",        icon: CreditCard,  desc: "Review payment submissions",       color: "bg-[#ffb10f]" },
-      { label: "Reports",         href: "/admin/reports",         icon: BarChart2,   desc: "Export data and reports",          color: "bg-[#ff6a00]" },
-      { label: "Announcements",   href: "/admin/announcements",   icon: Megaphone,   desc: "Post fest announcements",          color: "bg-[#f5c928]" },
+      { label: "Payments",        href: "/admin/payments",        icon: CreditCard,  desc: "Review payment submissions",       color: "bg-[#ff8f2e]" },
+      { label: "Reports",         href: "/admin/reports",         icon: BarChart2,   desc: "Export data and reports",          color: "bg-[#9d4edd]" },
+      { label: "Announcements",   href: "/admin/announcements",   icon: Megaphone,   desc: "Post fest announcements",          color: "bg-[#ff7518]" },
     ],
   },
 ];
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-800", bg: "bg-emerald-200" },
-  EVENT_LIVE:          { text: "Live",       color: "text-white",       bg: "bg-[#ff6a00]"   },
+  EVENT_LIVE:          { text: "Live",       color: "text-white",       bg: "bg-[#9d4edd]"   },
   COMPLETED:           { text: "Completed",  color: "text-stone-600",   bg: "bg-stone-200"   },
   CANCELLED:           { text: "Cancelled",  color: "text-red-800",     bg: "bg-red-200"     },
   REGISTRATION_CLOSED: { text: "Closed",     color: "text-amber-900",   bg: "bg-amber-200"   },
@@ -59,7 +59,7 @@ const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> 
 
 const STATUS_BORDER: Record<string, string> = {
   REGISTRATION_OPEN:   "border-l-emerald-600",
-  EVENT_LIVE:          "border-l-[#ff6a00]",
+  EVENT_LIVE:          "border-l-[#9d4edd]",
   COMPLETED:           "border-l-stone-400",
   CANCELLED:           "border-l-red-600",
   REGISTRATION_CLOSED: "border-l-amber-500",
@@ -93,19 +93,19 @@ export default async function AdminDashboardPage() {
   const firstName  = user.fullName.split(" ")[0];
 
   const stats = [
-    { label: "Total events",       value: totalCount,                 sub: "all events",        bg: "bg-[#f5c928]", href: "/admin/events" },
-    { label: "Open now",           value: openCount,                  sub: "registration open", bg: "bg-[#ff6a00]" },
-    { label: "Live now",           value: liveCount,                  sub: "events running",    bg: "bg-[#c8421f]", light: true },
-    { label: "Total participants", value: participantCounts.total,    sub: "registered",        bg: "bg-[#f5c928]", href: "/admin/participants" },
+    { label: "Total events",       value: totalCount,                 sub: "all events",        bg: "bg-[#ff7518]", href: "/admin/events" },
+    { label: "Open now",           value: openCount,                  sub: "registration open", bg: "bg-[#9d4edd]" },
+    { label: "Live now",           value: liveCount,                  sub: "events running",    bg: "bg-[#e0661a]", light: true },
+    { label: "Total participants", value: participantCounts.total,    sub: "registered",        bg: "bg-[#ff7518]", href: "/admin/participants" },
     { label: "Internal",           value: participantCounts.internal, sub: "@opju.ac.in",       bg: "bg-[#f5edd8]" },
-    { label: "External",           value: participantCounts.external, sub: "outside colleges",  bg: "bg-[#ffb10f]" },
+    { label: "External",           value: participantCounts.external, sub: "outside colleges",  bg: "bg-[#ff8f2e]" },
   ];
 
   return (
     <div
-      className={`min-h-screen bg-[#4a0e0e] text-[#1a0505] ${body.className}`}
+      className={`min-h-screen bg-[#2a0f4a] text-[#12061f] ${body.className}`}
       style={{
-        backgroundImage: "radial-gradient(rgba(245,237,216,0.07) 1px, transparent 1px), linear-gradient(180deg, #3a0808 0%, #4a0e0e 40%, #5a1212 100%)",
+        backgroundImage: "radial-gradient(rgba(245,237,216,0.07) 1px, transparent 1px), linear-gradient(180deg, #1e0a38 0%, #2a0f4a 40%, #3a1666 100%)",
         backgroundSize: "6px 6px, 100% 100%",
       }}
     >
@@ -128,16 +128,16 @@ export default async function AdminDashboardPage() {
             className="indie-anim pointer-events-none absolute -top-6 right-16 sm:right-24 w-28 h-28 sm:w-36 sm:h-36 opacity-40"
             style={{ animation: "indie-spin 12s linear infinite" }}
           >
-            <circle cx="50" cy="50" r="48" fill="#1a0505" stroke="#000" strokeWidth="2" />
+            <circle cx="50" cy="50" r="48" fill="#12061f" stroke="#000" strokeWidth="2" />
             {[40, 34, 28, 22].map((r) => (
-              <circle key={r} cx="50" cy="50" r={r} fill="none" stroke="#7a1c1c" strokeWidth="0.8" />
+              <circle key={r} cx="50" cy="50" r={r} fill="none" stroke="#4b1d7a" strokeWidth="0.8" />
             ))}
-            <circle cx="50" cy="50" r="15" fill="#f5c928" stroke="#000" strokeWidth="1.5" />
-            <circle cx="50" cy="50" r="3" fill="#4a0e0e" />
+            <circle cx="50" cy="50" r="15" fill="#ff7518" stroke="#000" strokeWidth="1.5" />
+            <circle cx="50" cy="50" r="3" fill="#2a0f4a" />
           </svg>
           <div className="relative">
             <p className="text-sm uppercase tracking-[0.25em] text-[#f5edd8]/60 mb-1">Management console</p>
-            <h1 className={`text-4xl sm:text-5xl text-[#f5c928] leading-none ${display.className}`} style={{ textShadow: "3px 3px 0 #7a1c1c" }}>
+            <h1 className={`text-4xl sm:text-5xl text-[#ff7518] leading-none ${display.className}`} style={{ textShadow: "3px 3px 0 #4b1d7a" }}>
               Management
             </h1>
             <p className="text-sm uppercase tracking-widest text-[#f5edd8]/70 mt-2">Techno-aiMBiAtion 2027</p>
@@ -146,7 +146,7 @@ export default async function AdminDashboardPage() {
             <span className="text-xs font-bold uppercase tracking-widest border-2 border-[#f5edd8]/70 text-[#f5edd8] px-2.5 py-1 rounded-full">
               {user.role.replace(/_/g, " ")}
             </span>
-            <div className="w-11 h-11 rounded-full bg-[#f5c928] border-2 border-black shadow-[3px_3px_0_0_#000] flex items-center justify-center text-black text-lg font-bold shrink-0">
+            <div className="w-11 h-11 rounded-full bg-[#ff7518] border-2 border-black shadow-[3px_3px_0_0_#000] flex items-center justify-center text-black text-lg font-bold shrink-0">
               {firstName[0]?.toUpperCase()}
             </div>
           </div>
@@ -154,7 +154,7 @@ export default async function AdminDashboardPage() {
 
         {/* Tape banners */}
         <div className="-mx-4 py-3 overflow-hidden animate-slide-up" style={{ animationDelay: "0.03s" }}>
-          <div className="bg-[#ff6a00] text-black font-bold uppercase tracking-wider text-lg py-1.5 -rotate-1 border-y-2 border-black overflow-hidden">
+          <div className="bg-[#9d4edd] text-black font-bold uppercase tracking-wider text-lg py-1.5 -rotate-1 border-y-2 border-black overflow-hidden">
             <div className="indie-anim flex w-max whitespace-nowrap" style={{ animation: "indie-marquee 30s linear infinite" }}>
               {[0, 1].map((n) => (
                 <span key={n} className="pr-8">
@@ -163,7 +163,7 @@ export default async function AdminDashboardPage() {
               ))}
             </div>
           </div>
-          <div className="bg-[#f5c928] text-black font-bold uppercase tracking-[0.3em] text-xs py-1 rotate-1 -mt-1 border-y-2 border-black overflow-hidden">
+          <div className="bg-[#ff7518] text-black font-bold uppercase tracking-[0.3em] text-xs py-1 rotate-1 -mt-1 border-y-2 border-black overflow-hidden">
             <div className="indie-anim flex w-max whitespace-nowrap" style={{ animation: "indie-marquee 45s linear infinite reverse" }}>
               {[0, 1].map((n) => (
                 <span key={n} className="pr-8">
@@ -181,7 +181,7 @@ export default async function AdminDashboardPage() {
               <div className={`relative ${s.bg} ${s.light ? "text-[#f5edd8]" : "text-black"} border-2 border-black shadow-[4px_4px_0_0_#000] rounded-xl p-4 h-full transition-transform hover:-translate-y-0.5`}>
                 {s.label === "Live now" && s.value > 0 && (
                   <span
-                    className="indie-anim absolute -top-3 -right-2 bg-[#f5c928] text-black text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 border-2 border-black rounded-full"
+                    className="indie-anim absolute -top-3 -right-2 bg-[#ff7518] text-black text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 border-2 border-black rounded-full"
                     style={{ animation: "indie-wobble 2s ease-in-out infinite" }}
                   >
                     ● On air
@@ -203,7 +203,7 @@ export default async function AdminDashboardPage() {
           <p className={`text-xl text-[#f5edd8] ${display.className}`}>Manage</p>
           {NAV_GROUPS.map((group) => (
             <div key={group.title}>
-              <span className="inline-block bg-[#ff6a00] text-black text-sm font-bold uppercase tracking-widest px-3 py-0.5 border-2 border-black -rotate-1 mb-3">
+              <span className="inline-block bg-[#9d4edd] text-black text-sm font-bold uppercase tracking-widest px-3 py-0.5 border-2 border-black -rotate-1 mb-3">
                 {group.title}
               </span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -217,7 +217,7 @@ export default async function AdminDashboardPage() {
                         </div>
                         <div>
                           <p className="text-lg font-bold uppercase leading-tight tracking-wide">{item.label}</p>
-                          <p className="text-sm text-[#1a0505]/65 mt-0.5 leading-snug hidden sm:block">{item.desc}</p>
+                          <p className="text-sm text-[#12061f]/65 mt-0.5 leading-snug hidden sm:block">{item.desc}</p>
                         </div>
                       </div>
                     </Link>
@@ -234,7 +234,7 @@ export default async function AdminDashboardPage() {
             <p className={`text-xl text-[#f5edd8] ${display.className}`}>Events overview</p>
             <Link
               href="/admin/events"
-              className="text-sm font-bold uppercase tracking-wider text-[#f5c928] hover:text-[#ff6a00] transition-colors flex items-center gap-1"
+              className="text-sm font-bold uppercase tracking-wider text-[#ff7518] hover:text-[#9d4edd] transition-colors flex items-center gap-1"
             >
               View all <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -254,17 +254,17 @@ export default async function AdminDashboardPage() {
                   <Link
                     key={event._id}
                     href={`/admin/events/${event._id}`}
-                    className={`flex items-center justify-between gap-3 px-4 py-3.5 border-l-8 ${border} hover:bg-[#f5c928]/30 transition-colors`}
+                    className={`flex items-center justify-between gap-3 px-4 py-3.5 border-l-8 ${border} hover:bg-[#ff7518]/30 transition-colors`}
                   >
                     <div className="min-w-0">
                       <p className="text-lg font-bold uppercase tracking-wide truncate leading-tight">{event.name}</p>
                       <div className="flex items-center gap-2 mt-0.5 flex-wrap text-sm">
                         {event.category && (
-                          <span className="text-[#1a0505]/60 uppercase tracking-wide">{event.category}</span>
+                          <span className="text-[#12061f]/60 uppercase tracking-wide">{event.category}</span>
                         )}
                         {event.participantCount > 0 && (
                           <>
-                            {event.category && <span className="text-[#1a0505]/30">·</span>}
+                            {event.category && <span className="text-[#12061f]/30">·</span>}
                             <span className="font-semibold">{event.participantCount} registered</span>
                             {event.internalCount > 0 && (
                               <span className="text-xs bg-sky-200 text-sky-900 font-bold px-1.5 py-0.5 rounded-full border border-black/30">{event.internalCount} OPJU</span>
@@ -275,7 +275,7 @@ export default async function AdminDashboardPage() {
                           </>
                         )}
                         {event.participantCount === 0 && (
-                          <span className="text-[#1a0505]/50">No registrations yet</span>
+                          <span className="text-[#12061f]/50">No registrations yet</span>
                         )}
                       </div>
                     </div>
@@ -291,9 +291,9 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Ticket-stub footer */}
-        <div className="relative bg-[#f5c928] text-black border-2 border-black shadow-[4px_4px_0_0_#000] rounded-xl flex items-stretch overflow-hidden animate-slide-up" style={{ animationDelay: "0.2s" }}>
-          <span aria-hidden className="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#4a0e0e] border-2 border-black" />
-          <span aria-hidden className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#4a0e0e] border-2 border-black" />
+        <div className="relative bg-[#ff7518] text-black border-2 border-black shadow-[4px_4px_0_0_#000] rounded-xl flex items-stretch overflow-hidden animate-slide-up" style={{ animationDelay: "0.2s" }}>
+          <span aria-hidden className="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#2a0f4a] border-2 border-black" />
+          <span aria-hidden className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#2a0f4a] border-2 border-black" />
           <div className="flex-1 px-6 py-4">
             <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-70">Admit one · Management</p>
             <p className={`text-xl sm:text-2xl leading-tight mt-1 ${display.className}`}>Techno-aiMBiAtion 2027</p>

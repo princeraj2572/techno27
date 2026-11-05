@@ -38,7 +38,7 @@ export default function SignupPage() {
         {step === 1 && (
           <p className="text-center text-sm text-muted-foreground mt-4">
             Already have an account?{" "}
-            <Link href="/auth/login" className="font-bold text-[#a1001a] underline underline-offset-4 hover:text-[#ff6a00]">
+            <Link href="/auth/login" className="font-bold text-[#6d28b8] underline underline-offset-4 hover:text-[#9d4edd]">
               Sign in
             </Link>
           </p>

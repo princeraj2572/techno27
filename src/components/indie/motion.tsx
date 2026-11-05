@@ -85,9 +85,9 @@ export function TestimonialSlider({ items }: { items: Testimonial[] }) {
   return (
     <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} className="mx-auto max-w-3xl text-center">
       <div key={i} className="indie-pop">
-        <p className={`text-[#f5c928] text-8xl leading-none h-12 ${serif.className}`} aria-hidden>&ldquo;</p>
+        <p className={`text-[#ff7518] text-8xl leading-none h-12 ${serif.className}`} aria-hidden>&ldquo;</p>
         <blockquote className={`-mt-4 text-2xl sm:text-4xl leading-snug text-[#f5edd8] ${display.className}`}>{t.quote}</blockquote>
-        <p className="mt-6 text-lg font-bold uppercase tracking-widest text-[#f5c928]">{t.name}</p>
+        <p className="mt-6 text-lg font-bold uppercase tracking-widest text-[#ff7518]">{t.name}</p>
         <p className="text-sm uppercase tracking-widest text-[#f5edd8]/60">{t.role}</p>
       </div>
       <div className="mt-6 flex justify-center gap-2" role="tablist" aria-label="Testimonials">
@@ -98,7 +98,7 @@ export function TestimonialSlider({ items }: { items: Testimonial[] }) {
             aria-selected={idx === i}
             aria-label={`Show testimonial ${idx + 1}`}
             onClick={() => setI(idx)}
-            className={`h-2.5 rounded-full transition-all ${idx === i ? "w-8 bg-[#f5c928]" : "w-2.5 bg-white/30 hover:bg-white/60"}`}
+            className={`h-2.5 rounded-full transition-all ${idx === i ? "w-8 bg-[#ff7518]" : "w-2.5 bg-white/30 hover:bg-white/60"}`}
           />
         ))}
       </div>
@@ -146,10 +146,10 @@ export function Splash() {
         <g transform="rotate(35 100 100)">
           <rect x="22" y="22" width="156" height="156" rx="14" fill="#e8b030" stroke="#000" strokeWidth="3" />
           <rect x="30" y="30" width="140" height="140" rx="9" fill="none" stroke="#000" strokeWidth="1.6" strokeDasharray="5 4" />
-          <circle cx="52" cy="152" r="7" fill="#5a3d00" stroke="#000" strokeWidth="2" />
+          <circle cx="52" cy="152" r="7" fill="#363d90" stroke="#000" strokeWidth="2" />
           <rect x="40" y="46" width="52" height="7" fill="#000" transform="rotate(-18 40 46)" />
           <g style={{ transformOrigin: "100px 104px", animation: "indie-spin 6s linear infinite" }}>
-            <circle cx="100" cy="104" r="52" fill="#7a1c1c" stroke="#000" strokeWidth="2" />
+            <circle cx="100" cy="104" r="52" fill="#4b1d7a" stroke="#000" strokeWidth="2" />
             {[44, 36, 28].map((r) => <circle key={r} cx="100" cy="104" r={r} fill="none" stroke="#000" strokeWidth="1" />)}
             <defs><path id="splash-arc" d="M100,104 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0" /></defs>
             <text fill="#f5edd8" fontSize="13" fontWeight="800" letterSpacing="1.5"><textPath href="#splash-arc">TRX&apos;27 • TECHNO • </textPath></text>
@@ -157,7 +157,7 @@ export function Splash() {
           </g>
           <g style={{ transformOrigin: "160px 40px", transform: `rotate(${-8 + pct * 0.12}deg)`, transition: "transform .1s linear" }}>
             <rect x="148" y="28" width="22" height="22" rx="3" fill="#000" />
-            <circle cx="159" cy="39" r="4" fill="#f5c928" />
+            <circle cx="159" cy="39" r="4" fill="#ff7518" />
             <line x1="159" y1="50" x2="124" y2="104" stroke="#000" strokeWidth="4" />
             <rect x="113" y="100" width="13" height="18" fill="none" stroke="#000" strokeWidth="3" />
           </g>
@@ -165,7 +165,7 @@ export function Splash() {
       </svg>
       <div className="w-64 sm:w-80">
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/15">
-          <div className="h-full rounded-full bg-[#f5c928]" style={{ width: `${pct}%` }} />
+          <div className="h-full rounded-full bg-[#ff7518]" style={{ width: `${pct}%` }} />
         </div>
         <p className="mt-3 text-center text-sm font-bold tracking-widest text-[#fad68e]">{pct}%</p>
       </div>

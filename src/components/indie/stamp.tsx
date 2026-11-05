@@ -2,8 +2,8 @@ import type { EventCategory } from "@/features/events/data/public-events";
 import { CULTURES, CultureScene } from "@/components/indie/culture-art";
 
 export const CATEGORY_BADGE: Record<EventCategory, string> = {
-  Technical: "bg-[#f5c928] text-black",
-  Cultural: "bg-[#ff6a00] text-black",
+  Technical: "bg-[#ff7518] text-black",
+  Cultural: "bg-[#9d4edd] text-black",
   Management: "bg-[#ff2d8a] text-black",
   Fun: "bg-[#3b82f6] text-white",
 };
@@ -45,11 +45,11 @@ export function Stamp({
             <div className="absolute inset-x-2 top-3 text-center">
               <h3
                 className={`${big ? "text-5xl sm:text-6xl" : compact ? "text-[1.55rem]" : "text-[2rem]"} font-extrabold uppercase leading-[0.92] tracking-tight [text-shadow:0_2px_0_rgba(255,255,255,0.55)]`}
-                style={{ color: culture?.ink ?? "#1a0505" }}
+                style={{ color: culture?.ink ?? "#12061f" }}
               >
                 {name}
               </h3>
-              <p className={`${big ? "mt-2 text-2xl" : compact ? "mt-1 text-sm" : "mt-1.5 text-lg"} font-bold uppercase tracking-[0.3em]`} style={{ color: culture?.sub ?? "#7a1c1c" }}>
+              <p className={`${big ? "mt-2 text-2xl" : compact ? "mt-1 text-sm" : "mt-1.5 text-lg"} font-bold uppercase tracking-[0.3em]`} style={{ color: culture?.sub ?? "#4b1d7a" }}>
                 {culture ? "India" : category}
               </p>
             </div>
@@ -70,16 +70,16 @@ export function Stamp({
 // Circular cancellation mark with wavy lines, as on a posted stamp.
 export function Postmark({ className = "", lines = true }: { className?: string; lines?: boolean }) {
   return (
-    <svg viewBox={lines ? "0 0 220 120" : "0 0 120 120"} className={className} aria-hidden fill="none" stroke="#2a1208" strokeWidth="3" strokeLinecap="round">
+    <svg viewBox={lines ? "0 0 220 120" : "0 0 120 120"} className={className} aria-hidden fill="none" stroke="#211243" strokeWidth="3" strokeLinecap="round">
       <defs>
         <path id="postmark-arc" d="M60,60 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
       </defs>
       <circle cx="60" cy="60" r="52" />
       <circle cx="60" cy="60" r="26" strokeWidth="2" />
-      <text fill="#2a1208" stroke="none" fontSize="10.5" fontWeight="800" letterSpacing="2">
+      <text fill="#211243" stroke="none" fontSize="10.5" fontWeight="800" letterSpacing="2">
         <textPath href="#postmark-arc">TECHNO-AIMBIATION · 2027 · RAIGARH ·</textPath>
       </text>
-      <text x="60" y="64" textAnchor="middle" fill="#2a1208" stroke="none" fontSize="12" fontWeight="800">15 JAN</text>
+      <text x="60" y="64" textAnchor="middle" fill="#211243" stroke="none" fontSize="12" fontWeight="800">15 JAN</text>
       {lines && (
         <>
           <path d="M118 36 q14 -10 28 0 t28 0 t28 0" />

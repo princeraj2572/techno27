@@ -32,18 +32,18 @@ function PhotoStamp({ item, number, big = false }: { item: GalleryItem; number: 
             <div className="absolute inset-x-2 top-3 text-center">
               <h3
                 className={`${big ? "text-4xl" : "text-[1.75rem]"} font-extrabold uppercase leading-[0.92] tracking-tight [text-shadow:0_2px_0_rgba(255,255,255,0.55)]`}
-                style={{ color: culture?.ink ?? "#1a0505" }}
+                style={{ color: culture?.ink ?? "#12061f" }}
               >
                 {item.caption}
               </h3>
-              <p className={`${big ? "mt-2 text-xl" : "mt-1.5 text-base"} font-bold uppercase tracking-[0.3em]`} style={{ color: culture?.sub ?? "#7a1c1c" }}>
+              <p className={`${big ? "mt-2 text-xl" : "mt-1.5 text-base"} font-bold uppercase tracking-[0.3em]`} style={{ color: culture?.sub ?? "#4b1d7a" }}>
                 {item.year}
               </p>
             </div>
             <span className="absolute bottom-2 left-2 border-2 border-black bg-[#f5edd8] px-2 py-0.5 text-sm font-bold tracking-[0.2em] text-black shadow-[2px_2px_0_0_#000]">
               {String(number).padStart(2, "0")}
             </span>
-            <span className="absolute bottom-2 right-2 border-2 border-black bg-[#f5c928] px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest text-black shadow-[2px_2px_0_0_#000]">
+            <span className="absolute bottom-2 right-2 border-2 border-black bg-[#ff7518] px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest text-black shadow-[2px_2px_0_0_#000]">
               {item.tag}
             </span>
           </div>
@@ -76,22 +76,22 @@ export function GalleryBoard({ items }: { items: GalleryItem[] }) {
 
   const pill = (active: boolean) =>
     `border-2 border-black px-4 py-1.5 text-base font-bold uppercase tracking-wider shadow-[3px_3px_0_0_#000] transition ${
-      active ? "bg-[#f5c928] text-black -rotate-1" : "bg-[#f5edd8] text-black hover:-translate-y-0.5"
+      active ? "bg-[#ff7518] text-black -rotate-1" : "bg-[#f5edd8] text-black hover:-translate-y-0.5"
     }`;
 
   return (
     <>
       {/* Filters */}
-      <section className="indie-mandala bg-[#a1001a] text-[#f5edd8]">
+      <section className="indie-mandala bg-[#6d28b8] text-[#f5edd8]">
         <div className="mx-auto max-w-5xl space-y-4 px-6 py-8">
           <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Year">
-            <span className="mr-2 text-sm font-bold uppercase tracking-[0.3em] text-[#f5c928]">Year</span>
+            <span className="mr-2 text-sm font-bold uppercase tracking-[0.3em] text-[#ff7518]">Year</span>
             {["All", ...years].map((y) => (
               <button key={y} role="tab" aria-selected={year === y} onClick={() => setYear(y)} className={pill(year === y)}>{y}</button>
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Category">
-            <span className="mr-2 text-sm font-bold uppercase tracking-[0.3em] text-[#f5c928]">Topic</span>
+            <span className="mr-2 text-sm font-bold uppercase tracking-[0.3em] text-[#ff7518]">Topic</span>
             {["All", ...tags].map((t) => (
               <button key={t} role="tab" aria-selected={tag === t} onClick={() => setTag(t)} className={pill(tag === t)}>{t}</button>
             ))}
@@ -149,8 +149,8 @@ export function GalleryBoard({ items }: { items: GalleryItem[] }) {
       })}
 
       {shown.length === 0 && (
-        <section className="bg-[#4a0e0e] px-6 py-20 text-center">
-          <p className={`text-4xl text-[#f5c928] ${display.className}`}>No snapshots here yet</p>
+        <section className="bg-[#2a0f4a] px-6 py-20 text-center">
+          <p className={`text-4xl text-[#ff7518] ${display.className}`}>No snapshots here yet</p>
           <p className="mt-2 text-xl text-[#f5edd8]/80">Try a different year or topic.</p>
         </section>
       )}
@@ -168,7 +168,7 @@ export function GalleryBoard({ items }: { items: GalleryItem[] }) {
             <button
               onClick={() => setOpen(null)}
               aria-label="Close"
-              className="absolute -right-2 -top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-[#f5c928] text-black shadow-[3px_3px_0_0_#000] hover:bg-white"
+              className="absolute -right-2 -top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 border-black bg-[#ff7518] text-black shadow-[3px_3px_0_0_#000] hover:bg-white"
             >
               <X className="h-5 w-5" />
             </button>
@@ -176,7 +176,7 @@ export function GalleryBoard({ items }: { items: GalleryItem[] }) {
             <p className={`mt-5 text-center text-xl italic text-[#f5edd8] ${paper.className}`}>
               {open.item.caption} — {CULTURES[open.item.scene]?.state ?? "India"}
             </p>
-            <p className="text-center text-xs font-bold uppercase tracking-[0.4em] text-[#f5c928]">{open.item.tag} · {open.item.year}</p>
+            <p className="text-center text-xs font-bold uppercase tracking-[0.4em] text-[#ff7518]">{open.item.tag} · {open.item.year}</p>
           </div>
         </div>
       )}

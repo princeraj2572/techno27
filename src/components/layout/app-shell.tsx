@@ -14,7 +14,7 @@ export function Crumbs({ items }: { items: Crumb[] }) {
         return (
           <span key={`${c.label}-${i}`} className="flex items-center gap-1">
             {c.href && !last ? (
-              <Link href={c.href} className="text-[#f5c928] underline-offset-4 hover:underline">{c.label}</Link>
+              <Link href={c.href} className="text-[#ff7518] underline-offset-4 hover:underline">{c.label}</Link>
             ) : (
               <span aria-current={last ? "page" : undefined} className="text-[#f5edd8]">{c.label}</span>
             )}
@@ -31,7 +31,7 @@ export function BackButton({ href, label, className = "" }: { href: string; labe
   return (
     <Link
       href={href}
-      className={`inline-flex items-center gap-2 border-2 border-black bg-[#f5c928] px-4 py-2 text-base font-bold uppercase tracking-wider text-black shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#ff6a00] ${className}`}
+      className={`inline-flex items-center gap-2 border-2 border-black bg-[#ff7518] px-4 py-2 text-base font-bold uppercase tracking-wider text-black shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#9d4edd] ${className}`}
     >
       <ArrowLeft className="h-5 w-5" /> {label}
     </Link>
@@ -62,7 +62,7 @@ export default function AppShell({
             <BackButton href={back.href} label={back.label} className="mt-5" />
           </div>
           {icon && (
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-black bg-[#f5c928] text-black shadow-[4px_4px_0_0_#000]">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-black bg-[#ff7518] text-black shadow-[4px_4px_0_0_#000]">
               {icon}
             </div>
           )}

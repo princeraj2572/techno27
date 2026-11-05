@@ -7,7 +7,7 @@ export const metadata = { title: "Creatorverse | Techno-aiMBiAtion 2027" };
 // PLACEHOLDER programme — replace with the real Creatorverse steps and perks.
 const STEPS = [
   { n: "01", title: "Pick your craft", back: "Photography, film, design or writing — choose what you love.", bg: "bg-[#ffc107]" },
-  { n: "02", title: "Make it", back: "Create something that captures the spirit of the fest.", bg: "bg-[#ff6a00]" },
+  { n: "02", title: "Make it", back: "Create something that captures the spirit of the fest.", bg: "bg-[#9d4edd]" },
   { n: "03", title: "Tag it right", back: "Share your work with the official festival tags.", bg: "bg-[#ff2d8a]" },
   { n: "04", title: "Get featured", back: "The best pieces are showcased across the festival.", bg: "bg-[#7c3aed] text-white" },
   { n: "05", title: "Stay in the loop", back: "Join the creator community for updates and perks.", bg: "bg-[#3b82f6] text-white" },
@@ -74,7 +74,7 @@ export default function CreatorversePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {CREATOR_PERKS.map((p, i) => (
             <div key={p.title} className="border-2 border-black bg-white p-5 shadow-[4px_4px_0_0_#000]">
-              <span className={`mb-3 flex h-10 w-10 items-center justify-center rounded-full border-2 border-black text-lg font-bold ${["bg-[#ffc107]","bg-[#ff6a00]","bg-[#ff2d8a]","bg-[#3b82f6] text-white"][i]}`}>{i + 1}</span>
+              <span className={`mb-3 flex h-10 w-10 items-center justify-center rounded-full border-2 border-black text-lg font-bold ${["bg-[#ffc107]","bg-[#9d4edd]","bg-[#ff2d8a]","bg-[#3b82f6] text-white"][i]}`}>{i + 1}</span>
               <p className="text-xl font-bold uppercase tracking-wide text-black">{p.title}</p>
               <p className="mt-1 text-base leading-snug text-black/70">{p.text}</p>
             </div>
@@ -90,7 +90,7 @@ export default function CreatorversePage() {
         </div>
         <div className="relative bg-[#2a1f17] border-x-4 border-[#f5edd8]">
           <div className="absolute left-1/2 top-0 h-full w-1 -translate-x-1/2 border-l-4 border-dashed border-[#f5edd8]/80" />
-          <div className="indie-drive absolute left-1/2 top-0 h-24 w-12 -translate-x-1/2 rounded-xl border-2 border-black bg-[#f5c928] shadow-[3px_3px_0_0_#000]">
+          <div className="indie-drive absolute left-1/2 top-0 h-24 w-12 -translate-x-1/2 rounded-xl border-2 border-black bg-[#ff7518] shadow-[3px_3px_0_0_#000]">
             <div className="mx-1 mt-2 h-5 rounded-sm bg-[#1a2a44]" />
           </div>
         </div>

@@ -9,7 +9,7 @@ export function ImageSlot({
   label = "Image",
   hint,
   ratio = "aspect-video",
-  tone = "from-[#f5c928] to-[#c8421f]",
+  tone = "from-[#ff7518] to-[#e0661a]",
   className = "",
 }: {
   src?: string;

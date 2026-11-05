@@ -5,9 +5,9 @@ import { JUNOON_NIGHTS } from "@/data/dummy";
 export const metadata = { title: "Junoon '27 | Techno-aiMBiAtion 2027" };
 
 const FRONTS = [
-  { grad: "from-[#ff6a00] to-[#a1001a]", emoji: "🎸" },
+  { grad: "from-[#9d4edd] to-[#6d28b8]", emoji: "🎸" },
   { grad: "from-[#6d28d9] to-[#0f0029]", emoji: "🎧" },
-  { grad: "from-[#f5c928] to-[#c8421f]", emoji: "🎆" },
+  { grad: "from-[#ff7518] to-[#e0661a]", emoji: "🎆" },
 ];
 
 export default function JunoonPage() {
@@ -24,7 +24,7 @@ export default function JunoonPage() {
             <div key={n.n} tabIndex={0} className="flip h-96 outline-none">
               <div className="flip-inner h-full w-full">
                 <div className={`flip-face flex flex-col justify-between rounded-2xl border-2 border-black bg-gradient-to-br ${FRONTS[i].grad} p-6 shadow-[6px_6px_0_0_#000]`}>
-                  <span className="self-start rounded-full bg-black px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#f5c928]">Flip ↻</span>
+                  <span className="self-start rounded-full bg-black px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#ff7518]">Flip ↻</span>
                   <div>
                     <p className="text-7xl">{FRONTS[i].emoji}</p>
                     <p className="mt-3 text-sm font-bold uppercase tracking-[0.3em] text-black/70">Night {n.n}</p>
@@ -32,8 +32,8 @@ export default function JunoonPage() {
                     <p className="mt-2 text-lg font-bold uppercase tracking-wide text-white/90">{n.artist}</p>
                   </div>
                 </div>
-                <div className="flip-face flip-back flex flex-col justify-between rounded-2xl border-2 border-[#f5c928] bg-black p-6 shadow-[6px_6px_0_0_#f5c928]">
-                  <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#f5c928]">Night {n.n} · {n.genre}</p>
+                <div className="flip-face flip-back flex flex-col justify-between rounded-2xl border-2 border-[#ff7518] bg-black p-6 shadow-[6px_6px_0_0_#ff7518]">
+                  <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#ff7518]">Night {n.n} · {n.genre}</p>
                   <div>
                     <p className={`text-3xl text-[#f5edd8] ${serif.className}`}>{n.artist}</p>
                     <p className="mt-2 text-lg text-[#f5edd8]/80 leading-snug">{n.desc}</p>
@@ -50,7 +50,7 @@ export default function JunoonPage() {
         <p className="mt-10 text-center text-xs uppercase tracking-widest text-white/50">Sample lineup — artists and dates are placeholders.</p>
       </Band></Reveal>
 
-      <Marquee className="bg-[#f5c928] text-black font-bold uppercase tracking-[0.3em] text-sm py-1.5" text="Live ● Loud ● Unforgettable ● " speed={45} />
+      <Marquee className="bg-[#ff7518] text-black font-bold uppercase tracking-[0.3em] text-sm py-1.5" text="Live ● Loud ● Unforgettable ● " speed={45} />
       <TicketCta title="Don't miss the nights" text="Register to get your pass and be first to know the lineup." href="/auth/signup" label="Register now" />
     </PageShell>
   );

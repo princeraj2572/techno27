@@ -13,8 +13,8 @@ const Chilli = ({ y, fill, stroke, flip = false }: { y: number; fill: string; st
 export function NimbuMirch({ className = "", sway = true, delay = "0s" }: { className?: string; sway?: boolean; delay?: string }) {
   return (
     <svg viewBox="0 0 80 215" className={`${sway ? "indie-sway" : ""} ${className}`} style={{ animationDelay: delay }} aria-hidden>
-      <line x1="40" y1="0" x2="40" y2="196" stroke="#2a1208" strokeWidth="2.4" />
-      <circle cx="40" cy="6" r="3.4" fill="#2a1208" />
+      <line x1="40" y1="0" x2="40" y2="196" stroke="#211243" strokeWidth="2.4" />
+      <circle cx="40" cy="6" r="3.4" fill="#211243" />
 
       <Chilli y={36} fill="#2e9a3e" stroke="#124a1f" />
 
@@ -26,14 +26,14 @@ export function NimbuMirch({ className = "", sway = true, delay = "0s" }: { clas
       <path d="M26 74 q6 -8 16 -8" fill="none" stroke="#fff8b0" strokeWidth="3" strokeLinecap="round" />
       <path d="M52 92 q5 -3 8 -9" fill="none" stroke="#e0b800" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
 
-      <Chilli y={118} fill="#d62828" stroke="#6e0b12" flip />
+      <Chilli y={118} fill="#d62828" stroke="#540bb0" flip />
       <Chilli y={140} fill="#2e9a3e" stroke="#124a1f" />
-      <Chilli y={162} fill="#d62828" stroke="#6e0b12" flip />
+      <Chilli y={162} fill="#d62828" stroke="#540bb0" flip />
 
       {/* coal */}
       <circle cx="40" cy="190" r="10" fill="#1a1a1a" stroke="#000" strokeWidth="2" />
       <ellipse cx="37" cy="186" rx="3" ry="2" fill="#fff" opacity="0.35" />
-      <path d="M36 199 q-3 8 -5 12 M44 199 q3 8 5 12" fill="none" stroke="#2a1208" strokeWidth="2" strokeLinecap="round" />
+      <path d="M36 199 q-3 8 -5 12 M44 199 q3 8 5 12" fill="none" stroke="#211243" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }

@@ -36,7 +36,7 @@ export const roadies: EventData = {
     accentInk: "#ffffff",
     accent2: "#2f7a4a",
     card: "#fffaf0",
-    cardInk: "#1a0f08",
+    cardInk: "#150a24",
     pattern: "peaks",
     patternColor: "#1b6aa5",
     motif: "Himachal ✦ Pine & snow ✦ Hill temple ✦ Survive the trail ✦ ",

@@ -99,7 +99,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
   const GENDER_COLOR: Record<string, string> = {
     Male:   "bg-[#dbe7ff] text-[#0b2a6b] border border-[#0b2a6b]",
     Female: "bg-pink-50 text-pink-700 border border-pink-200",
-    Other:  "bg-[#efe3c4] text-[#1a0505] border border-black/40",
+    Other:  "bg-[#efe3c4] text-[#12061f] border border-black/40",
   };
 
   if (!editing && accom) {
@@ -113,17 +113,17 @@ export default function AccommodationClient({ initial, userUniversity, userGende
         )}
 
         {/* Summary card */}
-        <div className="bg-[#f5edd8] text-[#1a0505] border-2 border-black shadow-[4px_4px_0_0_#000] border-l-4 border-l-[#7a1c1c] rounded-none px-5 py-5 space-y-4">
+        <div className="bg-[#f5edd8] text-[#12061f] border-2 border-black shadow-[4px_4px_0_0_#000] border-l-4 border-l-[#4b1d7a] rounded-none px-5 py-5 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-none bg-[#f5c928]/30 flex items-center justify-center">
-                <Hotel className="h-4 w-4 text-[#7a1c1c]" />
+              <div className="w-8 h-8 rounded-none bg-[#ff7518]/30 flex items-center justify-center">
+                <Hotel className="h-4 w-4 text-[#4b1d7a]" />
               </div>
-              <p className="text-sm font-semibold text-[#1a0505]">Accommodation requested</p>
+              <p className="text-sm font-semibold text-[#12061f]">Accommodation requested</p>
             </div>
             <button
               onClick={handleEdit}
-              className="inline-flex items-center gap-1.5 text-xs text-[#7a1c1c] hover:text-[#5a1212] font-medium"
+              className="inline-flex items-center gap-1.5 text-xs text-[#4b1d7a] hover:text-[#3a1666] font-medium"
             >
               <Pencil className="h-3.5 w-3.5" /> Edit
             </button>
@@ -132,19 +132,19 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-[#efe3c4] rounded-none px-3 py-2.5">
               <p className="text-[10px] text-black/55 font-medium mb-0.5">Arrival</p>
-              <p className="text-sm font-semibold text-[#1a0505]">{fmt(accom.arrivalTime)}</p>
+              <p className="text-sm font-semibold text-[#12061f]">{fmt(accom.arrivalTime)}</p>
               <p className="text-xs text-black/55">{fmtTime(accom.arrivalTime)}</p>
             </div>
             <div className="bg-[#efe3c4] rounded-none px-3 py-2.5">
               <p className="text-[10px] text-black/55 font-medium mb-0.5">Departure</p>
-              <p className="text-sm font-semibold text-[#1a0505]">{fmt(accom.departureTime)}</p>
+              <p className="text-sm font-semibold text-[#12061f]">{fmt(accom.departureTime)}</p>
               <p className="text-xs text-black/55">{fmtTime(accom.departureTime)}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
             {accom.gender && (
-              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${GENDER_COLOR[accom.gender] ?? "bg-[#efe3c4] text-[#1a0505] border border-black/40"}`}>
+              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${GENDER_COLOR[accom.gender] ?? "bg-[#efe3c4] text-[#12061f] border border-black/40"}`}>
                 {accom.gender}
               </span>
             )}
@@ -157,11 +157,11 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           </div>
 
           {accom.groupName && (
-            <div className="flex items-center gap-2 bg-[#f5c928]/30 rounded-none px-3 py-2">
-              <Users className="h-3.5 w-3.5 text-[#7a1c1c] shrink-0" />
+            <div className="flex items-center gap-2 bg-[#ff7518]/30 rounded-none px-3 py-2">
+              <Users className="h-3.5 w-3.5 text-[#4b1d7a] shrink-0" />
               <div>
-                <p className="text-[10px] text-[#7a1c1c] font-medium">Group</p>
-                <p className="text-xs font-semibold text-[#7a1c1c]">{accom.groupName}</p>
+                <p className="text-[10px] text-[#4b1d7a] font-medium">Group</p>
+                <p className="text-xs font-semibold text-[#4b1d7a]">{accom.groupName}</p>
               </div>
             </div>
           )}
@@ -206,7 +206,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           value={arrivalTime}
           onChange={(e) => setArrivalTime(e.target.value)}
           required
-          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
+          className="w-full text-sm text-[#12061f] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#ff7518] focus:border-black transition"
         />
       </div>
 
@@ -220,7 +220,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           value={departureTime}
           onChange={(e) => setDepartureTime(e.target.value)}
           required
-          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
+          className="w-full text-sm text-[#12061f] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#ff7518] focus:border-black transition"
         />
       </div>
 
@@ -235,7 +235,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           onChange={(e) => setUniversityName(e.target.value)}
           placeholder="e.g. ABC Institute of Technology"
           required
-          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
+          className="w-full text-sm text-[#12061f] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#ff7518] focus:border-black transition"
         />
       </div>
 
@@ -255,7 +255,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
                   ? g === "Male"   ? "bg-[#0b2a6b] text-white border-black"
                   : g === "Female" ? "bg-pink-500 text-white border-pink-500"
                   :                  "bg-black text-white border-black/40"
-                  : "bg-[#f5edd8] text-[#1a0505] border-black/40 hover:border-black"
+                  : "bg-[#f5edd8] text-[#12061f] border-black/40 hover:border-black"
               }`}
             >
               {g}
@@ -274,7 +274,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
           placeholder="e.g. Team Alpha, or your team name"
-          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
+          className="w-full text-sm text-[#12061f] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#ff7518] focus:border-black transition"
         />
         <p className="text-xs text-white/70 mt-1">
           Want to stay with your teammates? Enter the same group name — each person must apply separately.
@@ -291,7 +291,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           onChange={(e) => setAdditionalDetails(e.target.value)}
           placeholder="Any dietary requirements, room preferences, or other needs…"
           rows={3}
-          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition resize-none"
+          className="w-full text-sm text-[#12061f] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#ff7518] focus:border-black transition resize-none"
         />
       </div>
 
@@ -308,7 +308,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
         <button
           type="submit"
           disabled={saving}
-          className="flex-1 py-2.5 rounded-none border border-white/60 bg-[#7a1c1c] hover:bg-[#5a1212] text-white text-sm font-semibold disabled:opacity-60 transition flex items-center justify-center gap-2"
+          className="flex-1 py-2.5 rounded-none border border-white/60 bg-[#4b1d7a] hover:bg-[#3a1666] text-white text-sm font-semibold disabled:opacity-60 transition flex items-center justify-center gap-2"
         >
           {saving ? (
             <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Saving…</>

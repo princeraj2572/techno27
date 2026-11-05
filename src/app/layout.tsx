@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/layout/nav";
+import Halloween from "@/components/layout/halloween";
 
 import "./globals.css";
 
@@ -24,7 +25,7 @@ export default function RootLayout({ children }: RootLayoutProps): ReactElement 
       <body className={`min-h-screen bg-background text-foreground ${inter.variable} ${inter.className}`}>
         <Navbar />
         <main className="pt-16">{children}</main>
-        <Toaster />
+        <Halloween />        <Toaster />
       </body>
     </html>
   );

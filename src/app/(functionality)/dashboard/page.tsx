@@ -25,21 +25,21 @@ const STATUS_BORDER: Record<string, string> = {
   REGISTRATION_OPEN:   "border-l-[#1f8a3a]",
   EVENT_LIVE:          "border-l-[#0b2a6b]",
   COMPLETED:           "border-l-black/30",
-  CANCELLED:           "border-l-[#a1001a]",
+  CANCELLED:           "border-l-[#6d28b8]",
   REGISTRATION_CLOSED: "border-l-[#e8851a]",
-  TEMPORARILY_CLOSED:  "border-l-[#ff6a00]",
+  TEMPORARILY_CLOSED:  "border-l-[#9d4edd]",
 };
 const STATUS_LABEL: Record<string, { text: string; color: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-[#1f8a3a]" },
   EVENT_LIVE:          { text: "Live now",  color: "text-[#0b2a6b]" },
   COMPLETED:           { text: "Completed", color: "text-black/45"  },
-  CANCELLED:           { text: "Cancelled", color: "text-[#a1001a]" },
+  CANCELLED:           { text: "Cancelled", color: "text-[#6d28b8]" },
   REGISTRATION_CLOSED: { text: "Closed",    color: "text-[#b4630b]" },
-  TEMPORARILY_CLOSED:  { text: "Paused",    color: "text-[#c8421f]" },
+  TEMPORARILY_CLOSED:  { text: "Paused",    color: "text-[#e0661a]" },
 };
 
 const QUICK_BTN =
-  "inline-flex items-center gap-2 border-2 border-black bg-[#f5c928] px-3 py-2 text-sm font-bold uppercase tracking-wider text-black shadow-[3px_3px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#ff6a00]";
+  "inline-flex items-center gap-2 border-2 border-black bg-[#ff7518] px-3 py-2 text-sm font-bold uppercase tracking-wider text-black shadow-[3px_3px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#9d4edd]";
 
 export default async function DashboardPage() {
   const user = await getUser();
@@ -73,9 +73,9 @@ export default async function DashboardPage() {
   const isExt        = user.role === "EXTERNAL_USER";
 
   const stats = [
-    { href: "/events-selection", label: "Events",  count: eventCount,   sub: "registered", bg: "bg-[#f5c928]" },
-    { href: "/team-details",     label: "Teams",   count: teamCount,    sub: "joined",     bg: "bg-[#ffb10f]" },
-    { href: "/team-details",     label: "Invites", count: pendingCount, sub: "pending",    bg: pendingCount > 0 ? "bg-[#ff6a00]" : "bg-[#f5edd8]" },
+    { href: "/events-selection", label: "Events",  count: eventCount,   sub: "registered", bg: "bg-[#ff7518]" },
+    { href: "/team-details",     label: "Teams",   count: teamCount,    sub: "joined",     bg: "bg-[#ff8f2e]" },
+    { href: "/team-details",     label: "Invites", count: pendingCount, sub: "pending",    bg: pendingCount > 0 ? "bg-[#9d4edd]" : "bg-[#f5edd8]" },
   ];
 
   return (
@@ -85,7 +85,7 @@ export default async function DashboardPage() {
         <Crumbs items={[{ label: "Home", href: "/" }, { label: "Dashboard" }]} />
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#f5c928]">{greeting()}</p>
+            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#ff7518]">{greeting()}</p>
             <h1
               className={`mt-2 truncate text-5xl leading-[0.95] sm:text-7xl indie-outline ${serif.className}`}
             >
@@ -93,7 +93,7 @@ export default async function DashboardPage() {
             </h1>
             <p className="mt-3 text-lg font-bold uppercase text-[#f5edd8]">
               Techno-aiMBiAtion 2027 ·{" "}
-              <span className="text-[#f5c928]">{isExt ? "External Participant" : "OPJU Student"}</span>
+              <span className="text-[#ff7518]">{isExt ? "External Participant" : "OPJU Student"}</span>
             </p>
             <BackButton href="/" label="Back to home" className="mt-5" />
           </div>
@@ -106,7 +106,7 @@ export default async function DashboardPage() {
               className="h-20 w-20 shrink-0 border-2 border-black object-cover shadow-[4px_4px_0_0_#000] sm:h-24 sm:w-24"
             />
           ) : (
-            <div className={`flex h-20 w-20 shrink-0 items-center justify-center border-2 border-black bg-[#f5c928] text-4xl text-black shadow-[4px_4px_0_0_#000] sm:h-24 sm:w-24 ${display.className}`}>
+            <div className={`flex h-20 w-20 shrink-0 items-center justify-center border-2 border-black bg-[#ff7518] text-4xl text-black shadow-[4px_4px_0_0_#000] sm:h-24 sm:w-24 ${display.className}`}>
               {firstName[0]?.toUpperCase()}
             </div>
           )}
@@ -114,7 +114,7 @@ export default async function DashboardPage() {
       </Band>
 
       <Marquee
-        className="-rotate-1 bg-[#ff6a00] py-1.5 text-xl font-bold uppercase tracking-wider text-black"
+        className="-rotate-1 bg-[#9d4edd] py-1.5 text-xl font-bold uppercase tracking-wider text-black"
         text="Your pass ✦ Your events ✦ Your team ✦ "
         speed={60}
       />
@@ -124,7 +124,7 @@ export default async function DashboardPage() {
 
           {/* Payment reminder */}
           {needsPayment && payment && (
-            <div role="alert" className="border-2 border-black bg-[#f5c928] px-5 py-4 text-black shadow-[6px_6px_0_0_#000]">
+            <div role="alert" className="border-2 border-black bg-[#ff7518] px-5 py-4 text-black shadow-[6px_6px_0_0_#000]">
               <div className="flex items-start gap-3">
                 <AlertTriangle className="indie-blink mt-0.5 h-7 w-7 shrink-0" />
                 <div className="min-w-0 flex-1">
@@ -135,7 +135,7 @@ export default async function DashboardPage() {
                   </p>
                   <Link
                     href="/dashboard/payment"
-                    className="mt-3 inline-flex items-center gap-2 border-2 border-black bg-black px-4 py-2 text-base font-bold uppercase tracking-wider text-white transition hover:bg-[#ff6a00] hover:text-black"
+                    className="mt-3 inline-flex items-center gap-2 border-2 border-black bg-black px-4 py-2 text-base font-bold uppercase tracking-wider text-white transition hover:bg-[#9d4edd] hover:text-black"
                   >
                     Pay &amp; submit transaction ID →
                   </Link>
@@ -147,7 +147,7 @@ export default async function DashboardPage() {
           {/* Pending invitations */}
           {pendingCount > 0 && (
             <div className={`flex items-start gap-3 px-4 py-3.5 ${CARD}`}>
-              <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-[#c8421f]" />
+              <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-[#e0661a]" />
               <div className="min-w-0 flex-1">
                 <p className="text-lg font-bold uppercase leading-tight">
                   {pendingCount} pending invitation{pendingCount > 1 ? "s" : ""}
@@ -156,7 +156,7 @@ export default async function DashboardPage() {
               </div>
               <Link
                 href="/team-details"
-                className="shrink-0 border-2 border-black bg-black px-3 py-1.5 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-[#f5c928] hover:text-black"
+                className="shrink-0 border-2 border-black bg-black px-3 py-1.5 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-[#ff7518] hover:text-black"
               >
                 Review
               </Link>
@@ -178,7 +178,7 @@ export default async function DashboardPage() {
 
           {/* Quick actions */}
           <div>
-            <p className={`mb-3 text-2xl text-[#f5edd8] ${display.className}`} style={{ textShadow: "3px 3px 0 #7a1c1c" }}>
+            <p className={`mb-3 text-2xl text-[#f5edd8] ${display.className}`} style={{ textShadow: "3px 3px 0 #4b1d7a" }}>
               Quick actions
             </p>
             <div className="flex flex-wrap gap-3">
@@ -210,13 +210,13 @@ export default async function DashboardPage() {
           {/* Profile card */}
           <div className={`px-5 py-4 ${CARD}`}>
             <div className="flex min-w-0 items-center gap-3">
-              <div className={`flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black bg-[#7a1c1c] text-lg text-[#f5edd8] ${display.className}`}>
+              <div className={`flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black bg-[#4b1d7a] text-lg text-[#f5edd8] ${display.className}`}>
                 {firstName[0]?.toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="truncate text-xl font-bold uppercase leading-tight">{user.fullName}</span>
-                  <span className="bg-[#7a1c1c] px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#f5edd8]">
+                  <span className="bg-[#4b1d7a] px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[#f5edd8]">
                     {isExt ? "External" : "OPJU"}
                   </span>
                 </div>
@@ -238,9 +238,9 @@ export default async function DashboardPage() {
 
           {/* Participant / enrollment ticket */}
           {(isExt ? user.participantId : user.enrollmentNumber) && (
-            <div className="relative overflow-hidden rounded-2xl border-2 border-black bg-[#f5c928] text-black shadow-[6px_6px_0_0_#000]">
-              <span aria-hidden className="absolute -left-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-2 border-black bg-[#4a0e0e]" />
-              <span aria-hidden className="absolute -right-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-2 border-black bg-[#4a0e0e]" />
+            <div className="relative overflow-hidden rounded-2xl border-2 border-black bg-[#ff7518] text-black shadow-[6px_6px_0_0_#000]">
+              <span aria-hidden className="absolute -left-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-2 border-black bg-[#2a0f4a]" />
+              <span aria-hidden className="absolute -right-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-2 border-black bg-[#2a0f4a]" />
               <div className="px-8 py-5">
                 <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-70">
                   Admit one · {isExt ? "Participant ID" : "Enrollment Number"}
@@ -258,19 +258,19 @@ export default async function DashboardPage() {
           {/* Registered events */}
           <div>
             <div className="mb-3 flex items-end justify-between">
-              <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={{ textShadow: "3px 3px 0 #7a1c1c" }}>
+              <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={{ textShadow: "3px 3px 0 #4b1d7a" }}>
                 Registered events
               </p>
-              <Link href="/events-selection" className="text-sm font-bold uppercase tracking-widest text-[#f5c928] underline-offset-4 hover:underline">
+              <Link href="/events-selection" className="text-sm font-bold uppercase tracking-widest text-[#ff7518] underline-offset-4 hover:underline">
                 Browse all
               </Link>
             </div>
 
             {eventCount === 0 ? (
               <div className="border-2 border-dashed border-[#f5edd8]/40 py-12 text-center">
-                <CalendarDays className="mx-auto mb-3 h-9 w-9 text-[#f5c928]" />
+                <CalendarDays className="mx-auto mb-3 h-9 w-9 text-[#ff7518]" />
                 <p className="text-xl font-bold uppercase text-[#f5edd8]">No events yet</p>
-                <Link href="/events-selection" className="mt-1 block text-sm font-semibold uppercase tracking-wider text-[#f5c928] hover:underline">
+                <Link href="/events-selection" className="mt-1 block text-sm font-semibold uppercase tracking-wider text-[#ff7518] hover:underline">
                   Register for your first event
                 </Link>
               </div>
@@ -292,7 +292,7 @@ export default async function DashboardPage() {
                         </div>
                         <div className="flex shrink-0 items-center gap-3">
                           <span className={`text-sm font-bold uppercase tracking-wider ${label.color}`}>{label.text}</span>
-                          <span className="text-sm font-bold uppercase tracking-wider text-[#7a1c1c]">Team →</span>
+                          <span className="text-sm font-bold uppercase tracking-wider text-[#4b1d7a]">Team →</span>
                         </div>
                       </div>
                     </Link>

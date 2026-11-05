@@ -16,7 +16,7 @@ interface Props {
 // Maroon heading that sits directly on the page background
 function Heading({ children }: { children: React.ReactNode }) {
   return (
-    <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={{ textShadow: "3px 3px 0 #7a1c1c" }}>
+    <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={{ textShadow: "3px 3px 0 #4b1d7a" }}>
       {children}
     </p>
   );
@@ -70,7 +70,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
       {/* 1. Status */}
       <div
         className={`border-2 border-black px-6 py-6 shadow-[6px_6px_0_0_#000] ${
-          payClearance ? "bg-[#1f8a3a] text-white" : "bg-[#f5c928] text-black"
+          payClearance ? "bg-[#1f8a3a] text-white" : "bg-[#ff7518] text-black"
         }`}
       >
         {payClearance ? (
@@ -89,7 +89,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
               <p className="mt-2 text-base font-semibold">
                 Total fee: ₹{payableAmount}
                 {isCapped && (
-                  <span className="ml-2 bg-black px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-[#f5c928]">Cap applied</span>
+                  <span className="ml-2 bg-black px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-[#ff7518]">Cap applied</span>
                 )}
               </p>
             </div>
@@ -111,12 +111,12 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
             {initial.eventRows.map((ev) => (
               <div key={ev.eventId} className="flex items-center justify-between gap-3 px-5 py-4">
                 <div className="flex min-w-0 items-center gap-3">
-                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black ${ev.isIndividual ? "bg-[#f5c928]" : "bg-[#0e5b57] text-white"}`}>
+                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black ${ev.isIndividual ? "bg-[#ff7518]" : "bg-[#0e5b57] text-white"}`}>
                     {ev.isIndividual ? <User className="h-5 w-5" /> : <Users className="h-5 w-5" />}
                   </div>
                   <div className="min-w-0">
                     <p className="truncate text-lg font-bold uppercase leading-tight">{ev.name}</p>
-                    <span className="text-sm font-bold uppercase tracking-wider text-[#7a1c1c]">
+                    <span className="text-sm font-bold uppercase tracking-wider text-[#4b1d7a]">
                       {ev.isIndividual ? "Individual" : "Team"}
                     </span>
                   </div>
@@ -136,7 +136,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
               </p>
             )}
             <p className="text-base font-bold uppercase">
-              Total <span className={`ml-1 text-2xl text-[#7a1c1c] tabular-nums ${display.className}`}>₹{payableAmount}</span>
+              Total <span className={`ml-1 text-2xl text-[#4b1d7a] tabular-nums ${display.className}`}>₹{payableAmount}</span>
             </p>
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
           <button
             type="button"
             onClick={() => setShowFeeGuide((v) => !v)}
-            className="flex w-full items-center justify-between px-5 py-3 text-left hover:bg-[#f5c928]/40"
+            className="flex w-full items-center justify-between px-5 py-3 text-left hover:bg-[#ff7518]/40"
             aria-expanded={showFeeGuide}
           >
             <span className="text-base font-bold uppercase tracking-wide">Registration fee structure</span>
@@ -164,8 +164,8 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
                 ].map(({ title, icon: Icon, rows }) => (
                   <div key={title} className="border-2 border-black bg-white/60 px-4 py-3">
                     <div className="mb-2 flex items-center gap-2 border-b-2 border-black/20 pb-2">
-                      <Icon className="h-4 w-4 text-[#7a1c1c]" />
-                      <p className="text-base font-bold uppercase tracking-wide text-[#7a1c1c]">{title}</p>
+                      <Icon className="h-4 w-4 text-[#4b1d7a]" />
+                      <p className="text-base font-bold uppercase tracking-wide text-[#4b1d7a]">{title}</p>
                     </div>
                     <div className="space-y-1.5">
                       {rows.map(([label, price]) => (
@@ -179,9 +179,9 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
                 ))}
               </div>
               <ul className="space-y-1.5 text-base leading-snug">
-                <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> Only team leaders pay the registration fee.</li>
-                <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> Events with team size of 1 count as individual.</li>
-                <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> ₹499 is the maximum cap across all events.</li>
+                <li className="flex gap-2"><span className="font-bold text-[#4b1d7a]">•</span> Only team leaders pay the registration fee.</li>
+                <li className="flex gap-2"><span className="font-bold text-[#4b1d7a]">•</span> Events with team size of 1 count as individual.</li>
+                <li className="flex gap-2"><span className="font-bold text-[#4b1d7a]">•</span> ₹499 is the maximum cap across all events.</li>
               </ul>
             </div>
           )}
@@ -195,12 +195,12 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
           <ol className="space-y-4">
             {[
               { n: "1", text: "Click “Pay” below — it opens the Easebuzz payment page." },
-              { n: "2", text: <>Use this email on the payment page: <span className="break-all border-2 border-black bg-[#f5c928] px-2 py-0.5 font-bold text-black">{userEmail}</span></> },
+              { n: "2", text: <>Use this email on the payment page: <span className="break-all border-2 border-black bg-[#ff7518] px-2 py-0.5 font-bold text-black">{userEmail}</span></> },
               { n: "3", text: "After payment, Easebuzz emails you a transaction ID." },
               { n: "4", text: "Come back here, enter the transaction ID, and submit." },
             ].map(({ n, text }) => (
               <li key={n} className="flex items-start gap-3">
-                <span className={`flex h-9 w-9 shrink-0 items-center justify-center border-2 border-black bg-[#7a1c1c] text-lg text-[#f5edd8] ${display.className}`}>
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center border-2 border-black bg-[#4b1d7a] text-lg text-[#f5edd8] ${display.className}`}>
                   {n}
                 </span>
                 <p className="pt-1 text-lg leading-snug">{text}</p>
@@ -210,7 +210,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
         </div>
 
         {/* Important note */}
-        <div className="flex items-start gap-3 border-2 border-black bg-[#f5c928] px-5 py-4 text-black shadow-[4px_4px_0_0_#000]">
+        <div className="flex items-start gap-3 border-2 border-black bg-[#ff7518] px-5 py-4 text-black shadow-[4px_4px_0_0_#000]">
           <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0" />
           <div>
             <p className="text-lg font-bold uppercase tracking-wide">Important</p>
@@ -226,7 +226,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
       {!payClearance && (
         <button
           onClick={() => setShowModal(true)}
-          className={`h-16 w-full border-2 border-black bg-[#ff6a00] text-2xl uppercase tracking-wide text-black shadow-[6px_6px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#f5c928] active:translate-y-0 ${display.className}`}
+          className={`h-16 w-full border-2 border-black bg-[#9d4edd] text-2xl uppercase tracking-wide text-black shadow-[6px_6px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#ff7518] active:translate-y-0 ${display.className}`}
         >
           Pay ₹{remaining} via Easebuzz
         </button>
@@ -284,20 +284,20 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
       {/* 8. Payment modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-4 sm:items-center" role="dialog" aria-modal="true" aria-label="Complete payment">
-          <div className="max-h-[92vh] w-full max-w-md overflow-y-auto border-2 border-black bg-[#f5edd8] text-[#1a0505] shadow-[8px_8px_0_0_#000]">
-            <div className="flex items-center justify-between border-b-2 border-black bg-[#7a1c1c] px-5 py-4 text-[#f5edd8]">
+          <div className="max-h-[92vh] w-full max-w-md overflow-y-auto border-2 border-black bg-[#f5edd8] text-[#12061f] shadow-[8px_8px_0_0_#000]">
+            <div className="flex items-center justify-between border-b-2 border-black bg-[#4b1d7a] px-5 py-4 text-[#f5edd8]">
               <p className={`text-xl ${display.className}`}>Complete payment</p>
               <button
                 onClick={() => setShowModal(false)}
                 aria-label="Close"
-                className="flex h-9 w-9 items-center justify-center border-2 border-black bg-[#f5c928] text-black hover:bg-[#ff6a00]"
+                className="flex h-9 w-9 items-center justify-center border-2 border-black bg-[#ff7518] text-black hover:bg-[#9d4edd]"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             <div className="space-y-5 px-5 py-5">
-              <div className="flex items-center justify-between gap-3 border-2 border-black bg-[#f5c928] px-4 py-4 text-black">
+              <div className="flex items-center justify-between gap-3 border-2 border-black bg-[#ff7518] px-4 py-4 text-black">
                 <div>
                   <p className="text-sm font-bold uppercase tracking-widest">Pay now</p>
                   <p className={`text-4xl tabular-nums ${display.className}`}>₹{remaining}</p>
@@ -309,7 +309,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
               </div>
 
               <div className="flex items-center gap-3 border-2 border-black bg-white/60 px-3 py-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black bg-[#f5c928]">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black bg-[#ff7518]">
                   <QrCode className="h-5 w-5" />
                 </div>
                 <div>
@@ -322,7 +322,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
                 href={EASEBUZZ_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-12 w-full items-center justify-center gap-2 border-2 border-black bg-[#7a1c1c] text-lg font-bold uppercase tracking-wider text-white shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#5a1212]"
+                className="flex h-12 w-full items-center justify-center gap-2 border-2 border-black bg-[#4b1d7a] text-lg font-bold uppercase tracking-wider text-white shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#3a1666]"
               >
                 Open Easebuzz <ExternalLink className="h-4 w-4" />
               </a>
@@ -339,11 +339,11 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
                 onChange={(e) => setTxInput(e.target.value)}
                 placeholder="Paste transaction ID here"
                 aria-label="Transaction ID"
-                className="h-12 w-full border-2 border-black bg-white px-3 font-mono text-base text-black placeholder:text-black/40 focus:outline-none focus:ring-4 focus:ring-[#f5c928]"
+                className="h-12 w-full border-2 border-black bg-white px-3 font-mono text-base text-black placeholder:text-black/40 focus:outline-none focus:ring-4 focus:ring-[#ff7518]"
               />
 
               {error && (
-                <p role="alert" className="border-2 border-black bg-[#ffd0d0] px-3 py-2 text-base font-semibold text-[#6b0010]">{error}</p>
+                <p role="alert" className="border-2 border-black bg-[#ffd0d0] px-3 py-2 text-base font-semibold text-[#5000ab]">{error}</p>
               )}
 
               <button

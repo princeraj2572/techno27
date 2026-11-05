@@ -33,7 +33,7 @@ export function SponsorStamp({
         <div className="bg-white p-1">
           <div
             className={`relative flex ${z.aspect} flex-col items-center justify-between overflow-hidden px-3 py-3 text-center text-white`}
-            style={{ background: `linear-gradient(165deg, ${sponsor.color} 0%, ${sponsor.color}dd 55%, #1a0f08 170%)` }}
+            style={{ background: `linear-gradient(165deg, ${sponsor.color} 0%, ${sponsor.color}dd 55%, #150a24 170%)` }}
           >
             <div aria-hidden className="absolute inset-0 opacity-[0.22]" style={patternStyle(pattern, "#ffffff")} />
 
@@ -54,7 +54,7 @@ export function SponsorStamp({
               )}
             </div>
 
-            <span className="relative border-2 border-black bg-[#f5c928] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-black shadow-[2px_2px_0_0_#000]">
+            <span className="relative border-2 border-black bg-[#ff7518] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-black shadow-[2px_2px_0_0_#000]">
               {role}
             </span>
           </div>

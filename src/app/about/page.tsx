@@ -31,10 +31,10 @@ export default function AboutPage() {
     <PageShell>
       <PageHero tone="crimson" title="About the fest" sub="More than a fest, a movement" ghost="Innovation meets culture" />
 
-      <Marquee className="bg-[#f5c928] text-black font-bold uppercase tracking-[0.3em] text-xs py-1" text="Tech ● Robotics ● Coding ● Design ● Music ● Fashion ● Art ● Food ● " speed={45} reverse />
+      <Marquee className="bg-[#ff7518] text-black font-bold uppercase tracking-[0.3em] text-xs py-1" text="Tech ● Robotics ● Coding ● Design ● Music ● Fashion ● Art ● Food ● " speed={45} reverse />
 
       {/* Story on pinned notes */}
-      <Reveal><Band tone="crimson" zigzag="#f5c928" mandala>
+      <Reveal><Band tone="crimson" zigzag="#ff7518" mandala>
         <div className="grid md:grid-cols-3 gap-10 items-center">
           <div className="md:col-span-2 grid sm:grid-cols-2 gap-8">
             <Note tag="Story" title="Where it started" tilt="-rotate-2">
@@ -55,8 +55,8 @@ export default function AboutPage() {
         <div className="grid grid-cols-3 gap-6 text-center">
           {stats.map((s) => (
             <div key={s.label}>
-              <p className="text-5xl sm:text-7xl font-bold leading-none text-[#7a1c1c]"><CountUp to={s.to} suffix={s.suffix} /></p>
-              <p className="mt-1 text-sm sm:text-lg font-bold uppercase tracking-wider text-[#1a0505]">{s.label}</p>
+              <p className="text-5xl sm:text-7xl font-bold leading-none text-[#4b1d7a]"><CountUp to={s.to} suffix={s.suffix} /></p>
+              <p className="mt-1 text-sm sm:text-lg font-bold uppercase tracking-wider text-[#12061f]">{s.label}</p>
             </div>
           ))}
         </div>
@@ -64,12 +64,12 @@ export default function AboutPage() {
 
       {/* Journey */}
       <Reveal><Band tone="parchment" mandala>
-        <h2 className={`text-5xl text-[#7a1c1c] leading-none mb-10 ${serif.className}`}>Our journey</h2>
+        <h2 className={`text-5xl text-[#4b1d7a] leading-none mb-10 ${serif.className}`}>Our journey</h2>
         <ol className="relative border-l-4 border-dashed border-black/40 pl-8 space-y-8">
           {MILESTONES.map((m) => (
             <li key={m.year} className="relative">
-              <span aria-hidden className="absolute -left-[2.85rem] top-1 h-5 w-5 rounded-full border-2 border-black bg-[#f5c928]" />
-              <p className={`text-3xl text-[#7a1c1c] ${display.className}`}>{m.year}</p>
+              <span aria-hidden className="absolute -left-[2.85rem] top-1 h-5 w-5 rounded-full border-2 border-black bg-[#ff7518]" />
+              <p className={`text-3xl text-[#4b1d7a] ${display.className}`}>{m.year}</p>
               <p className="text-xl font-bold uppercase tracking-wide text-black">{m.title}</p>
               <p className="text-lg leading-snug text-black/70">{m.text}</p>
             </li>
@@ -87,7 +87,7 @@ export default function AboutPage() {
               <div className={`w-12 h-12 shrink-0 rounded-full ${ACCENTS[i]} border-2 border-black flex items-center justify-center text-2xl`}>{p.icon}</div>
               <div>
                 <h3 className="text-2xl font-bold uppercase tracking-wide leading-tight">{p.title}</h3>
-                <p className="text-lg leading-snug text-[#1a0505]/70 mt-1">{p.desc}</p>
+                <p className="text-lg leading-snug text-[#12061f]/70 mt-1">{p.desc}</p>
               </div>
             </div>
           ))}
@@ -101,15 +101,15 @@ export default function AboutPage() {
 
       {/* FAQ */}
       <Reveal><Band tone="indigo">
-        <h2 className={`text-4xl sm:text-5xl text-[#f5c928] mb-8 ${display.className}`}>Good to know</h2>
+        <h2 className={`text-4xl sm:text-5xl text-[#ff7518] mb-8 ${display.className}`}>Good to know</h2>
         <div className={`${CARD} rounded-xl overflow-hidden divide-y-2 divide-dashed divide-black/30`}>
           {FAQ.map((f) => (
-            <details key={f.q} className="group px-5 py-4 open:bg-[#f5c928]/25">
+            <details key={f.q} className="group px-5 py-4 open:bg-[#ff7518]/25">
               <summary className="cursor-pointer list-none flex items-center justify-between gap-4 text-xl font-bold uppercase tracking-wide">
                 {f.q}
-                <span className="text-2xl text-[#ff6a00] transition-transform group-open:rotate-45">+</span>
+                <span className="text-2xl text-[#9d4edd] transition-transform group-open:rotate-45">+</span>
               </summary>
-              <p className="text-lg leading-snug text-[#1a0505]/75 mt-2">{f.a}</p>
+              <p className="text-lg leading-snug text-[#12061f]/75 mt-2">{f.a}</p>
             </details>
           ))}
         </div>

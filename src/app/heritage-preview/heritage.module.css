@@ -194,7 +194,7 @@
 }
 .segBtn[aria-pressed="true"] {
   background: var(--gold);
-  color: #2a1b08;
+  color: #211b43;
   font-weight: 600;
 }
 .btn {
@@ -219,7 +219,7 @@
 }
 .btnGold {
   background: var(--gold);
-  color: #2a1b08;
+  color: #211b43;
   border-color: var(--gold);
   font-weight: 600;
 }
@@ -366,7 +366,7 @@
 }
 .pick[aria-pressed="true"] {
   background: var(--gold);
-  color: #2a1b08;
+  color: #211b43;
   border-color: var(--gold-bright);
 }
 .meta {
@@ -497,7 +497,7 @@
 }
 .navBtn:hover {
   background: var(--gold);
-  color: #2a1b08;
+  color: #211b43;
 }
 .navPrev {
   left: 16px;
