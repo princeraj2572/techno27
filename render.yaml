@@ -1,11 +1,12 @@
 # Deploy to Render (free web service): New > Blueprint, pick this repo, branch main.
+# --include=dev: NODE_ENV=production also applies to the build, and npm would skip TypeScript (needed for the @/ paths).
 # Secrets are marked sync: false, so Render asks for their values when the Blueprint is created.
 services:
   - type: web
     name: techno27
     runtime: node
     plan: free
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: npm start
     healthCheckPath: /
     envVars:
