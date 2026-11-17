@@ -103,16 +103,16 @@ export function Lockup({ variant = "color", buildAt }: { variant?: LockupVariant
       {BURSTS.map((b, i) => {
         const look = burstLook(variant, b.fill);
         return <Burst key={b.seed} n={b.n} ro={48} ri={b.ri} seed={b.seed} fill={look.fill} stroke={look.stroke} sw={look.sw}
-          style={{ ...look.style, ...anim("lsx-splat", 0.7, t(AT.burst(i)), "cubic-bezier(.3,1.5,.5,1)") }} className={`absolute ${b.cls}`} />;
+          style={{ ...look.style, ...anim("lsx-splat", 1.0, t(AT.burst(i)), "cubic-bezier(.16,1,.3,1)") }} className={`absolute ${b.cls}`} />;
       })}
       {LINES.map((l, i) => (
         <Tape key={l.text} x={l.x} y={l.y} rot={l.rot} size={5.4} lettering className="leading-none px-[.28em] pb-[.06em] pt-[.02em]"
-          style={{ ...lineStyle(variant, l.bg), ...anim("lsx-ink", 0.75, t(AT.line(i)), "cubic-bezier(.2,.8,.2,1)") }}>{l.text}</Tape>
+          style={{ ...lineStyle(variant, l.bg), ...anim("lsx-ink", 1.0, t(AT.line(i)), "cubic-bezier(.16,1,.3,1)") }}>{l.text}</Tape>
       ))}
       {TAGS.map((tag, i) => {
         const look = tagLook(variant, tag);
         return <Tape key={tag.text} x={tag.x} y={tag.y} rot={tag.rot} size={tag.size} className={look.className}
-          style={{ ...look.style, ...anim("lsx-stamp", 0.5, t(AT.tag(i)), "cubic-bezier(.3,1.4,.5,1)") }}>{tag.text}</Tape>;
+          style={{ ...look.style, ...anim("lsx-stamp", 0.8, t(AT.tag(i)), "cubic-bezier(.16,1,.3,1)") }}>{tag.text}</Tape>;
       })}
     </div>
   );
