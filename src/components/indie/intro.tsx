@@ -272,7 +272,16 @@ function draw(ctx: CanvasRenderingContext2D, w: number, h: number, t: number, dt
   ctx.fillStyle = `rgba(255,225,160,${0.8 * pa})`; ctx.fillRect(w * 0.05, h - 21, w * 0.9 * clamp01(t / T.fade), 3);
 
   ctx.globalCompositeOperation = "source-over";
+
+  // retro film damage: a few dust specks most frames, the odd vertical scratch
+  if (Math.random() < 0.4) for (let i = 0; i < 3; i++) {
+    ctx.fillStyle = `rgba(255,240,210,${rnd(0.15, 0.45)})`;
+    ctx.beginPath(); ctx.arc(rnd(0, w), rnd(0, h), rnd(0.6, 2.2), 0, 7); ctx.fill();
+  }
+  if (Math.random() < 0.12) { ctx.fillStyle = `rgba(255,236,200,${rnd(0.08, 0.22)})`; ctx.fillRect(rnd(0, w), 0, rnd(0.6, 1.4), h); }
 }
+
+const NOISE = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
 let audio: HTMLAudioElement | null = null; // module-level so the sound outlives the overlay
 
@@ -352,8 +361,11 @@ export function Intro() {
         </button>
       ) : (
         <>
-          <canvas ref={canvas} className="absolute inset-0 h-full w-full" />
+          {/* slight gate weave, like film running through a projector */}
+          <canvas ref={canvas} className="absolute inset-0 h-full w-full" style={{ animation: "intro-weave .3s steps(2) infinite" }} />
           <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.65) 100%)" }} />
+          {/* warm light leaks in the poster's orange and teal */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 mix-blend-screen" style={{ background: "radial-gradient(ellipse 45% 55% at 0% 15%, rgba(214,90,40,.55), transparent 70%), radial-gradient(ellipse 40% 50% at 100% 90%, rgba(47,140,140,.45), transparent 70%)", animation: "intro-leak 7.5s ease-in-out both" }} />
 
           {/* The gold logo: drawn as light at the centre of the screen, turns to solid gold at the flash,
               then flies onto the hero's real logo (it is laid out over it, and starts blown up to the centre). */}
@@ -367,7 +379,8 @@ export function Intro() {
                 animation: `intro-fly ${T.flyDur}s ${T.fly}s cubic-bezier(.65,0,.35,1) both, intro-land .9s ${T.fly + T.flyDur - 0.15}s ease-out`,
               } as CSSProperties}
             >
-              <div className="absolute inset-0" style={{ animation: `intro-breathe 2.8s ${T.draw}s ease-out both` }}>
+              {/* slight red/teal chromatic fringe, like an old lens */}
+              <div className="absolute inset-0" style={{ animation: `intro-breathe 2.8s ${T.draw}s ease-out both`, filter: "drop-shadow(-2px 0 rgba(255,70,40,.4)) drop-shadow(2px 0 rgba(40,200,210,.35))" }}>
                 <div className="intro-sweep absolute inset-0" style={{ animation: `intro-sweep ${T.drawDur}s ${T.draw}s linear both, intro-outline-dim .8s ${T.metal + 0.2}s ease forwards` }}>
                   <Lockup variant="outline" />
                 </div>
@@ -381,6 +394,12 @@ export function Intro() {
           {/* cinematic letterbox that retracts slowly at the start */}
           <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[13vh] bg-black" style={{ animation: "intro-bar-t 1.8s .6s cubic-bezier(.6,0,.2,1) both" }} />
           <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[13vh] bg-black" style={{ animation: "intro-bar-b 1.8s .6s cubic-bezier(.6,0,.2,1) both" }} />
+
+          {/* retro film finish: sepia grade, grain, scanlines, projector flicker */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 mix-blend-soft-light" style={{ background: "#c48a3a", opacity: 0.18 }} />
+          <div aria-hidden className="pointer-events-none absolute -inset-[10%] mix-blend-overlay" style={{ backgroundImage: NOISE, opacity: 0.22, animation: "intro-grain .5s steps(1) infinite" }} />
+          <div aria-hidden className="pointer-events-none absolute inset-0" style={{ backgroundImage: "repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px)", opacity: 0.5 }} />
+          <div aria-hidden className="pointer-events-none absolute inset-0 bg-[#ffe6bf] mix-blend-overlay" style={{ animation: "intro-flicker 1.7s linear infinite" }} />
 
           <button onClick={finish} className="absolute bottom-6 right-6 z-10 border border-[#f1c36b]/50 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.3em] text-[#f1c36b]/80 hover:bg-[#f1c36b]/10">Skip</button>
         </>
@@ -397,6 +416,10 @@ export function Intro() {
         @keyframes intro-breathe { from { scale: 1.07; } to { scale: 1; } }
         @keyframes intro-fly { from { transform: translate(var(--dx), var(--dy)) scale(var(--s)); } to { transform: none; } }
         @keyframes intro-land { 0% { filter: none; } 30% { filter: brightness(1.7) drop-shadow(0 0 30px rgba(255,200,110,.9)); } 100% { filter: none; } }
+        @keyframes intro-weave { 0% { transform: translate(0, 0); } 50% { transform: translate(.4px, .7px); } }
+        @keyframes intro-grain { 0% { transform: translate(0, 0); } 20% { transform: translate(-3%, 2%); } 40% { transform: translate(2%, -3%); } 60% { transform: translate(-2%, -1%); } 80% { transform: translate(3%, 2%); } }
+        @keyframes intro-flicker { 0%, 100% { opacity: 0; } 6% { opacity: .07; } 8% { opacity: 0; } 41% { opacity: .05; } 43% { opacity: 0; } 70% { opacity: .08; } 72% { opacity: 0; } }
+        @keyframes intro-leak { 0% { opacity: 0; transform: translateX(-4%); } 25% { opacity: .55; } 55% { opacity: .3; } 80% { opacity: .5; transform: translateX(3%); } 100% { opacity: .35; } }
         @keyframes intro-bar-t { from { transform: none; } to { transform: translateY(-100%); } }
         @keyframes intro-bar-b { from { transform: none; } to { transform: translateY(100%); } }
       `}</style>
