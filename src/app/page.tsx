@@ -3,14 +3,16 @@ import { IndianRupee, Medal, Ticket, Users } from "lucide-react";
 import { PUBLIC_EVENTS } from "@/features/events/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
 import { TicketCountdown } from "@/components/events/ticket-countdown";
-import { RevealPopup } from "@/components/indie/reveal-popup";
+// import { RevealPopup } from "@/components/indie/reveal-popup";
 import { EVENT_MEDIA, FEST_START, JUNOON_ACTS, JUNOON_NIGHTS, MYSTERY_HINTS, TESTIMONIALS } from "@/data/dummy";
 import { CULTURES } from "@/components/indie/culture-art";
 import { Postmark, Stamp } from "@/components/indie/stamp";
 import { CutoutTitle } from "@/components/indie/cutout-title";
 import { NimbuMirch } from "@/components/indie/nimbu-mirch";
 import { EVENT_THEMES, patternStyle } from "@/features/events/data/event-themes";
-import { CountUp, Reveal, Splash, TestimonialSlider } from "@/components/indie/motion";
+import { CountUp, Reveal, TestimonialSlider } from "@/components/indie/motion";
+import { Intro } from "@/components/indie/intro";
+import { Hero } from "@/components/home/hero";
 import {
   Band, BlockButton, Marquee, Note, PageShell, Vinyl, display, serif, MandalaSpin, blockHindi,
 } from "@/components/indie";
@@ -67,44 +69,14 @@ export default function HomePage() {
 
   return (
     <PageShell>
-      <Splash />
-      <RevealPopup />
+      {/* Splash (maroon loader) parked: <Splash /> from @/components/indie/motion */}
+      <Intro />
+      {/* <RevealPopup /> */}
 
       {/* Pinned sections: each slides up over the previous one (large screens) */}
       <div className="relative">
         {/* Hero */}
-        <section className="panel relative overflow-hidden indie-mandala bg-[#7a1c1c]" style={{ minHeight: "calc(100vh - 4rem)" }}>
-          <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(58,8,8,0.85) 0%, rgba(122,28,28,0.55) 50%, rgba(246,95,0,0.85) 100%)" }} />
-          <div className="panel-inner relative max-w-6xl mx-auto px-6 pt-16 pb-48 md:pb-44 grid md:grid-cols-2 gap-6 items-center">
-            <div className="space-y-6 text-center md:text-left">
-              <p className="inline-block bg-[#ff6a00] text-black text-sm font-bold uppercase tracking-[0.25em] px-3 py-1 border-2 border-black -rotate-1">
-                Op Jindal University • 16th Edition • Since 2011
-              </p>
-              <h1 className={`text-5xl sm:text-7xl leading-[0.95] text-[#f5c928] break-words ${serif.className}`} style={{ textShadow: "4px 4px 0 #3a0808" }}>
-                Techno-<span className="text-[#f5edd8]">aiMBiAtion</span>
-                <span className="block text-[#ff6a00]">&apos;27</span>
-              </h1>
-              <p className="max-w-lg text-xl sm:text-2xl font-semibold leading-snug text-[#f5edd8]/90 mx-auto md:mx-0">
-                The annual flagship festival of O.P. Jindal University. Compete, collaborate and create — across Tech, Robotics, Culture &amp; more.
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                <BlockButton href="/auth/signup" tone="mustard">Register now</BlockButton>
-                <BlockButton href="/events" tone="cream">Browse events</BlockButton>
-              </div>
-            </div>
-
-            <span aria-hidden className="indie-float absolute left-4 top-6 hidden md:block bg-[#f5c928] text-black text-xs font-bold uppercase tracking-widest px-3 py-1 border-2 border-black" style={{ ["--r" as string]: "-6deg" }}>★ Vol. 1</span>
-
-            <TicketCountdown to={FEST_START} />
-          </div>
-          <Marquee
-            className="absolute inset-x-0 bottom-0 z-10 bg-[#ff6a00] text-black font-bold uppercase tracking-wider text-xl py-1.5 -rotate-1 scale-[1.02]"
-            text="Join the riot ✦ Compete ✦ Collaborate ✦ Create ✦ "
-          />
-          <span aria-hidden className="indie-bob absolute bottom-14 left-1/2 z-10 hidden md:flex h-10 w-6 items-start justify-center rounded-full border-2 border-[#f5edd8]/80 pt-1.5">
-            <span className="h-2 w-0.5 rounded bg-[#f5edd8]" />
-          </span>
-        </section>
+        <Hero />
 
         {/* What's new */}
         <Band panel tone="crimson" zigzag="#f5c928" mandala>

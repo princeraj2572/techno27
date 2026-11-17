@@ -10,6 +10,7 @@ import { getUser } from "@/features/users/user-actions";
 import { cn } from "@/lib/utils";
 import { body, serif } from "@/components/indie";
 import { getEvent } from "@/features/events/data/all-events";
+import { sans } from "@/components/home/fonts";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -35,7 +36,12 @@ const PAGE_THEMES: [string, NavTheme][] = [
   ["/about", CRIMSON], ["/gallery", CRIMSON], ["/sponsors", CRIMSON],
 ];
 
+// Home page: poster-style navy bar to match the hero.
+const HOME: NavTheme = { bg: "#141c2a", ink: "#f3e8cf", accent: "#e2b43b", accentInk: "#1c1812" };
+const TEAL_LINKS = ["/creatorverse", "/contact"];
+
 function themeFor(pathname: string): NavTheme {
+  if (pathname === "/") return HOME;
   const event = pathname.startsWith("/events/") ? getEvent(pathname.split("/")[2]) : undefined;
   if (event) return { bg: event.theme.bg, ink: event.theme.ink, accent: event.theme.accent, accentInk: event.theme.accentInk };
   if (pathname === "/events") return CRIMSON;
@@ -68,8 +74,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const poster = pathname === "/";
+
   const linkCls = (href: string) =>
-    isActive(pathname, href)
+    poster
+      ? cn(
+          "rounded-lg border-2 px-3 py-1",
+          isActive(pathname, href) ? "border-[#e2b43b] text-[#e2b43b]" : "border-transparent text-[var(--nav-ink)] hover:border-[var(--nav-ink)]/60",
+          TEAL_LINKS.includes(href) && "!border-[#f3e8cf]/80 bg-[#2b6a6a] text-[#f3e8cf]"
+        )
+      : isActive(pathname, href)
       ? "bg-[var(--nav-accent)] text-[var(--nav-accent-ink)] shadow-[2px_2px_0_0_rgba(0,0,0,0.45)]"
       : "text-[var(--nav-ink)] hover:bg-[color-mix(in_srgb,var(--nav-ink)_14%,transparent)]";
 
@@ -84,13 +98,21 @@ export default function Navbar() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 border-b-4 border-[var(--nav-accent)] text-[var(--nav-ink)] backdrop-blur-md transition-[box-shadow,background-color,border-color,color] duration-500",
-        body.className,
+        poster ? sans.className : body.className,
+        poster && "!border-b-[3px] !border-[#c98f2e]",
         scrolled && "shadow-[0_6px_0_0_rgba(0,0,0,0.35)]"
       )}
-      style={{ ...navVars, background: `color-mix(in srgb, var(--nav-bg) ${scrolled ? 82 : 100}%, transparent)` }}
+      style={{
+        ...navVars,
+        background: poster
+          // cream strip with an orange block at the right, like the poster's top edge
+          ? `linear-gradient(90deg,#efe2c4 0 62%,#d4572a 62% 100%) top / 100% 5px no-repeat, color-mix(in srgb, var(--nav-bg) ${scrolled ? 92 : 100}%, transparent)`
+          : `color-mix(in srgb, var(--nav-bg) ${scrolled ? 82 : 100}%, transparent)`,
+      }}
     >
       <nav className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         {/* Station board logo */}
+        {poster ? null : (
         <Link href="/" className="group flex items-center gap-2.5 shrink-0">
           <svg viewBox="0 0 100 100" className="h-10 w-10 transition-transform duration-500 group-hover:rotate-180" aria-hidden>
             <circle cx="50" cy="50" r="46" fill="#a1001a" stroke="#f5c928" strokeWidth="5" />
@@ -105,6 +127,7 @@ export default function Navbar() {
             <span className="text-[var(--nav-accent)]"> &apos;27</span>
           </span>
         </Link>
+        )}
 
         {/* Desktop nav */}
         <div className="hidden min-[1320px]:flex flex-1 items-center justify-center gap-0.5 2xl:gap-2">
@@ -127,13 +150,16 @@ export default function Navbar() {
             <>
               <Link
                 href="/auth/login"
-                className="whitespace-nowrap border-2 border-[var(--nav-ink)] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-[var(--nav-ink)] transition hover:bg-[var(--nav-ink)] hover:text-[var(--nav-bg)]"
+                className={cn(poster && "hidden", "whitespace-nowrap border-2 border-[var(--nav-ink)] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-[var(--nav-ink)] transition hover:bg-[var(--nav-ink)] hover:text-[var(--nav-bg)]")}
               >
                 Sign in
               </Link>
               <Link
                 href="/auth/signup"
-                className="flex items-center gap-1.5 whitespace-nowrap border-2 border-black bg-[#f5c928] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-black shadow-[3px_3px_0_0_#ff6a00] transition hover:-translate-y-0.5 hover:bg-[#ff6a00]"
+                className={cn(
+                  "flex items-center gap-1.5 whitespace-nowrap border-2 border-black bg-[#f5c928] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-black shadow-[3px_3px_0_0_#ff6a00] transition hover:-translate-y-0.5 hover:bg-[#ff6a00]",
+                  poster && "rounded-md !bg-[#e0b02e] shadow-[0_0_0_3px_#f3e8cf,4px_5px_0_3px_rgba(0,0,0,0.45)] hover:!bg-[#f0c443]"
+                )}
               >
                 <Ticket className="h-4 w-4" /> Register
               </Link>

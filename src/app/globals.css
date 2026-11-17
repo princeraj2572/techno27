@@ -119,3 +119,28 @@ body {
 @utility animate-slide-up {
   animation: slide-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+/* ── Home hero entrance (follows the intro video: gold flash resolves into the poster) ──
+   Uses the standalone `scale`/`translate` properties so they never fight an element's own `transform: rotate()`.
+   Held back (invisible) while the intro overlay is up; `backwards` fill returns elements to their own style after. */
+@keyframes hero-in { from { opacity: 0; transform: translateY(26px) scale(.96); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes hi-pop { from { scale: 0; opacity: 0; } 60% { scale: 1.18; opacity: 1; } to { scale: 1; } }
+@keyframes hi-rise { from { translate: 0 46px; opacity: 0; } to { translate: 0 0; opacity: 1; } }
+@keyframes hi-slam { from { scale: 1.55; opacity: 0; filter: brightness(3) blur(10px); } 55% { scale: .95; opacity: 1; filter: brightness(1.7); } to { scale: 1; filter: none; } }
+@keyframes hi-stamp { from { scale: 2.4; opacity: 0; } 60% { scale: .9; opacity: 1; } to { scale: 1; } }
+@keyframes hi-twinkle { 0%, 100% { scale: 1; opacity: 1; } 50% { scale: .55; opacity: .4; } }
+@keyframes hi-sweep { from { translate: -110% 0; opacity: 1; } to { translate: 110% 0; opacity: 0; } }
+
+.hero-in { animation: hero-in .9s cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 110ms); }
+.hi-pop { animation: hi-pop .75s cubic-bezier(.3, 1.5, .5, 1) backwards; animation-delay: calc(var(--d, 0) * 1s); }
+.hi-rise { animation: hi-rise .8s cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(var(--d, 0) * 1s); }
+.hi-slam { animation: hi-slam .9s cubic-bezier(.2, .9, .3, 1) backwards; animation-delay: calc(var(--d, 0) * 1s); }
+.hi-stamp { animation: hi-stamp .55s cubic-bezier(.3, 1.4, .5, 1) backwards; animation-delay: calc(var(--d, 0) * 1s); }
+.hi-twinkle { animation: hi-twinkle 2.6s ease-in-out infinite; animation-delay: calc(var(--d, 0) * 1s); }
+.hi-sweep { animation: hi-sweep 1.8s cubic-bezier(.4, 0, .2, 1) .15s both; }
+
+body:has(:is(.intro-overlay, .splash):not(.out)) :is(.hero-in, .hi-pop, .hi-rise, .hi-slam, .hi-stamp, .hi-twinkle, .hi-sweep) { animation: none; opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in, .hi-pop, .hi-rise, .hi-slam, .hi-stamp, .hi-twinkle, .hi-sweep { animation: none !important; }
+}

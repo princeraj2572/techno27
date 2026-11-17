@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { REVEAL_DATE } from "@/data/dummy";
 import { display, serif, Marquee } from "@/components/indie";
+import { VinylBadge } from "@/components/home/hero-art";
 
 const UNITS = ["Days", "Hours", "Minutes", "Seconds"];
 
@@ -61,11 +62,11 @@ export function RevealPopup() {
   const [vals, setVals] = useState("00000000");
 
   useEffect(() => {
-    let splashSeen = false;
-    try { splashSeen = sessionStorage.getItem("splash-seen") === "1"; } catch { /* storage blocked */ }
-    // splash runs 2.6s + 0.8s slide-out; wait for it unless it is skipped
-    const id = setTimeout(() => setOpen(true), splashSeen ? 0 : 3500);
-    return () => clearTimeout(id);
+    // open once the cinematic intro overlay has finished (or immediately if it is skipped)
+    const id = setInterval(() => {
+      if (!document.querySelector(".intro-overlay")) { clearInterval(id); setOpen(true); }
+    }, 250);
+    return () => clearInterval(id);
   }, []);
 
   // Flaps shuffle for a moment, then settle on the real countdown.
@@ -123,15 +124,21 @@ export function RevealPopup() {
 
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.07]" style={{ backgroundImage: "repeating-linear-gradient(0deg, #fff 0 1px, transparent 1px 4px)" }} />
 
-      <div className="relative flex items-center justify-between border-b-4 border-black bg-[#f5c928] px-4 py-3 text-black sm:px-8">
-        <span className={`text-xl uppercase tracking-[0.3em] sm:text-3xl ${display.className}`}>Departures</span>
-        <button
-          onClick={(e) => { e.stopPropagation(); close(); }}
-          aria-label="Close (Esc)"
-          className="flex items-center gap-1 border-2 border-black bg-[#f5edd8] px-3 py-1.5 text-xs font-bold uppercase shadow-[3px_3px_0_0_#000] hover:bg-white"
-        >
-          Esc <X className="h-4 w-4" />
-        </button>
+      {/* Same bar height + container as the site navbar, so the logo sits exactly where it does on the login page */}
+      <div className="relative z-10 border-b-4 border-black bg-[#f5c928] text-black">
+        <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8">
+          <span className="relative z-10 h-12 w-[7.5rem] shrink-0">
+            <VinylBadge className="absolute -left-1 -top-0.5 h-[7.2rem] w-[7.2rem] drop-shadow-[3px_5px_0_rgba(0,0,0,0.4)]" />
+          </span>
+          <span className={`absolute left-1/2 -translate-x-1/2 text-xl uppercase tracking-[0.3em] sm:text-3xl ${display.className}`}>Departures</span>
+          <button
+            onClick={(e) => { e.stopPropagation(); close(); }}
+            aria-label="Close (Esc)"
+            className="flex items-center gap-1 border-2 border-black bg-[#f5edd8] px-3 py-1.5 text-xs font-bold uppercase shadow-[3px_3px_0_0_#000] hover:bg-white"
+          >
+            Esc <X className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
       <div className="relative flex flex-1 flex-col items-center justify-center gap-8 px-4 sm:gap-10">
