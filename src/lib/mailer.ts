@@ -1,4 +1,4 @@
-﻿"use server";
+// server-only: imported by otp-actions, never by client components
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
@@ -42,18 +42,14 @@ export async function sendWelcomeEmail(recipientEmail: string, otp: string): Pro
     `,
   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-  } catch (error) {
-    console.error("Error sending welcome email:", error);
-  }
+  await transporter.sendMail(mailOptions);
 }
 
 export async function sendResetPasswordEmail(recipientEmail: string, otp: string): Promise<void> {
   const mailOptions = {
     from: process.env.SMTP_USER,
     to: recipientEmail,
-    subject: "Reset Your Password â€” Techno-aiMBiAtion 2027",
+    subject: "Reset Your Password — Techno-aiMBiAtion 2027",
     html: `
       <!DOCTYPE html>
       <html>
@@ -80,9 +76,5 @@ export async function sendResetPasswordEmail(recipientEmail: string, otp: string
     `,
   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-  } catch (error) {
-    console.error("Error sending reset password email:", error);
-  }
+  await transporter.sendMail(mailOptions);
 }

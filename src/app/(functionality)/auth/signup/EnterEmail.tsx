@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { sendWelcomeEmail } from "@/lib/mailer";
+import { sendOtp } from "@/features/users/otp-actions";
 
 interface Props {
   onNext: (email: string, isInternal: boolean) => void;
@@ -27,11 +27,8 @@ export default function EnterEmail({ onNext }: Props) {
 
     setLoading(true);
     try {
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      sessionStorage.setItem("signup_otp", otp);
-      sessionStorage.setItem("signup_email", email.toLowerCase().trim());
-      sessionStorage.setItem("signup_is_internal", String(isInternal));
-      await sendWelcomeEmail(email, otp);
+      const res = await sendOtp(email, "signup");
+      if (!res.ok) return setError(res.error);
       onNext(email.toLowerCase().trim(), isInternal);
     } catch {
       setError("Failed to send OTP. Please try again.");

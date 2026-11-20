@@ -135,11 +135,8 @@ export default function SignupForm({ email, isInternal }: Props) {
             }),
       });
 
-      sessionStorage.removeItem("signup_otp");
-      sessionStorage.removeItem("signup_email");
-      sessionStorage.removeItem("signup_is_internal");
-
-      router.push("/auth/login?registered=1");
+      router.push("/dashboard");
+      router.refresh(); // re-render server components (navbar) with the new session cookie
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Registration failed");
     } finally {

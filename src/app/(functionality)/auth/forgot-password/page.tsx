@@ -7,7 +7,7 @@ import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { sendResetPasswordEmail } from "@/lib/mailer";
+import { sendOtp, verifyOtp } from "@/features/users/otp-actions";
 import { resetPassword } from "@/features/users/user-actions";
 import { AuthCard, AuthShell } from "../auth-shell";
 
@@ -39,10 +39,8 @@ export default function ForgotPasswordPage() {
     if (!email) return setError("Email is required");
     setLoading(true);
     try {
-      const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-      sessionStorage.setItem("reset_otp", generatedOtp);
-      sessionStorage.setItem("reset_email", email);
-      await sendResetPasswordEmail(email, generatedOtp);
+      const res = await sendOtp(email, "reset");
+      if (!res.ok) return setError(res.error);
       setStep("otp");
     } catch {
       setError("Couldn't send the OTP. Check the email address and try again.");
@@ -51,11 +49,12 @@ export default function ForgotPasswordPage() {
     }
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    const stored = sessionStorage.getItem("reset_otp");
-    if (otp !== stored) return setError("That OTP doesn't match. Check your email and try again.");
+    setLoading(true);
+    const res = await verifyOtp(email, otp, "reset").finally(() => setLoading(false));
+    if (!res.ok) return setError(res.error);
     setStep("password");
   };
 
@@ -67,8 +66,6 @@ export default function ForgotPasswordPage() {
     setLoading(true);
     try {
       await resetPassword(email, newPassword);
-      sessionStorage.removeItem("reset_otp");
-      sessionStorage.removeItem("reset_email");
       router.push("/auth/login");
     } catch {
       setError("Couldn't reset your password. Please try again.");

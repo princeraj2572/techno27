@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { verifyOtp } from "@/features/users/otp-actions";
 
 interface Props {
   email: string;
@@ -14,14 +15,14 @@ interface Props {
 export default function VerifyOtp({ email, onNext, onBack }: Props) {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    const stored = sessionStorage.getItem("signup_otp");
-    if (otp.trim() !== stored) {
-      return setError("Invalid OTP. Please check and try again.");
-    }
+    setLoading(true);
+    const res = await verifyOtp(email, otp, "signup").finally(() => setLoading(false));
+    if (!res.ok) return setError(res.error);
     onNext();
   };
 
@@ -42,7 +43,7 @@ export default function VerifyOtp({ email, onNext, onBack }: Props) {
         />
       </div>
       {error && <p className="text-sm text-destructive">{error}</p>}
-      <Button type="submit" className="w-full">Verify OTP</Button>
+      <Button type="submit" className="w-full" disabled={loading}>{loading ? "Verifying..." : "Verify OTP"}</Button>
       <Button type="button" variant="ghost" className="w-full" onClick={onBack}>
         Back
       </Button>
