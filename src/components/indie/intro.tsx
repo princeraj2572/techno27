@@ -2,13 +2,11 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { serif } from "@/components/indie";
-import { Lockup, LOCKUP_PIECES } from "@/components/home/lockup";
 
-// Coded intro — "colour bloom", light + colour:
+// Coded intro — golden light on black (no colour splash):
 //   0–2s      dark horizon: a point of light, streaks racing over the floor, drifting wireframes (slow open)
-//   1.3–3.45s four huge soft clouds in the logo's colours glide in from the corners, swirl and merge like liquid light;
-//             each piece of the real colour logo fades/settles into place over a soft glow of its own colour
-//   3.45s     the colour collapses into the logo: light flash + bloom, two soft colour rings ripple out, motes drift
+//   1.8–3.45s the logo is slowly revealed from its centre outwards (widening circle of light) behind the god rays
+//   3.45s     light flash + bloom, warm motes drift out
 //   4.7–5.9s  the logo flies onto the hero's logo (identical lockup, so the hand-off is seamless), then dissolve
 // Smoothness: everything that moves a lot is a DOM layer animating only transform/opacity (blur is static, never
 // animated), so it runs on the compositor; the canvas only draws the light. Retro film finish on top.
@@ -21,7 +19,6 @@ const easeIO = (x: number) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x :
 const GOLD = "255,190,90";
 const MOTE = ["196,81,43", "63,160,166", "226,180,59", "239,226,196"];
 const rnd = (a: number, b: number) => a + Math.random() * (b - a);
-const FS = "clamp(9px, min(1.16vw, 2vh), 25px)"; // the lockup's em, so glows line up with its pieces
 
 type Geo = { left: number; top: number; width: number; height: number; dx: number; dy: number; s: number };
 type Pt = [number, number];
@@ -183,13 +180,6 @@ function draw(ctx: CanvasRenderingContext2D, w: number, h: number, t: number, dt
 
 const NOISE = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
-// The four colour clouds: start corner (in vmax) and the point near the centre they swirl through before collapsing.
-const ORBS = [
-  { color: "196,81,43", from: [-55, -45], mid: [-9, -5] },
-  { color: "47,140,145", from: [55, 45], mid: [9, 6] },
-  { color: "226,180,59", from: [55, -45], mid: [8, -7] },
-  { color: "239,226,196", from: [-55, 45], mid: [-8, 7] },
-];
 
 let audio: HTMLAudioElement | null = null; // module-level so the sound outlives the overlay
 
@@ -202,14 +192,19 @@ function measure(): Geo | null {
   return { left: r.left, top: r.top, width: r.width, height: r.height, dx: vw / 2 - (r.left + r.width / 2), dy: vh * 0.47 - (r.top + r.height / 2), s };
 }
 
+const SEEN = "techno27-intro-seen";
+
 export function Intro() {
-  const [phase, setPhase] = useState<"gate" | "play" | "out" | "gone">("gate");
+  // "check": plain black until we know whether this tab has already seen the intro
+  const [phase, setPhase] = useState<"check" | "gate" | "play" | "out" | "gone">("check");
   const [geo, setGeo] = useState<Geo | null>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // plays on every visit; only reduced-motion users skip it
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPhase("gone");
+    // once per tab session; reduced-motion users always skip it
+    let seen = false;
+    try { seen = sessionStorage.getItem(SEEN) === "1"; } catch { /* storage blocked: just show it */ }
+    setPhase(seen || window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "gone" : "gate");
   }, []);
 
   // lock scroll while the overlay is up
@@ -220,6 +215,7 @@ export function Intro() {
 
   function enter() {
     window.scrollTo(0, 0);
+    try { sessionStorage.setItem(SEEN, "1"); } catch { /* fine, it may replay */ }
     setGeo(measure());
     try { audio = new Audio(SRC); audio.volume = 0.9; void audio.play().catch(() => {}); } catch { /* no audio, still play visuals */ }
     setPhase("play");
@@ -263,7 +259,7 @@ export function Intro() {
 
   return (
     <div className={`intro-overlay fixed inset-0 z-[100] overflow-hidden bg-[#070504] ${phase === "out" ? "out" : ""}`} style={{ transition: "opacity 1.4s ease", opacity: phase === "out" ? 0 : 1, pointerEvents: phase === "out" ? "none" : "auto" }}>
-      {phase === "gate" ? (
+      {phase === "check" ? null : phase === "gate" ? (
         <button onClick={enter} className="absolute inset-0 flex flex-col items-center justify-center gap-5 text-[#f1c36b]">
           <span className={`text-4xl sm:text-6xl ${serif.className}`} style={{ backgroundImage: goldText, WebkitBackgroundClip: "text", color: "transparent" }}>Techno-aiMBiAtion &apos;27</span>
           <span className="animate-pulse border border-[#f1c36b]/70 px-8 py-2 text-sm font-bold uppercase tracking-[0.4em]">Enter ♪</span>
@@ -272,29 +268,9 @@ export function Intro() {
         <>
           <canvas ref={canvas} className="absolute inset-0 h-full w-full" style={{ animation: "intro-weave .3s steps(2) infinite" }} />
 
-          {/* Colour bloom: four huge soft clouds glide in from the corners, swirl round the centre and collapse
-              into the logo at the flash. Blur is static; only transform/opacity animate (compositor-smooth). */}
-          <div aria-hidden className="pointer-events-none absolute left-1/2 top-[47%] h-0 w-0" style={{ animation: `intro-swirl 2.6s ${T.bloom}s cubic-bezier(.45,0,.25,1) both` }}>
-            {ORBS.map((o, i) => (
-              <div key={i} className="absolute left-0 top-0 h-[70vmax] w-[70vmax] rounded-full mix-blend-screen"
-                style={v({
-                  background: `radial-gradient(circle, rgba(${o.color},.95) 0%, rgba(${o.color},.55) 35%, rgba(${o.color},0) 68%)`,
-                  filter: "blur(30px)", willChange: "transform, opacity",
-                  "--fx": `${o.from[0]}vmax`, "--fy": `${o.from[1]}vmax`, "--mx": `${o.mid[0]}vmax`, "--my": `${o.mid[1]}vmax`,
-                  animation: `intro-orb ${T.peak - T.bloom + 0.25}s ${T.bloom + i * 0.08}s cubic-bezier(.45,0,.3,1) both`,
-                })} />
-            ))}
-          </div>
-
-          {/* soft colour rings rippling out at the flash */}
-          {["rgba(63,160,166,.7)", "rgba(226,180,59,.7)"].map((c, i) => (
-            <div key={c} aria-hidden className="pointer-events-none absolute left-1/2 top-[47%] h-[40vmin] w-[40vmin] rounded-full"
-              style={{ background: `radial-gradient(circle, transparent 58%, ${c} 64%, transparent 72%)`, willChange: "transform, opacity", animation: `intro-ring 1.5s ${T.peak + i * 0.18}s cubic-bezier(.16,1,.3,1) both` }} />
-          ))}
-
           <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.6) 100%)" }} />
 
-          {/* The real colour logo, blown up at the centre; each piece settles in over a soft glow of its own colour.
+          {/* The logo, blown up at the centre; slowly revealed from the centre out.
               Then it flies onto the hero's logo (identical, so the hand-off is seamless). */}
           {geo && (
             <div
@@ -307,18 +283,8 @@ export function Intro() {
               })}
             >
               <div className="absolute inset-0" style={{ animation: `intro-breathe 3s ${T.build}s cubic-bezier(.16,1,.3,1) both` }}>
-                {/* per-piece colour glows, positioned in the lockup's own em so they sit behind each piece */}
-                <div className="absolute inset-0 mx-auto h-[20.5em] w-[38em] max-w-full" style={{ fontSize: FS }}>
-                  {LOCKUP_PIECES.map((p, i) => (
-                    <div key={i} className="absolute rounded-full"
-                      style={{
-                        left: `${p.cx}em`, top: `${p.cy}em`, width: `${p.size * 1.5}em`, height: `${p.size * 1.5}em`, marginLeft: `${-p.size * 0.75}em`, marginTop: `${-p.size * 0.75}em`,
-                        background: `radial-gradient(circle, ${p.color} 0%, transparent 65%)`, mixBlendMode: "screen", willChange: "transform, opacity",
-                        animation: `intro-pglow 1.5s ${T.build + p.at - 0.15}s cubic-bezier(.16,1,.3,1) both`,
-                      }} />
-                  ))}
-                </div>
-                <Lockup buildAt={T.build} />
+                {/* eslint-disable-next-line @next/next/no-img-element -- sized by the measured hero box, not next/image */}
+                <img src="/images/brand/logo.webp" alt="" className="absolute inset-0 h-full w-full object-contain" style={{ animation: `intro-reveal ${T.peak - T.build}s ${T.build}s cubic-bezier(.4,0,.2,1) both` }} />
               </div>
               {/* a sheen of light across the logo at the flash */}
               <div className="absolute inset-0 overflow-hidden mix-blend-screen" style={{ WebkitMaskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 80%)" }}>
@@ -342,20 +308,10 @@ export function Intro() {
         </>
       )}
       <style>{`
-        /* logo pieces settle in softly (used by <Lockup buildAt>) */
-        @keyframes lsx-splat { from { scale: .6; opacity: 0; } to { scale: 1; opacity: 1; } }
-        @keyframes lsx-ink { from { clip-path: inset(-50% 100% -50% 0); opacity: .4; translate: -.3em 0; } to { clip-path: inset(-50% -50% -50% -50%); opacity: 1; translate: 0 0; } }
-        @keyframes lsx-stamp { from { scale: 1.25; opacity: 0; } to { scale: 1; opacity: 1; } }
-        /* colour bloom */
-        @keyframes intro-orb {
-          0% { transform: translate(-50%, -50%) translate(var(--fx), var(--fy)) scale(.7); opacity: 0; }
-          30% { opacity: .85; }
-          75% { transform: translate(-50%, -50%) translate(var(--mx), var(--my)) scale(.75); opacity: .8; }
-          100% { transform: translate(-50%, -50%) scale(.05); opacity: 0; }
-        }
-        @keyframes intro-swirl { from { transform: rotate(0deg); } to { transform: rotate(110deg); } }
-        @keyframes intro-ring { 0% { transform: translate(-50%, -50%) scale(.3); opacity: 0; } 8% { opacity: 1; } 100% { transform: translate(-50%, -50%) scale(4.5); opacity: 0; } }
-        @keyframes intro-pglow { 0% { transform: scale(.3); opacity: 0; } 35% { opacity: .85; } 100% { transform: scale(1.35); opacity: 0; } }
+        /* logo slowly revealed: a widening circle, sharpening + settling as it opens */
+        @keyframes intro-reveal { from { clip-path: circle(0% at 50% 50%); opacity: 0; scale: 1.08; filter: brightness(2.2) blur(6px); } 40% { opacity: 1; } to { clip-path: circle(75% at 50% 50%); opacity: 1; scale: 1; filter: none; } }
+
+
         @keyframes intro-sheen { from { transform: translateX(0); } to { transform: translateX(400%); } }
         @keyframes intro-breathe { from { scale: 1.06; } to { scale: 1; } }
         @keyframes intro-fly { from { transform: translate(var(--dx), var(--dy)) scale(var(--s)); } to { transform: none; } }
