@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { PanelPins } from "./panel-pins";
 import { Abril_Fatface, Barlow_Condensed, Dela_Gothic_One, Lora, Sarpanch, Yatra_One } from "next/font/google";
 
 // Retro "indie" theme, inspired by the Rendezvous IITD site's structure:
@@ -81,9 +82,11 @@ export function IndieStyles() {
       .stamp-scene svg { transition: transform .5s ease; }
       .group:hover .stamp-scene svg { transform: scale(1.06); }
 
-      /* Pinned "drawer" sections that slide over one another (large screens only) */
+      /* Pinned "drawer" sections that slide over one another, on every screen size.
+         --panel-h comes from <PanelPins />: a section taller than the screen pins only once its bottom is in view. */
+      .panel { position: sticky; top: min(0px, calc(100svh - var(--panel-h, 0px))); }
       @media (min-width: 768px) and (min-height: 760px) {
-        .panel { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; }
+        .panel { min-height: 100vh; display: flex; align-items: center; }
         .panel > .panel-inner { width: 100%; }
       }
       .indie-sway { animation: indie-sway 3.2s ease-in-out infinite alternate; transform-origin: 50% 0; }
@@ -138,6 +141,7 @@ export function PageShell({ children, footer = true }: { children: ReactNode; fo
       }}
     >
       <IndieStyles />
+      <PanelPins />
       {children}
       {footer && <SiteFooter />}
     </main>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IndianRupee, Medal, Ticket, Users } from "lucide-react";
+import { ArrowUpRight, IndianRupee, Medal, Ticket, Users } from "lucide-react";
 import { PUBLIC_EVENTS } from "@/features/events/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
 import { TicketCountdown } from "@/components/events/ticket-countdown";
@@ -274,16 +274,31 @@ export default function HomePage() {
           </div>
         </Band></Reveal>
 
-        <section className="relative grid md:grid-cols-5 overflow-hidden bg-[#a1001a]">
-          <div className="md:col-span-3 bg-[#f5edd8] text-[#1a0505] px-8 sm:px-14 py-16 md:rounded-r-[50%] md:pr-28 relative z-10">
-            <h2 className={`text-4xl sm:text-6xl text-[#7a1c1c] leading-[0.95] ${serif.className}`}>Ready<br />to compete?</h2>
-            <p className="text-xl leading-snug mt-4 max-w-md">
-              Register with your OPJU email to get free entry. External participants get a unique TRX27 ID.
-            </p>
-            <div className="mt-7"><BlockButton href="/auth/signup">Create your account</BlockButton></div>
-          </div>
-          <div className="md:col-span-2 indie-mandala relative flex items-center justify-center py-12 md:border-l-4 md:border-dashed md:border-[#f5c928]">
-            <Vinyl className="w-48 h-48 sm:w-56 sm:h-56 drop-shadow-[6px_6px_0_rgba(0,0,0,0.4)]" />
+        {/* big type + a spinning round "register" badge */}
+        <section className="relative overflow-hidden bg-[#f5edd8] px-6 py-16 text-[#1a0505] sm:px-12 sm:py-24">
+          <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-[1fr_auto]">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.35em] text-[#a1001a]">18 – 20 Feb 2027 &middot; O.P. Jindal University</p>
+              <h2 className={`mt-3 text-[clamp(56px,10vw,150px)] uppercase leading-[0.85] ${display.className}`}>
+                Ready to<br />
+                <span className="text-transparent" style={{ WebkitTextStroke: "2px #a1001a" }}>compete?</span>
+              </h2>
+              <p className="mt-6 max-w-xl text-2xl leading-snug">
+                OPJU students get in free with their college email. Everyone else gets a unique TRX27 ID.
+              </p>
+            </div>
+            <Link href="/auth/signup" aria-label="Register now" className="group relative mx-auto block h-52 w-52 shrink-0 sm:h-64 sm:w-64">
+              <svg viewBox="0 0 200 200" className="indie-spin-slow absolute inset-0 h-full w-full" aria-hidden>
+                <defs><path id="cta-ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" /></defs>
+                <circle cx="100" cy="100" r="98" fill="#f5c928" stroke="#1a0505" strokeWidth="3" />
+                <text className="fill-[#1a0505] text-[17px] font-bold uppercase tracking-[0.2em]">
+                  <textPath href="#cta-ring">Register now ✦ Free for OPJU ✦ Join the riot ✦</textPath>
+                </text>
+              </svg>
+              <span className="absolute inset-[26%] flex items-center justify-center rounded-full border-[3px] border-[#1a0505] bg-[#a1001a] text-[#f5edd8] transition-transform duration-300 group-hover:scale-110">
+                <ArrowUpRight className="h-12 w-12 transition-transform duration-300 group-hover:rotate-45" />
+              </span>
+            </Link>
           </div>
         </section>
 

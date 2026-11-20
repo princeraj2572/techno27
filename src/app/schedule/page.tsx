@@ -1,6 +1,6 @@
 import { SCHEDULE } from "@/data/schedule";
 import { ScheduleGrid } from "@/components/events/schedule-grid";
-import { Band, PageShell, TicketCta, serif } from "@/components/indie";
+import { Band, PageShell, serif } from "@/components/indie";
 
 export const metadata = { title: "Schedule | Techno-aiMBiAtion 2027" };
 
@@ -20,13 +20,6 @@ export default function SchedulePage() {
           Sample timetable — all times and venues are placeholders.
         </p>
       </Band>
-
-      <TicketCta
-        title="Plan your fest"
-        text="Register now, pick your events and build your team."
-        href="/auth/signup"
-        label="Register now"
-      />
     </PageShell>
   );
 }

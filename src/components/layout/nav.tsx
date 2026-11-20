@@ -8,8 +8,6 @@ import { UserDropdown } from "@/components/layout/user-dropdown";
 import useFetch from "@/hooks/use-fetch";
 import { getUser } from "@/features/users/user-actions";
 import { cn } from "@/lib/utils";
-import { body, serif } from "@/components/indie";
-import { getEvent } from "@/features/events/data/all-events";
 import { sans } from "@/components/home/fonts";
 
 const NAV_LINKS = [
@@ -24,29 +22,10 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
-// Navbar colours per page, matching each page's top band. Event pages use their own event theme.
+// One ink-black bar on every page: it sits cleanly on all the page colours (gold, maroon, teal, pink, crimson).
 type NavTheme = { bg: string; ink: string; accent: string; accentInk: string };
-const DEFAULT_THEME: NavTheme = { bg: "#3a0808", ink: "#f5edd8", accent: "#f5c928", accentInk: "#000000" };
-const CRIMSON: NavTheme = { bg: "#a1001a", ink: "#f5edd8", accent: "#f5c928", accentInk: "#000000" };
-const PAGE_THEMES: [string, NavTheme][] = [
-  ["/schedule", { bg: "#f65f00", ink: "#000000", accent: "#000000", accentInk: "#f5edd8" }],
-  ["/junoon", { bg: "#0f0029", ink: "#f5edd8", accent: "#f5c928", accentInk: "#000000" }],
-  ["/creatorverse", { bg: "#ff2d8a", ink: "#000000", accent: "#000000", accentInk: "#ffffff" }],
-  ["/contact", { bg: "#0e5b57", ink: "#f5edd8", accent: "#ffd34d", accentInk: "#000000" }],
-  ["/about", CRIMSON], ["/gallery", CRIMSON], ["/sponsors", CRIMSON],
-];
-
-// Home page: poster-style navy bar to match the hero.
-const HOME: NavTheme = { bg: "#141c2a", ink: "#f3e8cf", accent: "#e2b43b", accentInk: "#1c1812" };
+const THEME: NavTheme = { bg: "#1c1812", ink: "#f3e8cf", accent: "#f5c928", accentInk: "#1c1812" };
 const TEAL_LINKS = ["/creatorverse", "/contact"];
-
-function themeFor(pathname: string): NavTheme {
-  if (pathname === "/") return HOME;
-  const event = pathname.startsWith("/events/") ? getEvent(pathname.split("/")[2]) : undefined;
-  if (event) return { bg: event.theme.bg, ink: event.theme.ink, accent: event.theme.accent, accentInk: event.theme.accentInk };
-  if (pathname === "/events") return CRIMSON;
-  return PAGE_THEMES.find(([prefix]) => pathname.startsWith(prefix))?.[1] ?? DEFAULT_THEME;
-}
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -74,20 +53,14 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const poster = pathname === "/";
-
   const linkCls = (href: string) =>
-    poster
-      ? cn(
-          "rounded-lg border-2 px-3 py-1",
-          isActive(pathname, href) ? "border-[#e2b43b] text-[#e2b43b]" : "border-transparent text-[var(--nav-ink)] hover:border-[var(--nav-ink)]/60",
-          TEAL_LINKS.includes(href) && "!border-[#f3e8cf]/80 bg-[#2b6a6a] text-[#f3e8cf]"
-        )
-      : isActive(pathname, href)
-      ? "bg-[var(--nav-accent)] text-[var(--nav-accent-ink)] shadow-[2px_2px_0_0_rgba(0,0,0,0.45)]"
-      : "text-[var(--nav-ink)] hover:bg-[color-mix(in_srgb,var(--nav-ink)_14%,transparent)]";
+    cn(
+      "rounded-lg border-2 px-3 py-1",
+      isActive(pathname, href) ? "border-[#f5c928] bg-[#f5c928] text-[#1c1812]" : "border-transparent text-[var(--nav-ink)] hover:border-[var(--nav-ink)]/60",
+      TEAL_LINKS.includes(href) && "!border-[#f3e8cf]/70 bg-[#0e7c7b] text-[#f3e8cf]"
+    );
 
-  const theme = themeFor(pathname);
+  const theme = THEME;
   const navVars = {
     "--nav-bg": theme.bg, "--nav-ink": theme.ink, "--nav-accent": theme.accent, "--nav-accent-ink": theme.accentInk,
   } as React.CSSProperties;
@@ -97,38 +70,16 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 border-b-4 border-[var(--nav-accent)] text-[var(--nav-ink)] backdrop-blur-md transition-[box-shadow,background-color,border-color,color] duration-500",
-        poster ? sans.className : body.className,
-        poster && "!border-b-[3px] !border-[#c98f2e]",
-        scrolled && "shadow-[0_6px_0_0_rgba(0,0,0,0.35)]"
+        "fixed top-0 left-0 right-0 z-50 text-[var(--nav-ink)] backdrop-blur-md transition-[box-shadow,background-color,border-color,color] duration-500",
+        sans.className,
+        scrolled && "shadow-[0_6px_18px_rgba(0,0,0,0.3)]"
       )}
       style={{
         ...navVars,
-        background: poster
-          // cream strip with an orange block at the right, like the poster's top edge
-          ? `linear-gradient(90deg,#efe2c4 0 62%,#d4572a 62% 100%) top / 100% 5px no-repeat, color-mix(in srgb, var(--nav-bg) ${scrolled ? 92 : 100}%, transparent)`
-          : `color-mix(in srgb, var(--nav-bg) ${scrolled ? 82 : 100}%, transparent)`,
+        background: `color-mix(in srgb, var(--nav-bg) ${scrolled ? 92 : 100}%, transparent)`,
       }}
     >
       <nav className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        {/* Station board logo */}
-        {poster ? null : (
-        <Link href="/" className="group flex items-center gap-2.5 shrink-0">
-          <svg viewBox="0 0 100 100" className="h-10 w-10 transition-transform duration-500 group-hover:rotate-180" aria-hidden>
-            <circle cx="50" cy="50" r="46" fill="#a1001a" stroke="#f5c928" strokeWidth="5" />
-            {[34, 26, 18].map((r) => (
-              <circle key={r} cx="50" cy="50" r={r} fill="none" stroke="#000" strokeWidth="1.5" />
-            ))}
-            <circle cx="50" cy="50" r="11" fill="#f5c928" />
-            <circle cx="50" cy="50" r="2.5" fill="#000" />
-          </svg>
-          <span className={cn("whitespace-nowrap text-xl leading-none text-[var(--nav-accent)] sm:text-2xl", serif.className)}>
-            Techno-<span className="text-[var(--nav-ink)]">aiMBiAtion</span>
-            <span className="text-[var(--nav-accent)]"> &apos;27</span>
-          </span>
-        </Link>
-        )}
-
         {/* Desktop nav */}
         <div className="hidden min-[1320px]:flex flex-1 items-center justify-center gap-0.5 2xl:gap-2">
           {NAV_LINKS.map((link) => (
@@ -150,16 +101,13 @@ export default function Navbar() {
             <>
               <Link
                 href="/auth/login"
-                className={cn(poster && "hidden", "whitespace-nowrap border-2 border-[var(--nav-ink)] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-[var(--nav-ink)] transition hover:bg-[var(--nav-ink)] hover:text-[var(--nav-bg)]")}
+                className={cn("whitespace-nowrap rounded-md border-2 border-[var(--nav-ink)] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-[var(--nav-ink)] transition hover:bg-[var(--nav-ink)] hover:text-[var(--nav-bg)]")}
               >
                 Sign in
               </Link>
               <Link
                 href="/auth/signup"
-                className={cn(
-                  "flex items-center gap-1.5 whitespace-nowrap border-2 border-black bg-[#f5c928] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-black shadow-[3px_3px_0_0_#ff6a00] transition hover:-translate-y-0.5 hover:bg-[#ff6a00]",
-                  poster && "rounded-md !bg-[#e0b02e] shadow-[0_0_0_3px_#f3e8cf,4px_5px_0_3px_rgba(0,0,0,0.45)] hover:!bg-[#f0c443]"
-                )}
+                className="flex items-center gap-1.5 whitespace-nowrap rounded-md border-2 border-black bg-[#ef5a1c] px-4 py-1 text-sm 2xl:text-base font-bold uppercase tracking-wide text-black shadow-[0_0_0_3px_#f3e8cf,4px_5px_0_3px_rgba(0,0,0,0.45)] transition hover:-translate-y-0.5 hover:bg-[#ff7a3d]"
               >
                 <Ticket className="h-4 w-4" /> Register
               </Link>
@@ -169,7 +117,7 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <button
-          className="min-[1320px]:hidden p-2 text-[var(--nav-accent)] hover:opacity-70"
+          className="ml-auto min-[1320px]:hidden p-2 text-[var(--nav-accent)] hover:opacity-70"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
@@ -186,7 +134,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn("block border-b border-dashed border-[var(--nav-ink)]/30 px-3 py-2.5 text-xl font-bold uppercase tracking-wider", linkCls(link.href))}
+                className={cn("block px-3 py-2.5 text-xl font-bold uppercase tracking-wider", linkCls(link.href))}
               >
                 {link.label}
               </Link>
@@ -199,13 +147,13 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/auth/login"
-                    className="border-2 border-[var(--nav-ink)] py-2 text-center text-lg font-bold uppercase tracking-wider text-[var(--nav-ink)] transition hover:bg-[var(--nav-ink)] hover:text-[var(--nav-bg)]"
+                    className="rounded-md border-2 border-[var(--nav-ink)] py-2 text-center text-lg font-bold uppercase tracking-wider text-[var(--nav-ink)] transition hover:bg-[var(--nav-ink)] hover:text-[var(--nav-bg)]"
                   >
                     Sign in
                   </Link>
                   <Link
                     href="/auth/signup"
-                    className="border-2 border-black bg-[#f5c928] py-2 text-center text-lg font-bold uppercase tracking-wider text-black shadow-[3px_3px_0_0_#ff6a00]"
+                    className="rounded-md border-2 border-black bg-[#ef5a1c] py-2 text-center text-lg font-bold uppercase tracking-wider text-black shadow-[0_0_0_3px_#f3e8cf]"
                   >
                     Register
                   </Link>
