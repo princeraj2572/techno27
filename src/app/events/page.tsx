@@ -39,7 +39,8 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
     };
   });
 
-  const totalPrize = cards.reduce((n, c) => n + parseInt(c.prize.replace(/[^\d]/g, ""), 10), 0);
+  // prizes are "To be announced" until decided; non-numeric ones count as 0 and the stat hides while the total is 0
+  const totalPrize = cards.reduce((n, c) => n + (parseInt(c.prize.replace(/[^\d]/g, ""), 10) || 0), 0);
   const featured = cards.reduce((a, b) => (b.subEvents.length > a.subEvents.length ? b : a));
   const presenters = SPONSOR_TIERS.flatMap((t) => t.sponsors).slice(0, 5);
 
@@ -48,7 +49,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
     { to: totalSub, suffix: "+", label: "Competitions" },
     { to: Math.round(totalPrize / 1000), prefix: "₹", suffix: "K", label: "Total prizes" },
     { to: 5, suffix: "", label: "Days" },
-  ];
+  ].filter((s) => s.label !== "Total prizes" || totalPrize > 0);
 
   return (
     <PageShell>
@@ -127,7 +128,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
 
               <ul className="grid grid-cols-2 gap-3">
                 {[
-                  [CalendarDays, "Date", `${featured.date} · ${featured.time}`],
+                  [CalendarDays, "Date", [...new Set([featured.date, featured.time])].join(" · ")],
                   [MapPin, "Venue", featured.venue],
                   [Trophy, "Prize pool", featured.prize],
                   [Users, "Format", `${featured.subEvents.length} competitions`],

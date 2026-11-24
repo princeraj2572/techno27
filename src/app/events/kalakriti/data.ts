@@ -10,28 +10,34 @@ export const kalakriti: EventData = {
 
   // ---- details ----
   tagline: "Where art meets culture.",
-  about: "Kalakriti is one of the flagship cultural events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 19, 2027",
-  time: "11:30 AM",
-  venue: "Main Auditorium",
-  teamSize: "Solo or group",
+  about: "Kalakriti is the creative arts segment of Techno-aiMBiAtion. It follows a skill-task approach inspired by India Skills and WorldSkills: one curated exhibition and judged competitions that assess planning, technical execution, creativity, time management and presentation.",
+  date: "To be announced",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "Individual or group of 4–6 (varies by competition)",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹20,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Register before the event. Every competition is a single round.",
+    "Exhibition: submit your art or craft 2–3 days before the event.",
+    "Floral Fusion, Alpana and Rangoli are group events of 4–6 members. Alpana gets 1.5 hours; Rangoli, Painting and Mehendi get 2 hours. No extra time.",
+    "Painting Challenge themes: Paint the Future, Human v/s Technology, Soul of Rural India. Paper or canvas is provided.",
+    "Faces That Speak and Mahendi are individual events. Bring your own materials.",
+    "Certificates for all participants and achievement certificates for winners. The jury's decision is final.",
   ],
-  contact: { name: "Arjun Verma", phone: "+91 98765 50010" },
+  contact: { name: "Dr. Kavita Patel", phone: "+91 91099 09269" },
+  moreContacts: [
+    { name: "Dr. Khushboo Patel", phone: "+91 91310 77676" },
+    { name: "Mr. Hrishikesh Shashtri", phone: "+91 79874 06335" },
+  ],
   subEvents: [
-    "Darbar-e-Bharat (Decoration)",
-    "Alpana",
-    "Rangoli",
-    "Colour Painting",
+    "Pradarshini (Exhibition)",
+    "Floral Fusion (Decoration)",
+    "Bhumi Kala: Alpana",
+    "Bhumi Kala: Rangoli",
+    "Painting Challenge",
     "Faces That Speak",
-    "Waste to Wow",
-    "Pradarshini (Art Exhibition)",
+    "Mahendi (Rang-e-Heena)",
   ],
 
   // ---- look ----
@@ -50,5 +56,5 @@ export const kalakriti: EventData = {
     motif: "Madhubani ✦ Bihar ✦ Folk art ✦ Colour & craft ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/kalakriti.jpg" }
-  media: {},
+  media: { image: "/images/events/kalakriti.jpg" },
 };

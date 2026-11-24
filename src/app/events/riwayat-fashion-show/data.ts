@@ -10,21 +10,29 @@ export const riwayatFashionShow: EventData = {
 
   // ---- details ----
   tagline: "Tradition on the runway.",
-  about: "Riwayat (Fashion Show) is one of the flagship cultural events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 20, 2027",
-  time: "5:30 PM",
-  venue: "Main Auditorium",
-  teamSize: "Solo or group",
+  about: "Riwayat 3.0 is the grand fashion show celebrating style, elegance, culture and creativity. Indian tradition meets contemporary trends on a runway where imagination meets expression and confidence takes centre stage.",
+  date: "To be announced",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "Open to students of all institutions",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹12,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Open to students from universities, colleges and other educational institutions.",
+    "Categories: Fashion Technology, Hairdressing & Makeup Artistry, and the Riwayat Grand Finale.",
+    "Judged on creativity, outfit selection and styling, theme interpretation, confidence, ramp walk and overall impact.",
   ],
-  contact: { name: "Gauri Nambiar", phone: "+91 98765 50090" },
-  subEvents: [],
+  contact: { name: "Karishma Mehra", phone: "+91 87208 45925" },
+  moreContacts: [
+    { name: "Ayush Singh", phone: "" },
+    { name: "Manshi Sharma", phone: "" },
+    { name: "Komal Kirti", phone: "" },
+  ],
+  subEvents: [
+    "Fashion Technology",
+    "Hairdressing & Makeup Artistry",
+    "Riwayat Grand Finale",
+  ],
 
   // ---- look ----
   theme: {
@@ -42,5 +50,5 @@ export const riwayatFashionShow: EventData = {
     motif: "Agra ✦ Uttar Pradesh ✦ Taj Mahal ✦ Tradition on the runway ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/riwayat-fashion-show.jpg" }
-  media: {},
+  media: { image: "/images/events/riwayat-fashion-show.jpg" },
 };

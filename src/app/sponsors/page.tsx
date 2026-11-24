@@ -10,7 +10,7 @@ import { Band, BlockButton, Marquee, PageShell, devanagari, display, serif } fro
 export const metadata = { title: "Sponsors | Techno-aiMBiAtion 2027" };
 
 // Optional wide picture for the header, e.g. "/images/sponsors-banner.jpg" (~1600 x 600)
-const SPONSORS_BANNER: string | undefined = undefined;
+const SPONSORS_BANNER: string | undefined = "/images/banners/sponsors.jpg";
 
 const BENEFIT_ICONS: Record<string, LucideIcon> = { mic: Mic, users: Users, globe: Globe, store: Store };
 

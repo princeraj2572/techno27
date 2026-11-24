@@ -10,21 +10,31 @@ export const retailSaleVisualMerchandise: EventData = {
 
   // ---- details ----
   tagline: "Display it. Sell it.",
-  about: "Retail Sale & Visual Merchandise is one of the flagship management events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 20, 2027",
-  time: "2:30 PM",
-  venue: "Innovation Lab",
-  teamSize: "1–3 members",
+  about: "Retail Sales and Visual Merchandising, theme “Local to Global”, is a hands-on competition aligned with IndiaSkills Retail Sales (Skill 55) and Visual Merchandising (Skill 59). Teams turn a 2 m × 2 m space into a retail outlet, plan the layout, display products, engage customers and handle sales.",
+  date: "To be announced",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "Teams (one 2 m × 2 m stall each)",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹25,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Three rounds: Store Plan (online), Build (on campus), and Retail Trading with Mystery Shopping (live).",
+    "Products: handmade or art & craft items, Waste to Wow products, local handicrafts, or sponsored shop products. No food.",
+    "No single product may be priced above ₹1,000. Prepare a priced product list; every item needs a visible price tag.",
+    "Organisers provide a 2 m × 2 m stall, one table, two chairs and a backdrop frame. Teams arrange display materials, signage and props.",
+    "Kalakriti participants can sell their products by registering in this event.",
   ],
-  contact: { name: "Manav Arora", phone: "+91 98765 50120" },
-  subEvents: [],
+  contact: { name: "Reema Sahoo", phone: "" },
+  moreContacts: [
+    { name: "Dikshanshu Chakradhari", phone: "" },
+    { name: "Soumya Dansena", phone: "" },
+    { name: "Ayush Kumar Singh", phone: "" },
+  ],
+  subEvents: [
+    "Round 1: Store Plan",
+    "Round 2: Build",
+    "Round 3: Retail Trading",
+  ],
 
   // ---- look ----
   theme: {
@@ -42,5 +52,5 @@ export const retailSaleVisualMerchandise: EventData = {
     motif: "Bazaar ✦ Stalls ✦ Retail & visual merchandise ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/retail-sale-visual-merchandise.jpg" }
-  media: {},
+  media: { image: "/images/events/retail-sale-visual-merchandise.jpg" },
 };

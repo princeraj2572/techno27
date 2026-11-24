@@ -10,21 +10,26 @@ export const masterchef: EventData = {
 
   // ---- details ----
   tagline: "Cook up a storm.",
-  about: "Masterchef is one of the flagship fun events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 19, 2027",
-  time: "4:00 PM",
-  venue: "Open Air Stage",
-  teamSize: "Teams of 3–5",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "₹12,000",
+  about: "Battle of the Spatulas: OPJU's most exciting culinary showdown. Where talent meets taste and students turn ingredients into unforgettable stories. Open to UG and PG students (18–30 years) of all colleges and universities.",
+  date: "To be announced",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "1–3 members",
+  fee: "₹100 per team",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Round 1, Healthy Culinary Challenge: cook a healthy regional or international dish at home and submit a video of at most 1 minute. Judged on taste, presentation and creativity.",
+    "Round 2, Mystery Round: on-the-spot reveal and instant task. The university provides all ingredients.",
+    "Round 3, Flameless Cooking Challenge: live on campus. Bring your own induction and induction-compatible utensils; ingredients are provided, and requirements must be submitted in advance.",
+    "Judged on taste & nutrition, creativity, presentation, hygiene and technical execution.",
+    "Registration is mandatory. Time limits are non-negotiable. Results are announced at the Valedictory ceremony.",
   ],
-  contact: { name: "Dev Malhotra", phone: "+91 98765 50030" },
-  subEvents: [],
+  contact: { name: "To be announced", phone: "" },
+  subEvents: [
+    "Healthy Culinary Challenge",
+    "Mystery Round",
+    "Flameless Cooking Challenge",
+  ],
 
   // ---- look ----
   theme: {
@@ -42,5 +47,5 @@ export const masterchef: EventData = {
     motif: "Kerala ✦ Backwaters ✦ Spice & flame ✦ Cook up a storm ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/masterchef.jpg" }
-  media: {},
+  media: { image: "/images/events/masterchef.jpg" },
 };

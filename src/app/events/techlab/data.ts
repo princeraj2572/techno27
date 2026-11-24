@@ -10,25 +10,28 @@ export const techlab: EventData = {
 
   // ---- details ----
   tagline: "Hands-on tech, live.",
-  about: "Techlab is one of the flagship technical events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 20, 2027",
-  time: "2:30 PM",
-  venue: "Food Court",
-  teamSize: "2–4 members",
+  about: "Tech Lab is an innovation and technology showcase at Techno-aiMBiAtion 2027 and one of the flagship events of Technorollix. Students present self-developed models, prototypes, posters and apps to a panel of internal and external experts. Promising projects may be considered for funding support through the OPJU Innovation Centre, and eligible outside participants get one-way Sleeper Class train fare reimbursed.",
+  date: "Feb 16, 2027",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "Up to 4 members",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹20,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Exhibits must reach the venue at least one hour before the event to install and test.",
+    "Maximum four participants per team.",
+    "Exhibits must be original work showing an innovative idea or practical solution.",
+    "Robo-cars and drones must demonstrate a specific task to qualify as technical models.",
+    "OPJU participants claiming model reimbursement bring the completed form, item-wise list and GST bills.",
+    "Do not dismantle exhibits before the official conclusion. Highly flammable or toxic substances are prohibited without approval.",
+    "Single round: judged on innovation, technical implementation, feasibility, presentation and social/industrial relevance. The judges' decision is final.",
   ],
-  contact: { name: "Pranav Desai", phone: "+91 98765 50070" },
+  contact: { name: "To be announced", phone: "" },
   subEvents: [
     "Working Models",
     "Non-Working Models",
-    "App Making",
     "Poster Presentation",
+    "App & Web Development",
   ],
 
   // ---- look ----
@@ -47,5 +50,5 @@ export const techlab: EventData = {
     motif: "Tamil Nadu ✦ Gopuram ✦ Crafted to last ✦ Hands-on tech ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/techlab.jpg" }
-  media: {},
+  media: { image: "/images/events/techlab.jpg" },
 };

@@ -10,20 +10,25 @@ export const startupBusinessPlan: EventData = {
 
   // ---- details ----
   tagline: "Pitch it. Fund it. Build it.",
-  about: "Startup Business Plan is one of the flagship management events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 19, 2027",
-  time: "4:00 PM",
-  venue: "CSE Block",
-  teamSize: "1–3 members",
+  about: "The Startup Pitching Event gives budding innovators a stage to present ideas before a jury of experts, investors and industry leaders. Prove the commercial viability of your venture, get feedback, and be spotted for mentoring, incubation and further support.",
+  date: "To be announced",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "Up to 5 members",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹15,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "PowerPoint-based pitch for working (functional) or non-working (concept-stage) models.",
+    "Finish within the allotted time. Overrunning may cost marks or lead to disqualification.",
+    "Only registered team members may pitch and answer questions. Teams: individual, duo, or 3–5 members.",
+    "The idea must be original. Plagiarism means immediate disqualification.",
+    "Follow the organisers' format (PPT/PDF, slide count, font size). Remaining rules are shared after registration.",
+    "Judged on innovation & relevance, feasibility & commercial potential, and presentation & team strength.",
   ],
-  contact: { name: "Simran Gill", phone: "+91 98765 50080" },
+  contact: { name: "Rounak Jaisawal", phone: "+91 97554 43411" },
+  moreContacts: [
+    { name: "Prince Kumar Singh", phone: "+91 91100 64120" },
+  ],
   subEvents: [],
 
   // ---- look ----
@@ -42,5 +47,5 @@ export const startupBusinessPlan: EventData = {
     motif: "Mumbai ✦ Maharashtra ✦ Gateway of India ✦ Pitch it, fund it ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/startup-business-plan.jpg" }
-  media: {},
+  media: { image: "/images/events/startup-business-plan.jpg" },
 };

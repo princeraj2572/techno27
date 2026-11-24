@@ -10,21 +10,31 @@ export const beatBattle: EventData = {
 
   // ---- details ----
   tagline: "Let the beats decide.",
-  about: "Beat Battle is one of the flagship cultural events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 19, 2027",
-  time: "11:30 AM",
-  venue: "Sports Arena",
-  teamSize: "Solo or group",
+  about: "A high-energy dance battle where the floor is the battlefield. Dancers from diverse styles face off head to head, trading footwork, musicality and fearless improvisation. The crowd picks the matchups, and the judges watch for originality and control.",
+  date: "To be announced",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "Solo",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹25,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Only students enrolled in a recognised school, college or university can enter. Private dance academy or class participants are not allowed.",
+    "A valid student I-card is mandatory and will be verified. Fake IDs mean immediate disqualification.",
+    "Solo participation only, with no duets or groups. Register before the deadline.",
+    "No props unless provided by the organisers. No offensive or inappropriate moves.",
+    "Judged on musicality & rhythm (25%), creativity (25%), energy & stage presence (20%), execution (20%) and overall impact (10%).",
   ],
-  contact: { name: "Mira Sharma", phone: "+91 98765 50060" },
-  subEvents: [],
+  contact: { name: "Rajnayan Choudhary", phone: "+91 94792 18521" },
+  moreContacts: [
+    { name: "Tarana Sah", phone: "+91 83199 15571" },
+  ],
+  subEvents: [
+    "Prelims (Top 16)",
+    "Top 16 (1 vs 1)",
+    "Top 8 (1 vs 1)",
+    "Semi-Finals (Top 4)",
+    "Finals (Top 2)",
+  ],
 
   // ---- look ----
   theme: {
@@ -42,5 +52,5 @@ export const beatBattle: EventData = {
     motif: "Punjab ✦ Dhol ✦ Golden fields ✦ Let the beats decide ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/beat-battle.jpg" }
-  media: {},
+  media: { image: "/images/events/beat-battle.jpg" },
 };

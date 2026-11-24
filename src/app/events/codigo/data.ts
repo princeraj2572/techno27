@@ -10,23 +10,26 @@ export const codigo: EventData = {
 
   // ---- details ----
   tagline: "Code. Compete. Conquer.",
-  about: "Codigo is one of the flagship technical events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 19, 2027",
-  time: "4:00 PM",
-  venue: "Design Studio",
-  teamSize: "2–4 members",
+  about: "Unlock your coding potential at OPJU's premier coding event. Take on challenges, meet peers and sharpen your skills, whether you are a beginner or a pro. Theme: Dream your fantasy, code it into reality!",
+  date: "To be announced",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "To be announced",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹20,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Event: Coding Challenge (Code & Conquer).",
+    "Round 1, Coding Quiz (qualifying, 40 min): 30 MCQs including output-based and error-finding questions.",
+    "Round 2, Real Coding Challenge (final, 60–90 min): 5 problems, 1 easy, 2 medium and 2 slightly hard.",
+    "Judged on correct output, test cases passed, time & efficiency, and logic & approach.",
   ],
-  contact: { name: "Lavanya Iyer", phone: "+91 98765 50130" },
+  contact: { name: "Paras Kumar Jain", phone: "+91 92015 01799" },
+  moreContacts: [
+    { name: "Soumya Thakre", phone: "+91 72498 14810" },
+    { name: "Prof. Asim Kiran Dandapat", phone: "+91 95891 03149" },
+  ],
   subEvents: [
-    "Design Master (UI/UX)",
-    "Coding Challenge",
+    "Coding Challenge (Code & Conquer)",
   ],
 
   // ---- look ----
@@ -45,5 +48,5 @@ export const codigo: EventData = {
     motif: "Assam ✦ Tea gardens ✦ One-horned rhino ✦ Code & conquer ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/codigo.jpg" }
-  media: {},
+  media: { image: "/images/events/codigo.jpg" },
 };

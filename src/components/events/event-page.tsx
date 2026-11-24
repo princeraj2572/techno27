@@ -186,12 +186,11 @@ export async function EventPage({ event }: { event: EventData }) {
                   )}
                   <div className="min-w-0">
                     <p className={`text-2xl leading-tight ${serif.className}`}>{c.name}</p>
-                    <a href={`tel:${c.phone.replace(/[^+\d]/g, "")}`} className="text-lg font-semibold tabular-nums hover:underline">{c.phone}</a>
+                    {c.phone && <a href={`tel:${c.phone.replace(/[^+\d]/g, "")}`} className="text-lg font-semibold tabular-nums hover:underline">{c.phone}</a>}
                   </div>
                 </div>
               ))}
             </div>
-            <p className="mt-4 text-xs font-bold uppercase tracking-widest opacity-60">Sample details — all data is fictional.</p>
           </div>
         </div>
       </section>

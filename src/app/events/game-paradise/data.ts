@@ -10,21 +10,29 @@ export const gameParadise: EventData = {
 
   // ---- details ----
   tagline: "Play online. Play to win.",
-  about: "Game Paradise (Online Gaming) is one of the flagship fun events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 18, 2027",
-  time: "10:00 AM",
-  venue: "CSE Block",
-  teamSize: "2–4 members",
+  about: "Game Paradise is an online gaming event with two titles, BGMI and Free Fire MAX. Squads compete in custom rooms through qualifiers, semi-finals and a Grand Final, scored on placement and eliminations.",
+  date: "Feb 16–17, 2027",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "4 players per team",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹25,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Only students of a recognised school, college or university can play. Carry a valid student ID.",
+    "Each team has four registered main players. No player can join more than one team.",
+    "Use the UID / Character ID submitted at registration. Join the custom room with the Room ID and password shared by the organisers.",
+    "Score = placement points (1st 12 … 10th 1) + 1 point per elimination.",
+    "Hacks, cheats, scripts, teaming or match manipulation lead to disqualification.",
+    "Keep your device charged and internet stable. Technical issues do not guarantee a rematch.",
   ],
-  contact: { name: "Sanya Kapoor", phone: "+91 98765 50000" },
-  subEvents: [],
+  contact: { name: "Anant Jhunjhunwala", phone: "+91 98610 63616" },
+  moreContacts: [
+    { name: "Shiva Rana", phone: "+91 93992 60863" },
+  ],
+  subEvents: [
+    "BGMI",
+    "Free Fire MAX",
+  ],
 
   // ---- look ----
   theme: {
@@ -42,5 +50,5 @@ export const gameParadise: EventData = {
     motif: "Hampi ✦ Karnataka ✦ Stone chariot ✦ Online gaming ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/game-paradise.jpg" }
-  media: {},
+  media: { image: "/images/events/game-paradise.jpg" },
 };

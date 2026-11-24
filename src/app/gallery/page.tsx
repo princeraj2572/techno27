@@ -8,7 +8,7 @@ import { Band, BlockButton, Marquee, PageShell, TicketCta, display, serif } from
 export const metadata = { title: "Gallery | Techno-aiMBiAtion 2027" };
 
 // Optional wide picture for the header, e.g. "/images/gallery-banner.jpg" (~1600 x 600)
-const GALLERY_BANNER: string | undefined = undefined;
+const GALLERY_BANNER: string | undefined = "/images/banners/gallery.jpg";
 
 export default function GalleryPage() {
   const years = new Set(GALLERY.map((g) => g.year)).size;

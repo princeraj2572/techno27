@@ -290,7 +290,7 @@ export interface EventMedia {
 }
 export const EVENT_MEDIA: Record<string, EventMedia> = Object.fromEntries(ALL_EVENTS.map((e) => [e.slug, e.media ?? {}]));
 
-export const EVENTS_BANNER: string | undefined = undefined; // e.g. "/images/events-banner.jpg", ~1600 x 600
+export const EVENTS_BANNER: string | undefined = "/images/banners/events.jpg"; // e.g. "/images/events-banner.jpg", ~1600 x 600
 export const REVEAL_DATE = "2026-11-20T00:00:00+05:30";
 export const FEST_START = "2027-02-18T09:00:00+05:30";
 

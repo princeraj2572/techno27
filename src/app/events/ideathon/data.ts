@@ -10,23 +10,32 @@ export const ideathon: EventData = {
 
   // ---- details ----
   tagline: "Ideas for a better tomorrow.",
-  about: "Ideathon is one of the flagship technical events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 18, 2027",
-  time: "10:00 AM",
-  venue: "Design Studio",
-  teamSize: "2–4 members",
+  about: "Ideathon 2027, “Hurdle to Hustle”, is where fresh perspectives become real-world solutions. Pick one of five campus and industry problem statements and pitch a practical, feasible idea, with an artefact if it helps, to the judges.",
+  date: "Feb 16, 2027",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "Individual or up to 4 members",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹8,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Be at the venue 15 minutes before the event begins.",
+    "Register before the deadline; only registered participants can present.",
+    "Choose one of the five problem statements and submit a PowerPoint of at most 10 slides before the event.",
+    "Pitch: 7 minutes (bell at 6) plus 3 minutes Q&A. A list of materials with unit and total cost is compulsory.",
+    "Demo models must be safe: no open flame, mains-powered rigs or chemicals at the table.",
+    "Judged out of 100 on timing, problem clarity, technical depth, innovation, scalability, materials list and Q&A.",
   ],
-  contact: { name: "Aditya Rane", phone: "+91 98765 50050" },
+  contact: { name: "Simran Singh", phone: "+91 83277 79623" },
+  moreContacts: [
+    { name: "Puja Jayapuria", phone: "+91 76059 74293" },
+    { name: "Amisha Raja", phone: "+91 72058 60167" },
+  ],
   subEvents: [
-    "SDG Challenge",
-    "Ideation & Presentation",
+    "Waste Management & Circular Economy",
+    "Smart Campus Security & Drones",
+    "Business Process Automation",
+    "Climate-Resilient Campus & Public Health",
+    "Industrial Decarbonisation & Wastewater Reuse",
   ],
 
   // ---- look ----
@@ -45,5 +54,5 @@ export const ideathon: EventData = {
     motif: "Jaipur ✦ Rajasthan ✦ Hawa Mahal ✦ Ideas that breathe ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/ideathon.jpg" }
-  media: {},
+  media: { image: "/images/events/ideathon.jpg" },
 };

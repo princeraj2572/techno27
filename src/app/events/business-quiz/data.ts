@@ -10,21 +10,28 @@ export const businessQuiz: EventData = {
 
   // ---- details ----
   tagline: "Think like a manager.",
-  about: "Business Quiz is one of the flagship management events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 20, 2027",
-  time: "2:30 PM",
-  venue: "Innovation Lab",
-  teamSize: "1–3 members",
+  about: "Mind_Matrix is the Business Quiz of Techno-aiMBiAtion 2027, organised by the School of Management. It tests general knowledge across mathematics aptitude, economics & business and current affairs. Think beyond. Respond smart. Rise above!",
+  date: "To be announced",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "2–4 members",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹25,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Two rounds: an objective-type elimination round, then a final with Rapid Fire, Buzzer Round and Audio-Visual.",
+    "Open from Class 10 and above. Round 1 questions cover Class 10–12 level.",
+    "Only the team leader registers (via Unstop) and plays Round 1 for the team.",
+    "Answer within the time limit. There is no negative marking.",
+    "Unfair means or misconduct disqualifies the team. The Core Team's decision is final.",
   ],
-  contact: { name: "Manav Arora", phone: "+91 98765 50120" },
-  subEvents: [],
+  contact: { name: "Kunal Yadav", phone: "+91 62666 81974" },
+  moreContacts: [
+    { name: "Bhoomi Chandra", phone: "+91 81035 01661" },
+  ],
+  subEvents: [
+    "Elimination Round",
+    "Final: Rapid Fire, Buzzer & Audio-Visual",
+  ],
 
   // ---- look ----
   theme: {
@@ -42,5 +49,5 @@ export const businessQuiz: EventData = {
     motif: "Hyderabad ✦ Telangana ✦ Charminar ✦ Think like a manager ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/business-quiz.jpg" }
-  media: {},
+  media: { image: "/images/events/business-quiz.jpg" },
 };

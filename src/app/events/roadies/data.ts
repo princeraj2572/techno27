@@ -10,20 +10,26 @@ export const roadies: EventData = {
 
   // ---- details ----
   tagline: "Survive the campus trail.",
-  about: "Roadies is one of the flagship fun events of Techno-aiMBiAtion 2027. Participants from OPJU and other colleges compete through qualifying rounds and a live final in front of a panel of judges. Expect a high-energy atmosphere, tough competition and plenty of prizes.",
-  date: "Feb 18, 2027",
-  time: "10:00 AM",
-  venue: "Seminar Hall",
-  teamSize: "Teams of 3–5",
+  about: "Roadies 2027 tests strength, stamina, agility and mental toughness through a series of challenging physical tasks and obstacles. Step out of your comfort zone, push your limits and show courage under pressure.",
+  date: "Feb 16–18, 2027",
+  time: "To be announced",
+  venue: "To be announced",
+  teamSize: "Individual",
   fee: "Free for OPJU · ₹199 for external",
-  prize: "₹10,000",
+  prize: "To be announced",
   rules: [
-    "Carry your TRX27 QR pass and a valid college ID.",
-    "Report to the venue 20 minutes before the start time.",
-    "Judges' decisions are final; any misconduct leads to disqualification.",
-    "Use of unfair means or outside help is not permitted.",
+    "Open to individual students. Register within the deadline.",
+    "Complete all assigned tasks within the time limit and follow the coordinators' instructions.",
+    "Wear sports attire and suitable footwear. Use equipment and obstacles only as directed.",
+    "Misconduct, unsafe behaviour or obstructing others may lead to disqualification.",
+    "Tell the event managers in advance about any medical condition or injury. The organisers' decision is final.",
   ],
-  contact: { name: "Karan Dhillon", phone: "+91 98765 50100" },
+  contact: { name: "Dr Amit Paras", phone: "+91 78796 10288" },
+  moreContacts: [
+    { name: "Leetesh Patel", phone: "" },
+    { name: "Navin Giri", phone: "" },
+    { name: "Swarup Ranjan Dash", phone: "" },
+  ],
   subEvents: [],
 
   // ---- look ----
@@ -42,5 +48,5 @@ export const roadies: EventData = {
     motif: "Himachal ✦ Pine & snow ✦ Hill temple ✦ Survive the trail ✦ ",
   },
   // Set image / logo to show real artwork, e.g. { image: "/images/events/roadies.jpg" }
-  media: {},
+  media: { image: "/images/events/roadies.jpg" },
 };
