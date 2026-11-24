@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Check } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageShell, display, serif } from "@/components/indie";
+import { AuthBackground } from "./auth-bg";
 
 // Re-points the shadcn tokens at the fest palette so every field inside the card picks it up.
 const THEME_CSS = `
@@ -24,13 +25,31 @@ const THEME_CSS = `
   .auth-paper button[type="submit"]:hover:not(:disabled) { background: #ff6a00; }
   [data-radix-popper-content-wrapper] { --popover: #f5edd8; --popover-foreground: #1a0505; --accent: #f5c928; --accent-foreground: #1a0505; --border: #1a0505; }
   [data-radix-popper-content-wrapper] [role="listbox"] { border: 2px solid #1a0505; border-radius: 0; }
+
+  /* Entrance, once per page load: card rises in, tag stamps down, then the form rows follow. */
+  @keyframes auth-card-in { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: none; } }
+  @keyframes auth-stamp-in { from { opacity: 0; transform: rotate(-2deg) scale(1.6); } to { opacity: 1; transform: rotate(-2deg) scale(1); } }
+  @keyframes auth-row-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .auth-paper { animation: auth-card-in .45s cubic-bezier(0.23, 1, 0.32, 1) both; }
+  .auth-paper .auth-tag { animation: auth-stamp-in .35s cubic-bezier(0.23, 1, 0.32, 1) .2s both; }
+  .auth-paper form > *, .auth-paper form ~ * { animation: auth-row-in .35s cubic-bezier(0.23, 1, 0.32, 1) both; }
+  .auth-paper form > :nth-child(1) { animation-delay: .28s; }
+  .auth-paper form > :nth-child(2) { animation-delay: .34s; }
+  .auth-paper form > :nth-child(3) { animation-delay: .40s; }
+  .auth-paper form > :nth-child(4) { animation-delay: .46s; }
+  .auth-paper form > :nth-child(n+5), .auth-paper form ~ * { animation-delay: .52s; }
+  @media (prefers-reduced-motion: reduce) {
+    .auth-paper, .auth-paper .auth-tag, .auth-paper form > *, .auth-paper form ~ * { animation-name: auth-fade; }
+    @keyframes auth-fade { from { opacity: 0; } }
+  }
 `;
 
 export function AuthShell({ children }: { children: ReactNode }) {
   return (
     <PageShell footer={false}>
       <style>{THEME_CSS}</style>
-      <div className="flex min-h-screen items-center justify-center px-4 pb-16 pt-28">{children}</div>
+      <AuthBackground />
+      <div className="relative flex min-h-screen items-center justify-center px-4 pb-16 pt-28">{children}</div>
     </PageShell>
   );
 }
@@ -74,7 +93,7 @@ export function AuthCard({
   return (
     <Card className={`auth-paper w-full ${maxWidth} rounded-none border-4 border-black shadow-[10px_10px_0_0_#f5c928]`}>
       <CardHeader className="text-center">
-        <span className="mx-auto -rotate-2 border-2 border-black bg-[#ff6a00] px-3 py-1 text-xs font-bold uppercase tracking-[0.25em] text-black">{tag}</span>
+        <span className="auth-tag mx-auto -rotate-2 border-2 border-black bg-[#ff6a00] px-3 py-1 text-xs font-bold uppercase tracking-[0.25em] text-black">{tag}</span>
         <CardTitle className={`mt-3 text-4xl text-[#a1001a] ${serif.className}`}>{title}</CardTitle>
         <CardDescription className="font-bold uppercase tracking-widest">{description}</CardDescription>
         {steps && <Steps labels={steps} current={current} />}
