@@ -1,4 +1,4 @@
-﻿"use server";
+"use server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Event } from "@/features/events/event.model";
 import { User } from "@/features/users/user.model";
@@ -13,13 +13,18 @@ export async function seedEventsAction() {
     throw new Error("Only DEV_ADMIN can seed events");
   }
 
-  const existingCount = await Event.countDocuments();
-  if (existingCount > 0) {
-    return { success: false, message: `Skipped â€” ${existingCount} events already exist` };
-  }
-
-  const inserted = await Event.insertMany(seedEvents);
-  return JSON.parse(JSON.stringify({ success: true, count: inserted.length, events: inserted }));
+  // Upsert by slug: safe to run again. New events are added; existing ones get the website's latest
+  // name, rules and team size, but keep their status, fees and prizes as set by the admins.
+  const res = await Event.bulkWrite(
+    seedEvents.map(({ status, internalFee, externalFee, prizeMoney, accommodationFee, ...data }) => ({
+      updateOne: {
+        filter: { slug: data.slug },
+        update: { $set: data, $setOnInsert: { status, internalFee, externalFee, prizeMoney, accommodationFee } },
+        upsert: true,
+      },
+    })),
+  );
+  return { success: true, count: seedEvents.length, added: res.upsertedCount, updated: res.modifiedCount };
 }
 
 export async function createDevAdminIfNotExists() {

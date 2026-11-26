@@ -4,6 +4,7 @@ import { useState } from "react";
 import { seedEventsAction, createDevAdminIfNotExists } from "@/features/management/seed-actions";
 import { ChevronLeft, Sprout, ShieldCheck } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 export default function SeedPage() {
   const [seedResult,  setSeedResult]  = useState<{ type: "success" | "info" | "error"; text: string } | null>(null);
@@ -15,9 +16,7 @@ export default function SeedPage() {
     setSeedResult(null);
     try {
       const result = await seedEventsAction();
-      setSeedResult(result.success
-        ? { type: "success", text: `Seeded ${result.count} events successfully.` }
-        : { type: "info",    text: result.message ?? "Already seeded." });
+      setSeedResult({ type: "success", text: `${result.count} fest events and competitions: ${result.added} added, ${result.updated} updated.` });
     } catch (err: unknown) {
       setSeedResult({ type: "error", text: err instanceof Error ? err.message : "Failed." });
     } finally {
@@ -47,33 +46,35 @@ export default function SeedPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Seed Events</h1>
-            <p className="text-xs text-slate-400 mt-0.5">Bootstrap the database with test data</p>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Seed Events</TicketTitle>
+            <p className="text-xs text-slate-400 mt-0.5">Load the fest events into the database</p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-            <Sprout className="h-5 w-5 text-indigo-600" />
+          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
+            <Sprout className="h-5 w-5 text-[#0f6b63]" />
           </div>
         </div>
 
         {/* Seed events */}
-        <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
           <div className="flex items-start gap-3 mb-4">
             <div className="w-8 h-8 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
               <Sprout className="h-4 w-4 text-emerald-600" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-900">Seed dummy events</p>
+              <p className="text-sm font-semibold text-slate-900">Seed fest events</p>
               <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">
-                Inserts 5 test events (Hackathon, Coding Contest, Robo Race, UI/UX, Quiz) if the DB is empty.
+                Adds every event and competition from the website, with rules and team sizes, with registration not open yet.
+                Safe to run again: new events are added and existing ones get the latest rules and team size;
+                their status, fees and prizes are not touched.
               </p>
             </div>
           </div>
@@ -92,10 +93,10 @@ export default function SeedPage() {
         </div>
 
         {/* Bootstrap dev admin */}
-        <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <div className="flex items-start gap-3 mb-4">
-            <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
-              <ShieldCheck className="h-4 w-4 text-indigo-600" />
+            <div className="w-8 h-8 rounded-xl bg-[#f6efdf] flex items-center justify-center shrink-0">
+              <ShieldCheck className="h-4 w-4 text-[#0f6b63]" />
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-900">Bootstrap dev admin</p>
@@ -107,7 +108,7 @@ export default function SeedPage() {
           <button
             onClick={handleCreateDevAdmin}
             disabled={loading === "admin"}
-            className="px-4 py-2 rounded-xl border border-indigo-200 text-indigo-600 text-sm font-medium hover:bg-indigo-50 disabled:opacity-50 transition-colors"
+            className="px-4 py-2 rounded-xl border border-[#1c1812]/30 text-[#0f6b63] text-sm font-medium hover:bg-[#f6efdf] disabled:opacity-50 transition-colors"
           >
             {loading === "admin" ? "Creating..." : "Create dev admin"}
           </button>

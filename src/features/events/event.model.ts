@@ -13,6 +13,8 @@ export type EventStatus =
 
 export interface IEvent extends Document {
   name: string;
+  slug?: string; // stable seed key, e.g. "robovation-robo-race"
+  mainEvent?: string; // slug of the fest event this belongs to (its own slug when it has no sub-events); used for the per-participant event cap
   description?: string;
   category?: string;
   venue?: string;
@@ -41,6 +43,8 @@ export interface IEvent extends Document {
 const eventSchema = new Schema<IEvent>(
   {
     name: { type: String, required: true },
+    slug: { type: String, unique: true, sparse: true },
+    mainEvent: { type: String, index: true },
     description: { type: String },
     category: { type: String },
     venue: { type: String },

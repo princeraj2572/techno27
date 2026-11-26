@@ -1,62 +1,110 @@
-export const seedEvents = [
-  {
-    name: "Hackathon",
-    description: "Build innovative solutions in 24 hours",
-    category: "Technical",
-    teamSize: 4,
-    status: "REGISTRATION_OPEN",
-    internalFee: 0,
-    externalFee: 199,
-    accommodationFee: 500,
-    prizeMoney: 50000,
-    maxParticipants: 200,
-  },
-  {
-    name: "Coding Contest",
-    description: "Solve competitive programming problems",
-    category: "Technical",
-    teamSize: 1,
-    status: "REGISTRATION_OPEN",
-    internalFee: 0,
-    externalFee: 99,
-    accommodationFee: 500,
-    prizeMoney: 15000,
-    maxParticipants: 150,
-  },
-  {
-    name: "Robo Race",
-    description: "Race your autonomous robot on the track",
-    category: "Robotics",
-    teamSize: 3,
-    status: "REGISTRATION_OPEN",
-    internalFee: 0,
-    externalFee: 149,
-    accommodationFee: 500,
-    prizeMoney: 20000,
-    maxParticipants: 80,
-  },
-  {
-    name: "UI/UX Design Challenge",
-    description: "Design intuitive and beautiful interfaces",
-    category: "Design",
-    teamSize: 2,
-    status: "REGISTRATION_OPEN",
-    internalFee: 0,
-    externalFee: 99,
-    accommodationFee: 500,
-    prizeMoney: 10000,
-    maxParticipants: 100,
-  },
-  {
-    name: "Quiz",
-    description: "Test your knowledge across multiple domains",
-    category: "General",
-    teamSize: 2,
-    status: "REGISTRATION_OPEN",
-    internalFee: 0,
-    externalFee: 79,
-    accommodationFee: 500,
-    prizeMoney: 8000,
-    maxParticipants: 120,
-  },
-];
+// The registrable events in the database, built from the public event pages (src/app/events/<slug>/data.ts)
+// so names, categories, rules and images never drift from what the website shows.
+//
+// A fest event either is one registration ("single"), or is split into competitions (sub-events), each its
+// own registration. Every row carries `mainEvent` = the fest event's slug: an external participant may join
+// at most 7 different fest events, and sub-events of the same fest event count once (see event-actions.ts).
+//
+// All start as UPCOMING (registration not open). Open them from Developer -> Events when dates are fixed.
+// Prize money is 0 until announced. teamSize = maximum members per team.
+import { ALL_EVENTS } from "@/features/events/data/all-events";
+
+/** An external participant may join at most this many different fest events (sub-events of one fest event count once). */
+export const MAX_EXTERNAL_EVENTS = 7;
+
+type Competition = { name: string; teamSize: number };
+// Fest events whose listed `subEvents` are separate competitions. Everything else registers as one event
+// (their `subEvents` are rounds or problem statements, not separate entries).
+const COMPETITIONS: Record<string, Competition[]> = {
+  techlab: [
+    { name: "Working Models", teamSize: 4 },
+    { name: "Non-Working Models", teamSize: 4 },
+    { name: "Poster Presentation", teamSize: 4 },
+    { name: "App & Web Development", teamSize: 4 },
+  ],
+  robovation: [
+    { name: "Robo Soccer", teamSize: 4 },
+    { name: "Robo Race", teamSize: 4 },
+    { name: "Pick & Place Challenge", teamSize: 4 },
+    { name: "Robo War", teamSize: 4 },
+    { name: "Autonomous Line Follower", teamSize: 4 },
+    { name: "AeroDrift: The Sky Chaser", teamSize: 4 },
+  ],
+  "game-paradise": [
+    { name: "BGMI", teamSize: 4 },
+    { name: "Free Fire MAX", teamSize: 4 },
+  ],
+  kalakriti: [
+    { name: "Pradarshini (Exhibition)", teamSize: 1 },
+    { name: "Floral Fusion (Decoration)", teamSize: 6 },
+    { name: "Bhumi Kala: Alpana", teamSize: 6 },
+    { name: "Bhumi Kala: Rangoli", teamSize: 6 },
+    { name: "Painting Challenge", teamSize: 1 },
+    { name: "Faces That Speak", teamSize: 1 },
+    { name: "Mahendi (Rang-e-Heena)", teamSize: 1 },
+  ],
+  "riwayat-fashion-show": [
+    { name: "Fashion Technology", teamSize: 1 },
+    { name: "Hairdressing & Makeup Artistry", teamSize: 1 },
+    { name: "Riwayat Grand Finale", teamSize: 1 },
+  ],
+  antaragni: [
+    { name: "Solo Dance", teamSize: 1 },
+    { name: "Group Dance", teamSize: 10 },
+    { name: "Solo Singing", teamSize: 1 },
+    { name: "Duet / Group Singing & Instrumental", teamSize: 6 },
+    { name: "Rap / Beat-boxing", teamSize: 1 },
+    { name: "Mime / Silent Act", teamSize: 8 },
+    { name: "Short Film / Video Performance", teamSize: 5 },
+  ],
+};
+
+// Max team size for events registered as one entry (from each page's teamSize / rules).
+const SINGLE_TEAM_SIZE: Record<string, number> = {
+  ideathon: 4,
+  codigo: 1,
+  designathon: 2,
+  "startup-business-plan": 5,
+  "voice-of-youth": 4,
+  roadies: 1,
+  "business-quiz": 4,
+  "beat-battle": 1,
+  masterchef: 3,
+  "retail-sale-visual-merchandise": 4,
+};
+
+// "Free for OPJU · ₹199 for external" -> 0 / 199; "₹100 per team" -> 100 / 100.
+function fees(fee: string) {
+  const ext = Number(/₹\s*([\d,]+)/.exec(fee)?.[1]?.replace(/,/g, "") ?? 0);
+  return { internalFee: /free for opju/i.test(fee) ? 0 : ext, externalFee: ext };
+}
+
+const slugify = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+export const seedEvents = ALL_EVENTS.flatMap((e) => {
+  const base = {
+    category: e.category,
+    venue: e.venue,
+    image: e.media?.image,
+    rules: e.rules.join("\n"),
+    schedule: `${e.date} · ${e.time}`,
+    status: "UPCOMING" as const,
+    accommodationFee: 0,
+    prizeMoney: 0,
+    mainEvent: e.slug,
+    ...fees(e.fee),
+  };
+  const comps = COMPETITIONS[e.slug];
+  if (!comps) {
+    const teamSize = SINGLE_TEAM_SIZE[e.slug];
+    if (!teamSize) throw new Error(`seed-events: no team size for "${e.slug}"`);
+    return [{ ...base, slug: e.slug, name: e.name, description: `${e.tagline} ${e.about}`, teamSize }];
+  }
+  return comps.map((c) => ({
+    ...base,
+    slug: `${e.slug}-${slugify(c.name)}`,
+    name: `${e.name}: ${c.name}`,
+    description: `Part of ${e.name}. ${e.tagline} ${e.about}`,
+    teamSize: c.teamSize,
+  }));
+});

@@ -6,6 +6,7 @@ import { Team } from "@/features/teams/team.model";
 import { User } from "@/features/users/user.model";
 import { getUser } from "@/features/users/user-actions";
 import { getParticipatingEventsCountAction } from "@/features/events/event-actions";
+import { MAX_EXTERNAL_EVENTS } from "@/features/events/data/seed-events";
 
 export async function sendTeamInviteAction({
   teamId,
@@ -101,10 +102,10 @@ export async function acceptInviteAction(inviteId: string) {
 
   if (
     inviteeUser.role === "EXTERNAL_USER" &&
-    (mainEventsCount.eventCount > 7 ||
-      (mainEventsCount.eventCount === 7 && !mainEventsCount.isNewEventIncluded))
+    (mainEventsCount.eventCount > MAX_EXTERNAL_EVENTS ||
+      (mainEventsCount.eventCount === MAX_EXTERNAL_EVENTS && !mainEventsCount.isNewEventIncluded))
   ) {
-    throw new Error("External participants cannot register for more than 7 events.");
+    throw new Error(`External participants cannot register for more than ${MAX_EXTERNAL_EVENTS} events.`);
   }
 
   team.members.push(invite.inviteeEmail);

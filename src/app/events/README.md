@@ -41,6 +41,6 @@ Replace `<EventPage event={...} />` in that event's `page.tsx` with your own JSX
 To change the layout for **all** events, edit `src/components/events/event-page.tsx`.
 
 ## Not here
-- `src/data/event-subeventData.ts` holds the database IDs used by registration (`src/features/events/event-actions.ts`).
-  It is backend data; the competition names shown on the website come from `subEvents` in each `data.ts`.
+- `src/features/events/data/seed-events.ts` turns these pages into the registrable database events (which `subEvents`
+  are separate competitions, and each one's team size). Re-run Developer -> Seed data after adding an event.
 - The stamp illustrations are code, in `src/components/indie/culture-art.tsx`.

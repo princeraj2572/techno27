@@ -1,4 +1,5 @@
 "use server";
+import { Types } from "mongoose";
 
 import { unstable_noStore as noStore } from "next/cache";
 import { connectToDatabase } from "@/lib/mongodb";
@@ -7,7 +8,10 @@ import { ITeam, Team } from "@/features/teams/team.model";
 import { IUser, User } from "@/features/users/user.model";
 import { Invitation } from "@/features/teams/invitation.model";
 import { AuditLog } from "@/features/management/auditLog.model";
-import { eventSubEventData } from "@/features/events/data/event-subeventData";
+import { MAX_EXTERNAL_EVENTS, seedEvents } from "@/features/events/data/seed-events";
+// Display order for admin lists and exports: the order of the website (and the seed).
+const SEED_ORDER = seedEvents.map((e) => e.slug);
+const bySeedOrder = (a?: string, b?: string) => { const i = SEED_ORDER.indexOf(a ?? ""), j = SEED_ORDER.indexOf(b ?? ""); return (i < 0 ? 1e9 : i) - (j < 0 ? 1e9 : j); };
 import { getUser } from "@/features/users/user-actions";
 
 export async function getAllEventsAction() {
@@ -55,11 +59,10 @@ export async function getEventsWithRegistrationCountsAction() {
 export async function getEventRegistrationCountsAction(slug: string) {
   noStore();
   const zero = { total: 0, internal: 0, external: 0 };
-  const main = eventSubEventData.events.find((e) => e.eventName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") === slug);
-  const ids = main ? [main.event, ...main.subEvents.map((s) => s.subEvent)].filter(Boolean) : [];
-  if (!ids.length) return zero;
   try {
     await connectToDatabase();
+    const ids = (await Event.find({ mainEvent: slug }).select("_id").lean<{ _id: unknown }[]>()).map((e) => e._id);
+    if (!ids.length) return zero;
     const teams = await Team.find({ event: { $in: ids } }).select("members").lean<{ members: string[] }[]>();
     const emails = [...new Set(teams.flatMap((t) => t.members))];
     const users = await User.find({ email: { $in: emails } }).select("role").lean<{ role: string }[]>();
@@ -151,8 +154,8 @@ export async function submitEventsAction(data: { eventIds: string[] }) {
   const allEventsArray = [...userEvents, ...data.eventIds];
   const mainEventsCount = await getParticipatingEventsCountAction(allEventsArray);
 
-  if (existingUser.role === "EXTERNAL_USER" && mainEventsCount.eventCount > 7) {
-    throw new Error("External participants cannot register for more than 7 events.");
+  if (existingUser.role === "EXTERNAL_USER" && mainEventsCount.eventCount > MAX_EXTERNAL_EVENTS) {
+    throw new Error(`External participants cannot register for more than ${MAX_EXTERNAL_EVENTS} events.`);
   }
 
   const newTeams = await Team.insertMany(
@@ -218,6 +221,7 @@ export async function getEventDetailsWithCounts() {
     }
     eventDetailsWithCounts.push({
       eventName: event.name,
+      slug: event.slug,
       teamCount: teams.length,
       userCount: insiderCount + outsiderCount,
       insiderCount,
@@ -253,6 +257,7 @@ export async function getEventDetailsWithCountsPaginated(
     eventDetailsWithCounts.push({
       eventId: event._id.toString(),
       eventName: event.name,
+      slug: event.slug,
       teamCount: teams.length,
       userCount: insiderCount + outsiderCount,
       insiderCount,
@@ -262,19 +267,7 @@ export async function getEventDetailsWithCountsPaginated(
     });
   }
 
-  const orderedEventIds: string[] = [];
-  for (const mainEvent of eventSubEventData.events) {
-    if (mainEvent.event) orderedEventIds.push(mainEvent.event);
-    for (const subEvent of mainEvent.subEvents) orderedEventIds.push(subEvent.subEvent);
-  }
-
-  const sorted = eventDetailsWithCounts.sort((a, b) => {
-    const iA = orderedEventIds.indexOf(a.eventId);
-    const iB = orderedEventIds.indexOf(b.eventId);
-    if (iA === -1) return 1;
-    if (iB === -1) return -1;
-    return iA - iB;
-  });
+  const sorted = eventDetailsWithCounts.sort((a, b) => bySeedOrder(a.slug, b.slug));
 
   const startIndex = (page - 1) * limit;
   const paginatedData = sorted.slice(startIndex, startIndex + limit);
@@ -312,6 +305,7 @@ export async function generateEventCountExcel() {
     eventDetailsWithCounts.push({
       eventId: event._id.toString(),
       eventName: event.name,
+      slug: event.slug,
       teamCount: teams.length,
       userCount: insiderCount + outsiderCount,
       insiderCount,
@@ -319,19 +313,7 @@ export async function generateEventCountExcel() {
     });
   }
 
-  const orderedEventIds: string[] = [];
-  for (const mainEvent of eventSubEventData.events) {
-    if (mainEvent.event) orderedEventIds.push(mainEvent.event);
-    for (const subEvent of mainEvent.subEvents) orderedEventIds.push(subEvent.subEvent);
-  }
-
-  const sorted = eventDetailsWithCounts.sort((a, b) => {
-    const iA = orderedEventIds.indexOf(a.eventId);
-    const iB = orderedEventIds.indexOf(b.eventId);
-    if (iA === -1) return 1;
-    if (iB === -1) return -1;
-    return iA - iB;
-  });
+  const sorted = eventDetailsWithCounts.sort((a, b) => bySeedOrder(a.slug, b.slug));
 
   const totalUserCount = sorted.reduce((acc, e) => acc + e.userCount, 0);
   const totalInsiderCount = sorted.reduce((acc, e) => acc + e.insiderCount, 0);
@@ -409,52 +391,15 @@ export async function generateEventParticipantsExcel(eventId: string) {
   );
 }
 
-export async function getParticipatingEventsCountAction(
-  eventIds: string[],
-  newEventId?: string,
-) {
+/** How many different fest events these DB events belong to; and whether `newEventId`'s fest event is already among them. */
+export async function getParticipatingEventsCountAction(eventIds: string[], newEventId?: string) {
   await connectToDatabase();
-  let eventCount = 0;
-  const mainEventNames: string[] = [];
-  let isNewEventIncluded = false;
-
-  for (const eventId of eventIds) {
-    const mainEvent = eventSubEventData.events.find((e) => e.event === eventId);
-    if (mainEvent) {
-      if (!mainEventNames.includes(mainEvent.eventName)) {
-        eventCount++;
-        mainEventNames.push(mainEvent.eventName);
-      }
-    } else {
-      for (const event of eventSubEventData.events) {
-        const subEvent = event.subEvents.find((se) => se.subEvent === eventId);
-        if (subEvent) {
-          if (!mainEventNames.includes(event.eventName)) {
-            eventCount++;
-            mainEventNames.push(event.eventName);
-          }
-          break;
-        }
-      }
-    }
-  }
-
-  if (newEventId) {
-    const mainEvent = eventSubEventData.events.find((e) => e.event === newEventId);
-    if (mainEvent) {
-      isNewEventIncluded = mainEventNames.includes(mainEvent.eventName);
-    } else {
-      for (const event of eventSubEventData.events) {
-        const subEvent = event.subEvents.find((se) => se.subEvent === newEventId);
-        if (subEvent) {
-          isNewEventIncluded = mainEventNames.includes(event.eventName);
-          break;
-        }
-      }
-    }
-  }
-
-  return { eventCount, isNewEventIncluded };
+  const ids = [...new Set([...eventIds, ...(newEventId ? [newEventId] : [])])].filter((id) => Types.ObjectId.isValid(id));
+  const rows = await Event.find({ _id: { $in: ids } }).select("mainEvent").lean<{ _id: Types.ObjectId; mainEvent?: string }[]>();
+  // Events without a mainEvent (created by hand) count as their own fest event.
+  const fest = new Map(rows.map((r) => [String(r._id), r.mainEvent || String(r._id)]));
+  const main = new Set(eventIds.map((id) => fest.get(id)).filter(Boolean));
+  return { eventCount: main.size, isNewEventIncluded: newEventId ? main.has(fest.get(newEventId)) : false };
 }
 
 // ===================== DEV_ADMIN ONLY =====================
