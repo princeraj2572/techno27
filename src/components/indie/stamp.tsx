@@ -54,10 +54,10 @@ export function Stamp({
               </p>
             </div>
 
-            <span className="absolute bottom-2 left-2 border-2 border-black bg-[#f5edd8] px-2 py-0.5 text-sm font-bold tracking-[0.2em] text-black shadow-[2px_2px_0_0_#000]">
+            <span className="absolute bottom-2 left-2 border-2 border-black bg-[#f5edd8] px-2 py-0.5 text-sm font-bold tracking-[0.2em] text-black shadow-[2px_2px_0_0_#000] lg:px-3 lg:py-1 lg:text-base">
               {String(number).padStart(2, "0")}
             </span>
-            <span className={`absolute bottom-2 right-2 border-2 border-black px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest shadow-[2px_2px_0_0_#000] ${CATEGORY_BADGE[category]}`}>
+            <span className={`absolute bottom-2 right-2 border-2 border-black px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest shadow-[2px_2px_0_0_#000] lg:px-3.5 lg:py-1 lg:text-sm ${CATEGORY_BADGE[category]}`}>
               {category}
             </span>
           </div>

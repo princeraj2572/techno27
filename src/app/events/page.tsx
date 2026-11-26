@@ -162,7 +162,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
       </Reveal>
 
       {/* All events */}
-      <Band tone="crimson" mandala className="!pt-12">
+      <Band tone="crimson" mandala className="!pt-12 lg:!max-w-7xl">
         <h2 className={`mb-8 text-4xl sm:text-5xl text-[#f5c928] ${serif.className}`} style={{ textShadow: "3px 3px 0 #5a0010" }}>All events</h2>
         <EventsCards events={cards} initial={cat} />
         <p className="mt-10 text-center text-xs uppercase tracking-widest text-white/60">Sample details — dates, venues and prizes are placeholders.</p>

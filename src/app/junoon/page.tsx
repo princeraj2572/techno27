@@ -53,7 +53,6 @@ const CSS = `
   }
 `;
 
-const short = (d: string) => d.replace(/, 2027$/, ""); // "Thu, Feb 18"
 
 export default function JunoonPage() {
   return (
@@ -123,20 +122,21 @@ export default function JunoonPage() {
               <Reveal key={night.n}>
                 <div className={`text-center md:px-6 ${body.className}`}>
                   <span className="inline-block px-3 py-1 text-sm font-bold uppercase tracking-[0.3em] text-black" style={{ background: NIGHT_COLORS[i] }}>
-                    Night {night.n} · {short(night.date)}
+                    Night {night.n}
                   </span>
-                  <p className="mt-5 text-5xl font-bold uppercase leading-[0.9] text-[#f5edd8] lg:text-6xl">{night.artist}</p>
-                  <p className="mt-2 text-sm font-bold uppercase tracking-[0.3em]" style={{ color: NIGHT_COLORS[i] }}>{night.genre}</p>
+                  {/* Artists are not announced yet: the names in BILL are placeholders and stay hidden. */}
+                  <p className="mt-5 text-5xl font-bold uppercase leading-[0.9] text-[#f5edd8] lg:text-6xl">Singer revealing soon</p>
+                  <p className="mt-2 text-sm font-bold uppercase tracking-[0.3em]" style={{ color: NIGHT_COLORS[i] }}>Stay tuned</p>
                   <div className="mx-auto my-5 h-px w-16 bg-[#f5edd8]/25" />
                   {support.map((a) => (
-                    <p key={a.name} className="text-2xl font-bold uppercase leading-tight text-[#f5edd8]/80">{a.name}</p>
+                    <p key={a.name} aria-hidden className="mx-auto my-2 h-5 w-40 rounded-sm bg-[#f5edd8]/15" />
                   ))}
-                  <p className="mt-4 text-xs font-bold uppercase tracking-[0.3em] text-[#f5edd8]/50">{night.time} · {night.venue}</p>
+                  <p className="mt-4 text-xs font-bold uppercase tracking-[0.3em] text-[#f5edd8]/50">Date &amp; time to be announced</p>
                 </div>
               </Reveal>
             ))}
           </div>
-          <p className="mt-14 text-center text-xs uppercase tracking-widest text-white/40">Sample lineup — artists and dates are placeholders.</p>
+          <p className="mt-14 text-center text-xs uppercase tracking-widest text-white/40">The singers will be revealed soon. Follow us so you don’t miss it.</p>
         </div>
       </section>
 
@@ -157,9 +157,9 @@ export default function JunoonPage() {
                 <span className={`absolute left-5 top-4 text-6xl leading-none text-white/90 ${display.className}`} style={{ textShadow: `0 0 24px ${NIGHT_COLORS[i]}` }}>{n.n}</span>
                 <div className="absolute inset-x-0 bottom-0 p-5">
                   <p className="text-xs font-bold uppercase tracking-[0.35em]" style={{ color: NIGHT_COLORS[i] }}>{n.title}</p>
-                  <p className={`mt-1 text-3xl leading-tight text-white ${serif.className}`}>{n.artist}</p>
+                  <p className={`mt-1 text-3xl leading-tight text-white ${serif.className}`}>Revealing soon</p>
                   <p className="mt-1 text-base text-white/75">{n.desc}</p>
-                  <p className="mt-3 border-t border-white/15 pt-3 text-xs font-bold uppercase tracking-widest text-white/80">{n.date} · {n.time}</p>
+                  <p className="mt-3 border-t border-white/15 pt-3 text-xs font-bold uppercase tracking-widest text-white/80">To be announced</p>
                 </div>
               </article>
             </Reveal>

@@ -50,12 +50,12 @@ export async function EventPage({ event }: { event: EventData }) {
             </Link>
 
             <div className="flex flex-wrap items-center gap-3">
-              <span className="px-3 py-1 text-sm font-bold uppercase tracking-[0.25em] -rotate-1" style={pill}>Event {String(index + 1).padStart(2, "0")}</span>
-              <span className="border-2 px-3 py-0.5 text-sm font-bold uppercase tracking-widest" style={{ borderColor: t.ink }}>{event.category}</span>
+              <span className="px-3 py-1 text-sm font-bold uppercase tracking-[0.25em] -rotate-1 lg:px-5 lg:py-2 lg:text-lg" style={pill}>Event {String(index + 1).padStart(2, "0")}</span>
+              <span className="border-2 px-3 py-0.5 text-sm font-bold uppercase tracking-widest lg:border-[3px] lg:px-5 lg:py-1.5 lg:text-lg" style={{ borderColor: t.ink }}>{event.category}</span>
             </div>
 
             <div className="flex items-center gap-3">
-              <LogoSlot src={media.logo} alt={`${event.name} logo`} label="Logo" size="h-14 w-14" shape="rounded-full" className="bg-white/40" />
+              {media.logo && <LogoSlot src={media.logo} alt={`${event.name} logo`} label="Logo" size="h-14 w-14" shape="rounded-full" className="bg-white/40" />}
               <div>
                 <p className={`text-2xl uppercase tracking-[0.18em] ${serif.className}`}>{culture?.state}</p>
                 <p className="text-[11px] font-bold uppercase tracking-[0.4em]" style={{ color: t.soft }}>Bharat · {culture?.landmark}</p>
@@ -99,7 +99,7 @@ export async function EventPage({ event }: { event: EventData }) {
             </div>
           </div>
 
-          <div className="group relative mx-auto w-64 sm:w-72">
+          <div className="group relative mx-auto w-64 sm:w-72 lg:w-96">
             <Stamp slug={event.slug} name={event.name} category={event.category} number={index + 1} image={media.image} />
             <Postmark lines={false} className="pointer-events-none absolute -bottom-9 -right-9 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
           </div>

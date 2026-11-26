@@ -81,7 +81,7 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
       </p>
 
       {/* Stamp cards */}
-      <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-12 lg:gap-y-16">
         {shown.map((e, i) => {
           const culture = CULTURES[e.slug];
           return (
@@ -95,26 +95,22 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
 
               {/* caption */}
               <div className="mt-5 flex items-start gap-3 text-[#f5edd8]">
-                <LogoSlot
-                  src={e.logo}
-                  alt={`${e.name} logo`}
-                  label="Logo"
-                  size="h-12 w-12"
-                  shape="rounded-full"
-                  className="text-[#f5c928]"
-                />
+                {/* Only real logos: an empty "LOGO" placeholder on every card looked unfinished. */}
+                {e.logo && (
+                  <LogoSlot src={e.logo} alt={`${e.name} logo`} label="Logo" size="h-12 w-12 lg:h-14 lg:w-14" shape="rounded-full" className="text-[#f5c928]" />
+                )}
                 <div className="min-w-0">
-                  <p className={`text-xl leading-tight tracking-[0.18em] uppercase ${serif.className}`}>{culture?.state ?? "India"}</p>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.45em] text-[#f5edd8]/70">Bharat · {culture?.landmark}</p>
+                  <p className={`text-xl leading-tight tracking-[0.18em] uppercase lg:text-2xl ${serif.className}`}>{culture?.state ?? "India"}</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.45em] text-[#f5edd8]/70 lg:text-xs">Bharat · {culture?.landmark}</p>
                 </div>
               </div>
-              <p className={`mt-3 text-lg leading-snug text-[#f5c928] ${display.className}`}>{e.tagline}</p>
-              <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold text-[#f5edd8]/85">
+              <p className={`mt-3 text-lg leading-snug text-[#f5c928] lg:text-2xl ${display.className}`}>{e.tagline}</p>
+              <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold text-[#f5edd8]/85 lg:text-base">
                 <li className="flex items-center gap-1.5"><CalendarDays className="h-4 w-4 text-[#f5c928]" />{e.date}</li>
                 <li className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-[#f5c928]" />{e.venue}</li>
                 <li className="flex items-center gap-1.5"><Trophy className="h-4 w-4 text-[#f5c928]" />{e.prize}</li>
               </ul>
-              <span className="mt-3 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#f5c928]">
+              <span className="mt-3 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#f5c928] lg:text-base">
                 {e.subEvents.length > 0 ? `${e.subEvents.length} competitions · ` : ""}View details
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </span>
