@@ -104,6 +104,7 @@ export default async function DashboardPage() {
               width={88}
               height={88}
               className="h-20 w-20 shrink-0 border-2 border-black object-cover shadow-[4px_4px_0_0_#000] sm:h-24 sm:w-24"
+              unoptimized // uploads are added after the build, so load them directly (Nginx serves /uploads)
             />
           ) : (
             <div className={`flex h-20 w-20 shrink-0 items-center justify-center border-2 border-black bg-[#f5c928] text-4xl text-black shadow-[4px_4px_0_0_#000] sm:h-24 sm:w-24 ${display.className}`}>

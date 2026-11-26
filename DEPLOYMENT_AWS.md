@@ -293,12 +293,12 @@ More than one server would need uploads moved to S3 and an Application Load Bala
 - [ ] `ALLOW_LOADTEST` is **not** set (`grep ALLOW_LOADTEST .env*` returns nothing on the server).
 - [ ] HTTPS works and HTTP redirects to it; login sets a `Secure` cookie.
 - [ ] `/dev`, `/admin` and `/event-manager` redirect to login when signed out.
-- [ ] **Upload route hardening.** `src/app/api/upload/route.ts` currently:
-  - accepts uploads without a login;
-  - takes the file extension from the uploaded file's name;
-  - trusts the browser-reported MIME type.
+- [x] **Upload route hardened** (`src/app/api/upload/route.ts`):
+  - only accepts a photo for an email that passed its signup code in the last 10 minutes;
+  - detects JPG/PNG/WebP from the file's bytes and picks the extension itself;
+  - keeps at most one photo per email.
 
-  `deploy/nginx.conf` already blocks the dangerous part: it only serves `.jpg/.jpeg/.png/.webp` from `/uploads/`, with `nosniff` and a locked-down CSP. The route should still be fixed in code: require a session, and pick the extension from the validated type.
+  As a second layer, `deploy/nginx.conf` only ever serves image files from `/uploads/`.
 
 ---
 

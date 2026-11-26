@@ -64,10 +64,11 @@ export default function SignupForm({ email, isInternal }: Props) {
     try {
       const fd = new FormData();
       fd.append("file", file);
+      fd.append("email", email); // the upload is only accepted for the email verified in step 2
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = await res.json();
       if (data.url) setPhotoUrl(data.url);
-      else setError("Photo upload failed. Please try again.");
+      else setError(data.error ?? "Photo upload failed. Please try again.");
     } catch {
       setError("Photo upload failed. Please try again.");
     } finally {
