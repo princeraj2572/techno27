@@ -1,6 +1,14 @@
 import { Band, BlockButton, Marquee, PageShell, TicketCta, display } from "@/components/indie";
 import { CREATOR_PERKS, FEATURED_CREATIONS } from "@/data/dummy";
 import { Reveal } from "@/components/indie/motion";
+import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
+
+// Official fest channels (same links as the site's social footer).
+const COMMUNITY = [
+  { name: "Instagram", text: "Behind-the-scenes, reels and the creator spotlight.", cta: "Follow", href: "https://www.instagram.com/technoaimbiation/", Icon: FaInstagram, bg: "bg-[#ff2d8a]" },
+  { name: "WhatsApp", text: "Ask the team anything about Creatorverse.", cta: "Message", href: "https://wa.me/+918839171099", Icon: FaWhatsapp, bg: "bg-[#ffc107]" },
+  { name: "Facebook", text: "Fest updates, photo drops and announcements.", cta: "Follow", href: "https://www.facebook.com/share/15rh7M4fp4/", Icon: FaFacebookF, bg: "bg-[#3b82f6]" },
+];
 
 export const metadata = { title: "Creatorverse | Techno-aiMBiAtion 2027" };
 
@@ -83,19 +91,30 @@ export default function CreatorversePage() {
         <p className="mt-6 text-xs uppercase tracking-widest text-black/50">Sample perks — to be confirmed.</p>
       </Band></Reveal>
 
-      {/* the road */}
-      <div aria-hidden className="grid grid-cols-3 h-72 overflow-hidden border-b-2 border-black">
-        <div className="bg-[#f5edd8] flex items-end justify-center pb-6">
-          <span className="rounded bg-[#fad68e] border border-black/30 px-4 py-1 text-xs font-bold uppercase tracking-widest">Community connect</span>
-        </div>
-        <div className="relative bg-[#2a1f17] border-x-4 border-[#f5edd8]">
-          <div className="absolute left-1/2 top-0 h-full w-1 -translate-x-1/2 border-l-4 border-dashed border-[#f5edd8]/80" />
-          <div className="indie-drive absolute left-1/2 top-0 h-24 w-12 -translate-x-1/2 rounded-xl border-2 border-black bg-[#f5c928] shadow-[3px_3px_0_0_#000]">
-            <div className="mx-1 mt-2 h-5 rounded-sm bg-[#1a2a44]" />
+      <Reveal><Band tone="indigo" halftone className="!py-14">
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.4fr]">
+          <div>
+            <span className="inline-block -rotate-2 border-2 border-black bg-[#ff2d8a] px-3 py-1 text-xs font-bold uppercase tracking-[0.25em] text-black shadow-[3px_3px_0_0_#000]">Join the crew</span>
+            <h2 className={`mt-4 text-5xl sm:text-6xl leading-[0.95] text-[#f5edd8] ${display.className}`}>Community<br /><span className="text-[#ffc107]">connect</span></h2>
+            <p className="mt-4 max-w-md text-lg leading-snug text-[#f5edd8]/80">
+              Find your people. Follow the fest, swap ideas with other creators and be first to hear about calls, meetups and features.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-3">
+            {COMMUNITY.map((c, i) => (
+              <a key={c.name} href={c.href} target="_blank" rel="noopener noreferrer"
+                className={`group flex flex-col justify-between gap-6 rounded-xl border-2 border-black ${c.bg} p-5 text-black shadow-[5px_5px_0_0_#000] transition-transform duration-200 ${i % 2 ? "rotate-2" : "-rotate-2"} hover:rotate-0 hover:-translate-y-1 focus-visible:rotate-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ffc107]`}>
+                <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-black bg-[#f5edd8] shadow-[2px_2px_0_0_#000]"><c.Icon size={22} aria-hidden /></span>
+                <span>
+                  <span className="block text-2xl font-bold uppercase leading-none">{c.name}</span>
+                  <span className="mt-1 block text-sm leading-snug opacity-80">{c.text}</span>
+                  <span className="mt-3 inline-block text-xs font-bold uppercase tracking-widest">{c.cta} <span className="inline-block transition-transform group-hover:translate-x-1">→</span></span>
+                </span>
+              </a>
+            ))}
           </div>
         </div>
-        <div className="bg-[#ff2d8a] indie-halftone" />
-      </div>
+      </Band></Reveal>
 
       <TicketCta title="Got something to show?" text="Register and join the creator community at Techno-aiMBiAtion." href="/auth/signup" label="Register now" />
     </PageShell>

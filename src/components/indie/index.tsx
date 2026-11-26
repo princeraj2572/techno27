@@ -436,16 +436,9 @@ export function SiteFooter() {
   return (
     <footer className="bg-black text-[#f5edd8]">
       <div className="max-w-5xl mx-auto px-6 py-10 grid sm:grid-cols-2 gap-8">
-        <div className="flex items-start gap-3">
-          <svg viewBox="0 0 100 100" className="h-12 w-12 shrink-0" aria-hidden>
-            <circle cx="50" cy="50" r="46" fill="#7a1c1c" stroke="#f5c928" strokeWidth="4" />
-            <circle cx="50" cy="50" r="26" fill="none" stroke="#000" strokeWidth="1.5" />
-            <circle cx="50" cy="50" r="11" fill="#f5c928" />
-          </svg>
-          <div>
-            <p className={`text-2xl text-[#f5c928] ${serif.className}`}>Techno-aiMBiAtion &apos;27</p>
-            <p className="text-sm uppercase tracking-widest text-[#f5edd8]/70">Where innovation meets culture</p>
-          </div>
+        <div>
+          <p className={`text-2xl text-white ${serif.className}`}>Techno-aiMBiAtion &apos;27</p>
+          <p className="text-sm uppercase tracking-widest text-[#f5edd8]/70">Where innovation meets culture</p>
         </div>
         <div className="sm:text-right">
           <p className="text-sm font-bold uppercase tracking-widest text-[#f5c928] mb-2">Contact us</p>
