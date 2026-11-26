@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ChevronLeft, UserPlus } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 export default function CreateManagementPage() {
   const router = useRouter();
@@ -46,29 +47,29 @@ export default function CreateManagementPage() {
     }
   }
 
-  const inputClass = "h-10 rounded-xl border-slate-200 text-sm focus:ring-indigo-300 focus:border-indigo-300";
-  const selectClass = "w-full h-10 px-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-300";
+  const inputClass = "h-10 rounded-xl border-slate-200 text-sm focus:ring-[#f5c928] focus:border-[#1c1812]/30";
+  const selectClass = "w-full h-10 px-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-[#1c1812]/30";
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev/management" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/dev/management" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Management
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Create account</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Create account</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">Add a Management Admin or Event Manager</p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-            <UserPlus className="h-5 w-5 text-indigo-600" />
+          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
+            <UserPlus className="h-5 w-5 text-[#0f6b63]" />
           </div>
         </div>
 
         {/* Form */}
-        <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
           <form onSubmit={handleSubmit} className="space-y-4">
 
             {/* Role */}
@@ -129,7 +130,7 @@ export default function CreateManagementPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-10 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+              className="w-full h-10 rounded-xl bg-[#0f6b63] text-white text-sm font-medium hover:bg-[#0b4f49] disabled:opacity-50 transition-colors"
             >
               {loading ? "Creating..." : "Create account"}
             </button>

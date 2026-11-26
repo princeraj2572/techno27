@@ -10,6 +10,7 @@ import { CheckIn } from "@/features/checkin/checkIn.model";
 import { ChevronLeft, CheckSquare } from "lucide-react";
 import Link from "next/link";
 import CheckinClient from "./CheckinClient";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 async function getData(eventId: string) {
   await connectToDatabase();
@@ -52,7 +53,7 @@ export default async function EventManagerCheckinPage({
   params: Promise<{ eventId: string }>;
 }) {
   const user = await getUser();
-  if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN", "EVENT_MANAGER"].includes(user.role)) redirect("/dashboard");
+  if (!user || !["DEV_ADMIN", "EVENT_MANAGER"].includes(user.role)) redirect("/dashboard");
 
   const { eventId } = await params;
 
@@ -68,20 +69,20 @@ export default async function EventManagerCheckinPage({
   const checkedInById = String(user._id ?? "");
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href={`/event-manager/${eventId}`} className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href={`/event-manager/${eventId}`} className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> {event.name}
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Check-In</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Check-In</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">{participants.length} registered · {checkedInCount} checked in</p>
           </div>
-          <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
-            <CheckSquare className="h-4 w-4 text-indigo-600" />
+          <div className="w-9 h-9 rounded-xl bg-[#f6efdf] flex items-center justify-center shrink-0">
+            <CheckSquare className="h-4 w-4 text-[#0f6b63]" />
           </div>
         </div>
 

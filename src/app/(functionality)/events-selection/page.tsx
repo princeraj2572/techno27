@@ -1,10 +1,11 @@
 "use client";
+import { CARD_UI } from "@/components/indie/gold-poster";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getAllEventsAction, getRegisteredEventsAction, submitEventsAction } from "@/features/events/event-actions";
 import { CalendarDays, CheckCircle2, Trophy, Users } from "lucide-react";
 import AppShell from "@/components/layout/app-shell";
-import { CARD, PageShell, display } from "@/components/indie";
+import { display } from "@/components/indie";
 
 type Event = {
   _id: string;
@@ -30,16 +31,16 @@ const STATUS_LABEL: Record<string, { text: string; cls: string }> = {
 
 function Skeleton() {
   return (
-    <PageShell footer={false}>
-      <div className="mx-auto max-w-3xl space-y-3 px-4 py-16">
-        <div className="h-10 w-48 animate-pulse bg-[#f5edd8]/20" />
+    <div>
+      <div className="relative mx-auto max-w-3xl space-y-3 px-4 py-16">
+        <div className="h-10 w-48 animate-pulse bg-[#1c1812]/20" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-44 animate-pulse bg-[#f5edd8]/15" />
+            <div key={i} className="h-44 animate-pulse bg-[#1c1812]/15" />
           ))}
         </div>
       </div>
-    </PageShell>
+    </div>
   );
 }
 
@@ -115,7 +116,7 @@ export default function EventsSelectionPage() {
         {/* Status message */}
         {msg && (
           <div
-            className={`border-2 border-black px-4 py-3 text-base font-semibold shadow-[4px_4px_0_0_#000] ${
+            className={`rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] px-4 py-3 text-base font-semibold ${
               msg.type === "success" ? "bg-[#c9f0c9] text-[#0d3d1a]" : "bg-[#ffd0d0] text-[#6b0010]"
             }`}
           >
@@ -126,10 +127,10 @@ export default function EventsSelectionPage() {
 
         {/* Events grid */}
         {openEvents.length === 0 && otherEvents.length === 0 ? (
-          <div className="border-2 border-dashed border-[#f5edd8]/40 py-16 text-center">
-            <CalendarDays className="mx-auto mb-3 h-9 w-9 text-[#f5c928]" />
-            <p className="text-xl font-bold uppercase text-[#f5edd8]">No events available right now</p>
-            <p className="mt-1 text-sm text-[#f5edd8]/70">Check back soon or contact the organizers.</p>
+          <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 bg-white/60 py-16 text-center">
+            <CalendarDays className="mx-auto mb-3 h-9 w-9 text-[#ef5a1c]" />
+            <p className="text-xl font-bold uppercase text-[#1c1812]">No events available right now</p>
+            <p className="mt-1 text-sm text-black/60">Check back soon or contact the organizers.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -139,7 +140,7 @@ export default function EventsSelectionPage() {
               const isOpen       = event.status === "REGISTRATION_OPEN";
               const statusInfo   = STATUS_LABEL[event.status] ?? { text: event.status.replace(/_/g, " "), cls: "bg-black/15 text-black/60" };
 
-              let cardClass = `${CARD} p-4 transition `;
+              let cardClass = `${CARD_UI} p-4 transition `;
               if (isRegistered)    cardClass += "border-l-8 border-l-[#1f8a3a] cursor-default";
               else if (isSelected) cardClass += "-translate-y-1 cursor-pointer !bg-[#f5c928] !shadow-[6px_6px_0_0_#000]";
               else if (isOpen)     cardClass += "cursor-pointer hover:-translate-y-1";
@@ -198,7 +199,7 @@ export default function EventsSelectionPage() {
         )}
 
         {selected.size > 0 && (
-          <p className="text-center text-sm font-bold uppercase tracking-widest text-[#f5edd8]/70">
+          <p className="text-center text-sm font-bold uppercase tracking-widest text-black/55">
             {selected.size} event{selected.size > 1 ? "s" : ""} selected
           </p>
         )}
@@ -210,7 +211,7 @@ export default function EventsSelectionPage() {
           <button
             onClick={handleRegister}
             disabled={submitting}
-            className={`pointer-events-auto border-2 border-black bg-[#f5c928] px-8 py-3 text-lg uppercase tracking-wider text-black shadow-[5px_5px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#ff6a00] disabled:opacity-60 ${display.className}`}
+            className={`pointer-events-auto rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#f5c928] px-8 py-3 text-lg uppercase tracking-wider text-black transition hover:-translate-y-0.5 hover:bg-[#ff6a00] disabled:opacity-60 ${display.className}`}
           >
             {submitting
               ? "Registering…"

@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { AlertCircle, Users, UserPlus, CheckCircle2, X, Clock, Trash2, LogOut } from "lucide-react";
 import Link from "next/link";
 import AppShell from "@/components/layout/app-shell";
-import { PageShell, TITLE_SHADOW, display } from "@/components/indie";
+import { display } from "@/components/indie";
 
 type Member = { fullName: string; email: string; role: string };
 type PendingInvite = { _id: string; inviteeEmail: string };
@@ -49,7 +49,7 @@ function ConfirmDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
-      <div className="relative bg-[#f5edd8] text-[#1a0505] border-2 border-black shadow-[6px_6px_0_0_#000] max-w-sm w-full p-6 space-y-4">
+      <div className="relative bg-white text-[#1a0505] rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] max-w-sm w-full p-6 space-y-4">
         <h2 className="text-base font-bold text-[#1a0505]">{title}</h2>
         <p className="text-sm text-black/55 leading-relaxed">{description}</p>
         <div className="flex gap-3 justify-end">
@@ -209,7 +209,7 @@ function TeamCard({
         danger={confirm === "delete" || (typeof confirm === "string" && confirm !== "leave")}
       />
 
-      <div className="bg-[#f5edd8] text-[#1a0505] border-2 border-black border-l-8 border-l-[#7a1c1c] shadow-[4px_4px_0_0_#000] overflow-hidden">
+      <div className="bg-white text-[#1a0505] rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-8 border-l-[#7a1c1c] overflow-hidden">
         {/* Header */}
         <div className="px-5 pt-5 pb-3">
           <div className="flex items-start justify-between gap-3">
@@ -348,7 +348,7 @@ function TeamCard({
             <div key={`slot-${i}`}>
               {isLeader && inviteOpenSlot === i ? (
                 /* Expanded inline invite form */
-                <div className="border border-[#7a1c1c] bg-[#f5c928]/30 rounded-none px-3 py-2.5 space-y-1.5">
+                <div className="rounded-xl bg-[#f6efdf] px-3 py-2.5 space-y-1.5">
                   <div className="flex gap-2">
                     <div className="flex-1 relative">
                       <Input
@@ -452,7 +452,7 @@ function InviteCard({
   if (invite.status !== "PENDING") return null;
 
   return (
-    <div className="bg-[#fff1c2] border-2 border-black shadow-[4px_4px_0_0_#000] px-5 py-4">
+    <div className="bg-[#fff1c2] rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] px-5 py-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-sm font-bold text-amber-900 truncate">
@@ -493,14 +493,14 @@ function InviteCard({
 
 function Skeleton() {
   return (
-    <PageShell footer={false}>
-      <div className="mx-auto max-w-2xl space-y-3 px-4 py-16">
-        <div className="h-10 w-40 animate-pulse bg-[#f5edd8]/20" />
+    <div>
+      <div className="relative mx-auto max-w-2xl space-y-3 px-4 py-16">
+        <div className="h-10 w-40 animate-pulse bg-[#1c1812]/20" />
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-36 animate-pulse bg-[#f5edd8]/15" />
+          <div key={i} className="h-36 animate-pulse bg-[#1c1812]/15" />
         ))}
       </div>
-    </PageShell>
+    </div>
   );
 }
 
@@ -568,8 +568,8 @@ function TeamDetailsContent() {
       {!filteredEvent && pendingInvites.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <AlertCircle className="h-5 w-5 text-[#f5c928]" />
-            <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={TITLE_SHADOW}>Pending invitations</p>
+            <AlertCircle className="h-5 w-5 text-[#ef5a1c]" />
+            <p className={`text-2xl text-[#1c1812] ${display.className}`}>Pending invitations</p>
             <span className="bg-[#f5c928] px-2 py-0.5 text-sm font-bold text-black">{pendingInvites.length}</span>
           </div>
           {pendingInvites.map((invite) => (
@@ -586,18 +586,18 @@ function TeamDetailsContent() {
       {/* Teams */}
       <div className="space-y-4">
         {!filteredEvent && (
-          <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={TITLE_SHADOW}>
-            Registered teams <span className="text-[#f5c928]">({teams.length})</span>
+          <p className={`text-2xl text-[#1c1812] ${display.className}`}>
+            Registered teams <span className="text-[#ef5a1c]">({teams.length})</span>
           </p>
         )}
 
         {visibleTeams.length === 0 ? (
-          <div className="border-2 border-dashed border-[#f5edd8]/40 py-12 text-center">
-            <Users className="mx-auto mb-3 h-9 w-9 text-[#f5c928]" />
-            <p className="text-xl font-bold uppercase text-[#f5edd8]">No team found{filteredEvent ? " for this event" : ""}</p>
+          <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 bg-white/60 py-12 text-center">
+            <Users className="mx-auto mb-3 h-9 w-9 text-[#ef5a1c]" />
+            <p className="text-xl font-bold uppercase text-[#1c1812]">No team found{filteredEvent ? " for this event" : ""}</p>
             <Link
               href="/events-selection"
-              className="mt-1 block text-sm font-bold uppercase tracking-wider text-[#f5c928] hover:underline"
+              className="mt-1 block text-sm font-bold uppercase tracking-wider text-[#0e5b57] hover:underline"
             >
               Register for an event to create or join a team
             </Link>

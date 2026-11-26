@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect, notFound } from "next/navigation";
 import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
@@ -9,6 +9,7 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { ChevronLeft, User as UserIcon, CheckCircle2, Clock } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 const STATUS_LABEL: Record<string, { text: string; color: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600" },
@@ -65,16 +66,16 @@ export default async function AdminParticipantDetailPage({
   const firstName = String(p.fullName).split(" ")[0];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-2xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-start justify-between gap-4 animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/participants" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
+            <Link href="/admin/participants" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Participants
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">{String(p.fullName)}</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{String(p.fullName)}</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">{String(p.email)}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -97,7 +98,7 @@ export default async function AdminParticipantDetailPage({
         </div>
 
         {/* Profile */}
-        <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.05s" }}>
           <div className="flex items-center gap-2 mb-4">
             <div className="w-6 h-6 rounded-lg bg-teal-50 flex items-center justify-center">
               <UserIcon className="h-3.5 w-3.5 text-teal-600" />
@@ -149,7 +150,7 @@ export default async function AdminParticipantDetailPage({
               const border = STATUS_BORDER[t.event?.status ?? ""] ?? "border-l-slate-200";
               const label  = STATUS_LABEL[t.event?.status ?? ""] ?? { text: t.event?.status?.replace(/_/g, " ") ?? "—", color: "text-slate-400" };
               return (
-                <div key={t._id} className={`bg-white border border-slate-100 border-l-4 ${border} rounded-xl px-4 py-3.5 flex items-center justify-between`}>
+                <div key={t._id} className={`bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${border} rounded-2xl px-4 py-3.5 flex items-center justify-between`}>
                   <p className="text-sm font-semibold text-slate-900">{t.event?.name ?? "Unknown Event"}</p>
                   <div className="flex items-center gap-3 shrink-0">
                     <span className="text-xs text-slate-400">{t.members.length} member(s)</span>
@@ -175,7 +176,7 @@ export default async function AdminParticipantDetailPage({
                 </div>
               ) : (
                 txList.map((tx: { _id: string; transactionId: string; currentPayAmount: number; acknowledgementByAdmin: boolean; clearanceApproval: boolean }) => (
-                  <div key={tx._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center justify-between">
+                  <div key={tx._id} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-3.5 flex items-center justify-between">
                     <code className="text-xs font-mono text-slate-500">{tx.transactionId}</code>
                     <div className="flex items-center gap-3">
                       <span className="text-sm font-semibold text-slate-900">₹{tx.currentPayAmount}</span>

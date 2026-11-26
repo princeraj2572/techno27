@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, CreditCard, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import ApprovalPanel from "./ApprovalPanel";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 export default async function DevPaymentsPage({
   searchParams,
@@ -30,35 +31,35 @@ export default async function DevPaymentsPage({
   const currentUserId = String(user._id ?? "");
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Payments</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Payments</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">{total} external participant(s) · max ₹{MAX_PAYMENT}</p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-            <CreditCard className="h-5 w-5 text-indigo-600" />
+          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
+            <CreditCard className="h-5 w-5 text-[#0f6b63]" />
           </div>
         </div>
 
         {/* Stat cards */}
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-          <div className="bg-indigo-600 rounded-2xl px-4 py-4">
-            <p className="text-xs font-medium text-indigo-200 mb-1">Payable (this page)</p>
+          <div className="bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
+            <p className="text-xs font-medium text-white/70 mb-1">Payable (this page)</p>
             <p className="text-2xl font-bold text-white tabular-nums">₹{pagePayable.toLocaleString()}</p>
-            <p className="text-xs text-indigo-300 mt-1">{payments.length} of {total} participants</p>
+            <p className="text-xs text-white/70 mt-1">{payments.length} of {total} participants</p>
           </div>
-          <div className={`rounded-2xl px-4 py-4 ${statusCounts.cleared > 0 ? "bg-emerald-500" : "bg-slate-50 border border-slate-100"}`}>
+          <div className={`rounded-2xl px-4 py-4 ${statusCounts.cleared > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
             <p className={`text-xs font-medium mb-1 ${statusCounts.cleared > 0 ? "text-emerald-100" : "text-slate-400"}`}>Cleared</p>
             <p className={`text-2xl font-bold tabular-nums ${statusCounts.cleared > 0 ? "text-white" : "text-slate-700"}`}>{statusCounts.cleared}</p>
           </div>
-          <div className={`rounded-2xl px-4 py-4 ${statusCounts.pending > 0 ? "bg-amber-500" : "bg-slate-50 border border-slate-100"}`}>
+          <div className={`rounded-2xl px-4 py-4 ${statusCounts.pending > 0 ? "bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
             <p className={`text-xs font-medium mb-1 ${statusCounts.pending > 0 ? "text-amber-100" : "text-slate-400"}`}>Pending</p>
             <p className={`text-2xl font-bold tabular-nums ${statusCounts.pending > 0 ? "text-white" : "text-slate-700"}`}>{statusCounts.pending}</p>
           </div>
@@ -86,15 +87,15 @@ export default async function DevPaymentsPage({
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-4">
               <p className="text-xs text-slate-400">
-                {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+                {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
               </p>
               <div className="flex items-center gap-2">
                 {page > 1 ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                    <Link href={`/dev/payments?page=${page - 1}`}>â† Prev</Link>
+                    <Link href={`/dev/payments?page=${page - 1}`}>← Prev</Link>
                   </Button>
                 ) : (
-                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
                 <span className="text-xs text-slate-400">{page} / {totalPages}</span>
                 {page < totalPages ? (

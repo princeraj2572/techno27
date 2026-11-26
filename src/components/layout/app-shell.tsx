@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
-import { Band, PageShell, serif } from "@/components/indie";
+import { sans } from "@/components/home/fonts";
+import { INK, PillLink, TicketTitle } from "@/components/indie/gold-poster";
 
 export type Crumb = { label: string; href?: string };
 
@@ -38,44 +39,38 @@ export function BackButton({ href, label, className = "" }: { href: string; labe
   );
 }
 
-// Shared indie frame for logged-in pages: breadcrumbs + back button on top,
-// content on maroon, and the same back button again at the bottom.
+// Content frame for logged-in form pages. The area layout (RailFrame) supplies the page background, menu,
+// breadcrumbs and back link; this adds the page title, then the page content directly on the page.
 export default function AppShell({
-  title, sub, icon, crumbs, back, width = "max-w-2xl", children,
+  title, sub, icon, back, width = "max-w-3xl", children,
 }: {
   title: string;
   sub?: string;
   icon?: ReactNode;
-  crumbs: Crumb[];
+  /** @deprecated breadcrumbs now come from the area layout's rail */
+  crumbs?: Crumb[];
   back: { href: string; label: string };
   width?: string;
   children: ReactNode;
 }) {
   return (
-    <PageShell>
-      <Band tone="crimson" mandala ghost={title} className="!py-8 sm:!py-10">
-        <Crumbs items={crumbs} />
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <h1 className={`text-5xl leading-[0.95] sm:text-7xl indie-outline ${serif.className}`}>{title}</h1>
-            {sub && <p className="mt-3 text-lg font-bold uppercase text-[#f5edd8]">{sub}</p>}
-            <BackButton href={back.href} label={back.label} className="mt-5" />
-          </div>
-          {icon && (
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-black bg-[#f5c928] text-black shadow-[4px_4px_0_0_#000]">
-              {icon}
-            </div>
-          )}
+    <div className={`mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 ${sans.className}`}>
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <TicketTitle className="text-[clamp(1.6rem,7.4vw,3.5rem)] leading-[1.05]">{title}</TicketTitle>
+          {sub && <p className="mt-2 text-sm font-extrabold uppercase tracking-wide sm:text-base" style={{ color: INK }}>{sub}</p>}
         </div>
-      </Band>
-      <Band tone="maroon" className="!py-10">
-        <div className={`mx-auto space-y-7 ${width}`}>
-          {children}
-          <div className="border-t-2 border-dashed border-[#f5edd8]/30 pt-6">
-            <BackButton href={back.href} label={back.label} />
+        {icon && (
+          <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-full border-[3px] text-[#1c1812] sm:flex" style={{ background: "#f5c928", borderColor: INK, boxShadow: `0 4px 0 ${INK}` }}>
+            {icon}
           </div>
-        </div>
-      </Band>
-    </PageShell>
+        )}
+      </div>
+
+      {/* content sits directly on the page: each section is its own card, never a card inside a card */}
+      <div className={`mt-6 space-y-6 ${width}`}>{children}</div>
+
+      <PillLink href={back.href} className="mt-6"><ArrowLeft className="h-4 w-4" /> {back.label}</PillLink>
+    </div>
   );
 }

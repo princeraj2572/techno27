@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "Techno-aiMBiAtion 2027",
-  description: "A festival management platform for Techno-aiMBiAtion 2027 â€” participants, organizers, and administration.",
+  description: "A festival management platform for Techno-aiMBiAtion 2027 — participants, organizers, and administration.",
   metadataBase: new URL("http://localhost:3000")
 };
 

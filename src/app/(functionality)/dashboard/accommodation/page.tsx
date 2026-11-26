@@ -14,10 +14,10 @@ export default async function AccommodationPage() {
   if (user.role !== "EXTERNAL_USER") {
     return (
       <AppShell title="Accommodation" crumbs={[{ label: "Home", href: "/" }, { label: "Dashboard", href: "/dashboard" }, { label: "Accommodation" }]} back={{ href: "/dashboard", label: "Back to dashboard" }} icon={<Hotel className="h-6 w-6" />}>
-        <div className="border-2 border-dashed border-[#f5edd8]/40 py-16 text-center">
-          <Hotel className="mx-auto mb-4 h-10 w-10 text-[#f5c928]" />
-          <p className="text-xl font-bold uppercase text-[#f5edd8]">Accommodation is for external participants only</p>
-          <p className="mt-1 text-sm text-[#f5edd8]/70">OPJU students stay on campus.</p>
+        <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 bg-white/60 py-16 text-center">
+          <Hotel className="mx-auto mb-4 h-10 w-10 text-[#ef5a1c]" />
+          <p className="text-xl font-bold uppercase text-[#1c1812]">Accommodation is for external participants only</p>
+          <p className="mt-1 text-sm text-black/60">OPJU students stay on campus.</p>
         </div>
       </AppShell>
     );
@@ -33,7 +33,7 @@ export default async function AccommodationPage() {
       icon={<Hotel className="h-6 w-6" />}
     >
       {/* Info banner */}
-      <div className="border-2 border-black bg-[#f5c928] px-5 py-4 text-black shadow-[4px_4px_0_0_#000]">
+      <div className="rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#f5c928] px-5 py-4 text-black">
         <p className="mb-1 text-sm font-bold uppercase tracking-widest">Accommodation guidelines</p>
         <ul className="list-inside list-disc space-y-1 text-base leading-snug">
           <li>Accommodation is provided free of charge for registered external participants.</li>

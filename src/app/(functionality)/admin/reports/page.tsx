@@ -1,8 +1,9 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/features/users/user-actions";
 import { ChevronLeft, BarChart2, CalendarDays, CreditCard, Hotel, Users } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 const REPORTS = [
   {
@@ -44,19 +45,19 @@ export default async function AdminReportsPage() {
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Reports</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Reports</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">View and export paginated, filterable report data</p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <BarChart2 className="h-5 w-5 text-teal-600" />
           </div>
         </div>
@@ -66,7 +67,7 @@ export default async function AdminReportsPage() {
           {REPORTS.map((report) => {
             const Icon = report.icon;
             return (
-              <div key={report.key} className="bg-white border border-slate-100 rounded-2xl px-5 py-5 hover:border-teal-100 hover:shadow-sm transition-all">
+              <div key={report.key} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 hover:border-teal-100 hover:shadow-sm transition-all">
                 <div className={`w-9 h-9 rounded-xl ${report.color} flex items-center justify-center mb-4`}>
                   <Icon className="h-4 w-4" />
                 </div>

@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
-import { AuthCard, AuthShell } from "../auth-shell";
+import { AuthCard, AuthShell, Fare } from "../auth-shell";
 import EnterEmail from "./EnterEmail";
 import VerifyOtp from "./VerifyOtp";
 import SignupForm from "./SignupForm";
@@ -24,7 +24,7 @@ export default function SignupPage() {
 
   return (
     <AuthShell>
-      <AuthCard tag="Join the riot" title="Create Account" description="Join Techno-aiMBiAtion 2027" steps={STEP_LABELS} current={step - 1}>
+      <AuthCard tag="Join the riot" title="Create Account" description="Join Techno-aiMBiAtion 2027" steps={STEP_LABELS} current={step - 1} aside={step === 1 ? <Fare /> : undefined}>
         {step === 1 && <EnterEmail onNext={handleEmailNext} />}
         {step === 2 && (
           <VerifyOtp

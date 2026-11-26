@@ -21,11 +21,11 @@ export default async function DashboardPaymentPage() {
       icon={<CreditCard className="h-6 w-6" />}
     >
       {summary === null || summary.eventRows.length === 0 ? (
-        <div className="border-2 border-dashed border-[#f5edd8]/40 py-14 text-center">
-          <CreditCard className="mx-auto mb-3 h-9 w-9 text-[#f5c928]" />
-          <p className="text-xl font-bold uppercase text-[#f5edd8]">No events registered yet</p>
-          <p className="mt-1 text-sm text-[#f5edd8]/70">Register for events first to see your payment details.</p>
-          <Link href="/events-selection" className="mt-2 block text-sm font-bold uppercase tracking-wider text-[#f5c928] hover:underline">
+        <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 bg-white/60 py-14 text-center">
+          <CreditCard className="mx-auto mb-3 h-9 w-9 text-[#ef5a1c]" />
+          <p className="text-xl font-bold uppercase text-[#1c1812]">No events registered yet</p>
+          <p className="mt-1 text-sm text-black/60">Register for events first to see your payment details.</p>
+          <Link href="/events-selection" className="mt-2 block text-sm font-bold uppercase tracking-wider text-[#0e5b57] hover:underline">
             Browse events →
           </Link>
         </div>

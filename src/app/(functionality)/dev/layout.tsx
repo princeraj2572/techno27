@@ -1,11 +1,6 @@
 import type { ReactNode } from "react";
-import AreaBar from "@/components/layout/area-bar";
+import AreaLayout from "@/components/layout/area-layout";
 
 export default function Layout({ children }: { children: ReactNode }) {
-  return (
-    <>
-      <AreaBar />
-      {children}
-    </>
-  );
+  return <AreaLayout area="dev">{children}</AreaLayout>;
 }

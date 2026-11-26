@@ -28,7 +28,7 @@ export default function GenerateAllEMButton({ userId }: Props) {
       <button
         onClick={handleGenerate}
         disabled={loading}
-        className="inline-flex items-center gap-1.5 text-xs font-medium text-purple-700 hover:text-purple-800 border border-purple-200 rounded-lg px-3 py-2 disabled:opacity-50 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs font-medium text-[#c8421f] hover:text-[#c8421f] border border-[#c8421f]/30 rounded-lg px-3 py-2 disabled:opacity-50 transition-colors"
       >
         <UserCog className="h-3.5 w-3.5" />
         {loading ? "Generating..." : done ? "Re-generate EMs" : "Generate All EMs"}
@@ -57,7 +57,7 @@ export default function GenerateAllEMButton({ userId }: Props) {
                   {r.email && (
                     <div className="pl-5 space-y-0.5">
                       <p className="text-xs font-mono text-slate-700">Email: {r.email}</p>
-                      <p className="text-xs font-mono text-indigo-700 font-semibold">Pass: {r.password}</p>
+                      <p className="text-xs font-mono text-[#0f6b63] font-semibold">Pass: {r.password}</p>
                     </div>
                   )}
                 </div>

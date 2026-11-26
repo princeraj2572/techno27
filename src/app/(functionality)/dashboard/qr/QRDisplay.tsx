@@ -28,12 +28,12 @@ export default function QRDisplay({ userId, fullName, email, role, identifier }:
     <div className="space-y-6">
 
       {/* QR ticket */}
-      <div className="relative overflow-hidden rounded-2xl border-2 border-black bg-[#f5c928] text-black shadow-[6px_6px_0_0_#000]">
-        <span aria-hidden className="absolute -left-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-2 border-black bg-[#4a0e0e]" />
-        <span aria-hidden className="absolute -right-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-2 border-black bg-[#4a0e0e]" />
+      <div className="relative overflow-hidden rounded-2xl rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#f5c928] text-black">
+        <span aria-hidden className="absolute -left-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-2 border-black bg-[#f6efdf]" />
+        <span aria-hidden className="absolute -right-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-2 border-black bg-[#f6efdf]" />
         <div className="flex flex-col items-center gap-4 px-8 py-6">
           <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-70">Admit one · All access</p>
-          <div className="border-2 border-black bg-white p-3 shadow-[4px_4px_0_0_#000]">
+          <div className="rounded-xl border-2 border-[#1c1812] bg-white p-3">
             <canvas ref={canvasRef} className="block" />
           </div>
           <div className="text-center">
@@ -47,7 +47,7 @@ export default function QRDisplay({ userId, fullName, email, role, identifier }:
         </div>
       </div>
 
-      <div className="border-2 border-black bg-[#f5edd8] px-5 py-4 text-center text-[#1a0505] shadow-[4px_4px_0_0_#000]">
+      <div className="rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-white px-5 py-4 text-center text-[#1a0505]">
         <p className="text-base leading-snug">
           Present this QR code to the event manager at each event check-in counter.
           They will scan it to mark your attendance.

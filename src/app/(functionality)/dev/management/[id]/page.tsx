@@ -6,6 +6,7 @@ import { getAllEventsAction } from "@/features/events/event-actions";
 import { ChevronLeft, Shield } from "lucide-react";
 import Link from "next/link";
 import AssignForm from "./AssignForm";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 export default async function DevManagementManagerPage({
   params,
@@ -35,16 +36,16 @@ export default async function DevManagementManagerPage({
     : [];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev/management" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/dev/management" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Management
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">{manager.fullName}</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{manager.fullName}</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">{manager.email}</p>
             {manager.department && <p className="text-xs text-slate-300 mt-0.5">{manager.department}</p>}
           </div>
@@ -52,8 +53,8 @@ export default async function DevManagementManagerPage({
             <span className="text-[10px] font-semibold px-2 py-1 rounded-full border bg-blue-50 text-blue-700 border-blue-200">
               EVENT MANAGER
             </span>
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center">
-              <Shield className="h-4 w-4 text-indigo-600" />
+            <div className="w-9 h-9 rounded-xl bg-[#f6efdf] flex items-center justify-center">
+              <Shield className="h-4 w-4 text-[#0f6b63]" />
             </div>
           </div>
         </div>

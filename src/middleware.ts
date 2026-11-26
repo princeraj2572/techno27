@@ -62,10 +62,11 @@ export async function middleware(request: NextRequest) {
     return redirectTo(request, "/dashboard");
   }
 
-  // Event manager routes
+  // Event manager routes: event managers only (Dev admin for support). Management admins
+  // run check-in and participants from their own /admin pages, not from this area.
   if (
     pathname.startsWith("/event-manager") &&
-    !["DEV_ADMIN", "MANAGEMENT_ADMIN", "EVENT_MANAGER"].includes(role || "")
+    !["DEV_ADMIN", "EVENT_MANAGER"].includes(role || "")
   ) {
     return redirectTo(request, "/dashboard");
   }

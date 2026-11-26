@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
@@ -6,6 +6,7 @@ import { ManagementAssignment } from "@/features/management/managementAssignment
 import { getAllEventsAction } from "@/features/events/event-actions";
 import { CalendarDays, Users, CheckSquare, UsersRound, ArrowRight, ClipboardList } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-700", bg: "bg-emerald-100" },
@@ -31,7 +32,7 @@ const STATUS_BORDER: Record<string, string> = {
 
 const QUICK_LINKS = [
   { label: "Participants", icon: Users,        desc: "Registered participants", key: "participants", color: "bg-sky-600"     },
-  { label: "Teams",        icon: UsersRound,   desc: "Team rosters",            key: "teams",        color: "bg-violet-600"  },
+  { label: "Teams",        icon: UsersRound,   desc: "Team rosters",            key: "teams",        color: "bg-[#c8421f]"  },
   { label: "Check-In",     icon: CheckSquare,  desc: "Mark attendance",         key: "checkin",      color: "bg-emerald-600" },
   { label: "Schedule",     icon: CalendarDays, desc: "Event timetable",         key: "schedule",     color: "bg-amber-500"   },
   { label: "Reports",      icon: ClipboardList,desc: "Export event data",       key: "reports",      color: "bg-rose-500"    },
@@ -45,7 +46,7 @@ type EventRow = {
 async function getAssignedEvents(userId: string, role: string) {
   await connectToDatabase();
 
-  if (role === "DEV_ADMIN" || role === "MANAGEMENT_ADMIN") {
+  if (role === "DEV_ADMIN") {
     const events = await getAllEventsAction().catch(() => []);
     return events as EventRow[];
   }
@@ -62,7 +63,7 @@ async function getAssignedEvents(userId: string, role: string) {
 
 export default async function EventManagerPage() {
   const user = await getUser();
-  if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN", "EVENT_MANAGER"].includes(user.role)) {
+  if (!user || !["DEV_ADMIN", "EVENT_MANAGER"].includes(user.role)) {
     redirect("/dashboard");
   }
 
@@ -73,14 +74,14 @@ export default async function EventManagerPage() {
   const openCount = assignedEvents.filter((e) => e.status === "REGISTRATION_OPEN").length;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
             <p className="text-xs text-slate-400 mb-0.5">Event Manager</p>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">My Events</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">My Events</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">Techno-aiMBiAtion 2027</p>
           </div>
           <div className="flex items-center gap-3">
@@ -95,17 +96,17 @@ export default async function EventManagerPage() {
 
         {/* Stat cards */}
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-          <div className="bg-orange-500 rounded-2xl p-4">
+          <div className="bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl p-4">
             <p className="text-xs font-medium text-orange-100 mb-3">Assigned events</p>
             <p className="text-4xl font-bold text-white tabular-nums leading-none">{assignedEvents.length}</p>
             <p className="text-xs text-orange-200 mt-2">total</p>
           </div>
-          <div className={`rounded-2xl p-4 ${openCount > 0 ? "bg-emerald-500" : "bg-white border border-slate-200"}`}>
+          <div className={`rounded-2xl p-4 ${openCount > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
             <p className={`text-xs font-medium mb-3 ${openCount > 0 ? "text-emerald-100" : "text-slate-400"}`}>Registration open</p>
             <p className={`text-4xl font-bold tabular-nums leading-none ${openCount > 0 ? "text-white" : "text-slate-700"}`}>{openCount}</p>
             <p className={`text-xs mt-2 ${openCount > 0 ? "text-emerald-200" : "text-slate-400"}`}>events</p>
           </div>
-          <div className={`rounded-2xl p-4 ${liveCount > 0 ? "bg-blue-600" : "bg-white border border-slate-200"}`}>
+          <div className={`rounded-2xl p-4 ${liveCount > 0 ? "bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
             <p className={`text-xs font-medium mb-3 ${liveCount > 0 ? "text-blue-100" : "text-slate-400"}`}>Live now</p>
             <p className={`text-4xl font-bold tabular-nums leading-none ${liveCount > 0 ? "text-white" : "text-slate-700"}`}>{liveCount}</p>
             <p className={`text-xs mt-2 ${liveCount > 0 ? "text-blue-200" : "text-slate-400"}`}>events</p>
@@ -116,13 +117,13 @@ export default async function EventManagerPage() {
         <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Assigned events</p>
           {assignedEvents.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-slate-200 py-12 text-center bg-white">
+            <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 py-12 text-center bg-white/60">
               <CalendarDays className="h-8 w-8 mx-auto mb-3 text-slate-300" />
               <p className="text-sm font-medium text-slate-500">No events assigned yet</p>
               <p className="text-xs text-slate-400 mt-1">Contact a Management Admin to get events assigned</p>
             </div>
           ) : (
-            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden divide-y divide-slate-100">
+            <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl overflow-hidden divide-y divide-slate-100">
               {assignedEvents.map((event) => {
                 const border = STATUS_BORDER[event.status] ?? "border-l-slate-200";
                 const label  = STATUS_LABEL[event.status]  ?? { text: event.status.replace(/_/g, " "), color: "text-slate-500", bg: "bg-slate-100" };
@@ -139,8 +140,8 @@ export default async function EventManagerPage() {
                           event.category,
                           event.teamSize && `Team: ${event.teamSize}`,
                           event.maxParticipants && `Limit: ${event.maxParticipants}`,
-                          event.prizeMoney && `Prize: â‚¹${event.prizeMoney}`,
-                        ].filter(Boolean).join(" Â· ")}
+                          event.prizeMoney && `Prize: ₹${event.prizeMoney}`,
+                        ].filter(Boolean).join(" · ")}
                       </p>
                     </div>
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${label.bg} ${label.color}`}>{label.text}</span>
@@ -155,11 +156,11 @@ export default async function EventManagerPage() {
         {/* Quick access */}
         {assignedEvents.length > 0 && (
           <div className="animate-slide-up" style={{ animationDelay: "0.14s" }}>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Quick access Â· {assignedEvents[0].name}</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Quick access · {assignedEvents[0].name}</p>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               {QUICK_LINKS.map(({ label, icon: Icon, desc, key, color }) => (
                 <Link key={key} href={`/event-manager/${assignedEvents[0]._id}/${key}`} className="group">
-                  <div className="bg-white border border-slate-200 hover:border-orange-300 hover:shadow-md rounded-2xl px-4 py-4 transition-all h-full flex flex-col gap-3">
+                  <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] hover:border-orange-300 hover:shadow-md rounded-2xl px-4 py-4 transition-all h-full flex flex-col gap-3">
                     <div className={`w-8 h-8 rounded-xl ${color} flex items-center justify-center shrink-0`}>
                       <Icon className="h-4 w-4 text-white" />
                     </div>

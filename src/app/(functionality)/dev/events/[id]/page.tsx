@@ -10,10 +10,11 @@ import { getUser } from "@/features/users/user-actions";
 import { useRouter } from "next/navigation";
 import { Copy, Check, UserCog, RefreshCw, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 const STATUS_LABEL: Record<string, { text: string; color: string; border: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600", border: "border-emerald-500" },
-  EVENT_LIVE:          { text: "Live now",  color: "text-indigo-600",  border: "border-indigo-500"  },
+  EVENT_LIVE:          { text: "Live now",  color: "text-[#0f6b63]",  border: "border-[#0f6b63]"  },
   COMPLETED:           { text: "Completed", color: "text-slate-400",   border: "border-slate-300"   },
   CANCELLED:           { text: "Cancelled", color: "text-red-500",     border: "border-red-400"     },
   REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600",   border: "border-amber-400"   },
@@ -29,7 +30,7 @@ const STATUS_ACTIONS: Array<{
   { label: "Open Registration",  status: "REGISTRATION_OPEN",   style: "bg-emerald-600 text-white hover:bg-emerald-700" },
   { label: "Close Registration", status: "REGISTRATION_CLOSED", style: "border border-amber-300 text-amber-700 hover:bg-amber-50" },
   { label: "Temporarily Pause",  status: "TEMPORARILY_CLOSED",  style: "border border-orange-300 text-orange-700 hover:bg-orange-50" },
-  { label: "Go Live",            status: "EVENT_LIVE",           style: "bg-indigo-600 text-white hover:bg-indigo-700" },
+  { label: "Go Live",            status: "EVENT_LIVE",           style: "bg-[#0f6b63] text-white hover:bg-[#0b4f49]" },
   { label: "Mark Completed",     status: "COMPLETED",            style: "border border-slate-200 text-slate-600 hover:bg-slate-50" },
   { label: "Cancel Event",       status: "CANCELLED",            style: "border border-red-200 text-red-600 hover:bg-red-50" },
 ];
@@ -137,7 +138,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
+    <div className="flex min-h-[60vh] items-center justify-center">
       <div className="space-y-3 animate-pulse w-full max-w-3xl px-4">
         <div className="h-4 bg-slate-100 rounded w-16" />
         <div className="h-8 bg-slate-100 rounded w-48" />
@@ -148,7 +149,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
   );
 
   if (!event) return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
+    <div className="flex min-h-[60vh] items-center justify-center">
       <p className="text-sm text-slate-400">Event not found.</p>
     </div>
   );
@@ -157,19 +158,19 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
   const pct         = (event.maxParticipants ?? 0) > 0 ? Math.round(((event.registeredCount ?? 0) / (event.maxParticipants ?? 1)) * 100) : 0;
   const remaining   = (event.maxParticipants ?? 0) > 0 ? (event.maxParticipants ?? 0) - (event.registeredCount ?? 0) : null;
 
-  const inputClass  = "h-9 rounded-xl border-slate-200 text-sm focus:ring-indigo-300 focus:border-indigo-300";
+  const inputClass  = "h-9 rounded-xl border-slate-200 text-sm focus:ring-[#f5c928] focus:border-[#1c1812]/30";
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev/events" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/dev/events" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               ← Events
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">{event.name}</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{event.name}</TicketTitle>
             {event.category && <p className="text-xs text-slate-400 mt-0.5">{event.category}</p>}
           </div>
           <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border shrink-0 ${statusInfo.color} border-current bg-white`}>
@@ -180,10 +181,10 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         {/* Stats row */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
           {[
-            { label: "Registered", value: event.registeredCount ?? 0,               bg: "bg-indigo-600", label_c: "text-indigo-200", val_c: "text-white" },
+            { label: "Registered", value: event.registeredCount ?? 0,               bg: "bg-[#0f6b63]", label_c: "text-white/70", val_c: "text-white" },
             { label: "Limit",      value: event.maxParticipants || "∞",             bg: "bg-sky-500",    label_c: "text-sky-100",    val_c: "text-white" },
             { label: "Remaining",  value: remaining !== null ? remaining : "∞",     bg: "bg-emerald-500",label_c: "text-emerald-100",val_c: "text-white" },
-            { label: "Team size",  value: event.teamSize ?? 1,                      bg: "bg-violet-500", label_c: "text-violet-100", val_c: "text-white" },
+            { label: "Team size",  value: event.teamSize ?? 1,                      bg: "bg-[#c8421f]", label_c: "text-white/80", val_c: "text-white" },
           ].map((stat) => (
             <div key={stat.label} className={`rounded-2xl px-4 py-4 shadow-sm ${stat.bg}`}>
               <p className={`text-xs font-medium mb-1 ${stat.label_c}`}>{stat.label}</p>
@@ -197,7 +198,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
           <div className="flex items-center gap-3 animate-slide-up" style={{ animationDelay: "0.08s" }}>
             <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all ${pct >= 90 ? "bg-red-400" : pct >= 60 ? "bg-amber-400" : "bg-indigo-500"}`}
+                className={`h-full rounded-full transition-all ${pct >= 90 ? "bg-red-400" : pct >= 60 ? "bg-amber-400" : "bg-[#0f6b63]"}`}
                 style={{ width: `${Math.min(pct, 100)}%` }}
               />
             </div>
@@ -206,7 +207,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         )}
 
         {/* Status controls */}
-        <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <p className="text-xs font-semibold text-slate-400 mb-4">Registration controls</p>
           <div className="flex flex-wrap gap-2">
             {STATUS_ACTIONS.map((action) => {
@@ -231,12 +232,12 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Fees & prize pool */}
-        <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.13s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.13s" }}>
           <div className="flex items-center justify-between mb-4">
             <p className="text-xs font-semibold text-slate-400">Fees &amp; prize pool</p>
             <button
               onClick={() => setFeeEditing(!feeEditing)}
-              className="text-xs text-indigo-600 hover:text-indigo-700 font-medium"
+              className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium"
             >
               {feeEditing ? "Cancel" : "Edit"}
             </button>
@@ -263,7 +264,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
                 <Button
                   onClick={handleSaveFees}
                   disabled={actionLoading === "fees"}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm"
+                  className="bg-[#0f6b63] hover:bg-[#0b4f49] text-white text-sm"
                 >
                   {actionLoading === "fees" ? "Saving..." : "Save changes"}
                 </Button>
@@ -287,14 +288,14 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Event Manager credentials */}
-        <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.16s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.16s" }}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <UserCog className="h-4 w-4 text-indigo-500" />
+              <UserCog className="h-4 w-4 text-[#0f6b63]" />
               <p className="text-xs font-semibold text-slate-400">Event Manager account</p>
             </div>
             {emData && emData !== "loading" && (
-              <Link href={`/event-manager/${eventId}/participants`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">
+              <Link href={`/event-manager/${eventId}/participants`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium">
                 View participants →
               </Link>
             )}
@@ -315,7 +316,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
                   </div>
                   <button
                     onClick={() => copyText(value, key)}
-                    className="shrink-0 text-slate-400 hover:text-indigo-600 transition-colors"
+                    className="shrink-0 text-slate-400 hover:text-[#0f6b63] transition-colors"
                   >
                     {copied === key
                       ? <Check className="h-3.5 w-3.5 text-emerald-500" />
@@ -334,7 +335,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
               <button
                 onClick={handleGenerateEM}
                 disabled={emGenerating}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-medium transition-colors"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0f6b63] hover:bg-[#0b4f49] disabled:opacity-50 text-white text-xs font-medium transition-colors"
               >
                 <RefreshCw className={`h-3.5 w-3.5 ${emGenerating ? "animate-spin" : ""}`} />
                 {emGenerating ? "Generating..." : "Generate Event Manager ID"}

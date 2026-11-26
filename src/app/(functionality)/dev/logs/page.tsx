@@ -6,6 +6,7 @@ import { AuditLog } from "@/features/management/auditLog.model";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, FileText, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 async function getLogsPage(page: number, limit: number) {
   await connectToDatabase();
@@ -37,20 +38,20 @@ export default async function DevLogsPage({
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Audit Logs</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Audit Logs</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">{total} entries</p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-            <FileText className="h-5 w-5 text-indigo-600" />
+          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
+            <FileText className="h-5 w-5 text-[#0f6b63]" />
           </div>
         </div>
 
@@ -71,11 +72,11 @@ export default async function DevLogsPage({
               reason?: string;
               timestamp?: string;
             }) => (
-              <div key={log._id} className="bg-white border border-slate-100 border-l-4 border-l-indigo-200 rounded-xl px-4 py-3.5">
+              <div key={log._id} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] border-l-[#0f6b63] rounded-2xl px-4 py-3.5">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <code className="text-xs font-mono font-semibold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded">
+                      <code className="text-xs font-mono font-semibold text-[#0f6b63] bg-[#f6efdf] px-1.5 py-0.5 rounded">
                         {log.action}
                       </code>
                       {log.targetType && (
@@ -100,15 +101,15 @@ export default async function DevLogsPage({
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
               <p className="text-xs text-slate-400">
-                {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+                {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
               </p>
               <div className="flex items-center gap-2">
                 {page > 1 ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                    <Link href={`/dev/logs?page=${page - 1}`}>â† Prev</Link>
+                    <Link href={`/dev/logs?page=${page - 1}`}>← Prev</Link>
                   </Button>
                 ) : (
-                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
                 <span className="text-xs text-slate-400">{page} / {totalPages}</span>
                 {page < totalPages ? (

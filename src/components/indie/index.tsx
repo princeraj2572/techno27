@@ -134,7 +134,8 @@ export function IndieStyles() {
 export function PageShell({ children, footer = true }: { children: ReactNode; footer?: boolean }) {
   return (
     <main
-      className={`min-h-screen bg-[#4a0e0e] text-[#f5edd8] overflow-x-clip ${body.className}`}
+      // The root layout already pads 4rem for the fixed navbar, so a full screen here would always overflow by 4rem.
+      className={`min-h-[calc(100dvh-4rem)] bg-[#4a0e0e] text-[#f5edd8] overflow-x-clip ${body.className}`}
       style={{
         backgroundImage: "radial-gradient(rgba(245,237,216,0.07) 1px, transparent 1px), linear-gradient(180deg, #3a0808 0%, #4a0e0e 35%, #5a1212 100%)",
         backgroundSize: "6px 6px, 100% 100%",

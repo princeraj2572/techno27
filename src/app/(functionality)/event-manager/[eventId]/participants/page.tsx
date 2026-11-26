@@ -10,6 +10,7 @@ import { Transaction } from "@/features/payments/transaction.model";
 import { ChevronLeft, Users } from "lucide-react";
 import Link from "next/link";
 import ParticipantsClient from "./ParticipantsClient";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 export interface ParticipantRow {
   email: string;
@@ -128,7 +129,7 @@ export default async function EventManagerParticipantsPage({
   params: Promise<{ eventId: string }>;
 }) {
   const user = await getUser();
-  if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN", "EVENT_MANAGER"].includes(user.role))
+  if (!user || !["DEV_ADMIN", "EVENT_MANAGER"].includes(user.role))
     redirect("/dashboard");
 
   const { eventId } = await params;
@@ -146,7 +147,7 @@ export default async function EventManagerParticipantsPage({
   const { event, participants, internalCount, externalCount, externalCleared } = data;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
@@ -157,18 +158,18 @@ export default async function EventManagerParticipantsPage({
           <div>
             <Link
               href={`/event-manager/${eventId}`}
-              className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1"
+              className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1"
             >
               <ChevronLeft className="h-3.5 w-3.5" /> {event.name}
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Participants</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Participants</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">
               {participants.length} total
               {event.maxParticipants ? ` · Limit: ${event.maxParticipants}` : ""}
             </p>
           </div>
-          <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
-            <Users className="h-4 w-4 text-indigo-600" />
+          <div className="w-9 h-9 rounded-xl bg-[#f6efdf] flex items-center justify-center shrink-0">
+            <Users className="h-4 w-4 text-[#0f6b63]" />
           </div>
         </div>
 
@@ -177,15 +178,15 @@ export default async function EventManagerParticipantsPage({
           className="grid grid-cols-3 gap-3 animate-slide-up"
           style={{ animationDelay: "0.05s" }}
         >
-          <div className="bg-indigo-600 rounded-2xl px-4 py-4">
-            <p className="text-xs font-medium text-indigo-200 mb-1">Internal (OPJU)</p>
+          <div className="bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
+            <p className="text-xs font-medium text-white/70 mb-1">Internal (OPJU)</p>
             <p className="text-3xl font-bold text-white tabular-nums leading-none">{internalCount}</p>
           </div>
-          <div className="bg-amber-50 border border-amber-100 rounded-2xl px-4 py-4">
+          <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
             <p className="text-xs font-medium text-amber-600 mb-1">External</p>
             <p className="text-3xl font-bold text-amber-900 tabular-nums leading-none">{externalCount}</p>
           </div>
-          <div className={`rounded-2xl px-4 py-4 ${externalCleared > 0 ? "bg-emerald-500" : "bg-slate-50 border border-slate-100"}`}>
+          <div className={`rounded-2xl px-4 py-4 ${externalCleared > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
             <p className={`text-xs font-medium mb-1 ${externalCleared > 0 ? "text-emerald-100" : "text-slate-400"}`}>
               Payments cleared
             </p>

@@ -7,6 +7,7 @@ import { ManagementAssignment } from "@/features/management/managementAssignment
 import { ChevronLeft, Shield, Plus, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 async function getManagementUsers(page: number, limit: number) {
   await connectToDatabase();
@@ -42,7 +43,7 @@ async function getManagementUsers(page: number, limit: number) {
 }
 
 const ROLE_CHIP: Record<string, string> = {
-  MANAGEMENT_ADMIN: "bg-purple-50 text-purple-700 border-purple-200",
+  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#c8421f] border-[#c8421f]/30",
   EVENT_MANAGER:    "bg-blue-50   text-blue-700   border-blue-200",
 };
 
@@ -63,16 +64,16 @@ export default async function DevManagementPage({
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Management</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Management</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">
               {adminCount} admin{adminCount !== 1 ? "s" : ""} · {managerCount} event manager{managerCount !== 1 ? "s" : ""}
             </p>
@@ -83,8 +84,8 @@ export default async function DevManagementPage({
                 <Plus className="h-3.5 w-3.5 mr-1.5" /> Create account
               </Link>
             </Button>
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center shrink-0">
-              <Shield className="h-4 w-4 text-indigo-600" />
+            <div className="w-9 h-9 rounded-xl bg-[#f6efdf] flex items-center justify-center shrink-0">
+              <Shield className="h-4 w-4 text-[#0f6b63]" />
             </div>
           </div>
         </div>
@@ -95,7 +96,7 @@ export default async function DevManagementPage({
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <Shield className="h-8 w-8 mx-auto mb-3 text-slate-200" />
               <p className="text-sm font-medium text-slate-500">No management accounts yet</p>
-              <Link href="/dev/management/create" className="text-xs text-indigo-600 hover:underline mt-1 block">
+              <Link href="/dev/management/create" className="text-xs text-[#0f6b63] hover:underline mt-1 block">
                 Create the first one →
               </Link>
             </div>
@@ -104,8 +105,8 @@ export default async function DevManagementPage({
               _id: string; fullName: string; email: string; role: string;
               mobileNumber?: string; createdAt?: string; assignedEventCount: number | null;
             }) => (
-              <div key={u._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700 shrink-0">
+              <div key={u._id} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-3.5 flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-[#fde9a8] flex items-center justify-center text-xs font-bold text-[#0f6b63] shrink-0">
                   {u.fullName[0]?.toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -119,7 +120,7 @@ export default async function DevManagementPage({
                 </div>
                 <div className="text-right shrink-0">
                   {u.role === "EVENT_MANAGER" && (
-                    <p className={`text-xs font-medium ${u.assignedEventCount && u.assignedEventCount > 0 ? "text-indigo-600" : "text-slate-300"}`}>
+                    <p className={`text-xs font-medium ${u.assignedEventCount && u.assignedEventCount > 0 ? "text-[#0f6b63]" : "text-slate-300"}`}>
                       {u.assignedEventCount ?? 0} event{u.assignedEventCount !== 1 ? "s" : ""}
                     </p>
                   )}
@@ -128,11 +129,11 @@ export default async function DevManagementPage({
                   </p>
                 </div>
                 {u.role === "EVENT_MANAGER" ? (
-                  <Link href={`/dev/management/${u._id}`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">
+                  <Link href={`/dev/management/${u._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0">
                     Assign events →
                   </Link>
                 ) : (
-                  <Link href={`/dev/users/${u._id}`} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">
+                  <Link href={`/dev/users/${u._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0">
                     View →
                   </Link>
                 )}
@@ -143,15 +144,15 @@ export default async function DevManagementPage({
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
               <p className="text-xs text-slate-400">
-                {(page - 1) * limit + 1}â€“{Math.min(page * limit, total)} of {total}
+                {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
               </p>
               <div className="flex items-center gap-2">
                 {page > 1 ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                    <Link href={`/dev/management?page=${page - 1}`}>â† Prev</Link>
+                    <Link href={`/dev/management?page=${page - 1}`}>← Prev</Link>
                   </Button>
                 ) : (
-                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>â† Prev</Button>
+                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
                 <span className="text-xs text-slate-400">{page} / {totalPages}</span>
                 {page < totalPages ? (

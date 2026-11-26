@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { sendOtp, verifyOtp } from "@/features/users/otp-actions";
 import { resetPassword } from "@/features/users/user-actions";
-import { AuthCard, AuthShell } from "../auth-shell";
+import { AuthCard, AuthShell, ResetHowTo } from "../auth-shell";
 
 type Step = "email" | "otp" | "password";
 
@@ -81,7 +81,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <AuthShell>
-      <AuthCard tag="No worries" title="Reset password" description={description} steps={STEPS.map((x) => x.label)} current={stepIndex} maxWidth="max-w-md">
+      <AuthCard tag="No worries" title="Reset password" description={description} steps={STEPS.map((x) => x.label)} current={stepIndex} aside={<div className="hidden md:block"><ResetHowTo /></div>}>
         <div>
             {step === "email" && (
               <form onSubmit={handleSendOtp} className="space-y-4">

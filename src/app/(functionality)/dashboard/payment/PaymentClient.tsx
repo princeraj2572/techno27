@@ -1,9 +1,10 @@
 "use client";
+import { CARD_UI } from "@/components/indie/gold-poster";
 import { useState } from "react";
 import { addTransactionIdAction } from "@/features/payments/payment-actions";
 import type { IPaymentSummary } from "@/features/payments/payment-actions";
 import { AlertTriangle, CheckCircle2, Clock, ExternalLink, X, QrCode, ChevronDown, Users, User } from "lucide-react";
-import { CARD, display } from "@/components/indie";
+import { display } from "@/components/indie";
 
 // Update this URL when the 2027 Easebuzz payment link is set up
 const EASEBUZZ_URL = "https://smartpay.easebuzz.in/125084/Techno-aiMBiAtion-2026";
@@ -16,7 +17,7 @@ interface Props {
 // Maroon heading that sits directly on the page background
 function Heading({ children }: { children: React.ReactNode }) {
   return (
-    <p className={`text-2xl text-[#f5edd8] ${display.className}`} style={{ textShadow: "3px 3px 0 #7a1c1c" }}>
+    <p className={`text-2xl text-[#1c1812] ${display.className}`}>
       {children}
     </p>
   );
@@ -69,7 +70,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
 
       {/* 1. Status */}
       <div
-        className={`border-2 border-black px-6 py-6 shadow-[6px_6px_0_0_#000] ${
+        className={`rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] px-6 py-6 ${
           payClearance ? "bg-[#1f8a3a] text-white" : "bg-[#f5c928] text-black"
         }`}
       >
@@ -94,7 +95,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
               </p>
             </div>
             {acknowledgedAmount > 0 && (
-              <div className="border-2 border-black bg-[#f5edd8] px-4 py-2 text-right">
+              <div className="rounded-xl bg-white/80 px-4 py-2 text-right">
                 <p className="text-xs font-bold uppercase tracking-widest text-black/60">Received</p>
                 <p className={`text-3xl tabular-nums ${display.className}`}>₹{acknowledgedAmount}</p>
               </div>
@@ -106,7 +107,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
       {/* 2. Registered events */}
       <div className="space-y-3">
         <Heading>Your registrations</Heading>
-        <div className={`${CARD} overflow-hidden`}>
+        <div className={`${CARD_UI} overflow-hidden`}>
           <div className="divide-y-2 divide-black/15">
             {initial.eventRows.map((ev) => (
               <div key={ev.eventId} className="flex items-center justify-between gap-3 px-5 py-4">
@@ -145,7 +146,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
       {/* 3. Fee structure */}
       <div className="space-y-3">
         <Heading>Fee structure</Heading>
-        <div className={`${CARD} overflow-hidden`}>
+        <div className={`${CARD_UI} overflow-hidden`}>
           <button
             type="button"
             onClick={() => setShowFeeGuide((v) => !v)}
@@ -162,7 +163,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
                   { title: "Individual", icon: User, rows: [["1 event", "₹99"], ["2–3 events", "₹199"], ["4–7 events", "₹499"]] },
                   { title: "Team", icon: Users, rows: [["Per event", "₹299"], ["4–7 events", "₹499"]] },
                 ].map(({ title, icon: Icon, rows }) => (
-                  <div key={title} className="border-2 border-black bg-white/60 px-4 py-3">
+                  <div key={title} className="rounded-xl bg-[#f6efdf] px-4 py-3">
                     <div className="mb-2 flex items-center gap-2 border-b-2 border-black/20 pb-2">
                       <Icon className="h-4 w-4 text-[#7a1c1c]" />
                       <p className="text-base font-bold uppercase tracking-wide text-[#7a1c1c]">{title}</p>
@@ -191,7 +192,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
       {/* 4. How to pay */}
       <div className="space-y-3">
         <Heading>How to pay</Heading>
-        <div className={`${CARD} px-5 py-5`}>
+        <div className={`${CARD_UI} px-5 py-5`}>
           <ol className="space-y-4">
             {[
               { n: "1", text: "Click “Pay” below — it opens the Easebuzz payment page." },
@@ -210,7 +211,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
         </div>
 
         {/* Important note */}
-        <div className="flex items-start gap-3 border-2 border-black bg-[#f5c928] px-5 py-4 text-black shadow-[4px_4px_0_0_#000]">
+        <div className="flex items-start gap-3 rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#f5c928] px-5 py-4 text-black">
           <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0" />
           <div>
             <p className="text-lg font-bold uppercase tracking-wide">Important</p>
@@ -226,7 +227,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
       {!payClearance && (
         <button
           onClick={() => setShowModal(true)}
-          className={`h-16 w-full border-2 border-black bg-[#ff6a00] text-2xl uppercase tracking-wide text-black shadow-[6px_6px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#f5c928] active:translate-y-0 ${display.className}`}
+          className={`h-16 w-full rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#ff6a00] text-2xl uppercase tracking-wide text-black transition hover:-translate-y-0.5 hover:bg-[#f5c928] active:translate-y-0 ${display.className}`}
         >
           Pay ₹{remaining} via Easebuzz
         </button>
@@ -234,7 +235,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
 
       {/* 6. Success */}
       {success && (
-        <div role="status" className="flex items-start gap-3 border-2 border-black bg-[#c9f0c9] px-5 py-4 text-[#0d3d1a] shadow-[4px_4px_0_0_#000]">
+        <div role="status" className="flex items-start gap-3 rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#c9f0c9] px-5 py-4 text-[#0d3d1a]">
           <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0" />
           <p className="text-lg font-semibold leading-snug">{success}</p>
         </div>
@@ -248,7 +249,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
             {transactions.map((tx) => (
               <div
                 key={tx.transactionId}
-                className={`${CARD} border-l-8 px-5 py-4 ${
+                className={`${CARD_UI} border-l-8 px-5 py-4 ${
                   tx.clearanceApproval
                     ? "border-l-[#1f8a3a]"
                     : tx.acknowledgementByAdmin
@@ -284,7 +285,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
       {/* 8. Payment modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-4 sm:items-center" role="dialog" aria-modal="true" aria-label="Complete payment">
-          <div className="max-h-[92vh] w-full max-w-md overflow-y-auto border-2 border-black bg-[#f5edd8] text-[#1a0505] shadow-[8px_8px_0_0_#000]">
+          <div className="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-white text-[#1a0505]">
             <div className="flex items-center justify-between border-b-2 border-black bg-[#7a1c1c] px-5 py-4 text-[#f5edd8]">
               <p className={`text-xl ${display.className}`}>Complete payment</p>
               <button
@@ -308,7 +309,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 border-2 border-black bg-white/60 px-3 py-3">
+              <div className="flex items-center gap-3 rounded-xl bg-[#f6efdf] px-3 py-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-black bg-[#f5c928]">
                   <QrCode className="h-5 w-5" />
                 </div>
@@ -322,7 +323,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
                 href={EASEBUZZ_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-12 w-full items-center justify-center gap-2 border-2 border-black bg-[#7a1c1c] text-lg font-bold uppercase tracking-wider text-white shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#5a1212]"
+                className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#7a1c1c] text-lg font-bold uppercase tracking-wider text-white transition hover:-translate-y-0.5 hover:bg-[#5a1212]"
               >
                 Open Easebuzz <ExternalLink className="h-4 w-4" />
               </a>
@@ -349,7 +350,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
               <button
                 onClick={handleSubmit}
                 disabled={!txInput.trim() || submitting}
-                className="h-12 w-full border-2 border-black bg-[#1f8a3a] text-lg font-bold uppercase tracking-wider text-white shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#166b2c] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
+                className="h-12 w-full rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#1f8a3a] text-lg font-bold uppercase tracking-wider text-white transition hover:-translate-y-0.5 hover:bg-[#166b2c] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
               >
                 {submitting ? "Submitting…" : "Submit transaction ID"}
               </button>

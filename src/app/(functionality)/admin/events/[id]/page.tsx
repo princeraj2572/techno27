@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { redirect, notFound } from "next/navigation";
 import { getUser } from "@/features/users/user-actions";
 import { getEventByIdAction } from "@/features/events/event-actions";
@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, CalendarDays, Users, Trophy, UsersRound, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 export default async function AdminEventDetailPage({
   params,
@@ -60,16 +61,16 @@ export default async function AdminEventDetailPage({
   const fillPct = limit > 0 ? Math.round((registered / limit) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-start justify-between gap-4 animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/events" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
+            <Link href="/admin/events" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Events
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">{event.name}</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{event.name}</TicketTitle>
             <span className={`text-xs font-medium ${label.color}`}>{label.text}</span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -78,7 +79,7 @@ export default async function AdminEventDetailPage({
                 Manage →
               </Link>
             )}
-            <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
               <CalendarDays className="h-5 w-5 text-teal-600" />
             </div>
           </div>
@@ -86,7 +87,7 @@ export default async function AdminEventDetailPage({
 
         {/* Stats grid */}
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-          <div className="bg-teal-600 rounded-2xl p-4">
+          <div className="bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl p-4">
             <p className="text-xs font-medium text-teal-200 mb-3">Registered</p>
             <p className="text-4xl font-bold text-white tabular-nums leading-none">{registered}</p>
             <p className="text-xs text-teal-300 mt-2">teams</p>
@@ -96,7 +97,7 @@ export default async function AdminEventDetailPage({
             <p className="text-4xl font-bold text-teal-900 tabular-nums leading-none">{limit || "∞"}</p>
             <p className="text-xs text-teal-400 mt-2">max participants</p>
           </div>
-          <div className={`rounded-2xl p-4 ${event.prizeMoney ? "bg-amber-500" : "bg-slate-100"}`}>
+          <div className={`rounded-2xl p-4 ${event.prizeMoney ? "bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-100"}`}>
             <p className={`text-xs font-medium mb-3 ${event.prizeMoney ? "text-amber-100" : "text-slate-400"}`}>Prize pool</p>
             <p className={`text-2xl font-bold tabular-nums leading-none ${event.prizeMoney ? "text-white" : "text-slate-700"}`}>
               {event.prizeMoney ? `₹${event.prizeMoney}` : "—"}
@@ -113,7 +114,7 @@ export default async function AdminEventDetailPage({
             { icon: Trophy, label: "External fee", value: `₹${event.externalFee ?? 0}` },
             { icon: CalendarDays, label: "Fill", value: limit > 0 ? `${fillPct}%` : "No limit" },
           ].map(({ label: lbl, value }) => (
-            <div key={lbl} className="bg-white border border-slate-100 rounded-xl px-4 py-3">
+            <div key={lbl} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-3">
               <p className="text-xs text-slate-400">{lbl}</p>
               <p className="text-base font-bold text-slate-900 mt-0.5">{value}</p>
             </div>
@@ -155,7 +156,7 @@ export default async function AdminEventDetailPage({
               const leaderUser = usersMap[t.leader] as { fullName?: string; role?: string } | undefined;
               const isExternal = leaderUser?.role === "EXTERNAL_USER";
               return (
-                <div key={t._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center gap-3">
+                <div key={t._id} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-3.5 flex items-center gap-3">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                     isExternal ? "bg-amber-100 text-amber-700" : "bg-teal-100 text-teal-700"
                   }`}>

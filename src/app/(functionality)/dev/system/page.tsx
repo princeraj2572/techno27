@@ -5,6 +5,7 @@ import { connectToDatabase } from "@/lib/mongodb";
 import mongoose from "mongoose";
 import { ChevronLeft, Database, CheckCircle2, XCircle } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 async function getSystemStats() {
   await connectToDatabase();
@@ -59,20 +60,20 @@ export default async function DevSystemPage() {
   const totalDocs = stats.collectionStats.reduce((s, c) => s + c.count, 0);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">System</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">System</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">DB health &amp; stats</p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-            <Database className="h-5 w-5 text-indigo-600" />
+          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
+            <Database className="h-5 w-5 text-[#0f6b63]" />
           </div>
         </div>
 
@@ -97,11 +98,11 @@ export default async function DevSystemPage() {
 
         {/* Stats cards row */}
         <div className="grid grid-cols-2 gap-3 animate-slide-up" style={{ animationDelay: "0.08s" }}>
-          <div className="bg-indigo-600 rounded-2xl px-5 py-4">
-            <p className="text-xs font-medium text-indigo-200">Total documents</p>
+          <div className="bg-[#0f6b63] rounded-2xl px-5 py-4 border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]">
+            <p className="text-xs font-medium text-white/70">Total documents</p>
             <p className="text-3xl font-bold text-white tabular-nums mt-1">{totalDocs.toLocaleString()}</p>
           </div>
-          <div className="bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4">
+          <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-4">
             <p className="text-xs font-medium text-slate-400">Collections</p>
             <p className="text-3xl font-bold text-slate-900 tabular-nums mt-1">{stats.collectionStats.length}</p>
             <p className="text-xs text-slate-400 mt-1">NODE_ENV: <code className="font-mono">{process.env.NODE_ENV ?? "unknown"}</code></p>
@@ -109,7 +110,7 @@ export default async function DevSystemPage() {
         </div>
 
         {/* Collection counts */}
-        <div className="bg-white border border-slate-100 rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <p className="text-xs font-semibold text-slate-400 mb-4">Collection counts</p>
           {stats.collectionStats.length === 0 ? (
             <p className="text-sm text-slate-400">No collections found or DB not connected.</p>
@@ -122,7 +123,7 @@ export default async function DevSystemPage() {
                     {/* Mini fill bar */}
                     <div className="w-20 h-1 bg-slate-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-indigo-400 rounded-full"
+                        className="h-full bg-[#0f6b63] rounded-full"
                         style={{ width: `${Math.min((col.count / Math.max(totalDocs, 1)) * 100 * 3, 100)}%` }}
                       />
                     </div>

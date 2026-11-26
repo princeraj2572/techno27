@@ -8,6 +8,7 @@ import { Event } from "@/features/events/event.model";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ShieldCheck, Plus, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 async function getEventManagersWithAssignments(page: number, limit: number) {
   await connectToDatabase();
@@ -50,16 +51,16 @@ export default async function AdminEventManagersPage({
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Event managers</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Event managers</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">{total} accounts</p>
           </div>
           <div className="flex items-center gap-3">
@@ -70,7 +71,7 @@ export default async function AdminEventManagersPage({
                 </Link>
               </Button>
             )}
-            <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center shrink-0">
               <ShieldCheck className="h-5 w-5 text-teal-600" />
             </div>
           </div>
@@ -97,9 +98,9 @@ export default async function AdminEventManagersPage({
               const isAssigned   = !!assignment;
               const eventNames   = assignment?.eventNames ?? [];
               return (
-                <div key={m._id} className={`bg-white border border-slate-100 border-l-4 ${
+                <div key={m._id} className={`bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${
                   isAssigned ? "border-l-teal-500" : "border-l-slate-200"
-                } rounded-xl px-4 py-3.5`}>
+                } rounded-2xl px-4 py-3.5`}>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-xs font-bold text-teal-700 shrink-0">
                       {m.fullName[0]?.toUpperCase()}

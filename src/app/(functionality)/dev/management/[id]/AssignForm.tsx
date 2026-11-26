@@ -17,7 +17,7 @@ interface Props {
 
 const STATUS_COLOR: Record<string, string> = {
   REGISTRATION_OPEN:   "text-emerald-600",
-  EVENT_LIVE:          "text-indigo-600",
+  EVENT_LIVE:          "text-[#0f6b63]",
   REGISTRATION_CLOSED: "text-amber-600",
   COMPLETED:           "text-slate-400",
   CANCELLED:           "text-red-500",
@@ -96,11 +96,11 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 gap-3 animate-slide-up" style={{ animationDelay: "0.06s" }}>
-        <div className={`rounded-2xl px-4 py-4 ${selected.size > 0 ? "bg-indigo-600" : "bg-slate-50 border border-slate-100"}`}>
-          <p className={`text-xs font-medium mb-1 ${selected.size > 0 ? "text-indigo-200" : "text-slate-400"}`}>Assigned events</p>
+        <div className={`rounded-2xl px-4 py-4 ${selected.size > 0 ? "bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
+          <p className={`text-xs font-medium mb-1 ${selected.size > 0 ? "text-white/70" : "text-slate-400"}`}>Assigned events</p>
           <p className={`text-3xl font-bold tabular-nums leading-none ${selected.size > 0 ? "text-white" : "text-slate-700"}`}>{selected.size}</p>
         </div>
-        <div className="bg-slate-50 border border-slate-100 rounded-2xl px-4 py-4">
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
           <p className="text-xs font-medium text-slate-400 mb-1">Total events</p>
           <p className="text-3xl font-bold tabular-nums leading-none text-slate-900">{allEvents.length}</p>
         </div>
@@ -111,7 +111,7 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
         <div className="flex items-center justify-between mb-3">
           <p className="text-xs font-semibold text-slate-400">Assign events</p>
           <div className="flex gap-2">
-            <button onClick={() => setSelected(new Set(allEvents.map((e) => e._id)))} className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">
+            <button onClick={() => setSelected(new Set(allEvents.map((e) => e._id)))} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium">
               Select all
             </button>
             <span className="text-slate-200">·</span>
@@ -125,7 +125,7 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
           <div className="rounded-2xl border-2 border-dashed border-slate-100 py-10 text-center">
             <CalendarDays className="h-7 w-7 mx-auto mb-2 text-slate-200" />
             <p className="text-sm text-slate-400">No events found.</p>
-            <Link href="/dev/seed" className="text-xs text-indigo-600 hover:underline mt-1 block">Seed events →</Link>
+            <Link href="/dev/seed" className="text-xs text-[#0f6b63] hover:underline mt-1 block">Seed events →</Link>
           </div>
         ) : (
           <div className="space-y-1.5">
@@ -135,14 +135,14 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
                 <button
                   key={event._id}
                   onClick={() => toggle(event._id)}
-                  className={`w-full text-left bg-white rounded-xl px-4 py-3.5 flex items-center gap-3 transition-all ${
+                  className={`w-full text-left bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 transition-all ${
                     checked
-                      ? "border-2 border-indigo-400"
-                      : "border border-slate-100 hover:border-slate-200"
+                      ? "border-2 border-[#0f6b63]"
+                      : "border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] hover:border-slate-200"
                   }`}
                 >
                   {checked
-                    ? <CheckSquare className="h-4 w-4 text-indigo-600 shrink-0" />
+                    ? <CheckSquare className="h-4 w-4 text-[#0f6b63] shrink-0" />
                     : <Square className="h-4 w-4 text-slate-300 shrink-0" />
                   }
                   <div className="flex-1 min-w-0">
@@ -185,7 +185,7 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
         <button
           onClick={handleSave}
           disabled={saving || allEvents.length === 0}
-          className="flex-1 h-10 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+          className="flex-1 h-10 rounded-xl bg-[#0f6b63] text-white text-sm font-medium hover:bg-[#0b4f49] disabled:opacity-50 transition-colors"
         >
           {saving ? "Saving..." : `Save assignment (${selected.size} event${selected.size !== 1 ? "s" : ""})`}
         </button>

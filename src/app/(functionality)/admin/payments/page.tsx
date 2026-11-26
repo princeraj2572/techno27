@@ -5,6 +5,7 @@ import { getPaymentData, getPaymentStatusCounts } from "@/features/payments/paym
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, CreditCard, CheckCircle2, Clock, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 export default async function AdminPaymentsPage({
   searchParams,
@@ -25,36 +26,36 @@ export default async function AdminPaymentsPage({
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Payments</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Payments</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">External participant payment status</p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <CreditCard className="h-5 w-5 text-teal-600" />
           </div>
         </div>
 
         {/* Stats — no amounts shown */}
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-          <div className="bg-teal-600 rounded-2xl p-4">
+          <div className="bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl p-4">
             <p className="text-xs font-medium text-teal-200 mb-3">Participants</p>
             <p className="text-4xl font-bold text-white tabular-nums leading-none">{total}</p>
             <p className="text-xs text-teal-300 mt-2">external</p>
           </div>
-          <div className={`rounded-2xl p-4 ${statusCounts.cleared > 0 ? "bg-emerald-500" : "bg-slate-100"}`}>
+          <div className={`rounded-2xl p-4 ${statusCounts.cleared > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-100"}`}>
             <p className={`text-xs font-medium mb-3 ${statusCounts.cleared > 0 ? "text-emerald-100" : "text-slate-400"}`}>Cleared</p>
             <p className={`text-4xl font-bold tabular-nums leading-none ${statusCounts.cleared > 0 ? "text-white" : "text-slate-700"}`}>{statusCounts.cleared}</p>
             <p className={`text-xs mt-2 ${statusCounts.cleared > 0 ? "text-emerald-200" : "text-slate-400"}`}>payments done</p>
           </div>
-          <div className={`rounded-2xl p-4 ${statusCounts.pending > 0 ? "bg-amber-500" : "bg-slate-100"}`}>
+          <div className={`rounded-2xl p-4 ${statusCounts.pending > 0 ? "bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-100"}`}>
             <p className={`text-xs font-medium mb-3 ${statusCounts.pending > 0 ? "text-amber-100" : "text-slate-400"}`}>Pending</p>
             <p className={`text-4xl font-bold tabular-nums leading-none ${statusCounts.pending > 0 ? "text-white" : "text-slate-700"}`}>{statusCounts.pending}</p>
             <p className={`text-xs mt-2 ${statusCounts.pending > 0 ? "text-amber-200" : "text-slate-400"}`}>awaiting clearance</p>
@@ -72,9 +73,9 @@ export default async function AdminPaymentsPage({
             </div>
           ) : (
             payments.map((p) => (
-              <div key={p.email} className={`bg-white border border-slate-100 border-l-4 ${
+              <div key={p.email} className={`bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${
                 p.payClearance ? "border-l-emerald-500" : p.numberOfTransactions > 0 ? "border-l-amber-400" : "border-l-slate-200"
-              } rounded-xl px-4 py-3.5`}>
+              } rounded-2xl px-4 py-3.5`}>
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-xs font-bold text-amber-700 shrink-0">
                     {p.fullName[0]?.toUpperCase()}

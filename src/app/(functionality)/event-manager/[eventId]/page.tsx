@@ -7,10 +7,11 @@ import { Event } from "@/features/events/event.model";
 import { Team } from "@/features/teams/team.model";
 import { Users, CheckSquare, ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200" },
-  EVENT_LIVE:          { text: "Live now",  color: "text-indigo-700",  bg: "bg-indigo-50 border-indigo-200"   },
+  EVENT_LIVE:          { text: "Live now",  color: "text-[#0f6b63]",  bg: "bg-[#f6efdf] border-[#1c1812]/30"   },
   COMPLETED:           { text: "Completed", color: "text-slate-500",   bg: "bg-slate-50 border-slate-200"     },
   CANCELLED:           { text: "Cancelled", color: "text-red-600",     bg: "bg-red-50 border-red-200"         },
   REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-700",   bg: "bg-amber-50 border-amber-200"     },
@@ -42,7 +43,7 @@ export default async function EventManagerEventPage({
   params: Promise<{ eventId: string }>;
 }) {
   const user = await getUser();
-  if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN", "EVENT_MANAGER"].includes(user.role)) {
+  if (!user || !["DEV_ADMIN", "EVENT_MANAGER"].includes(user.role)) {
     redirect("/dashboard");
   }
 
@@ -63,16 +64,16 @@ export default async function EventManagerEventPage({
     : 0;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/event-manager" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/event-manager" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> My events
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">{event.name}</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{event.name}</TicketTitle>
             {event.category && <p className="text-xs text-slate-400 mt-0.5">{event.category}</p>}
           </div>
           <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border shrink-0 mt-1 ${statusInfo.color} ${statusInfo.bg}`}>
@@ -88,8 +89,8 @@ export default async function EventManagerEventPage({
             { label: "Prize pool",  value: event.prizeMoney ? `₹${event.prizeMoney}` : "—" },
             { label: "Team size",   value: event.teamSize ?? 1 },
           ].map((s) => (
-            <div key={s.label} className={`rounded-2xl px-4 py-4 ${s.highlight ? "bg-indigo-600" : "bg-slate-50 border border-slate-100"}`}>
-              <p className={`text-xs font-medium mb-1 ${s.highlight ? "text-indigo-200" : "text-slate-400"}`}>{s.label}</p>
+            <div key={s.label} className={`rounded-2xl px-4 py-4 ${s.highlight ? "bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
+              <p className={`text-xs font-medium mb-1 ${s.highlight ? "text-white/70" : "text-slate-400"}`}>{s.label}</p>
               <p className={`text-2xl font-bold tabular-nums ${s.highlight ? "text-white" : "text-slate-900"}`}>{s.value}</p>
             </div>
           ))}
@@ -100,7 +101,7 @@ export default async function EventManagerEventPage({
           <div className="flex items-center gap-3 animate-slide-up" style={{ animationDelay: "0.08s" }}>
             <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full ${fillPct >= 90 ? "bg-red-400" : fillPct >= 60 ? "bg-amber-400" : "bg-indigo-500"}`}
+                className={`h-full rounded-full ${fillPct >= 90 ? "bg-red-400" : fillPct >= 60 ? "bg-amber-400" : "bg-[#0f6b63]"}`}
                 style={{ width: `${Math.min(fillPct, 100)}%` }}
               />
             </div>
@@ -133,9 +134,9 @@ export default async function EventManagerEventPage({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {NAV.map(({ label, href, icon: Icon, desc }) => (
               <Link key={href} href={`/event-manager/${eventId}/${href}`} className="group">
-                <div className="bg-white border border-slate-100 border-l-4 border-l-indigo-200 hover:border-l-indigo-500 rounded-2xl px-4 py-4 transition-all h-full">
-                  <div className="w-7 h-7 rounded-xl bg-indigo-50 flex items-center justify-center mb-3 group-hover:bg-indigo-100 transition-colors">
-                    <Icon className="h-3.5 w-3.5 text-indigo-600" />
+                <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] border-l-[#0f6b63] hover:border-l-[#0f6b63] rounded-2xl px-4 py-4 transition-all h-full">
+                  <div className="w-7 h-7 rounded-xl bg-[#f6efdf] flex items-center justify-center mb-3 group-hover:bg-[#fde9a8] transition-colors">
+                    <Icon className="h-3.5 w-3.5 text-[#0f6b63]" />
                   </div>
                   <p className="text-sm font-semibold text-slate-900">{label}</p>
                   <p className="text-xs text-slate-400 mt-0.5">{desc}</p>

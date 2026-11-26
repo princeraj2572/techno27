@@ -162,15 +162,15 @@ export default function CheckinClient({
 
       {/* Stat cards */}
       <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-        <div className="bg-indigo-600 rounded-2xl px-4 py-4">
-          <p className="text-xs font-medium text-indigo-200 mb-1">Registered</p>
+        <div className="bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
+          <p className="text-xs font-medium text-white/70 mb-1">Registered</p>
           <p className="text-2xl font-bold text-white tabular-nums">{totalRegistered}</p>
         </div>
-        <div className={`rounded-2xl px-4 py-4 ${checkedInCount > 0 ? "bg-emerald-500" : "bg-slate-50 border border-slate-100"}`}>
+        <div className={`rounded-2xl px-4 py-4 ${checkedInCount > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
           <p className={`text-xs font-medium mb-1 ${checkedInCount > 0 ? "text-emerald-100" : "text-slate-400"}`}>Checked in</p>
           <p className={`text-2xl font-bold tabular-nums ${checkedInCount > 0 ? "text-white" : "text-slate-700"}`}>{checkedInCount}</p>
         </div>
-        <div className={`rounded-2xl px-4 py-4 ${notCheckedIn.length > 0 ? "bg-amber-500" : "bg-slate-50 border border-slate-100"}`}>
+        <div className={`rounded-2xl px-4 py-4 ${notCheckedIn.length > 0 ? "bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
           <p className={`text-xs font-medium mb-1 ${notCheckedIn.length > 0 ? "text-amber-100" : "text-slate-400"}`}>Pending</p>
           <p className={`text-2xl font-bold tabular-nums ${notCheckedIn.length > 0 ? "text-white" : "text-slate-700"}`}>{notCheckedIn.length}</p>
         </div>
@@ -178,12 +178,12 @@ export default function CheckinClient({
 
       {/* QR Scanner */}
       <div className="animate-slide-up" style={{ animationDelay: "0.08s" }}>
-        <div className={`rounded-2xl overflow-hidden border ${scanning ? "border-indigo-200" : "border-slate-100"}`}>
+        <div className={`rounded-2xl overflow-hidden border ${scanning ? "border-[#1c1812]/30" : "border-slate-100"}`}>
           {/* Scanner header */}
           <div className="flex items-center justify-between px-5 py-4 bg-slate-50">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center shrink-0">
-                <QrCode className="h-4 w-4 text-indigo-600" />
+              <div className="w-9 h-9 rounded-xl bg-[#fde9a8] flex items-center justify-center shrink-0">
+                <QrCode className="h-4 w-4 text-[#0f6b63]" />
               </div>
               <div>
                 <p className="text-sm font-semibold text-slate-900">QR Scanner</p>
@@ -201,7 +201,7 @@ export default function CheckinClient({
             ) : (
               <button
                 onClick={startScanner}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0f6b63] hover:bg-[#0b4f49] text-white text-xs font-medium transition-colors"
               >
                 <Camera className="h-3.5 w-3.5" />
                 Start camera
@@ -297,9 +297,9 @@ export default function CheckinClient({
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <p className="text-xs font-medium text-slate-400">Pending check-in ({notCheckedIn.length})</p>
           {pendingPaged.map((p) => (
-            <div key={p._id} className="bg-white border border-slate-100 border-l-4 border-l-amber-300 rounded-xl px-4 py-3.5 flex items-center gap-3">
+            <div key={p._id} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] border-l-amber-300 rounded-2xl px-4 py-3.5 flex items-center gap-3">
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                p.role === "EXTERNAL_USER" ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
+                p.role === "EXTERNAL_USER" ? "bg-amber-100 text-amber-700" : "bg-[#fde9a8] text-[#0f6b63]"
               }`}>
                 {(p.fullName ?? p.email)[0]?.toUpperCase()}
               </div>
@@ -321,10 +321,10 @@ export default function CheckinClient({
                 <button
                   onClick={() => handleManualCheckin(p._id)}
                   disabled={manualLoading === p._id}
-                  className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-medium transition-colors disabled:opacity-50"
+                  className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#f6efdf] hover:bg-[#fde9a8] text-[#0f6b63] text-xs font-medium transition-colors disabled:opacity-50"
                 >
                   {manualLoading === p._id ? (
-                    <div className="w-3.5 h-3.5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                    <div className="w-3.5 h-3.5 border-2 border-[#0f6b63] border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <UserCheck className="h-3.5 w-3.5" />
                   )}
@@ -337,11 +337,11 @@ export default function CheckinClient({
           {pendingTotalPages > 1 && (
             <div className="flex items-center justify-between pt-1">
               <p className="text-xs text-slate-400">
-                {(pendingPageClamped - 1) * PAGE_SIZE + 1}â€“{Math.min(pendingPageClamped * PAGE_SIZE, notCheckedIn.length)} of {notCheckedIn.length}
+                {(pendingPageClamped - 1) * PAGE_SIZE + 1}–{Math.min(pendingPageClamped * PAGE_SIZE, notCheckedIn.length)} of {notCheckedIn.length}
               </p>
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" className="h-8 text-xs" disabled={pendingPageClamped <= 1} onClick={() => setPendingPage(pendingPageClamped - 1)}>
-                  â† Prev
+                  ← Prev
                 </Button>
                 <span className="text-xs text-slate-400">{pendingPageClamped} / {pendingTotalPages}</span>
                 <Button variant="outline" size="sm" className="h-8 text-xs" disabled={pendingPageClamped >= pendingTotalPages} onClick={() => setPendingPage(pendingPageClamped + 1)}>
@@ -358,9 +358,9 @@ export default function CheckinClient({
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.12s" }}>
           <p className="text-xs font-medium text-slate-400">Checked in ({checkedIn.length})</p>
           {checkedInPaged.map((p) => (
-            <div key={p._id} className="bg-white border border-slate-100 border-l-4 border-l-emerald-400 rounded-xl px-4 py-3.5 flex items-center gap-3">
+            <div key={p._id} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] border-l-emerald-400 rounded-2xl px-4 py-3.5 flex items-center gap-3">
               <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                p.role === "EXTERNAL_USER" ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
+                p.role === "EXTERNAL_USER" ? "bg-amber-100 text-amber-700" : "bg-[#fde9a8] text-[#0f6b63]"
               }`}>
                 {(p.fullName ?? p.email)[0]?.toUpperCase()}
               </div>
@@ -380,11 +380,11 @@ export default function CheckinClient({
           {checkedInTotalPages > 1 && (
             <div className="flex items-center justify-between pt-1">
               <p className="text-xs text-slate-400">
-                {(checkedInPageClamped - 1) * PAGE_SIZE + 1}â€“{Math.min(checkedInPageClamped * PAGE_SIZE, checkedIn.length)} of {checkedIn.length}
+                {(checkedInPageClamped - 1) * PAGE_SIZE + 1}–{Math.min(checkedInPageClamped * PAGE_SIZE, checkedIn.length)} of {checkedIn.length}
               </p>
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" className="h-8 text-xs" disabled={checkedInPageClamped <= 1} onClick={() => setCheckedInPage(checkedInPageClamped - 1)}>
-                  â† Prev
+                  ← Prev
                 </Button>
                 <span className="text-xs text-slate-400">{checkedInPageClamped} / {checkedInTotalPages}</span>
                 <Button variant="outline" size="sm" className="h-8 text-xs" disabled={checkedInPageClamped >= checkedInTotalPages} onClick={() => setCheckedInPage(checkedInPageClamped + 1)}>

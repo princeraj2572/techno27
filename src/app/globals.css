@@ -37,19 +37,19 @@
   --card-foreground: #0f172a;
   --popover: #ffffff;
   --popover-foreground: #0f172a;
-  --primary: #4f46e5;
+  --primary: #0f6b63;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #1e293b;
+  --secondary: #f6efdf;
+  --secondary-foreground: #1c1812;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
-  --accent: #ede9fe;
-  --accent-foreground: #4338ca;
+  --accent: #fde9a8;
+  --accent-foreground: #1c1812;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #4f46e5;
+  --input: #1c1812;
+  --ring: #f5c928;
 }
 
 /* ── Dark theme ────────────────────────────────────────────────────── */

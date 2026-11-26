@@ -5,6 +5,7 @@ import { getEventsWithRegistrationCountsAction } from "@/features/events/event-a
 import { ChevronLeft, CalendarDays, Users, Trophy, UsersRound, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import StatTile from "./StatTile";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-700", bg: "bg-emerald-100" },
@@ -37,16 +38,16 @@ export default async function AdminEventsPage() {
     };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Events</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Events</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">{events.length} events total</p>
           </div>
           <div className="flex items-center gap-3">
@@ -55,7 +56,7 @@ export default async function AdminEventsPage() {
                 Registration controls →
               </Link>
             )}
-            <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
               <CalendarDays className="h-5 w-5 text-teal-600" />
             </div>
           </div>
@@ -63,22 +64,22 @@ export default async function AdminEventsPage() {
 
         {/* Registration stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.04s" }}>
-          <div className="bg-teal-600 rounded-2xl px-4 py-4 shadow-sm">
+          <div className="bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
             <p className="text-xs font-medium text-teal-200 mb-1">Total registered</p>
             <p className="text-3xl font-bold text-white tabular-nums">{totalParticipants}</p>
             <p className="text-xs text-teal-300 mt-1">across all events</p>
           </div>
-          <div className="bg-indigo-600 rounded-2xl px-4 py-4 shadow-sm">
-            <p className="text-xs font-medium text-indigo-200 mb-1">Total teams</p>
+          <div className="bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
+            <p className="text-xs font-medium text-white/70 mb-1">Total teams</p>
             <p className="text-3xl font-bold text-white tabular-nums">{totalTeams}</p>
-            <p className="text-xs text-indigo-300 mt-1">registered</p>
+            <p className="text-xs text-white/70 mt-1">registered</p>
           </div>
-          <div className="rounded-2xl px-4 py-4 bg-sky-500 shadow-sm">
+          <div className="rounded-2xl px-4 py-4 bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]">
             <p className="text-xs font-medium mb-1 text-sky-100">OPJU (Internal)</p>
             <p className="text-3xl font-bold tabular-nums text-white">{totalInternal}</p>
             <p className="text-xs mt-1 text-sky-200">participants</p>
           </div>
-          <div className="rounded-2xl px-4 py-4 bg-amber-500 shadow-sm">
+          <div className="rounded-2xl px-4 py-4 bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]">
             <p className="text-xs font-medium mb-1 text-amber-100">External</p>
             <p className="text-3xl font-bold tabular-nums text-white">{totalExternal}</p>
             <p className="text-xs mt-1 text-amber-200">participants</p>
@@ -100,7 +101,7 @@ export default async function AdminEventsPage() {
                 <Link
                   key={event._id}
                   href={`/admin/events/${event._id}`}
-                  className={`block bg-white border border-slate-200 border-l-4 ${border} rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-teal-300 hover:-translate-y-0.5 transition-all`}
+                  className={`block bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${border} rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-teal-300 hover:-translate-y-0.5 transition-all`}
                 >
                   {/* Title row */}
                   <div className="flex items-start justify-between gap-3 mb-4">
@@ -146,9 +147,9 @@ export default async function AdminEventsPage() {
                       label="Teams"
                       value={event.teamCount}
                       icon={<UsersRound className="h-3.5 w-3.5" />}
-                      bg="bg-indigo-50"
-                      labelColor="text-indigo-500"
-                      valueColor="text-indigo-700"
+                      bg="bg-[#f6efdf]"
+                      labelColor="text-[#0f6b63]"
+                      valueColor="text-[#0f6b63]"
                     />
                     <StatTile
                       label="Prize"

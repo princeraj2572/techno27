@@ -113,7 +113,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
         )}
 
         {/* Summary card */}
-        <div className="bg-[#f5edd8] text-[#1a0505] border-2 border-black shadow-[4px_4px_0_0_#000] border-l-4 border-l-[#7a1c1c] rounded-none px-5 py-5 space-y-4">
+        <div className="bg-white text-[#1a0505] rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-4 border-l-[#7a1c1c] px-5 py-5 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-none bg-[#f5c928]/30 flex items-center justify-center">
@@ -198,7 +198,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
 
       {/* Arrival */}
       <div>
-        <label className="block text-xs font-medium text-white mb-1.5">
+        <label className="block text-xs font-bold uppercase tracking-wider text-[#1c1812] mb-1.5">
           <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> Arrival date &amp; time <span className="text-red-400">*</span></span>
         </label>
         <input
@@ -206,13 +206,13 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           value={arrivalTime}
           onChange={(e) => setArrivalTime(e.target.value)}
           required
-          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
+          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-white border-2 border-[#1c1812] rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
         />
       </div>
 
       {/* Departure */}
       <div>
-        <label className="block text-xs font-medium text-white mb-1.5">
+        <label className="block text-xs font-bold uppercase tracking-wider text-[#1c1812] mb-1.5">
           <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> Departure date &amp; time <span className="text-red-400">*</span></span>
         </label>
         <input
@@ -220,13 +220,13 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           value={departureTime}
           onChange={(e) => setDepartureTime(e.target.value)}
           required
-          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
+          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-white border-2 border-[#1c1812] rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
         />
       </div>
 
       {/* University name */}
       <div>
-        <label className="block text-xs font-medium text-white mb-1.5">
+        <label className="block text-xs font-bold uppercase tracking-wider text-[#1c1812] mb-1.5">
           <span className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5" /> College / University <span className="text-red-400">*</span></span>
         </label>
         <input
@@ -235,13 +235,13 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           onChange={(e) => setUniversityName(e.target.value)}
           placeholder="e.g. ABC Institute of Technology"
           required
-          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
+          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-white border-2 border-[#1c1812] rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
         />
       </div>
 
       {/* Gender */}
       <div>
-        <label className="block text-xs font-medium text-white mb-1.5">
+        <label className="block text-xs font-bold uppercase tracking-wider text-[#1c1812] mb-1.5">
           <span className="flex items-center gap-1.5"><User2 className="h-3.5 w-3.5" /> Gender <span className="text-red-400">*</span></span>
         </label>
         <div className="flex gap-2">
@@ -266,32 +266,32 @@ export default function AccommodationClient({ initial, userUniversity, userGende
 
       {/* Group name */}
       <div>
-        <label className="block text-xs font-medium text-white mb-1.5">
-          <span className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5" /> Group name <span className="text-white/70 font-normal">(optional)</span></span>
+        <label className="block text-xs font-bold uppercase tracking-wider text-[#1c1812] mb-1.5">
+          <span className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5" /> Group name <span className="text-black/50 font-normal normal-case">(optional)</span></span>
         </label>
         <input
           type="text"
           value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
           placeholder="e.g. Team Alpha, or your team name"
-          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
+          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-white border-2 border-[#1c1812] rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition"
         />
-        <p className="text-xs text-white/70 mt-1">
+        <p className="text-xs text-black/55 mt-1">
           Want to stay with your teammates? Enter the same group name — each person must apply separately.
         </p>
       </div>
 
       {/* Additional details */}
       <div>
-        <label className="block text-xs font-medium text-white mb-1.5">
-          <span className="flex items-center gap-1.5"><AlignLeft className="h-3.5 w-3.5" /> Additional notes <span className="text-white/70 font-normal">(optional)</span></span>
+        <label className="block text-xs font-bold uppercase tracking-wider text-[#1c1812] mb-1.5">
+          <span className="flex items-center gap-1.5"><AlignLeft className="h-3.5 w-3.5" /> Additional notes <span className="text-black/50 font-normal normal-case">(optional)</span></span>
         </label>
         <textarea
           value={additionalDetails}
           onChange={(e) => setAdditionalDetails(e.target.value)}
           placeholder="Any dietary requirements, room preferences, or other needs…"
           rows={3}
-          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-[#f5edd8] border border-black/40 rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition resize-none"
+          className="w-full text-sm text-[#1a0505] placeholder:text-black/40 bg-white border-2 border-[#1c1812] rounded-none px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-black transition resize-none"
         />
       </div>
 
@@ -300,7 +300,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
           <button
             type="button"
             onClick={() => setEditing(false)}
-            className="flex-1 py-2.5 rounded-none border border-white/60 text-sm text-white font-medium hover:bg-white/10 transition"
+            className="flex-1 py-2.5 rounded-none border-2 border-[#1c1812] text-sm text-[#1c1812] font-bold hover:bg-black/5 transition"
           >
             Cancel
           </button>
@@ -308,7 +308,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
         <button
           type="submit"
           disabled={saving}
-          className="flex-1 py-2.5 rounded-none border border-white/60 bg-[#7a1c1c] hover:bg-[#5a1212] text-white text-sm font-semibold disabled:opacity-60 transition flex items-center justify-center gap-2"
+          className="flex-1 py-2.5 rounded-none border-2 border-[#1c1812] bg-[#7a1c1c] hover:bg-[#5a1212] text-white text-sm font-semibold disabled:opacity-60 transition flex items-center justify-center gap-2"
         >
           {saving ? (
             <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Saving…</>

@@ -1,4 +1,4 @@
-﻿export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { getUser } from "@/features/users/user-actions";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import FilterForm from "../FilterForm";
 import { ChevronLeft, CalendarDays, Download, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 async function getData(params: { q: string; event: string; page: number; limit: number }) {
   const { q, event, page, limit } = params;
@@ -87,16 +88,16 @@ export default async function ReportEventParticipantsPage({
   const baseUrl = `/admin/reports/event-participants?${pageParams}`;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
+            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Reports
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Event Participants</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Event Participants</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">{total} team(s) found</p>
           </div>
           <div className="flex items-center gap-3">
@@ -132,7 +133,7 @@ export default async function ReportEventParticipantsPage({
               event?: { name?: string; category?: string };
               leaderUser?: { fullName?: string };
             }) => (
-              <div key={t._id} className="bg-white border border-slate-100 border-l-4 border-l-teal-300 rounded-xl px-4 py-3.5 flex items-center gap-3">
+              <div key={t._id} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] border-l-teal-300 rounded-2xl px-4 py-3.5 flex items-center gap-3">
                 <div className="w-7 h-7 rounded-full bg-teal-100 flex items-center justify-center text-xs font-bold text-teal-700 shrink-0">
                   {(t.leaderUser?.fullName ?? t.leader)[0]?.toUpperCase()}
                 </div>

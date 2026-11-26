@@ -41,7 +41,7 @@ const FooterSection = () => {
       </div>
 
       <div className="mt-12 lg:mt-20 border-t border-white/10 pt-6 text-xs sm:text-sm text-gray-500">
-        Â© 2027 TechnoAmbiation Â· Techno-aiMBiAtion 2027. All rights reserved.
+        © 2027 TechnoAmbiation · Techno-aiMBiAtion 2027. All rights reserved.
       </div>
     </footer>
   );

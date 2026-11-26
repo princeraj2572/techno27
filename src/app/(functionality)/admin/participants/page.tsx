@@ -10,6 +10,7 @@ import Link from "next/link";
 import ExportButton from "./ExportButton";
 import ExtraFilters from "./ExtraFilters";
 import { OPJU_DEPARTMENTS, OPJU_BRANCHES, OPJU_SEMESTERS, branchFilterValue } from "@/data/opju-academics";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 interface ParticipantFilters {
   q: string;
@@ -112,18 +113,18 @@ export default async function AdminParticipantsPage({
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Participants</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Participants</TicketTitle>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <Users className="h-5 w-5 text-teal-600" />
           </div>
         </div>
@@ -131,7 +132,7 @@ export default async function AdminParticipantsPage({
         {/* Stats */}
         {!q && (
           <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.04s" }}>
-            <div className="bg-teal-600 rounded-2xl p-4">
+            <div className="bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl p-4">
               <p className="text-xs font-medium text-teal-200 mb-3">Total</p>
               <p className="text-4xl font-bold text-white tabular-nums leading-none">{counts.total}</p>
               <p className="text-xs text-teal-300 mt-2">participants</p>
@@ -141,7 +142,7 @@ export default async function AdminParticipantsPage({
               <p className="text-4xl font-bold text-teal-900 tabular-nums leading-none">{counts.internal}</p>
               <p className="text-xs text-teal-400 mt-2">OPJU students</p>
             </div>
-            <div className="rounded-2xl p-4 bg-amber-500">
+            <div className="rounded-2xl p-4 bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]">
               <p className="text-xs font-medium mb-3 text-amber-100">External</p>
               <p className="text-4xl font-bold tabular-nums leading-none text-white">{counts.external}</p>
               <p className="text-xs mt-2 text-amber-200">outside colleges</p>
@@ -223,7 +224,7 @@ export default async function AdminParticipantsPage({
               mobileNumber?: string; enrollmentNumber?: string; participantId?: string;
               collegeName?: string; department?: string; branch?: string; semester?: string;
             }) => (
-              <div key={p._id} className="bg-white border border-slate-100 rounded-xl px-4 py-3.5 flex items-center gap-3">
+              <div key={p._id} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-3.5 flex items-center gap-3">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                   p.role === "INTERNAL_USER" ? "bg-teal-100 text-teal-700" : "bg-amber-100 text-amber-700"
                 }`}>

@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useFetch from "@/hooks/use-fetch";
 import { userLogin } from "@/features/users/user-actions";
-import { AuthCard, AuthShell } from "../auth-shell";
+import { AuthCard, AuthShell, Fare, INK } from "../auth-shell";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -58,35 +58,30 @@ function LoginForm() {
 
   return (
     <AuthShell>
-      <AuthCard tag="Welcome back" title="Sign In" description="Techno-aiMBiAtion 2027" maxWidth="max-w-md">
+      <AuthCard tag="Welcome back" title="Sign in" aside={<Fare />}>
         {registered && (
-          <div className="mb-5 flex items-center gap-2.5 border-2 border-black bg-[#f5c928]/40 px-4 py-3">
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-[#1a0505]" />
+          <div className="mb-3 flex items-center gap-2.5 border-2 bg-[#e3f2ef] px-3 py-2" style={{ borderColor: INK }}>
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-[#0e5b57]" />
             <p className="text-sm font-bold">Account created — sign in to continue.</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="space-y-1.5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 lg:space-y-4">
+          <div className="space-y-1">
             <Label htmlFor="email">Email address</Label>
-            <Input id="email" type="email" placeholder="you@opju.ac.in" autoComplete="email" {...register("email")} />
+            <Input id="email" type="email" placeholder="you@opju.ac.in" autoComplete="email" className="lg:h-12 lg:text-base" {...register("email")} />
             {errors.email && <p className="text-xs font-bold text-[#a1001a]">{errors.email.message}</p>}
           </div>
 
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
-              <Link href="/auth/forgot-password" className="text-xs font-bold text-[#a1001a] underline underline-offset-4 hover:text-[#ff6a00]">
-                Forgot password?
-              </Link>
-            </div>
+          <div className="space-y-1">
+            <Label htmlFor="password">Password</Label>
             <div className="relative">
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 autoComplete="current-password"
-                className="pr-11"
+                className="pr-11 lg:h-12 lg:text-base"
                 {...register("password")}
               />
               <button
@@ -107,17 +102,15 @@ function LoginForm() {
             </div>
           )}
 
-          <Button type="submit" className="w-full" disabled={loading === true}>
-            {loading ? "Signing in…" : "Sign in"}
+          <Button type="submit" className="w-full lg:h-14 lg:text-lg" disabled={loading === true}>
+            {loading ? "Signing in…" : "Enter the fest"}
           </Button>
         </form>
 
-        <p className="mt-5 border-t-2 border-dashed border-black/30 pt-4 text-center text-sm text-muted-foreground">
-          New to Techno-aiMBiAtion?{" "}
-          <Link href="/auth/signup" className="font-bold text-[#a1001a] underline underline-offset-4 hover:text-[#ff6a00]">
-            Create an account
-          </Link>
-        </p>
+        <div className="mt-3 flex justify-between gap-3 text-xs font-bold sm:text-sm lg:mt-4 lg:text-base">
+          <Link href="/auth/forgot-password" className="text-[#0e5b57] underline underline-offset-4 hover:text-[#ef5a1c]">Forgot password?</Link>
+          <Link href="/auth/signup" className="text-[#ef5a1c] underline underline-offset-4 hover:text-[#0e5b57]">No ticket? Sign up</Link>
+        </div>
       </AuthCard>
     </AuthShell>
   );

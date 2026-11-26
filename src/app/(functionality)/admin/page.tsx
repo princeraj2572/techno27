@@ -8,9 +8,10 @@ import { User } from "@/features/users/user.model";
 import {
   Users, CalendarDays, CreditCard, Hotel,
   CheckSquare, UsersRound, ShieldCheck, BarChart2,
-  ArrowRight, Megaphone, Contact,
+  ArrowRight, LifeBuoy, Contact,
 } from "lucide-react";
 import Link from "next/link";
+import { GoldBackdrop, INK, TicketTitle } from "@/components/indie/gold-poster";
 
 // Retro "indie" look inspired by Rendezvous IITD.
 const display = Dela_Gothic_One({ weight: "400", subsets: ["latin"] });
@@ -41,7 +42,7 @@ const NAV_GROUPS = [
     items: [
       { label: "Payments",        href: "/admin/payments",        icon: CreditCard,  desc: "Review payment submissions",       color: "bg-[#ffb10f]" },
       { label: "Reports",         href: "/admin/reports",         icon: BarChart2,   desc: "Export data and reports",          color: "bg-[#ff6a00]" },
-      { label: "Announcements",   href: "/admin/announcements",   icon: Megaphone,   desc: "Post fest announcements",          color: "bg-[#f5c928]" },
+      { label: "Help desk",       href: "/admin/helpdesk",        icon: LifeBuoy,    desc: "Answer participant questions",     color: "bg-[#f5c928]" },
     ],
   },
 ];
@@ -102,13 +103,7 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <div
-      className={`min-h-screen bg-[#4a0e0e] text-[#1a0505] ${body.className}`}
-      style={{
-        backgroundImage: "radial-gradient(rgba(245,237,216,0.07) 1px, transparent 1px), linear-gradient(180deg, #3a0808 0%, #4a0e0e 40%, #5a1212 100%)",
-        backgroundSize: "6px 6px, 100% 100%",
-      }}
-    >
+    <div className={`text-[#1a0505] ${body.className}`}>
       <style>{`
         @keyframes indie-spin { to { transform: rotate(360deg); } }
         @keyframes indie-marquee { to { transform: translateX(-50%); } }
@@ -119,34 +114,19 @@ export default async function AdminDashboardPage() {
       `}</style>
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
 
-        {/* Header */}
-        <div className="relative flex items-center justify-between gap-4 animate-slide-up" style={{ animationDelay: "0s" }}>
-          {/* Spinning vinyl */}
-          <svg
-            aria-hidden
-            viewBox="0 0 100 100"
-            className="indie-anim pointer-events-none absolute -top-6 right-16 sm:right-24 w-28 h-28 sm:w-36 sm:h-36 opacity-40"
-            style={{ animation: "indie-spin 12s linear infinite" }}
-          >
-            <circle cx="50" cy="50" r="48" fill="#1a0505" stroke="#000" strokeWidth="2" />
-            {[40, 34, 28, 22].map((r) => (
-              <circle key={r} cx="50" cy="50" r={r} fill="none" stroke="#7a1c1c" strokeWidth="0.8" />
-            ))}
-            <circle cx="50" cy="50" r="15" fill="#f5c928" stroke="#000" strokeWidth="1.5" />
-            <circle cx="50" cy="50" r="3" fill="#4a0e0e" />
-          </svg>
-          <div className="relative">
-            <p className="text-sm uppercase tracking-[0.25em] text-[#f5edd8]/60 mb-1">Management console</p>
-            <h1 className={`text-4xl sm:text-5xl text-[#f5c928] leading-none ${display.className}`} style={{ textShadow: "3px 3px 0 #7a1c1c" }}>
-              Management
-            </h1>
-            <p className="text-sm uppercase tracking-widest text-[#f5edd8]/70 mt-2">Techno-aiMBiAtion 2027</p>
-          </div>
-          <div className="relative flex items-center gap-3">
-            <span className="text-xs font-bold uppercase tracking-widest border-2 border-[#f5edd8]/70 text-[#f5edd8] px-2.5 py-1 rounded-full">
-              {user.role.replace(/_/g, " ")}
-            </span>
-            <div className="w-11 h-11 rounded-full bg-[#f5c928] border-2 border-black shadow-[3px_3px_0_0_#000] flex items-center justify-center text-black text-lg font-bold shrink-0">
+        {/* Gold header banner (same look as the participant dashboard) */}
+        <div className="relative overflow-hidden rounded-3xl border-[3px] px-5 py-6 sm:px-8 sm:py-7 animate-slide-up" style={{ borderColor: INK, boxShadow: `0 5px 0 ${INK}` }}>
+          <GoldBackdrop at="90% 130%" sparkles={false} />
+          <div className="relative flex items-end justify-between gap-4">
+            <div className="min-w-0">
+              <p className="text-xs font-extrabold uppercase tracking-[0.3em] sm:text-sm" style={{ color: INK }}>Management console</p>
+              <TicketTitle className="text-4xl leading-[1.05] sm:text-6xl">Management</TicketTitle>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="rounded-full border-2 bg-[#ef5a1c] px-3 py-1 text-[10px] font-extrabold uppercase text-white sm:text-xs" style={{ borderColor: INK }}>{user.role.replace(/_/g, " ")}</span>
+                <span className="rounded-full border-2 px-3 py-1 text-[10px] font-extrabold uppercase text-[#f3e8cf] sm:text-xs" style={{ borderColor: INK, background: INK }}>Techno-aiMBiAtion 2027</span>
+              </div>
+            </div>
+            <div className={`grid h-14 w-14 shrink-0 place-items-center rounded-full border-[3px] bg-[#f3e8cf] text-2xl ${display.className}`} style={{ borderColor: INK, color: INK, boxShadow: `0 4px 0 ${INK}` }}>
               {firstName[0]?.toUpperCase()}
             </div>
           </div>
@@ -200,7 +180,7 @@ export default async function AdminDashboardPage() {
 
         {/* Navigation grid */}
         <div className="animate-slide-up space-y-5" style={{ animationDelay: "0.1s" }}>
-          <p className={`text-xl text-[#f5edd8] ${display.className}`}>Manage</p>
+          <p className={`text-xl text-[#1c1812] ${display.className}`}>Manage</p>
           {NAV_GROUPS.map((group) => (
             <div key={group.title}>
               <span className="inline-block bg-[#ff6a00] text-black text-sm font-bold uppercase tracking-widest px-3 py-0.5 border-2 border-black -rotate-1 mb-3">
@@ -231,19 +211,19 @@ export default async function AdminDashboardPage() {
         {/* Events overview */}
         <div className="animate-slide-up" style={{ animationDelay: "0.15s" }}>
           <div className="flex items-center justify-between mb-3">
-            <p className={`text-xl text-[#f5edd8] ${display.className}`}>Events overview</p>
+            <p className={`text-xl text-[#1c1812] ${display.className}`}>Events overview</p>
             <Link
               href="/admin/events"
-              className="text-sm font-bold uppercase tracking-wider text-[#f5c928] hover:text-[#ff6a00] transition-colors flex items-center gap-1"
+              className="text-sm font-bold uppercase tracking-wider text-[#0e5b57] hover:text-[#ef5a1c] transition-colors flex items-center gap-1"
             >
               View all <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
           {events.length === 0 ? (
-            <div className="rounded-xl border-2 border-dashed border-[#f5edd8]/50 py-12 text-center">
-              <CalendarDays className="h-8 w-8 mx-auto mb-3 text-[#f5edd8]/50" />
-              <p className="text-lg font-semibold uppercase tracking-wide text-[#f5edd8]/70">No events yet</p>
+            <div className="rounded-xl border-2 border-dashed border-[#1c1812]/30 bg-white/60 py-12 text-center">
+              <CalendarDays className="h-8 w-8 mx-auto mb-3 text-[#ef5a1c]" />
+              <p className="text-lg font-semibold uppercase tracking-wide text-black/60">No events yet</p>
             </div>
           ) : (
             <div className={`${CARD} rounded-xl overflow-hidden divide-y-2 divide-dashed divide-black/25`}>
@@ -270,7 +250,7 @@ export default async function AdminDashboardPage() {
                               <span className="text-xs bg-sky-200 text-sky-900 font-bold px-1.5 py-0.5 rounded-full border border-black/30">{event.internalCount} OPJU</span>
                             )}
                             {event.externalCount > 0 && (
-                              <span className="text-xs bg-violet-200 text-violet-900 font-bold px-1.5 py-0.5 rounded-full border border-black/30">{event.externalCount} ext</span>
+                              <span className="text-xs bg-[#fbe3d9] text-[#c8421f] font-bold px-1.5 py-0.5 rounded-full border border-black/30">{event.externalCount} ext</span>
                             )}
                           </>
                         )}
@@ -292,8 +272,8 @@ export default async function AdminDashboardPage() {
 
         {/* Ticket-stub footer */}
         <div className="relative bg-[#f5c928] text-black border-2 border-black shadow-[4px_4px_0_0_#000] rounded-xl flex items-stretch overflow-hidden animate-slide-up" style={{ animationDelay: "0.2s" }}>
-          <span aria-hidden className="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#4a0e0e] border-2 border-black" />
-          <span aria-hidden className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#4a0e0e] border-2 border-black" />
+          <span aria-hidden className="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#f6efdf] border-2 border-black" />
+          <span aria-hidden className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#f6efdf] border-2 border-black" />
           <div className="flex-1 px-6 py-4">
             <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-70">Admit one · Management</p>
             <p className={`text-xl sm:text-2xl leading-tight mt-1 ${display.className}`}>Techno-aiMBiAtion 2027</p>

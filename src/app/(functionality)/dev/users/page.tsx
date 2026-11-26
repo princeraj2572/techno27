@@ -5,10 +5,11 @@ import { ChevronLeft, Users, Search, ChevronRight, ChevronLeft as ChevLeft } fro
 import Link from "next/link";
 import ExtraFilters from "../../admin/participants/ExtraFilters";
 import { OPJU_BRANCHES, OPJU_DEPARTMENTS, OPJU_SEMESTERS, branchFilterValue } from "@/data/opju-academics";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 const ROLE_CHIP: Record<string, string> = {
   DEV_ADMIN:        "bg-red-50    text-red-700    border-red-200",
-  MANAGEMENT_ADMIN: "bg-purple-50 text-purple-700 border-purple-200",
+  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#c8421f] border-[#c8421f]/30",
   EVENT_MANAGER:    "bg-blue-50   text-blue-700   border-blue-200",
   INTERNAL_USER:    "bg-sky-50    text-sky-700    border-sky-200",
   EXTERNAL_USER:    "bg-amber-50  text-amber-700  border-amber-200",
@@ -16,7 +17,7 @@ const ROLE_CHIP: Record<string, string> = {
 
 const ROLE_AVATAR: Record<string, string> = {
   DEV_ADMIN:        "bg-red-100    text-red-700",
-  MANAGEMENT_ADMIN: "bg-purple-100 text-purple-700",
+  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#c8421f]",
   EVENT_MANAGER:    "bg-blue-100   text-blue-700",
   INTERNAL_USER:    "bg-sky-100    text-sky-700",
   EXTERNAL_USER:    "bg-amber-100  text-amber-700",
@@ -61,22 +62,22 @@ export default async function DevUsersPage({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-indigo-600 transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Users</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Users</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">
               {q ? `Search results for "${q}"` : `${total.toLocaleString()} registered accounts`}
             </p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-            <Users className="h-5 w-5 text-indigo-600" />
+          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
+            <Users className="h-5 w-5 text-[#0f6b63]" />
           </div>
         </div>
 
@@ -101,19 +102,19 @@ export default async function DevUsersPage({
                 name="q"
                 defaultValue={q ?? ""}
                 placeholder="Search by name, email, mobile, enrollment, participantId..."
-                className="w-full pl-9 pr-3 h-10 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-300"
+                className="w-full pl-9 pr-3 h-10 rounded-xl border-2 border-[#1c1812] bg-white text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-[#1c1812]/30"
               />
             </div>
             <button
               type="submit"
-              className="px-4 h-10 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors shrink-0"
+              className="px-4 h-10 rounded-xl bg-[#0f6b63] text-white text-sm font-medium hover:bg-[#0b4f49] transition-colors shrink-0"
             >
               Search
             </button>
             {q && (
               <Link
                 href="/dev/users"
-                className="px-4 h-10 rounded-xl border border-slate-200 bg-white text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors shrink-0 flex items-center"
+                className="px-4 h-10 rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-white text-slate-600 text-sm font-medium hover:bg-slate-50 transition-colors shrink-0 flex items-center"
               >
                 Clear
               </Link>
@@ -124,14 +125,14 @@ export default async function DevUsersPage({
         {/* Results */}
         <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
           {users.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-slate-200 py-12 text-center bg-white">
+            <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 py-12 text-center bg-white/60">
               <Search className="h-8 w-8 mx-auto mb-3 text-slate-300" />
               <p className="text-sm font-medium text-slate-500">
                 {q ? `No users found for "${q}"` : "No users yet"}
               </p>
             </div>
           ) : (
-            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden divide-y divide-slate-100">
+            <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl overflow-hidden divide-y divide-slate-100">
               {users.map((u) => (
                 <div key={u._id} className="flex items-center gap-3 px-4 py-3.5 hover:bg-slate-50 transition-colors">
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${ROLE_AVATAR[u.role] ?? "bg-slate-100 text-slate-600"}`}>
@@ -159,7 +160,7 @@ export default async function DevUsersPage({
                   </div>
                   <Link
                     href={`/dev/users/${u._id}`}
-                    className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 shrink-0 px-3 py-1.5 rounded-lg hover:bg-indigo-50 transition-colors"
+                    className="text-xs font-semibold text-[#0f6b63] hover:text-[#0f6b63] shrink-0 px-3 py-1.5 rounded-lg hover:bg-[#f6efdf] transition-colors"
                   >
                     View →
                   </Link>
@@ -186,7 +187,7 @@ export default async function DevUsersPage({
               {page > 1 && (
                 <Link
                   href={pageHref(page - 1)}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-white text-xs text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   <ChevLeft className="h-3.5 w-3.5" /> Prev
                 </Link>
@@ -194,7 +195,7 @@ export default async function DevUsersPage({
               {page < totalPages && (
                 <Link
                   href={pageHref(page + 1)}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-white text-xs text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   Next <ChevronRight className="h-3.5 w-3.5" />
                 </Link>

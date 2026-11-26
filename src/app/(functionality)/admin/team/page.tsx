@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/features/users/user-actions";
 import { ArrowLeft, Phone, Users } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 // Placeholder data only — replace with real conveners before the fest.
 const DEPARTMENTS = [
@@ -44,7 +45,7 @@ export default async function AdminTeamPage() {
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
         <div>
           <Link href="/admin" className="text-xs text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1 mb-3">
@@ -55,7 +56,7 @@ export default async function AdminTeamPage() {
               <Users className="h-4 w-4 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900">Team Behind Techno-aiMBiAtion</h1>
+              <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Team Behind Techno-aiMBiAtion</TicketTitle>
               <p className="text-xs text-slate-400 mt-0.5">Conveners &amp; co-conveners by department</p>
             </div>
           </div>
@@ -63,7 +64,7 @@ export default async function AdminTeamPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {DEPARTMENTS.map((d) => (
-            <div key={d.department} className="bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
+            <div key={d.department} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl p-4 space-y-3">
               <p className="text-sm font-bold text-slate-900">{d.department}</p>
               <div className="grid grid-cols-2 gap-3">
                 <Person role="Convener" name={d.convener.name} phone={d.convener.phone} />

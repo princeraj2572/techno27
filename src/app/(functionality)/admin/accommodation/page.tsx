@@ -5,6 +5,7 @@ import { getAccommodationCounts, getAccommodationsByGender } from "@/features/ac
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Hotel, Building2, Calendar, Phone, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { TicketTitle } from "@/components/indie/gold-poster";
 
 const GENDERS = ["Male", "Female", "Other"] as const;
 type Gender = (typeof GENDERS)[number];
@@ -36,7 +37,7 @@ function AccomRow({ item }: { item: AccomItem }) {
   const chip   = GENDER_CHIP[a.gender as Gender]   ?? "bg-slate-50 text-slate-600 border border-slate-200";
 
   return (
-    <div className={`bg-white border border-slate-100 border-l-4 ${border} rounded-xl px-4 py-3.5`}>
+    <div className={`bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${border} rounded-2xl px-4 py-3.5`}>
       <div className="flex items-start gap-3">
         <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-xs font-bold text-teal-700 shrink-0 mt-0.5">
           {u.fullName[0]?.toUpperCase()}
@@ -136,36 +137,36 @@ export default async function AdminAccommodationPage({
   const TAB_COUNT: Record<Gender, number> = { Male: counts.male, Female: counts.female, Other: counts.other };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-teal-600 transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Accommodation</h1>
+            <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Accommodation</TicketTitle>
             <p className="text-xs text-slate-400 mt-0.5">{counts.total} request{counts.total !== 1 ? "s" : ""}</p>
           </div>
-          <div className="w-10 h-10 rounded-2xl bg-teal-100 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <Hotel className="h-5 w-5 text-teal-600" />
           </div>
         </div>
 
         {/* Stat cards */}
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-          <div className="bg-teal-600 rounded-2xl px-4 py-4">
+          <div className="bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
             <p className="text-xs font-medium text-teal-200 mb-1">Total</p>
             <p className="text-2xl font-bold text-white tabular-nums">{counts.total}</p>
             <p className="text-xs text-teal-300 mt-1">requests</p>
           </div>
-          <div className={`rounded-2xl px-4 py-4 ${counts.male > 0 ? "bg-sky-50 border border-sky-100" : "bg-slate-50 border border-slate-100"}`}>
+          <div className={`rounded-2xl px-4 py-4 ${counts.male > 0 ? "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
             <p className={`text-xs font-medium mb-1 ${counts.male > 0 ? "text-sky-500" : "text-slate-400"}`}>Male</p>
             <p className={`text-2xl font-bold tabular-nums ${counts.male > 0 ? "text-sky-900" : "text-slate-600"}`}>{counts.male}</p>
             <p className={`text-xs mt-1 ${counts.male > 0 ? "text-sky-400" : "text-slate-400"}`}>participants</p>
           </div>
-          <div className={`rounded-2xl px-4 py-4 ${counts.female > 0 ? "bg-pink-50 border border-pink-100" : "bg-slate-50 border border-slate-100"}`}>
+          <div className={`rounded-2xl px-4 py-4 ${counts.female > 0 ? "bg-pink-50 border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
             <p className={`text-xs font-medium mb-1 ${counts.female > 0 ? "text-pink-500" : "text-slate-400"}`}>Female</p>
             <p className={`text-2xl font-bold tabular-nums ${counts.female > 0 ? "text-pink-900" : "text-slate-600"}`}>{counts.female}</p>
             <p className={`text-xs mt-1 ${counts.female > 0 ? "text-pink-400" : "text-slate-400"}`}>participants</p>

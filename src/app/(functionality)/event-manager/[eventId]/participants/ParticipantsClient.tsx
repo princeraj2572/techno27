@@ -96,7 +96,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
         <button
           onClick={downloadExcel}
           disabled={filtered.length === 0}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white text-xs font-medium transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0f6b63] hover:bg-[#0b4f49] disabled:opacity-40 text-white text-xs font-medium transition-colors"
         >
           <Download className="h-3.5 w-3.5" />
           Download Excel
@@ -118,16 +118,16 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
             return (
               <div
                 key={p.email}
-                className={`bg-white border border-slate-100 border-l-4 ${
+                className={`bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${
                   isExternal
                     ? p.paymentCleared ? "border-l-emerald-500"
                       : p.paymentPending ? "border-l-amber-400"
                       : "border-l-slate-200"
-                    : "border-l-indigo-400"
-                } rounded-xl px-4 py-3.5 flex items-start gap-3`}
+                    : "border-l-[#0f6b63]"
+                } rounded-2xl px-4 py-3.5 flex items-start gap-3`}
               >
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                  isExternal ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
+                  isExternal ? "bg-amber-100 text-amber-700" : "bg-[#fde9a8] text-[#0f6b63]"
                 }`}>
                   {p.fullName[0]?.toUpperCase()}
                 </div>
@@ -138,7 +138,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
                     <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full border ${
                       isExternal
                         ? "bg-amber-50 text-amber-700 border-amber-200"
-                        : "bg-indigo-50 text-indigo-700 border-indigo-200"
+                        : "bg-[#f6efdf] text-[#0f6b63] border-[#1c1812]/30"
                     }`}>
                       {isExternal ? "External" : "OPJU"}
                     </span>
@@ -187,7 +187,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
               <p className="text-xs text-slate-400">
-                {(currentPage - 1) * PAGE_SIZE + 1}â€“{Math.min(currentPage * PAGE_SIZE, filtered.length)} of {filtered.length}
+                {(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, filtered.length)} of {filtered.length}
               </p>
               <div className="flex items-center gap-2">
                 <Button
@@ -195,7 +195,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
                   disabled={currentPage <= 1}
                   onClick={() => setPage(currentPage - 1)}
                 >
-                  â† Prev
+                  ← Prev
                 </Button>
                 <span className="text-xs text-slate-400">{currentPage} / {totalPages}</span>
                 <Button

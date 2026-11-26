@@ -160,9 +160,9 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
         const anyTx      = allTxs.length > 0;
 
         return (
-          <div key={row.email} className={`bg-white border border-slate-100 border-l-4 ${
+          <div key={row.email} className={`bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${
             isCleared ? "border-l-emerald-500" : anyTx ? "border-l-amber-400" : "border-l-slate-200"
-          } rounded-xl overflow-hidden`}>
+          } rounded-2xl overflow-hidden`}>
 
             {/* Row header */}
             <button
@@ -224,7 +224,7 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
                     cleared: tx.clearanceApproval,
                   };
                   return (
-                    <div key={tx.transactionId} className="bg-white border border-slate-100 rounded-xl px-4 py-3">
+                    <div key={tx.transactionId} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-3">
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <div>
                           <code className="text-xs font-mono text-slate-700">{tx.transactionId}</code>
@@ -237,7 +237,7 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
                             <CheckCircle2 className="h-3.5 w-3.5" /> Cleared
                           </span>
                         ) : s.acknowledged ? (
-                          <span className="text-xs font-medium text-indigo-600 shrink-0">
+                          <span className="text-xs font-medium text-[#0f6b63] shrink-0">
                             Acknowledged ₹{s.ackAmount}
                           </span>
                         ) : (
@@ -251,12 +251,12 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
                             placeholder="Amount received (₹)"
                             value={ackAmounts[tx.transactionId] ?? ""}
                             onChange={(e) => setAckAmounts((p) => ({ ...p, [tx.transactionId]: e.target.value }))}
-                            className="h-8 flex-1 px-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                            className="h-8 flex-1 px-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#f5c928]"
                           />
                           <button
                             onClick={() => handleAcknowledge(tx.transactionId, row.email, allTxs.map(t => t.transactionId))}
                             disabled={loading[tx.transactionId] || !ackAmounts[tx.transactionId]}
-                            className="h-8 px-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white text-xs font-medium transition-colors shrink-0"
+                            className="h-8 px-3 rounded-lg bg-[#0f6b63] hover:bg-[#0b4f49] disabled:opacity-40 text-white text-xs font-medium transition-colors shrink-0"
                           >
                             {loading[tx.transactionId] ? "..." : "Acknowledge"}
                           </button>
@@ -268,10 +268,10 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
 
                 {/* Manual / additional payment entry */}
                 {!isCleared && (
-                  <div className="bg-white border border-dashed border-indigo-200 rounded-xl px-4 py-3">
+                  <div className="bg-white border border-dashed border-[#1c1812]/30 rounded-xl px-4 py-3">
                     <div className="flex items-center gap-1.5 mb-2">
-                      <PlusCircle className="h-3.5 w-3.5 text-indigo-500" />
-                      <p className="text-xs font-semibold text-indigo-700">
+                      <PlusCircle className="h-3.5 w-3.5 text-[#0f6b63]" />
+                      <p className="text-xs font-semibold text-[#0f6b63]">
                         {anyTx ? "Record another payment" : "Record manual payment"}
                       </p>
                     </div>
@@ -286,7 +286,7 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
                         placeholder="Transaction / receipt ID (e.g. CASH-001)"
                         value={manualTxId[row.email] ?? ""}
                         onChange={(e) => setManualTxId((p) => ({ ...p, [row.email]: e.target.value }))}
-                        className="w-full h-8 px-3 rounded-lg border border-slate-200 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                        className="w-full h-8 px-3 rounded-lg border border-slate-200 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#f5c928]"
                       />
                       <div className="flex items-center gap-2">
                         <input
@@ -294,7 +294,7 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
                           placeholder={`Amount received (₹, due ₹${row.payableAmount})`}
                           value={manualAmt[row.email] ?? ""}
                           onChange={(e) => setManualAmt((p) => ({ ...p, [row.email]: e.target.value }))}
-                          className="h-8 flex-1 px-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                          className="h-8 flex-1 px-3 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#f5c928]"
                         />
                         <button
                           onClick={() => handleRecord(row.email, allTxs.map(t => t.transactionId))}
