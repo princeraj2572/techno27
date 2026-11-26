@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { ArrowUpRight, IndianRupee, Medal, Ticket, Users } from "lucide-react";
+import { ArrowRight, IndianRupee, LayoutGrid, Medal, Ticket } from "lucide-react";
 import { PUBLIC_EVENTS } from "@/features/events/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
 import { TicketCountdown } from "@/components/events/ticket-countdown";
 // import { RevealPopup } from "@/components/indie/reveal-popup";
-import { EVENT_MEDIA, FEST_START, JUNOON_ACTS, JUNOON_NIGHTS, MYSTERY_HINTS, TESTIMONIALS } from "@/data/dummy";
+import { EVENT_MEDIA, GALLERY, JUNOON_NIGHTS, TESTIMONIALS } from "@/data/dummy";
 import { CULTURES } from "@/components/indie/culture-art";
 import { Postmark, Stamp } from "@/components/indie/stamp";
 import { CutoutTitle } from "@/components/indie/cutout-title";
@@ -23,10 +23,13 @@ const NOTES = [
   { tag: "Stay", date: "Accommodation", title: "Need a place to stay?", text: "Apply for accommodation from your dashboard once you have registered for an event." },
 ];
 
+// The posters (Crystal Jubilee, Coming soon, We are ready) read badly when small, so the strip shows live photos only.
+const FLASHBACK = GALLERY.filter((g) => g.image && g.tag !== "Fest" && g.caption !== "We are ready" && g.caption !== "Convenors sign off");
+
 const STAT_LOOKS = [
   { theme: "kalakriti", icon: Ticket },
   { theme: "robovation", icon: Medal },
-  { theme: "masterchef", icon: Users },
+  { theme: "masterchef", icon: LayoutGrid },
   { theme: "codigo", icon: IndianRupee },
 ] as const;
 
@@ -37,17 +40,21 @@ const STEPS = [
   { n: "4", title: "Show up", desc: "Scan at check-in and compete." },
 ];
 
-// A vertical, endlessly scrolling column of acts (content is duplicated for a seamless loop).
-function ActColumn({ acts, dir }: { acts: typeof JUNOON_ACTS; dir: "up" | "down" }) {
+// A vertical, endlessly scrolling column of unrevealed acts (content is duplicated for a seamless loop).
+// Line-up is not announced yet: show redacted cards instead of names.
+function ActColumn({ count, dir }: { count: number; dir: "up" | "down" }) {
   return (
     <div className="indie-vfade relative h-80 overflow-hidden">
       <div className={dir === "up" ? "indie-vup" : "indie-vdown"}>
         {[0, 1].map((rep) => (
           <div key={rep} aria-hidden={rep === 1} className="space-y-3 pb-3">
-            {acts.map((a) => (
-              <div key={a.name + rep} className="rounded-xl border border-white/20 bg-white/5 px-4 py-3">
-                <p className={`text-lg text-[#f5edd8] leading-tight ${display.className}`}>{a.name}</p>
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#f5c928]">{a.genre}</p>
+            {Array.from({ length: count }, (_, i) => (
+              <div key={i} className="flex items-center gap-3 rounded-xl border border-dashed border-[#f5c928]/40 bg-white/5 px-4 py-3">
+                <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#f5c928]/60 text-xl text-[#f5c928] ${display.className}`}>?</span>
+                <div className="min-w-0 flex-1">
+                  <span aria-hidden className="block h-4 rounded-sm bg-[#f5edd8]/80" style={{ width: `${55 + ((i * 17) % 35)}%` }} />
+                  <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-[#f5c928]">To be announced</p>
+                </div>
               </div>
             ))}
           </div>
@@ -58,12 +65,14 @@ function ActColumn({ acts, dir }: { acts: typeof JUNOON_ACTS; dir: "up" | "down"
 }
 
 export default function HomePage() {
+  // Every number here is derived from the real event list; prizes stay "TBA" until the event data has them.
   const totalSub = PUBLIC_EVENTS.reduce((n, e) => n + e.subEvents.length, 0);
-  const stats = [
-    { to: PUBLIC_EVENTS.length, prefix: "", suffix: "", label: "Flagship events" },
-    { to: totalSub, prefix: "", suffix: "+", label: "Competitions" },
-    { to: 2000, prefix: "", suffix: "+", label: "Expected participants" },
-    { to: 5, prefix: "₹", suffix: "L+", label: "Prize pool" },
+  const categories = new Set(PUBLIC_EVENTS.map((e) => e.category)).size;
+  const stats: { to?: number; text?: string; label: string }[] = [
+    { to: PUBLIC_EVENTS.length, label: "Flagship events" },
+    { to: totalSub, label: "Competitions" },
+    { to: categories, label: "Categories" },
+    { text: "TBA", label: "Prize pool" },
   ];
   const nextUp = SCHEDULE[0].items.slice(0, 4);
 
@@ -101,8 +110,18 @@ export default function HomePage() {
         </Band>
 
         {/* Junoon '27 */}
-        <Band panel tone="indigo">
-          <div className="grid gap-10 md:grid-cols-2 items-center">
+        <Band
+          panel
+          tone="indigo"
+          overlay={
+            <div aria-hidden className="absolute inset-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/gallery/junoon-2025.jpg" alt="" className="h-full w-full object-cover opacity-60" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#1b0f4a] via-[#1b0f4a]/70 to-[#1b0f4a]/20" />
+            </div>
+          }
+        >
+          <div className="relative grid gap-10 md:grid-cols-2 items-center">
             <div>
               <p className="inline-block border border-[#f5c928]/60 px-3 py-0.5 text-xs font-bold uppercase tracking-[0.35em] text-[#f5c928]">After dark</p>
               <h2 className="mt-4 text-6xl sm:text-8xl font-bold uppercase leading-none text-[#f5edd8]">Junoon &apos;27</h2>
@@ -113,7 +132,8 @@ export default function HomePage() {
                 {JUNOON_NIGHTS.map((n) => (
                   <div key={n.n} className="rounded-lg border border-white/20 bg-white/5 p-3 text-center">
                     <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#f5c928]">Night {n.n}</p>
-                    <p className="mt-1 text-sm font-bold uppercase leading-tight">{n.artist}</p>
+                    <p className="mt-1 text-sm font-bold uppercase leading-tight text-[#f5edd8]/90">{n.title}</p>
+                    <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.25em] text-[#f5edd8]/50">Artist · TBA</p>
                   </div>
                 ))}
               </div>
@@ -121,15 +141,15 @@ export default function HomePage() {
                 <Link href="/junoon" className="inline-block border-2 border-[#f5edd8] px-6 py-2 text-sm font-bold uppercase tracking-widest hover:bg-[#f5edd8] hover:text-black transition-colors">
                   Enter after dark ↗
                 </Link>
-                <div className="flex items-center gap-3 rounded-lg border border-dashed border-[#f5c928]/60 px-3 py-2" title={MYSTERY_HINTS.join(" · ")}>
+                <div className="flex items-center gap-3 rounded-lg border border-dashed border-[#f5c928]/60 px-3 py-2">
                   <span className={`indie-qshake inline-block text-4xl text-[#f5c928] ${display.className}`}>?</span>
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#f5edd8]/80">Guess the headliner<br />— {MYSTERY_HINTS[0]}</span>
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#f5edd8]/80">Line-up to be announced<br />— stay tuned for the reveal</span>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <ActColumn acts={JUNOON_ACTS.slice(0, 4)} dir="up" />
-              <ActColumn acts={JUNOON_ACTS.slice(4)} dir="down" />
+              <ActColumn count={4} dir="up" />
+              <ActColumn count={4} dir="down" />
             </div>
           </div>
         </Band>
@@ -184,7 +204,7 @@ export default function HomePage() {
                                 <span className="text-[10px] font-bold tracking-[0.25em] opacity-70">{String(i + 1).padStart(2, "0")}</span>
                               </div>
                               <p className={`relative mt-2 text-[2.6rem] leading-none sm:text-5xl ${blockHindi.className}`} style={{ textShadow: "2px 2px 0 rgba(255,255,255,0.55)" }}>
-                                <CountUp to={st.to} prefix={st.prefix} suffix={st.suffix} />
+                                {st.to !== undefined ? <CountUp to={st.to} /> : st.text}
                               </p>
                               <p className="relative mt-1 text-[11px] font-bold uppercase leading-tight tracking-[0.2em]" style={{ color: t.soft }}>{st.label}</p>
                             </div>
@@ -217,6 +237,35 @@ export default function HomePage() {
           text={`${PUBLIC_EVENTS.map((e) => e.name).join(" • ")} • `}
           speed={60}
         />
+
+        {/* Flashback: real photos from past editions, endlessly drifting (list duplicated for a seamless loop) */}
+        <Reveal><section className="overflow-hidden bg-[#1a0505] py-14 text-[#f5edd8] sm:py-20">
+          <div className="mx-auto mb-10 flex max-w-6xl flex-col justify-between gap-4 px-6 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.4em] text-[#f5c928]">Flashback · 2024 – 2026</p>
+              <h2 className={`mt-2 text-5xl leading-none sm:text-7xl ${serif.className}`}>Last time at the fest</h2>
+            </div>
+            <BlockButton href="/gallery" tone="mustard">See the gallery →</BlockButton>
+          </div>
+          <div className="indie-marquee flex w-max py-3 hover:[animation-play-state:paused]" style={{ animationDuration: "70s" }}>
+            {[0, 1].map((rep) =>
+              FLASHBACK.map((g, i) => (
+                <Link
+                  key={`${rep}-${g.image}`}
+                  href="/gallery"
+                  aria-hidden={rep === 1}
+                  tabIndex={rep === 1 ? -1 : undefined}
+                  className={`mr-8 block w-56 shrink-0 bg-[#f5edd8] p-2.5 pb-3 shadow-[6px_6px_0_0_#000] transition-transform hover:rotate-0 hover:-translate-y-2 sm:w-64 ${["-rotate-2", "rotate-2", "-rotate-1", "rotate-1"][i % 4]}`}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={g.image} alt={g.caption} loading="lazy" className="aspect-[3/4] w-full object-cover" />
+                  <p className={`mt-2 truncate text-center text-lg italic text-[#1a0505] ${serif.className}`}>{g.caption}</p>
+                  <p className="text-center text-[10px] font-bold uppercase tracking-[0.35em] text-[#c8421f]">{g.tag} · {g.year}</p>
+                </Link>
+              )),
+            )}
+          </div>
+        </section></Reveal>
 
         <Reveal><Band tone="indigo" mandala>
           <h2 className={`text-4xl sm:text-5xl text-center text-[#f5edd8] mb-10 ${serif.className}`}>What people say</h2>
@@ -274,31 +323,62 @@ export default function HomePage() {
           </div>
         </Band></Reveal>
 
-        {/* big type + a spinning round "register" badge */}
-        <section className="relative overflow-hidden bg-[#f5edd8] px-6 py-16 text-[#1a0505] sm:px-12 sm:py-24">
-          <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-[1fr_auto]">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.35em] text-[#a1001a]">18 – 20 Feb 2027 &middot; O.P. Jindal University</p>
-              <h2 className={`mt-3 text-[clamp(56px,10vw,150px)] uppercase leading-[0.85] ${display.className}`}>
-                Ready to<br />
-                <span className="text-transparent" style={{ WebkitTextStroke: "2px #a1001a" }}>compete?</span>
-              </h2>
-              <p className="mt-6 max-w-xl text-2xl leading-snug">
-                OPJU students get in free with their college email. Everyone else gets a unique TRX27 ID.
-              </p>
+        {/* Ready to compete: a boarding pass for Techno Junction */}
+        <section className="relative overflow-hidden bg-[#f5edd8] px-4 py-16 text-[#1a0505] sm:px-12 sm:py-24">
+          <div aria-hidden className="absolute inset-0 opacity-[0.08]" style={patternStyle("diamonds", "#7a1c1c")} />
+          <div className="relative mx-auto max-w-5xl">
+            <p className="text-center text-sm font-bold uppercase tracking-[0.35em] text-[#a1001a]">Feb 2027 &middot; O.P. Jindal University, Raigarh</p>
+            <h2 className={`mt-3 text-center text-[clamp(44px,8vw,110px)] uppercase leading-[0.9] ${display.className}`}>
+              Ready to <span className="text-transparent" style={{ WebkitTextStroke: "2px #a1001a" }}>compete?</span>
+            </h2>
+
+            <div className="mt-10 grid -rotate-1 border-4 border-black bg-[#fde9bd] shadow-[8px_8px_0_0_#000] transition-transform hover:rotate-0 md:grid-cols-[1fr_auto]">
+              <div className="p-6 sm:p-8">
+                <div className="flex items-center justify-between gap-3 border-b-2 border-dashed border-black/40 pb-3">
+                  <span className="text-xs font-bold uppercase tracking-[0.3em]">Boarding pass</span>
+                  <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#a1001a]">TRX&apos;27</span>
+                </div>
+                <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/60">From</p>
+                    <p className={`text-2xl leading-none sm:text-4xl ${display.className}`}>You</p>
+                  </div>
+                  <ArrowRight className="h-8 w-8 text-[#a1001a]" aria-hidden />
+                  <div className="text-right">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/60">To</p>
+                    <p className={`text-2xl leading-none sm:text-4xl ${display.className}`}>Techno Jn.</p>
+                  </div>
+                </div>
+                <dl className="mt-6 grid grid-cols-3 gap-3 border-t-2 border-dashed border-black/40 pt-4">
+                  {[
+                    ["Events", String(PUBLIC_EVENTS.length)],
+                    ["Competitions", String(totalSub)],
+                    ["Categories", String(categories)],
+                  ].map(([k, v]) => (
+                    <div key={k}>
+                      <dt className="text-[10px] font-bold uppercase tracking-[0.25em] text-black/60">{k}</dt>
+                      <dd className={`text-2xl sm:text-3xl ${blockHindi.className}`}>{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <p className="mt-5 text-lg leading-snug">
+                  <strong>OPJU students</strong> get in free with their college email. <strong>Everyone else</strong> gets a unique TRX27 ID.
+                </p>
+              </div>
+
+              {/* tear-off stub */}
+              <div className="relative flex flex-col items-center justify-center gap-4 border-t-4 border-dashed border-black bg-[#a1001a] p-6 text-[#f5edd8] md:w-64 md:border-l-4 md:border-t-0">
+                <span aria-hidden className="absolute -left-4 -top-4 hidden h-8 w-8 rounded-full border-4 border-black bg-[#f5edd8] md:block" />
+                <span aria-hidden className="absolute -bottom-4 -left-4 hidden h-8 w-8 rounded-full border-4 border-black bg-[#f5edd8] md:block" />
+                <Ticket className="h-10 w-10 text-[#f5c928]" aria-hidden />
+                <Link href="/auth/signup" className="w-full border-2 border-black bg-[#f5c928] px-5 py-3 text-center text-lg font-bold uppercase tracking-widest text-black shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5">
+                  Register now
+                </Link>
+                <Link href="/events" className="text-sm font-bold uppercase tracking-[0.25em] underline-offset-4 hover:underline">
+                  Browse events →
+                </Link>
+              </div>
             </div>
-            <Link href="/auth/signup" aria-label="Register now" className="group relative mx-auto block h-52 w-52 shrink-0 sm:h-64 sm:w-64">
-              <svg viewBox="0 0 200 200" className="indie-spin-slow absolute inset-0 h-full w-full" aria-hidden>
-                <defs><path id="cta-ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" /></defs>
-                <circle cx="100" cy="100" r="98" fill="#f5c928" stroke="#1a0505" strokeWidth="3" />
-                <text className="fill-[#1a0505] text-[17px] font-bold uppercase tracking-[0.2em]">
-                  <textPath href="#cta-ring">Register now ✦ Free for OPJU ✦ Join the riot ✦</textPath>
-                </text>
-              </svg>
-              <span className="absolute inset-[26%] flex items-center justify-center rounded-full border-[3px] border-[#1a0505] bg-[#a1001a] text-[#f5edd8] transition-transform duration-300 group-hover:scale-110">
-                <ArrowUpRight className="h-12 w-12 transition-transform duration-300 group-hover:rotate-45" />
-              </span>
-            </Link>
           </div>
         </section>
 

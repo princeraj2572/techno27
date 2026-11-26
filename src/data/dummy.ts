@@ -16,8 +16,8 @@ export interface JunoonNight {
 
 export const JUNOON_NIGHTS: JunoonNight[] = [
   { n: "01", title: "Opening Night", artist: "The Midnight Ragas", genre: "Indie fusion band", date: "Thu, Feb 18, 2027", time: "7:30 PM", venue: "Main Ground", desc: "Live indie fusion to kick off the fest under the lights." },
-  { n: "02", title: "Beats & Bass", artist: "DJ Nova", genre: "Electronic · live set", date: "Sat, Feb 20, 2027", time: "8:00 PM", venue: "Main Ground", desc: "A high-energy electronic set that turns the campus into a dance floor." },
-  { n: "03", title: "Closing Night", artist: "Echo & The Monsoon", genre: "Rock · live band", date: "Fri, Feb 19, 2027", time: "7:00 PM", venue: "Main Ground", desc: "A grand rock finale to close the festival with a roar." },
+  { n: "02", title: "Beats & Bass", artist: "DJ Nova", genre: "Electronic · live set", date: "Fri, Feb 19, 2027", time: "8:00 PM", venue: "Main Ground", desc: "A high-energy electronic set that turns the campus into a dance floor." },
+  { n: "03", title: "Closing Night", artist: "Echo & The Monsoon", genre: "Rock · live band", date: "Sat, Feb 20, 2027", time: "7:00 PM", venue: "Main Ground", desc: "A grand rock finale to close the festival with a roar." },
 ];
 
 export interface Sponsor {
@@ -221,23 +221,42 @@ export interface GalleryItem {
   tag: string;
   year: string;
   scene: string; // event slug whose cultural illustration is shown until a real photo is added
+  featured?: boolean; // shown big at the top of its year (otherwise the year's first photo is)
   image?: string; // real photo, e.g. "/images/gallery/hackathon-night.jpg" (portrait 3:4, ~900 x 1200)
 }
 
 // To use a real photo: put the file in public/images/gallery/ and set `image` on that item.
 export const GALLERY: GalleryItem[] = [
-  { caption: "Hackathon night", tag: "Technical", year: "2026", scene: "codigo" },
-  { caption: "Robo Race finals", tag: "Technical", year: "2026", scene: "robovation" },
-  { caption: "Opening night crowd", tag: "Junoon", year: "2026", scene: "antaragni" },
-  { caption: "Fashion walk", tag: "Cultural", year: "2026", scene: "riwayat-fashion-show" },
-  { caption: "Rangoli corner", tag: "Cultural", year: "2026", scene: "kalakriti" },
-  { caption: "Prize ceremony", tag: "Awards", year: "2026", scene: "business-quiz" },
-  { caption: "Beat battle", tag: "Cultural", year: "2025", scene: "beat-battle" },
-  { caption: "Masterchef kitchen", tag: "Fun", year: "2025", scene: "masterchef" },
-  { caption: "Ideathon pitches", tag: "Management", year: "2025", scene: "ideathon" },
-  { caption: "Campus trail", tag: "Fun", year: "2025", scene: "roadies" },
-  { caption: "Volunteers", tag: "Team", year: "2025", scene: "designathon" },
-  { caption: "Closing ceremony", tag: "Awards", year: "2025", scene: "techlab" },
+  { caption: "XV · Crystal Jubilee", tag: "Fest", year: "2026", scene: "antaragni", image: "/images/gallery/crystal-jubilee.jpg" },
+  { caption: "Inauguration day", tag: "Ceremony", year: "2026", scene: "antaragni", image: "/images/gallery/inauguration-2026.jpg" },
+  { caption: "Rishi Singh live", tag: "Junoon", year: "2026", scene: "antaragni", image: "/images/gallery/rishi-singh-stage.jpg", featured: true },
+  { caption: "Front-row frenzy", tag: "Junoon", year: "2026", scene: "antaragni", image: "/images/gallery/rishi-singh-crowd.jpg" },
+  { caption: "The GOAT moment", tag: "Junoon", year: "2026", scene: "antaragni", image: "/images/gallery/rishi-singh-goat.jpg" },
+  { caption: "Pause in the confetti", tag: "Junoon", year: "2026", scene: "beat-battle", image: "/images/gallery/pause-confetti.jpg" },
+  { caption: "Pause riffs", tag: "Junoon", year: "2026", scene: "beat-battle", image: "/images/gallery/pause-guitar.jpg" },
+  { caption: "Riwayat 2.0 finale", tag: "Cultural", year: "2026", scene: "riwayat-fashion-show", image: "/images/gallery/riwayat-finale.jpg" },
+  { caption: "B-boy cypher", tag: "Cultural", year: "2026", scene: "beat-battle", image: "/images/gallery/bboy-cypher.jpg" },
+  { caption: "Stage glow", tag: "Cultural", year: "2026", scene: "antaragni", image: "/images/gallery/dance-stage-2026.jpg" },
+  { caption: "Kalakriti installation", tag: "Cultural", year: "2026", scene: "kalakriti", image: "/images/gallery/kalakriti-installation.jpg" },
+  { caption: "Canvas in progress", tag: "Cultural", year: "2026", scene: "kalakriti", image: "/images/gallery/techlab-build.jpg" },
+  { caption: "Roadies riders", tag: "Fun", year: "2026", scene: "roadies", image: "/images/gallery/roadies-riders.jpg" },
+  { caption: "We are ready", tag: "Team", year: "2026", scene: "designathon", image: "/images/gallery/we-are-ready.jpg" },
+  { caption: "Convenors sign off", tag: "Team", year: "2026", scene: "designathon", image: "/images/gallery/convenors-2026.jpg" },
+  { caption: "Coming soon", tag: "Fest", year: "2026", scene: "codigo", image: "/images/gallery/coming-soon-2026.jpg" },
+  { caption: "Vaibhav Gupta at Junoon", tag: "Junoon", year: "2025", scene: "antaragni", image: "/images/gallery/vaibhav-gupta.jpg" },
+  { caption: "Vaibhav & the crowd", tag: "Junoon", year: "2025", scene: "antaragni", image: "/images/gallery/vaibhav-crowd.jpg" },
+  { caption: "Junoon '25 main stage", tag: "Junoon", year: "2025", scene: "antaragni", image: "/images/gallery/junoon-2025.jpg" },
+  { caption: "Pause takes the stage", tag: "Junoon", year: "2025", scene: "beat-battle", image: "/images/gallery/pause-2025.jpg" },
+  { caption: "Pause on drums", tag: "Junoon", year: "2025", scene: "beat-battle", image: "/images/gallery/pause-drums.jpg" },
+  { caption: "Expo floor, day one", tag: "Technical", year: "2025", scene: "techlab", image: "/images/gallery/expo-floor-2025.jpg" },
+  { caption: "Antaragni classical", tag: "Cultural", year: "2024", scene: "antaragni", image: "/images/gallery/antaragni-classical.jpg" },
+  { caption: "Antaragni dance", tag: "Cultural", year: "2024", scene: "antaragni", image: "/images/gallery/antaragni-dance.jpg" },
+  { caption: "Celebrity night", tag: "Junoon", year: "2024", scene: "antaragni", image: "/images/gallery/celebrity-night-2024.jpg" },
+  { caption: "Acoustic night", tag: "Junoon", year: "2024", scene: "antaragni", image: "/images/gallery/acoustic-night.jpg" },
+  { caption: "Aaghaz crown", tag: "Cultural", year: "2024", scene: "riwayat-fashion-show", image: "/images/gallery/aaghaz-crown.jpg" },
+  { caption: "Runway walk", tag: "Cultural", year: "2024", scene: "riwayat-fashion-show", image: "/images/gallery/runway-2024.jpg" },
+  { caption: "Prize ceremony", tag: "Awards", year: "2024", scene: "business-quiz", image: "/images/gallery/prize-ceremony-2024.jpg" },
+  { caption: "Technorollix '24 team", tag: "Team", year: "2024", scene: "antaragni", image: "/images/gallery/antaragni-team-2024.jpg" },
 ];
 
 export const TESTIMONIALS = [
