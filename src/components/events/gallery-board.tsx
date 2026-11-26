@@ -32,7 +32,6 @@ const MOTION_CSS = `
 @keyframes g-ghost { from { transform: translateX(18%); } to { transform: translateX(-28%); } }
 @keyframes g-deal { 0% { opacity: 1; transform: translate(var(--sx), var(--sy)) rotate(var(--sr)) scale(.86); } 100% { opacity: 1; transform: none; } }
 @keyframes g-thumb { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-@keyframes g-kb { from { transform: scale(1) translate(0, 0); } to { transform: scale(1.12) translate(-3%, -2%); } }
 @keyframes gx-letter { 0% { opacity: 0; transform: translateY(-1.1em) rotate(-25deg) scale(1.4); } 60% { opacity: 1; transform: translateY(.08em) rotate(4deg) scale(.95); } 100% { opacity: 1; transform: none; } }
 @keyframes gx-flash { from { opacity: .9; } to { opacity: 0; } }
 @keyframes gx-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
@@ -55,7 +54,6 @@ const MOTION_CSS = `
   .group:hover .g-postmark { animation: g-postmark .3s cubic-bezier(.3,1.5,.5,1) both; }
   .g-tilt { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
   .g-thumbs > * { animation: g-thumb .4s ease both; animation-delay: calc(var(--i) * 25ms + 150ms); }
-  .g-drop.in .stamp-scene img { animation: g-kb 16s ease-in-out infinite alternate; animation-delay: calc(var(--d, 0ms) * -20); }
   .gx-letter { animation: gx-letter .7s cubic-bezier(.3,1.4,.5,1) both; animation-delay: calc(var(--i) * 70ms + .35s); }
   .gx-rise { animation: g-rise .7s ease both; animation-delay: .2s; }
   .gx-flash { display: block; position: fixed; inset: 0; z-index: 100; background: #fff; pointer-events: none; animation: gx-flash .8s ease-out .1s both; }
@@ -173,6 +171,11 @@ export function GalleryBoard({ items }: { items: GalleryItem[] }) {
     );
     root.querySelectorAll(".g-year").forEach((sec) => deal.observe(sec));
 
+    // The page header's photo wall loops forever; pause it once it has scrolled away (.pin-off comes from PanelPins).
+    const wall = document.querySelector(".gx-wall");
+    const pause = new IntersectionObserver(([e]) => e.target.classList.toggle("pin-off", !e.isIntersecting));
+    if (wall) pause.observe(wall);
+
     // Year sections stack like cards (.panel); keep each one's height current so tall ones pin by their bottom edge.
     const ro = new ResizeObserver((rs) => rs.forEach((r) => (r.target as HTMLElement).style.setProperty("--panel-h", `${(r.target as HTMLElement).offsetHeight}px`)));
     root.querySelectorAll(".g-year").forEach((sec) => ro.observe(sec));
@@ -180,6 +183,7 @@ export function GalleryBoard({ items }: { items: GalleryItem[] }) {
     return () => {
       reveal.disconnect();
       deal.disconnect();
+      pause.disconnect();
       ro.disconnect();
     };
   }, [year, tag]);

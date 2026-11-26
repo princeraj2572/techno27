@@ -26,7 +26,7 @@ export default function GalleryPage() {
         tone="crimson"
         className="!pb-24 !pt-24 sm:!pb-32 sm:!pt-32"
         overlay={
-          <div aria-hidden className="absolute inset-0 overflow-hidden">
+          <div aria-hidden className="gx-wall absolute inset-0 overflow-hidden">
             <div className="absolute -inset-x-16 -inset-y-40 grid -rotate-6 grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
               {WALL.map((col, c) => (
                 <div key={c} className={c >= 4 ? "hidden lg:block" : c === 3 ? "hidden sm:block" : ""}>

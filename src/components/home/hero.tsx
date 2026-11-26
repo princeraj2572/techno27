@@ -17,16 +17,15 @@ export function Hero() {
   return (
     <section className="panel relative overflow-hidden bg-[#f2b31c] [--ray-y:33%] md:[--ray-y:42%]" style={{ minHeight: "calc(100vh - 4rem)" }}>
       {/* sunburst rays from the centre (behind the logo), halftone + paper grain */}
-      {/* oversized square centred on the logo, so it can turn without exposing corners; 90s per turn */}
-      <div aria-hidden className="indie-spin-slow absolute h-[300vmax] w-[300vmax]" style={{ left: "calc(50% - 150vmax)", top: "calc(var(--ray-y) - 150vmax)", animationDuration: "90s", background: "repeating-conic-gradient(from 0deg, #f5c928 0deg 7deg, #e9a11a 7deg 14deg)" }}>
-        {/* rings of light rushing out from behind the logo, masked to the light stripes so they run along the rays */}
-        <div className="absolute inset-0" style={{ WebkitMask: "repeating-conic-gradient(from 0deg, #000 0deg 7deg, transparent 7deg 14deg)", mask: "repeating-conic-gradient(from 0deg, #000 0deg 7deg, transparent 7deg 14deg)" }}>
-          {[0, 2, 4].map((d) => (
-            <div key={d} className="hi-warp absolute inset-[25%] rounded-full"
-              style={{ ["--d" as string]: d, background: "radial-gradient(circle closest-side, transparent 55%, rgba(255,248,220,.85) 75%, transparent 95%)" }} />
-          ))}
-        </div>
-      </div>
+      {/* Static rays at hero size (a spinning 300vmax layer was the page's biggest scroll cost). */}
+      <div aria-hidden className="absolute inset-0" style={{ background: "repeating-conic-gradient(from 0deg at 50% var(--ray-y), #f5c928 0deg 7deg, #e9a11a 7deg 14deg)" }} />
+      {/* the same rays shifted half a stripe, fading in and out: the stripes swap and shimmer, and only opacity animates */}
+      <div aria-hidden className="hi-shimmer absolute inset-0" style={{ background: "repeating-conic-gradient(from 7deg at 50% var(--ray-y), #f5c928 0deg 7deg, #e9a11a 7deg 14deg)" }} />
+      {/* rings of light pulsing out from behind the logo (scale + opacity only, no mask) */}
+      {[0].map((d) => (
+        <div key={d} aria-hidden className="hi-warp absolute h-[110vmax] w-[110vmax] rounded-full"
+          style={{ ["--d" as string]: d, left: "calc(50% - 55vmax)", top: "calc(var(--ray-y) - 55vmax)", background: "radial-gradient(circle closest-side, transparent 60%, rgba(255,248,220,.55) 78%, transparent 95%)" }} />
+      ))}
       <div aria-hidden className="absolute inset-0" style={{ background: "radial-gradient(circle at 50% var(--ray-y), rgba(255,236,170,.75), transparent 38%)" }} />
       <div aria-hidden className="absolute inset-0 indie-halftone opacity-[0.12]" />
       <div aria-hidden className="absolute inset-0 opacity-40 mix-blend-multiply" style={{ backgroundImage: NOISE }} />

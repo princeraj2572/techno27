@@ -132,6 +132,10 @@ body {
 @keyframes hi-sweep { from { translate: -110% 0; opacity: 1; } to { translate: 110% 0; opacity: 0; } }
 /* light travelling out from behind the logo towards the viewer */
 @keyframes hi-warp { from { scale: .05; opacity: 0; } 25% { opacity: 1; } to { scale: 1; opacity: 0; } }
+/* .static-art: the wrapper animates (composited); the SVG parts inside stay still (SVG transforms repaint every frame) */
+.static-art * { animation: none !important; }
+/* the shifted ray layer fading in and out over the static sunburst */
+@keyframes hi-shimmer { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
 .hero-in { animation: hero-in .9s cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: calc(var(--i, 0) * 110ms); }
 .hi-pop { animation: hi-pop .75s cubic-bezier(.3, 1.5, .5, 1) backwards; animation-delay: calc(var(--d, 0) * 1s); }
@@ -141,10 +145,12 @@ body {
 .hi-twinkle { animation: hi-twinkle 2.6s ease-in-out infinite; animation-delay: calc(var(--d, 0) * 1s); }
 .hi-sweep { animation: hi-sweep 1.8s cubic-bezier(.4, 0, .2, 1) .15s both; }
 .hi-warp { animation: hi-warp 6s cubic-bezier(.55, 0, 1, .45) infinite; animation-delay: calc(var(--d, 0) * 1s); }
+.hi-shimmer { animation: hi-shimmer 7s ease-in-out infinite; will-change: opacity; }
 
 body:has(:is(.intro-overlay, .splash):not(.out)) :is(.hero-in, .hi-pop, .hi-rise, .hi-slam, .hi-stamp, .hi-twinkle, .hi-sweep) { animation: none; opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-in, .hi-pop, .hi-rise, .hi-slam, .hi-stamp, .hi-twinkle, .hi-sweep { animation: none !important; }
   .hi-warp { display: none; }
+  .hi-shimmer { animation: none; opacity: 0; }
 }

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight, IndianRupee, LayoutGrid, Medal, Ticket } from "lucide-react";
 import { PUBLIC_EVENTS } from "@/features/events/data/public-events";
 import { SCHEDULE } from "@/data/schedule";
-import { TicketCountdown } from "@/components/events/ticket-countdown";
 // import { RevealPopup } from "@/components/indie/reveal-popup";
 import { EVENT_MEDIA, GALLERY, JUNOON_NIGHTS, TESTIMONIALS } from "@/data/dummy";
 import { CULTURES } from "@/components/indie/culture-art";
@@ -104,7 +103,11 @@ export default function HomePage() {
               </div>
             </div>
             <div className="hidden md:flex justify-center">
-              <Vinyl className="w-56 h-56 drop-shadow-[8px_8px_0_rgba(0,0,0,0.4)]" slow />
+              {/* spin an HTML wrapper (GPU-composited) instead of the SVG group; plain circle as the shadow so no filter repaints */}
+              <div className="relative h-56 w-56">
+                <span aria-hidden className="absolute inset-0 translate-x-2 translate-y-2 rounded-full bg-black/40" />
+                <div className="static-art indie-spin-slow relative h-full w-full"><Vinyl className="h-full w-full" /></div>
+              </div>
             </div>
           </div>
         </Band>
@@ -219,8 +222,9 @@ export default function HomePage() {
 
             {/* vinyl on a slowly turning mandala, with a postmark and a charm */}
             <div className="relative mx-auto w-72 sm:w-96 aspect-square">
-              <MandalaSpin className="absolute -inset-16 h-[calc(100%+8rem)] w-[calc(100%+8rem)] opacity-60" stroke="#c8421f" reverse />
-              <Vinyl className="relative h-full w-full drop-shadow-[8px_8px_0_rgba(0,0,0,0.35)]" slow />
+              <div className="static-art indie-spin-rev absolute -inset-16 opacity-60"><MandalaSpin className="h-full w-full" stroke="#c8421f" reverse /></div>
+              <span aria-hidden className="absolute inset-0 translate-x-2 translate-y-2 rounded-full bg-black/35" />
+              <div className="static-art indie-spin-slow relative h-full w-full"><Vinyl className="h-full w-full" /></div>
               <Postmark lines={false} className="pointer-events-none absolute -bottom-3 -right-3 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
               <NimbuMirch className="pointer-events-none absolute -left-4 -top-2 z-10 h-28 w-auto" delay="0.3s" />
               <span className="indie-wobble absolute right-0 top-2 border-2 border-black bg-[#f5c928] px-3 py-1 text-sm font-bold uppercase tracking-widest text-black">★ 3 days of fest</span>
@@ -233,7 +237,7 @@ export default function HomePage() {
       {/* Everything below scrolls normally, above the pinned stack */}
       <div className="relative z-10">
         <Marquee
-          className="bg-black text-white font-bold uppercase tracking-wider text-lg py-2"
+          className="pause-offscreen bg-black text-white font-bold uppercase tracking-wider text-lg py-2"
           text={`${PUBLIC_EVENTS.map((e) => e.name).join(" • ")} • `}
           speed={60}
         />
@@ -247,7 +251,7 @@ export default function HomePage() {
             </div>
             <BlockButton href="/gallery" tone="mustard">See the gallery →</BlockButton>
           </div>
-          <div className="indie-marquee flex w-max py-3 hover:[animation-play-state:paused]" style={{ animationDuration: "70s" }}>
+          <div className="pause-offscreen indie-marquee flex w-max py-3 hover:[animation-play-state:paused]" style={{ animationDuration: "70s" }}>
             {[0, 1].map((rep) =>
               FLASHBACK.map((g, i) => (
                 <Link
@@ -383,7 +387,7 @@ export default function HomePage() {
         </section>
 
         <Marquee
-          className="bg-[#ff6a00] text-black font-bold uppercase tracking-wider text-lg py-1.5"
+          className="pause-offscreen bg-[#ff6a00] text-black font-bold uppercase tracking-wider text-lg py-1.5"
           text="Techno-aiMBiAtion 2027 ✦ O.P. Jindal University ✦ See you there ✦ "
           speed={40}
         />
