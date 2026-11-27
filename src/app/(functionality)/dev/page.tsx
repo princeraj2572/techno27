@@ -178,7 +178,7 @@ export default async function DevDashboardPage() {
         <div className="">
           <div className="flex items-center justify-between mb-3">
             <p className={`text-xl ${display.className}`}>Event managers</p>
-            <Link href="/dev/management" className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium flex items-center gap-1">
+            <Link href="/dev/management" className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium flex items-center gap-1 tap-target">
               Manage <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
@@ -187,7 +187,7 @@ export default async function DevDashboardPage() {
             <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 py-10 text-center bg-white/60">
               <UserCog className="h-7 w-7 mx-auto mb-2 text-slate-300" />
               <p className="text-sm font-medium text-slate-500">No event managers yet</p>
-              <Link href="/dev/management/create" className="text-xs text-[#0f6b63] hover:underline mt-1 block">
+              <Link href="/dev/management/create" className="text-xs text-[#0f6b63] hover:underline mt-1 block tap-target">
                 Create one
               </Link>
             </div>
@@ -209,7 +209,7 @@ export default async function DevDashboardPage() {
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${m.assignedEvents.length > 0 ? "bg-orange-100 text-orange-700" : "bg-slate-100 text-slate-500"}`}>
                       {m.assignedEvents.length} event{m.assignedEvents.length !== 1 ? "s" : ""}
                     </span>
-                    <Link href={`/dev/management/${m._id}`} className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium shrink-0">
+                    <Link href={`/dev/management/${m._id}`} className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium shrink-0 tap-target">
                       Assign
                     </Link>
                   </div>
@@ -236,7 +236,7 @@ export default async function DevDashboardPage() {
         <div className="">
           <div className="flex items-center justify-between mb-3">
             <p className={`text-xl ${display.className}`}>Event registration</p>
-            <Link href="/dev/events" className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium flex items-center gap-1">
+            <Link href="/dev/events" className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium flex items-center gap-1 tap-target">
               Manage events <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
@@ -245,7 +245,7 @@ export default async function DevDashboardPage() {
             <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 py-12 text-center bg-white/60">
               <CalendarDays className="h-8 w-8 mx-auto mb-3 text-slate-300" />
               <p className="text-sm font-medium text-slate-500">No events found</p>
-              <Link href="/dev/seed" className="text-xs text-[#0f6b63] hover:underline mt-1 block">
+              <Link href="/dev/seed" className="text-xs text-[#0f6b63] hover:underline mt-1 block tap-target">
                 Seed events to get started
               </Link>
             </div>
@@ -273,7 +273,7 @@ export default async function DevDashboardPage() {
                       </div>
                     )}
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${label.bg} ${label.color}`}>{label.text}</span>
-                    <Link href={`/dev/events/${ev.eventId}`} className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium shrink-0 flex items-center gap-1">
+                    <Link href={`/dev/events/${ev.eventId}`} className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium shrink-0 flex items-center gap-1 tap-target">
                       Manage <ArrowRight className="h-3 w-3" />
                     </Link>
                   </div>

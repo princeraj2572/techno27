@@ -71,7 +71,8 @@ export default function FilterForm({ view, eventOptions = [] }: Props) {
     setLimit(sp.get("limit") ?? "25");
   }, [sp]);
 
-  const selectClass = "h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-1 focus:ring-teal-400 cursor-pointer";
+  // min-w-0 + max-w-full: a native select otherwise grows to its longest option and overflows phones
+  const selectClass = "h-10 min-w-0 max-w-full rounded-full border-2 border-[#1c1812] bg-white px-3 text-sm text-[#1c1812] focus:outline-none focus:ring-4 focus:ring-[#f5c928] cursor-pointer";
 
   return (
     <div className="flex flex-wrap items-center gap-2">

@@ -7,7 +7,7 @@ import { Event } from "@/features/events/event.model";
 import { Team } from "@/features/teams/team.model";
 import { User } from "@/features/users/user.model";
 import { CheckIn } from "@/features/checkin/checkIn.model";
-import { ChevronLeft, CheckSquare } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import CheckinClient from "./CheckinClient";
 import { TicketTitle } from "@/components/indie/gold-poster";
@@ -72,16 +72,13 @@ export default async function EventManagerCheckinPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
-            <Link href={`/event-manager/${eventId}`} className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href={`/event-manager/${eventId}`} className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1 tap-target">
               <ChevronLeft className="h-3.5 w-3.5" /> {event.name}
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Check-In</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{participants.length} registered · {checkedInCount} checked in</p>
-          </div>
-          <div className="w-9 h-9 rounded-xl bg-[#f6efdf] flex items-center justify-center shrink-0">
-            <CheckSquare className="h-4 w-4 text-[#0f6b63]" />
           </div>
         </div>
 

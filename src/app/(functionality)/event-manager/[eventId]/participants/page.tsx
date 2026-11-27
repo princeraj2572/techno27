@@ -7,7 +7,7 @@ import { Event } from "@/features/events/event.model";
 import { Team } from "@/features/teams/team.model";
 import { User } from "@/features/users/user.model";
 import { Transaction } from "@/features/payments/transaction.model";
-import { ChevronLeft, Users } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import ParticipantsClient from "./ParticipantsClient";
 import { TicketTitle } from "@/components/indie/gold-poster";
@@ -158,7 +158,7 @@ export default async function EventManagerParticipantsPage({
           <div>
             <Link
               href={`/event-manager/${eventId}`}
-              className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1"
+              className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1 tap-target"
             >
               <ChevronLeft className="h-3.5 w-3.5" /> {event.name}
             </Link>
@@ -167,9 +167,6 @@ export default async function EventManagerParticipantsPage({
               {participants.length} total
               {event.maxParticipants ? ` · Limit: ${event.maxParticipants}` : ""}
             </p>
-          </div>
-          <div className="w-9 h-9 rounded-xl bg-[#f6efdf] flex items-center justify-center shrink-0">
-            <Users className="h-4 w-4 text-[#0f6b63]" />
           </div>
         </div>
 

@@ -31,7 +31,7 @@ export default async function AdminPaymentsPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Payments</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">External participant payment status</p>

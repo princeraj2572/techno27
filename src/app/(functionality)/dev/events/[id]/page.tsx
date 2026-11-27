@@ -165,9 +165,9 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-start justify-between">
+        <div className="flex items-start flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
-            <Link href="/dev/events" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev/events" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1 tap-target">
               ← Events
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{event.name}</TicketTitle>
@@ -295,7 +295,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
               <p className="text-xs font-semibold text-slate-500">Event Manager account</p>
             </div>
             {emData && emData !== "loading" && (
-              <Link href={`/event-manager/${eventId}/participants`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium">
+              <Link href={`/event-manager/${eventId}/participants`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium tap-target">
                 View participants
               </Link>
             )}

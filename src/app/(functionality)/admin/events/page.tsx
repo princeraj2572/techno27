@@ -41,7 +41,7 @@ export default async function AdminEventsPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-7 px-4 py-8">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start flex-wrap justify-between gap-x-4 gap-y-3">
         <div>
           <TicketTitle className="mb-2 text-3xl leading-[1.1] sm:text-5xl">Events</TicketTitle>
           <p className="text-sm text-slate-500">
@@ -50,7 +50,7 @@ export default async function AdminEventsPage() {
         </div>
         <div className="flex shrink-0 items-center gap-3">
           {user.role === "DEV_ADMIN" && (
-            <Link href="/dev/events" className="text-xs font-bold uppercase text-[#0f6b63] hover:underline">Registration controls</Link>
+            <Link href="/dev/events" className="text-xs font-bold uppercase text-[#0f6b63] hover:underline tap-target">Registration controls</Link>
           )}
         </div>
       </div>

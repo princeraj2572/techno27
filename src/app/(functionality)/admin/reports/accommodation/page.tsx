@@ -6,7 +6,7 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { Accommodation } from "@/features/accommodation/accommodation.model";
 import { Button } from "@/components/ui/button";
 import FilterForm from "../FilterForm";
-import { Hotel, Download, ChevronRight } from "lucide-react";
+import { Download, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
@@ -85,7 +85,7 @@ export default async function ReportAccommodationPage({
     <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Accommodation Report</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{total} request(s)</p>
@@ -95,9 +95,6 @@ export default async function ReportAccommodationPage({
               <Download className="h-3.5 w-3.5" />
               {q || gender ? "Export filtered" : "Download Excel"}
             </a>
-            <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
-              <Hotel className="h-4 w-4 text-amber-600" />
-            </div>
           </div>
         </div>
 

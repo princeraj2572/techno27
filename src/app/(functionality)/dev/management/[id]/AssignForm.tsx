@@ -125,7 +125,7 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
           <div className="rounded-2xl border-2 border-dashed border-slate-100 py-10 text-center">
             <CalendarDays className="h-7 w-7 mx-auto mb-2 text-slate-200" />
             <p className="text-sm text-slate-500">No events found.</p>
-            <Link href="/dev/seed" className="text-xs text-[#0f6b63] hover:underline mt-1 block">Seed events</Link>
+            <Link href="/dev/seed" className="text-xs text-[#0f6b63] hover:underline mt-1 block tap-target">Seed events</Link>
           </div>
         ) : (
           <div className="space-y-1.5">

@@ -141,7 +141,7 @@ export default async function AdminAccommodationPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Accommodation</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{counts.total} request{counts.total !== 1 ? "s" : ""}</p>
@@ -181,8 +181,8 @@ export default async function AdminAccommodationPage({
                 <Link
                   key={g}
                   href={`/admin/accommodation?gender=${g}`}
-                  className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${
-                    gender === g ? GENDER_TAB_ACTIVE[g] : "bg-slate-50 text-slate-500 hover:bg-slate-100"
+                  className={`rounded-full border-2 border-[#1c1812] px-3 py-2.5 text-xs font-semibold transition-colors sm:py-1.5 ${
+                    gender === g ? GENDER_TAB_ACTIVE[g] : "bg-white text-[#1c1812] hover:bg-[#f6efdf]"
                   }`}
                 >
                   {g} · {TAB_COUNT[g]}

@@ -16,7 +16,7 @@ export default async function AdminHelpDeskPage({ searchParams }: { searchParams
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-8">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center flex-wrap justify-between gap-x-4 gap-y-3">
         <div>
           <TicketTitle className="mb-2 text-3xl leading-[1.1] sm:text-5xl">Help desk</TicketTitle>
           <p className="text-xs text-slate-500">Questions from participants. Replying marks a question answered.</p>

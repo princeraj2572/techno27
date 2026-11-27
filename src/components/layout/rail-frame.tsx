@@ -23,6 +23,7 @@ const CREAM = "#f3e8cf";
 const RAYS = { background: "radial-gradient(circle at 50% 50%, rgba(255,236,170,.9), transparent 60%), repeating-conic-gradient(from 0deg at 50% 50%, #f5c928 0deg 12deg, #e9a11a 12deg 24deg)" };
 const STORE_KEY = "trx27-rail-open";
 
+const AREA_SHORT: Record<Area, string> = { participant: "My dashboard", admin: "Mgmt", dev: "Dev", "event-manager": "Events" };
 const AREA_NAME: Record<Area, string> = { participant: "My dashboard", admin: "Management", dev: "Developer", "event-manager": "Event manager" };
 const AREA_HOME: Record<Area, string> = { participant: "/dashboard", admin: "/admin", dev: "/dev", "event-manager": "/event-manager" };
 
@@ -133,36 +134,38 @@ export default function RailFrame({ area, user, children }: { area: Area; user: 
     <div className={`flex min-h-[calc(100dvh-4rem)] bg-[#f6efdf] ${sans.className}`}>
       {/* desktop / tablet rail */}
       <aside
-        className="sticky top-16 hidden h-[calc(100dvh-4rem)] shrink-0 flex-col gap-2 overflow-y-auto overflow-x-hidden border-r-[3px] py-4 transition-[width] duration-300 ease-out md:flex"
+        className="sticky top-16 hidden h-[calc(100dvh-4rem)] shrink-0 flex-col overflow-hidden border-r-[3px] py-3 transition-[width] duration-300 ease-out md:flex"
         style={{ width: open ? "15rem" : "5rem", background: INK, borderColor: INK }}
         aria-label={`${AREA_NAME[area]} menu`}
       >
-        <Link href={AREA_HOME[area]} className="flex min-h-14 shrink-0 items-center px-4" aria-label={AREA_NAME[area]}>
-          {open ? <FestLogo className="!mx-0 w-36" /> : (
-            <FestLogo className="!mx-0 -ml-1.5 w-[3.75rem] max-w-none" />
-          )}
+        {/* brand + area name + collapse, kept compact so every menu item fits on a laptop screen */}
+        <Link href={AREA_HOME[area]} className="flex shrink-0 items-center px-4" aria-label={AREA_NAME[area]}>
+          {open ? <FestLogo className="!mx-0 w-28" /> : <FestLogo className="!mx-0 -ml-1.5 w-[3.75rem] max-w-none" />}
         </Link>
-        {open && <p className={`mt-1 px-4 text-[10px] tracking-[0.3em] text-[#f5c928] ${mono.className}`}>{AREA_NAME[area].toUpperCase()}</p>}
+        <div className={`mt-2 flex shrink-0 items-center gap-2 px-4 ${open ? "justify-between" : "justify-center"}`}>
+          {open && <p className={`truncate text-[10px] tracking-[0.3em] text-[#f5c928] ${mono.className}`}>{AREA_NAME[area].toUpperCase()}</p>}
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={open ? "Collapse menu" : "Expand menu"}
+            aria-expanded={open}
+            title={open ? "Collapse menu" : "Expand menu"}
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border-2 transition hover:brightness-125 active:scale-95"
+            style={{ borderColor: "rgba(243,232,207,.25)", color: CREAM }}
+          >
+            <Toggle className="h-4 w-4" />
+          </button>
+        </div>
 
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={open ? "Collapse menu" : "Expand menu"}
-          aria-expanded={open}
-          className="mx-4 flex h-9 shrink-0 items-center justify-center gap-2 rounded-xl border-2 text-xs font-extrabold uppercase tracking-wider transition hover:brightness-125"
-          style={{ borderColor: "rgba(243,232,207,.25)", color: CREAM }}
-        >
-          <Toggle className="h-4 w-4" /> {open && "Collapse"}
-        </button>
-
-        <nav className="flex flex-col gap-1.5 px-4">
+        {/* only the menu scrolls if the screen is very short; brand and footer stay put */}
+        <nav className="mt-3 flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overflow-x-hidden px-4">
           {items.map((it) => {
             const active = isActive(it, pathname);
             const Icon = it.icon;
             return (
-              <Link key={it.href} href={it.href} aria-current={active ? "page" : undefined} className="group relative">
+              <Link key={it.href} href={it.href} aria-current={active ? "page" : undefined} className="group relative shrink-0">
                 <span
-                  className="flex h-11 items-center gap-3 rounded-2xl border-[3px] px-[9px] text-sm font-extrabold transition hover:bg-white/5"
+                  className="flex h-10 items-center gap-3 rounded-xl border-[3px] px-[9px] text-sm font-extrabold transition hover:bg-white/5 [@media(max-height:820px)]:h-9"
                   style={active ? { ...RAYS, borderColor: CREAM, color: INK } : { borderColor: "transparent", color: "rgba(243,232,207,.72)" }}
                 >
                   <Icon className="h-5 w-5 shrink-0" />
@@ -178,26 +181,34 @@ export default function RailFrame({ area, user, children }: { area: Area; user: 
           })}
         </nav>
 
-        {others.length > 0 && (
-          <div className="mt-3 flex flex-col gap-1.5 border-t border-white/10 px-4 pt-3">
-            {open && <p className={`text-[10px] tracking-[0.3em] text-[#f3e8cf]/50 ${mono.className}`}>SWITCH AREA</p>}
-            {others.map((a) => (
-              <Link key={a} href={AREA_HOME[a]} className="group relative flex h-10 items-center gap-3 rounded-xl px-[11px] text-xs font-extrabold text-[#f3e8cf]/70 hover:bg-white/5" title={!open ? AREA_NAME[a] : undefined}>
-                <ChevronRight className="h-4 w-4 shrink-0 text-[#f5c928]" />
-                <span className={`whitespace-nowrap ${open ? "" : "opacity-0"}`}>{AREA_NAME[a]}</span>
-              </Link>
-            ))}
-          </div>
-        )}
-
-        <div className="mt-auto shrink-0 px-4 pt-3">
+        <div className="shrink-0 border-t border-white/10 px-4 pt-3">
+          {others.length > 0 && (
+            <div className={`mb-3 flex gap-1.5 ${open ? "items-center" : "flex-col items-center"}`}>
+              {open && <span className="mr-0.5 text-[11px] font-bold text-[#f3e8cf]/60">Switch</span>}
+              {others.map((a) => (
+                <Link
+                  key={a}
+                  href={AREA_HOME[a]}
+                  title={`Switch to ${AREA_NAME[a]}`}
+                  className={`inline-flex h-8 items-center gap-1 rounded-full border-2 text-xs font-extrabold transition hover:bg-white/10 active:scale-95 ${open ? "px-2.5" : "w-8 justify-center"}`}
+                  style={{ borderColor: "rgba(243,232,207,.25)", color: CREAM }}
+                >
+                  <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[#f5c928]" />
+                  {open ? AREA_SHORT[a] : <span className="sr-only">{AREA_NAME[a]}</span>}
+                </Link>
+              ))}
+            </div>
+          )}
           {open ? (
-            <div className="rounded-2xl border-[3px] p-3 text-center" style={{ ...RAYS, borderColor: CREAM }}>
-              <p className={`text-[9px] tracking-[0.3em] ${mono.className}`} style={{ color: INK }}>{user.participantId ? "ADMIT ONE" : "SIGNED IN"}</p>
-              <p className={`mt-0.5 truncate text-sm ${display.className}`} style={{ color: INK }}>{user.participantId ?? user.name}</p>
+            <div className="flex items-center gap-2.5 rounded-xl border-[3px] px-2.5 py-1.5" style={{ ...RAYS, borderColor: CREAM }}>
+              <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border-2 bg-[#f3e8cf] text-sm ${display.className}`} style={{ borderColor: INK, color: INK }}>{initial}</span>
+              <span className="min-w-0">
+                <span className={`block text-[9px] tracking-[0.25em] ${mono.className}`} style={{ color: INK }}>{user.participantId ? "ADMIT ONE" : "SIGNED IN"}</span>
+                <span className={`block truncate text-sm ${display.className}`} style={{ color: INK }}>{user.participantId ?? user.name}</span>
+              </span>
             </div>
           ) : (
-            <span className={`grid h-12 w-12 place-items-center rounded-full border-[3px] text-lg ${display.className}`} style={{ background: "#f5c928", borderColor: CREAM, color: INK }} title={user.name}>{initial}</span>
+            <span className={`mx-auto grid h-11 w-11 place-items-center rounded-full border-[3px] text-lg ${display.className}`} style={{ background: "#f5c928", borderColor: CREAM, color: INK }} title={user.participantId ?? user.name}>{initial}</span>
           )}
         </div>
       </aside>
@@ -206,16 +217,16 @@ export default function RailFrame({ area, user, children }: { area: Area; user: 
       <div className="flex min-w-0 flex-1 flex-col">
         <div className={`flex flex-wrap items-center gap-x-4 gap-y-2 border-b-2 bg-[#fbf6ea] px-4 py-2.5 sm:px-6 ${body.className}`} style={{ borderColor: `${INK}22` }}>
           {parent && (
-            <Link href={parent.href} className="inline-flex items-center gap-1.5 rounded-full border-2 bg-white px-3 py-0.5 text-sm font-bold uppercase tracking-wider transition hover:-translate-y-0.5" style={{ borderColor: INK, color: INK, boxShadow: `0 2px 0 ${INK}` }}>
+            <Link href={parent.href} className="inline-flex items-center gap-1.5 rounded-full border-2 bg-white px-3 py-1.5 text-sm font-bold uppercase tracking-wider transition active:scale-95 sm:py-0.5" style={{ borderColor: INK, color: INK, boxShadow: `0 2px 0 ${INK}` }}>
               <ArrowLeft className="h-4 w-4" /> {parent.label}
             </Link>
           )}
-          <nav aria-label="Breadcrumb" className="flex min-w-0 flex-wrap items-center gap-1 text-sm font-bold uppercase tracking-widest">
+          <nav aria-label="Breadcrumb" className={`${parent ? "hidden sm:flex" : "flex"} min-w-0 flex-wrap items-center gap-1 text-sm font-bold uppercase tracking-widest`}>
             {crumbs.map((c, i) => {
               const last = i === crumbs.length - 1;
               return (
                 <span key={c.href} className="flex items-center gap-1">
-                  {last ? <span aria-current="page" style={{ color: INK }}>{c.label}</span> : <Link href={c.href} className="text-[#0e5b57] underline-offset-4 hover:underline">{c.label}</Link>}
+                  {last ? <span aria-current="page" style={{ color: INK }}>{c.label}</span> : <Link href={c.href} className="tap-target text-[#0e5b57] underline-offset-4 hover:underline">{c.label}</Link>}
                   {!last && <ChevronRight className="h-4 w-4 text-black/35" />}
                 </span>
               );

@@ -194,7 +194,7 @@ export default async function AdminDashboardPage() {
             <p className={`text-xl text-[#1c1812] ${display.className}`}>Events overview <span className="text-sm text-black/50">{Math.min(events.length, OVERVIEW_ROWS)} of {events.length}</span></p>
             <Link
               href="/admin/events"
-              className="text-sm font-bold uppercase tracking-wider text-[#0e5b57] hover:text-[#a33517] transition-colors flex items-center gap-1"
+              className="tap-target text-sm font-bold uppercase tracking-wider text-[#0e5b57] hover:text-[#a33517] transition-colors flex items-center gap-1"
             >
               View all <ArrowRight className="h-3.5 w-3.5" />
             </Link>

@@ -7,7 +7,7 @@ import { User } from "@/features/users/user.model";
 import { Transaction } from "@/features/payments/transaction.model";
 import { Button } from "@/components/ui/button";
 import FilterForm from "../FilterForm";
-import { CreditCard, Download, ChevronRight, CheckCircle2, Clock } from "lucide-react";
+import { Download, ChevronRight, CheckCircle2, Clock } from "lucide-react";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
@@ -98,7 +98,7 @@ export default async function ReportPaymentsPage({
     <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Payment Report</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{total} participant(s)</p>
@@ -108,9 +108,6 @@ export default async function ReportPaymentsPage({
               <Download className="h-3.5 w-3.5" />
               {q || status ? "Export filtered" : "Download Excel"}
             </a>
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
-              <CreditCard className="h-4 w-4 text-emerald-600" />
-            </div>
           </div>
         </div>
 

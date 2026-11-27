@@ -151,7 +151,7 @@ export default async function DashboardPage() {
           <div>
             <div className="mb-3 flex items-end justify-between">
               <h2 className={`text-2xl sm:text-3xl ${display.className}`} style={{ color: INK }}>Your tickets</h2>
-              <Link href="/events-selection" className="text-xs font-extrabold uppercase text-[#0e5b57] underline underline-offset-4 sm:text-sm">Browse events</Link>
+              <Link href="/events-selection" className="text-xs font-extrabold uppercase text-[#0e5b57] underline underline-offset-4 sm:text-sm tap-target">Browse events</Link>
             </div>
             {eventCount === 0 ? (
               <div className="rounded-2xl border-[3px] border-dashed bg-white/60 py-12 text-center" style={{ borderColor: `${INK}55` }}>

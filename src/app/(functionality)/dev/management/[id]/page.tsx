@@ -39,7 +39,7 @@ export default async function DevManagementManagerPage({
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-start justify-between">
+        <div className="flex items-start flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{manager.fullName}</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{manager.email}</p>

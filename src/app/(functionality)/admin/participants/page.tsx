@@ -116,7 +116,7 @@ export default async function AdminParticipantsPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Participants</TicketTitle>
           </div>
@@ -152,7 +152,7 @@ export default async function AdminParticipantsPage({
                   key={t.value}
                   href={tabHref(t.value)}
                   aria-current={type === t.value ? "page" : undefined}
-                  className={`rounded-full px-3 py-1 text-xs font-extrabold uppercase transition-colors ${type === t.value ? "bg-[#1c1812] text-[#f3e8cf]" : "text-[#1c1812] hover:bg-black/5"}`}
+                  className={`rounded-full px-3 py-2.5 text-xs font-extrabold uppercase sm:py-1 transition-colors ${type === t.value ? "bg-[#1c1812] text-[#f3e8cf]" : "text-[#1c1812] hover:bg-black/5"}`}
                 >
                   {t.label} <span className="ml-1 tabular-nums opacity-70">{t.n}</span>
                 </Link>

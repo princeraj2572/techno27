@@ -68,7 +68,7 @@ export default async function DevManagementPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Management</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -81,9 +81,6 @@ export default async function DevManagementPage({
                 <Plus className="h-3.5 w-3.5 mr-1.5" /> Create account
               </Link>
             </Button>
-            <div className="w-9 h-9 rounded-xl bg-[#f6efdf] flex items-center justify-center shrink-0">
-              <Shield className="h-4 w-4 text-[#0f6b63]" />
-            </div>
           </div>
         </div>
 
@@ -93,7 +90,7 @@ export default async function DevManagementPage({
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <Shield className="h-8 w-8 mx-auto mb-3 text-slate-200" />
               <p className="text-sm font-medium text-slate-500">No management accounts yet</p>
-              <Link href="/dev/management/create" className="text-xs text-[#0f6b63] hover:underline mt-1 block">
+              <Link href="/dev/management/create" className="text-xs text-[#0f6b63] hover:underline mt-1 block tap-target">
                 Create the first one
               </Link>
             </div>
@@ -126,11 +123,11 @@ export default async function DevManagementPage({
                   </p>
                 </div>
                 {u.role === "EVENT_MANAGER" ? (
-                  <Link href={`/dev/management/${u._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0">
+                  <Link href={`/dev/management/${u._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0 tap-target">
                     Assign events
                   </Link>
                 ) : (
-                  <Link href={`/dev/users/${u._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0">
+                  <Link href={`/dev/users/${u._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0 tap-target">
                     View
                   </Link>
                 )}

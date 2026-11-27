@@ -63,9 +63,9 @@ export default async function AdminEventDetailPage({
   return (
     <div className="mx-auto max-w-4xl space-y-7 px-4 py-8">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start flex-wrap justify-between gap-x-4 gap-y-3">
         <div className="min-w-0">
-          <Link href="/admin/events" className="mb-1 inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63]">
+          <Link href="/admin/events" className="mb-1 inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] tap-target">
             <ChevronLeft className="h-3.5 w-3.5" /> {fest ? fest.name : "Events"}
           </Link>
           <TicketTitle className="mb-2 break-words text-3xl leading-[1.1] sm:text-5xl">{title}</TicketTitle>
@@ -76,7 +76,7 @@ export default async function AdminEventDetailPage({
         </div>
         <div className="flex shrink-0 items-center gap-3">
           {viewer.role === "DEV_ADMIN" && (
-            <Link href={`/dev/events/${id}`} className="text-xs font-bold uppercase text-[#0f6b63] hover:underline">Manage</Link>
+            <Link href={`/dev/events/${id}`} className="text-xs font-bold uppercase text-[#0f6b63] hover:underline tap-target">Manage</Link>
           )}
         </div>
       </div>

@@ -166,3 +166,9 @@ body:has(:is(.intro-overlay, .splash):not(.out)) :is(.hero-in, .hi-pop, .hi-rise
   .hi-warp { display: none; }
   .hi-shimmer { animation: none; opacity: 0; }
 }
+
+/* Small inline links keep their look but get a ~40px touch area (fingers, not cursors). */
+@utility tap-target {
+  position: relative;
+  &::after { content: ""; position: absolute; inset: -10px -6px; }
+}

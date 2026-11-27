@@ -8,7 +8,7 @@ import { Team } from "@/features/teams/team.model";
 import { Event } from "@/features/events/event.model";
 import { Button } from "@/components/ui/button";
 import FilterForm from "../FilterForm";
-import { CalendarDays, Download, ChevronRight } from "lucide-react";
+import { Download, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
@@ -92,7 +92,7 @@ export default async function ReportEventParticipantsPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Event Participants</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{total} team(s) found</p>
@@ -102,9 +102,6 @@ export default async function ReportEventParticipantsPage({
               <Download className="h-3.5 w-3.5" />
               {q || event ? "Export filtered" : "Download Excel"}
             </a>
-            <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center shrink-0">
-              <CalendarDays className="h-4 w-4 text-teal-600" />
-            </div>
           </div>
         </div>
 

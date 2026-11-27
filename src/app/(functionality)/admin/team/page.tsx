@@ -48,7 +48,7 @@ export default async function AdminTeamPage() {
     <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
         <div>
-          <Link href="/admin" className="text-xs text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1 mb-3">
+          <Link href="/admin" className="text-xs text-teal-600 hover:text-teal-700 font-medium flex items-center gap-1 mb-3 tap-target">
             <ArrowLeft className="h-3 w-3" /> Management
           </Link>
           <div className="flex items-center gap-3">

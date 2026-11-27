@@ -42,7 +42,7 @@ export default async function DevEventsPage() {
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center flex-wrap justify-between gap-x-4 gap-y-3">
           <div>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Events</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{events.length} event(s) total</p>
@@ -55,9 +55,6 @@ export default async function DevEventsPage() {
             >
               <Plus className="h-3.5 w-3.5" /> Seed
             </Link>
-            <div className="w-9 h-9 rounded-xl bg-[#f6efdf] flex items-center justify-center shrink-0">
-              <CalendarDays className="h-4 w-4 text-[#0f6b63]" />
-            </div>
           </div>
         </div>
 
@@ -67,7 +64,7 @@ export default async function DevEventsPage() {
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <CalendarDays className="h-8 w-8 mx-auto mb-3 text-slate-200" />
               <p className="text-sm font-medium text-slate-500">No events yet</p>
-              <Link href="/dev/seed" className="text-xs text-[#0f6b63] hover:underline mt-1 block">
+              <Link href="/dev/seed" className="text-xs text-[#0f6b63] hover:underline mt-1 block tap-target">
                 Seed dummy events
               </Link>
             </div>
@@ -95,7 +92,7 @@ export default async function DevEventsPage() {
                   </div>
                   <span className={`text-xs font-medium shrink-0 ${label.color}`}>{label.text}</span>
                   <QuickStatusToggle eventId={event._id} currentStatus={event.status} currentUserId={userId} />
-                  <Link href={`/dev/events/${event._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0">
+                  <Link href={`/dev/events/${event._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0 tap-target">
                     Manage
                   </Link>
                 </div>

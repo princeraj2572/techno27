@@ -47,7 +47,7 @@ export default function ExtraFilters({ branches, departments, semesters }: Props
           const options = optionsFor(f.key);
           return (
             <Select key={f.key} value={value} onValueChange={(v) => setParam(f.key, v)}>
-              <SelectTrigger className="h-7 w-full px-2 text-[11px]">
+              <SelectTrigger className="h-10 w-full px-2 text-xs sm:h-8">
                 <SelectValue placeholder={f.placeholder}>
                   {value === "__all" ? f.placeholder : value === OTHER_BRANCH_VALUE ? "Other" : value}
                 </SelectValue>
