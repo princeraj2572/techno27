@@ -8,6 +8,7 @@ import { display } from "@/components/indie";
 import { CARD_UI, INSET } from "@/components/indie/gold-poster";
 import { ALL_EVENTS } from "@/features/events/data/all-events";
 import { calculatePayAmount, MAX_PAYMENT } from "@/features/payments/payment-constants";
+import { statusChip } from "@/features/events/status-ui";
 import {
   getAllEventsAction, getMyRegistrationsAction, submitEventsAction, unregisterFromEventAction,
 } from "@/features/events/event-actions";
@@ -17,16 +18,6 @@ type Reg = { eventId: string; teamId: string; isLeader: boolean; members: number
 type Fest = { key: string; name: string; tagline?: string; category?: string; events: Ev[] };
 
 const CART_KEY = "trx27-cart";
-const STATUS: Record<string, { text: string; cls: string }> = {
-  REGISTRATION_OPEN:   { text: "Open",          cls: "bg-[#0f6b63] text-white" },
-  UPCOMING:            { text: "Opens soon",    cls: "bg-[#fde9a8] text-[#1c1812]" },
-  DRAFT:               { text: "Opens soon",    cls: "bg-[#fde9a8] text-[#1c1812]" },
-  EVENT_LIVE:          { text: "Live now",      cls: "bg-[#c8421f] text-white" },
-  REGISTRATION_CLOSED: { text: "Closed",        cls: "bg-black/10 text-black/60" },
-  TEMPORARILY_CLOSED:  { text: "Paused",        cls: "bg-black/10 text-black/60" },
-  COMPLETED:           { text: "Over",          cls: "bg-black/10 text-black/60" },
-  CANCELLED:           { text: "Cancelled",     cls: "bg-black/10 text-black/60" },
-};
 // "Kalakriti: Rangoli" -> "Rangoli" inside the Kalakriti group
 const shortName = (ev: Ev, fest: string) => (ev.name.startsWith(fest + ": ") ? ev.name.slice(fest.length + 2) : ev.name);
 
@@ -219,7 +210,7 @@ export default function EventsSelectionPage() {
                       const reg = regs.find((r) => r.eventId === e._id);
                       const inCart = cart.includes(e._id);
                       const open = e.status === "REGISTRATION_OPEN";
-                      const st = STATUS[e.status] ?? { text: e.status.replace(/_/g, " "), cls: "bg-black/10 text-black/60" };
+                      const st = statusChip(e.status);
                       const blocked = open && !reg && !inCart && !canAdd(e._id);
                       return (
                         <li key={e._id} className={`px-5 py-3 ${inCart ? "bg-[#fff6cc]" : ""}`}>
