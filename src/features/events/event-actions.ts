@@ -13,6 +13,7 @@ import { MAX_EXTERNAL_EVENTS, seedEvents } from "@/features/events/data/seed-eve
 const SEED_ORDER = seedEvents.map((e) => e.slug);
 const bySeedOrder = (a?: string, b?: string) => { const i = SEED_ORDER.indexOf(a ?? ""), j = SEED_ORDER.indexOf(b ?? ""); return (i < 0 ? 1e9 : i) - (j < 0 ? 1e9 : j); };
 import { getUser } from "@/features/users/user-actions";
+import { CheckIn } from "@/features/checkin/checkIn.model";
 
 export async function getAllEventsAction() {
   await connectToDatabase();
@@ -124,6 +125,15 @@ export async function submitEventsAction(data: { eventIds: string[] }) {
 
   const existingUser = await User.findOne({ email: user.email });
   if (!existingUser) throw new Error("User not found");
+
+  data = { eventIds: [...new Set(data.eventIds)].filter((id) => Types.ObjectId.isValid(id)) };
+  if (!data.eventIds.length) throw new Error("Pick at least one event");
+  // Already in a team for one of these events (as leader or member)?
+  const dup = await Team.findOne({ event: { $in: data.eventIds }, $or: [{ leader: existingUser.email }, { members: existingUser.email }] }).select("event").lean<{ event: Types.ObjectId }>();
+  if (dup) {
+    const name = (await Event.findById(dup.event).select("name").lean<IEvent>())?.name ?? "this event";
+    throw new Error(`You are already registered for "${name}".`);
+  }
 
   const events = await Event.find({ _id: { $in: data.eventIds } });
   const eventsById = new Map(events.map((e) => [e._id.toString(), e]));
@@ -523,4 +533,49 @@ export async function updateEventFeesAction(
   });
 
   return { success: true };
+}
+
+// ===================== PARTICIPANT: cart + unregister =====================
+
+/** The signed-in participant's registrations (one per team they are in) and their event cap. */
+export async function getMyRegistrationsAction() {
+  noStore();
+  const me = await getUser();
+  if (!me) return { role: "", maxFestEvents: null as number | null, registrations: [] as { eventId: string; teamId: string; isLeader: boolean; members: number }[] };
+  await connectToDatabase();
+  const teams = await Team.find({ $or: [{ leader: me.email }, { members: me.email }] })
+    .select("event leader members")
+    .lean<{ _id: Types.ObjectId; event: Types.ObjectId; leader: string; members: string[] }[]>();
+  return {
+    role: me.role,
+    maxFestEvents: me.role === "EXTERNAL_USER" ? MAX_EXTERNAL_EVENTS : null,
+    registrations: teams.map((t) => ({ eventId: String(t.event), teamId: String(t._id), isLeader: t.leader === me.email, members: t.members.length })),
+  };
+}
+
+/** Leave an event. A leader's team is removed (its members are unregistered too); a member just leaves.
+ *  Not allowed once the event is live/over or after the participant has been checked in. */
+export async function unregisterFromEventAction(eventId: string) {
+  const me = await getUser();
+  if (!me) return { ok: false, error: "Please sign in again." };
+  if (!Types.ObjectId.isValid(eventId)) return { ok: false, error: "Event not found." };
+  await connectToDatabase();
+
+  const event = await Event.findById(eventId).select("name status").lean<IEvent>();
+  if (!event) return { ok: false, error: "Event not found." };
+  if (["EVENT_LIVE", "COMPLETED"].includes(event.status)) return { ok: false, error: `"${event.name}" has already started; you can't unregister now.` };
+
+  const team = await Team.findOne({ event: eventId, $or: [{ leader: me.email }, { members: me.email }] });
+  if (!team) return { ok: false, error: "You are not registered for this event." };
+  if (await CheckIn.exists({ eventId, userId: me._id })) return { ok: false, error: "You are already checked in for this event." };
+
+  if (team.leader === me.email) {
+    await User.updateMany({ email: { $in: team.members } }, { $pull: { teams: team._id } });
+    await Invitation.deleteMany({ teamId: team._id });
+    await Team.deleteOne({ _id: team._id });
+  } else {
+    await Team.updateOne({ _id: team._id }, { $pull: { members: me.email } });
+    await User.updateOne({ email: me.email }, { $pull: { teams: team._id } });
+  }
+  return { ok: true };
 }

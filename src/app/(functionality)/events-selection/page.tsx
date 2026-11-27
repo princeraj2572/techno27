@@ -1,223 +1,300 @@
 "use client";
-import { CARD_UI } from "@/components/indie/gold-poster";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { getAllEventsAction, getRegisteredEventsAction, submitEventsAction } from "@/features/events/event-actions";
-import { CalendarDays, CheckCircle2, Trophy, Users } from "lucide-react";
+// Browse events as a cart: competitions are grouped under their fest event; add any open ones to the
+// cart, register them in one go, and unregister from the ones you're in.
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { CalendarDays, CheckCircle2, Plus, ShoppingBag, Trash2, Users, X } from "lucide-react";
 import AppShell from "@/components/layout/app-shell";
 import { display } from "@/components/indie";
+import { CARD_UI, INSET } from "@/components/indie/gold-poster";
+import { ALL_EVENTS } from "@/features/events/data/all-events";
+import { calculatePayAmount, MAX_PAYMENT } from "@/features/payments/payment-constants";
+import {
+  getAllEventsAction, getMyRegistrationsAction, submitEventsAction, unregisterFromEventAction,
+} from "@/features/events/event-actions";
 
-type Event = {
-  _id: string;
-  name: string;
-  description?: string;
-  category?: string;
-  status: string;
-  teamSize?: number;
-  internalFee?: number;
-  externalFee?: number;
-  prizeMoney?: number;
-  maxParticipants?: number;
+type Ev = { _id: string; name: string; status: string; teamSize?: number; mainEvent?: string; category?: string };
+type Reg = { eventId: string; teamId: string; isLeader: boolean; members: number };
+type Fest = { key: string; name: string; tagline?: string; category?: string; events: Ev[] };
+
+const CART_KEY = "trx27-cart";
+const STATUS: Record<string, { text: string; cls: string }> = {
+  REGISTRATION_OPEN:   { text: "Open",          cls: "bg-[#0f6b63] text-white" },
+  UPCOMING:            { text: "Opens soon",    cls: "bg-[#fde9a8] text-[#1c1812]" },
+  DRAFT:               { text: "Opens soon",    cls: "bg-[#fde9a8] text-[#1c1812]" },
+  EVENT_LIVE:          { text: "Live now",      cls: "bg-[#c8421f] text-white" },
+  REGISTRATION_CLOSED: { text: "Closed",        cls: "bg-black/10 text-black/60" },
+  TEMPORARILY_CLOSED:  { text: "Paused",        cls: "bg-black/10 text-black/60" },
+  COMPLETED:           { text: "Over",          cls: "bg-black/10 text-black/60" },
+  CANCELLED:           { text: "Cancelled",     cls: "bg-black/10 text-black/60" },
 };
+// "Kalakriti: Rangoli" -> "Rangoli" inside the Kalakriti group
+const shortName = (ev: Ev, fest: string) => (ev.name.startsWith(fest + ": ") ? ev.name.slice(fest.length + 2) : ev.name);
 
-const STATUS_LABEL: Record<string, { text: string; cls: string }> = {
-  REGISTRATION_OPEN:   { text: "Open",      cls: "bg-[#1f8a3a] text-white" },
-  EVENT_LIVE:          { text: "Live now",  cls: "bg-[#0b2a6b] text-white" },
-  COMPLETED:           { text: "Completed", cls: "bg-black/15 text-black/60" },
-  CANCELLED:           { text: "Cancelled", cls: "bg-[#a1001a] text-white" },
-  REGISTRATION_CLOSED: { text: "Closed",    cls: "bg-[#e8851a] text-black" },
-  TEMPORARILY_CLOSED:  { text: "Paused",    cls: "bg-[#ff6a00] text-black" },
-};
-
-function Skeleton() {
-  return (
-    <div>
-      <div className="relative mx-auto max-w-3xl space-y-3 px-4 py-16">
-        <div className="h-10 w-48 animate-pulse bg-[#1c1812]/20" />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-44 animate-pulse bg-[#1c1812]/15" />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+function readCart(): string[] {
+  try { return JSON.parse(localStorage.getItem(CART_KEY) ?? "[]"); } catch { return []; }
 }
 
 export default function EventsSelectionPage() {
-  const router = useRouter();
-  const [events, setEvents]           = useState<Event[]>([]);
-  const [registeredIds, setRegisteredIds] = useState<Set<string>>(new Set());
-  const [selected, setSelected]       = useState<Set<string>>(new Set());
-  const [loading, setLoading]         = useState(true);
-  const [submitting, setSubmitting]   = useState(false);
-  const [msg, setMsg]                 = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [events, setEvents] = useState<Ev[]>([]);
+  const [regs, setRegs] = useState<Reg[]>([]);
+  const [role, setRole] = useState("");
+  const [max, setMax] = useState<number | null>(null);
+  const [cart, setCart] = useState<string[]>([]);
+  const [hydrated, setHydrated] = useState(false); // don't overwrite the saved cart before it is read
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [confirming, setConfirming] = useState<string | null>(null); // eventId awaiting unregister confirm
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [allEvents, regEvents] = await Promise.all([
-          getAllEventsAction(),
-          getRegisteredEventsAction(),
-        ]);
-        setEvents(allEvents);
-        setRegisteredIds(new Set(regEvents.map((e: Event) => e._id)));
-      } catch {
-        setMsg({ type: "error", text: "Failed to load events." });
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const load = useCallback(async () => {
+    const [all, mine] = await Promise.all([getAllEventsAction(), getMyRegistrationsAction()]);
+    setEvents(all); setRegs(mine.registrations); setRole(mine.role); setMax(mine.maxFestEvents);
+    return { all: all as Ev[], mine };
   }, []);
 
-  function toggleSelect(id: string) {
-    if (registeredIds.has(id)) return;
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
+  useEffect(() => {
+    load()
+      .then(({ all, mine }) => {
+        // keep only cart items that are still open and not already registered
+        const open = new Set(all.filter((e) => e.status === "REGISTRATION_OPEN").map((e) => e._id));
+        const reg = new Set(mine.registrations.map((r) => r.eventId));
+        setCart(readCart().filter((id) => open.has(id) && !reg.has(id)));
+        setHydrated(true);
+      })
+      .catch(() => setMsg({ ok: false, text: "Couldn't load events. Refresh to try again." }))
+      .finally(() => setLoading(false));
+  }, [load]);
 
-  async function handleRegister() {
-    if (selected.size === 0) return;
-    setSubmitting(true);
+  useEffect(() => {
+    if (!hydrated) return;
+    try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch { /* private mode */ }
+  }, [cart, hydrated]);
+
+  const byId = useMemo(() => new Map(events.map((e) => [e._id, e])), [events]);
+  const festOf = useCallback((id: string) => { const e = byId.get(id); return e?.mainEvent || id; }, [byId]);
+  const regIds = useMemo(() => new Set(regs.map((r) => r.eventId)), [regs]);
+
+  // Group in website order; events without a fest (made by hand) form their own group at the end.
+  const fests: Fest[] = useMemo(() => {
+    const groups = ALL_EVENTS.map((f) => ({ key: f.slug, name: f.name, tagline: f.tagline, category: f.category, events: events.filter((e) => e.mainEvent === f.slug) }));
+    const loose = events.filter((e) => !e.mainEvent || !ALL_EVENTS.some((f) => f.slug === e.mainEvent)).map((e) => ({ key: e._id, name: e.name, category: e.category, events: [e] }));
+    return [...groups, ...loose].filter((g) => g.events.length);
+  }, [events]);
+
+  const usedFests = useMemo(() => new Set([...regs.map((r) => festOf(r.eventId)), ...cart.map(festOf)]), [regs, cart, festOf]);
+  const atCap = max !== null && usedFests.size >= max;
+  const canAdd = (id: string) => !atCap || usedFests.has(festOf(id));
+
+  // Fee estimate (externals; leaders pay): solo vs team events after registering the cart.
+  const fee = useMemo(() => {
+    if (role !== "EXTERNAL_USER") return null;
+    const paying = [...regs.filter((r) => r.isLeader).map((r) => r.eventId), ...cart];
+    const solo = paying.filter((id) => (byId.get(id)?.teamSize ?? 1) <= 1).length;
+    return calculatePayAmount(solo, paying.length - solo);
+  }, [role, regs, cart, byId]);
+
+  const toggle = (id: string) => {
     setMsg(null);
+    setCart((c) => (c.includes(id) ? c.filter((x) => x !== id) : canAdd(id) ? [...c, id] : c));
+  };
+
+  const register = async () => {
+    if (!cart.length) return;
+    setBusy(true); setMsg(null);
     try {
-      await submitEventsAction({ eventIds: [...selected] });
-      setMsg({ type: "success", text: `Registered for ${selected.size} event${selected.size > 1 ? "s" : ""} successfully!` });
-      selected.forEach((id) => setRegisteredIds((prev) => new Set([...prev, id])));
-      setSelected(new Set());
-      setTimeout(() => router.push("/dashboard"), 1500);
-    } catch (e: unknown) {
-      setMsg({ type: "error", text: (e as Error).message });
-    } finally {
-      setSubmitting(false);
-    }
+      await submitEventsAction({ eventIds: cart });
+      const n = cart.length;
+      setCart([]);
+      await load();
+      setMsg({ ok: true, text: `Registered for ${n} event${n > 1 ? "s" : ""}. Invite teammates from My teams.` });
+    } catch (e) {
+      setMsg({ ok: false, text: e instanceof Error ? e.message : "Registration failed." });
+    } finally { setBusy(false); }
+  };
+
+  const unregister = async (id: string) => {
+    setBusy(true); setMsg(null);
+    const res = await unregisterFromEventAction(id).catch(() => ({ ok: false, error: "Something went wrong." }));
+    setConfirming(null);
+    if (res.ok) { await load(); setMsg({ ok: true, text: `Unregistered from ${byId.get(id)?.name ?? "the event"}.` }); }
+    else setMsg({ ok: false, text: res.error ?? "Couldn't unregister." });
+    setBusy(false);
+  };
+
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-6xl space-y-4 px-4 py-16">
+        <div className="h-10 w-48 animate-pulse rounded-xl bg-[#1c1812]/15" />
+        {[1, 2, 3].map((i) => <div key={i} className="h-40 animate-pulse rounded-2xl bg-[#1c1812]/10" />)}
+      </div>
+    );
   }
 
-  if (loading) return <Skeleton />;
+  const cartEvents = cart.map((id) => byId.get(id)).filter(Boolean) as Ev[];
 
-  const openEvents     = events.filter((e) => e.status === "REGISTRATION_OPEN");
-  const otherEvents    = events.filter((e) => e.status !== "REGISTRATION_OPEN");
-  const orderedEvents  = [...openEvents, ...otherEvents];
+  const CartBody = (
+    <>
+      {cartEvents.length === 0 ? (
+        <p className="py-4 text-center text-sm text-black/60">Add open competitions to register for them together.</p>
+      ) : (
+        <ul className="space-y-2">
+          {cartEvents.map((e) => (
+            <li key={e._id} className={`${INSET} flex items-center gap-2 px-3 py-2`}>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-bold text-[#1c1812]">{e.name}</p>
+                <p className="text-xs text-black/55">{(e.teamSize ?? 1) > 1 ? `Team of up to ${e.teamSize}` : "Solo"}</p>
+              </div>
+              <button onClick={() => toggle(e._id)} aria-label={`Remove ${e.name}`} className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-black/60 hover:bg-black/10 active:scale-95">
+                <X className="h-4 w-4" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {fee !== null && (
+        <p className="mt-3 flex items-baseline justify-between text-sm text-[#1c1812]">
+          <span>Total fee <span className="text-black/50">(incl. cart · max ₹{MAX_PAYMENT})</span></span>
+          <span className={`text-xl ${display.className}`}>₹{fee}</span>
+        </p>
+      )}
+      {role === "INTERNAL_USER" && <p className="mt-3 text-sm font-semibold text-[#0f6b63]">Free for OPJU students.</p>}
+      <button
+        onClick={register}
+        disabled={!cart.length || busy}
+        className="mt-4 w-full rounded-full border-[3px] border-[#1c1812] bg-[#0f6b63] py-3 font-extrabold uppercase tracking-wider text-white shadow-[0_4px_0_#1c1812] transition-transform duration-150 active:translate-y-0.5 disabled:opacity-50"
+      >
+        {busy ? "Working…" : `Register ${cart.length || ""} event${cart.length === 1 ? "" : "s"}`}
+      </button>
+    </>
+  );
 
   return (
     <>
       <AppShell
         title="Browse events"
-        sub="Tap an open event to select it, then confirm registration."
+        sub="Add competitions to your cart, then register them together."
         icon={<CalendarDays className="h-6 w-6" />}
         crumbs={[{ label: "Home", href: "/" }, { label: "Dashboard", href: "/dashboard" }, { label: "Browse events" }]}
         back={{ href: "/dashboard", label: "Back to dashboard" }}
-        width="max-w-3xl"
+        width="max-w-6xl"
       >
-        {/* Status message */}
+        {/* Limit */}
+        <div className={`${CARD_UI} flex flex-wrap items-center gap-x-6 gap-y-2 px-5 py-4`}>
+          {max !== null ? (
+            <>
+              <p className="text-[#1c1812]">
+                <span className={`text-2xl ${display.className}`}>{usedFests.size} / {max}</span>{" "}
+                <span className="font-bold uppercase tracking-wider">fest events</span>
+              </p>
+              <p className="text-sm text-black/65">External participants can join up to {max} fest events. Competitions inside one fest event count once.</p>
+              {atCap && <p className="w-full text-sm font-bold text-[#c8421f]">Limit reached: you can still add competitions from fest events you&apos;re already in.</p>}
+            </>
+          ) : (
+            <p className="text-sm text-[#1c1812]"><span className="font-bold">No event limit</span> for OPJU students. Join as many competitions as you like.</p>
+          )}
+        </div>
+
         {msg && (
-          <div
-            className={`rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] px-4 py-3 text-base font-semibold ${
-              msg.type === "success" ? "bg-[#c9f0c9] text-[#0d3d1a]" : "bg-[#ffd0d0] text-[#6b0010]"
-            }`}
-          >
-            {msg.type === "success" && <CheckCircle2 className="mr-1.5 inline h-4 w-4" />}
-            {msg.text}
-          </div>
-        )}
-
-        {/* Events grid */}
-        {openEvents.length === 0 && otherEvents.length === 0 ? (
-          <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 bg-white/60 py-16 text-center">
-            <CalendarDays className="mx-auto mb-3 h-9 w-9 text-[#ef5a1c]" />
-            <p className="text-xl font-bold uppercase text-[#1c1812]">No events available right now</p>
-            <p className="mt-1 text-sm text-black/60">Check back soon or contact the organizers.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {orderedEvents.map((event) => {
-              const isRegistered = registeredIds.has(event._id);
-              const isSelected   = selected.has(event._id);
-              const isOpen       = event.status === "REGISTRATION_OPEN";
-              const statusInfo   = STATUS_LABEL[event.status] ?? { text: event.status.replace(/_/g, " "), cls: "bg-black/15 text-black/60" };
-
-              let cardClass = `${CARD_UI} p-4 transition `;
-              if (isRegistered)    cardClass += "border-l-8 border-l-[#1f8a3a] cursor-default";
-              else if (isSelected) cardClass += "-translate-y-1 cursor-pointer !bg-[#f5c928] !shadow-[6px_6px_0_0_#000]";
-              else if (isOpen)     cardClass += "cursor-pointer hover:-translate-y-1";
-              else                 cardClass += "cursor-not-allowed opacity-60";
-
-              return (
-                <div
-                  key={event._id}
-                  className={cardClass}
-                  onClick={() => isOpen && !isRegistered && toggleSelect(event._id)}
-                >
-                  <div className="mb-2 flex items-start justify-between gap-2">
-                    <h3 className="text-xl font-bold uppercase leading-tight">{event.name}</h3>
-                    {isRegistered ? (
-                      <span className="flex shrink-0 items-center gap-1 bg-[#1f8a3a] px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider text-white">
-                        <CheckCircle2 className="h-3 w-3" /> Registered
-                      </span>
-                    ) : (
-                      <span className={`shrink-0 px-1.5 py-0.5 text-xs font-bold uppercase tracking-wider ${statusInfo.cls}`}>
-                        {statusInfo.text}
-                      </span>
-                    )}
-                  </div>
-
-                  {event.category && (
-                    <p className="mb-2 text-sm font-bold uppercase tracking-widest text-[#7a1c1c]">{event.category}</p>
-                  )}
-
-                  {event.description && (
-                    <p className="mb-3 line-clamp-2 text-base leading-snug text-black/70">{event.description}</p>
-                  )}
-
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-black/20 pt-2 text-sm font-semibold uppercase tracking-wide text-black/65">
-                    <span className="flex items-center gap-1">
-                      <Users className="h-4 w-4" />
-                      {event.teamSize ?? 1} per team
-                    </span>
-                    {event.internalFee !== undefined && <span>Internal ₹{event.internalFee}</span>}
-                    {event.externalFee !== undefined && <span>External ₹{event.externalFee}</span>}
-                    {event.prizeMoney && (
-                      <span className="flex items-center gap-1 text-[#a1001a]">
-                        <Trophy className="h-4 w-4" /> ₹{event.prizeMoney}
-                      </span>
-                    )}
-                  </div>
-
-                  {isSelected && (
-                    <p className="mt-2.5 flex items-center gap-1 text-sm font-bold uppercase tracking-wider">
-                      <CheckCircle2 className="h-4 w-4" /> Selected — tap again to deselect
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {selected.size > 0 && (
-          <p className="text-center text-sm font-bold uppercase tracking-widest text-black/55">
-            {selected.size} event{selected.size > 1 ? "s" : ""} selected
+          <p role="status" className={`rounded-2xl border-[3px] border-[#1c1812] px-4 py-3 font-semibold ${msg.ok ? "bg-[#d9f2df] text-[#0d3d1a]" : "bg-[#ffd0d0] text-[#6b0010]"}`}>
+            {msg.ok && <CheckCircle2 className="mr-1.5 inline h-4 w-4" />}{msg.text}
           </p>
         )}
+
+        <div className="grid items-start gap-6 lg:grid-cols-[1fr_20rem]">
+          {/* Fest events with their competitions */}
+          <div className="space-y-5 pb-28 lg:pb-0">
+            {fests.map((f) => {
+              const inFest = f.events.some((e) => regIds.has(e._id));
+              return (
+                <section key={f.key} className={`${CARD_UI} overflow-hidden`}>
+                  <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b-2 border-dashed border-black/15 px-5 py-4">
+                    <h2 className={`text-2xl text-[#1c1812] ${display.className}`}>{f.name}</h2>
+                    {f.category && <span className="text-xs font-bold uppercase tracking-widest text-[#c8421f]">{f.category}</span>}
+                    <span className="text-xs text-black/50">{f.events.length > 1 ? `${f.events.length} competitions` : "Single event"}</span>
+                    {inFest && <span className="ml-auto rounded-full bg-[#d9f2df] px-2.5 py-0.5 text-xs font-bold uppercase text-[#0d3d1a]">You&apos;re in</span>}
+                    {f.tagline && <p className="w-full text-sm text-black/60">{f.tagline}</p>}
+                  </header>
+                  <ul className="divide-y divide-black/10">
+                    {f.events.map((e) => {
+                      const reg = regs.find((r) => r.eventId === e._id);
+                      const inCart = cart.includes(e._id);
+                      const open = e.status === "REGISTRATION_OPEN";
+                      const st = STATUS[e.status] ?? { text: e.status.replace(/_/g, " "), cls: "bg-black/10 text-black/60" };
+                      const blocked = open && !reg && !inCart && !canAdd(e._id);
+                      return (
+                        <li key={e._id} className={`px-5 py-3 ${inCart ? "bg-[#fff6cc]" : ""}`}>
+                          <div className="flex flex-wrap items-center gap-3">
+                            <div className="min-w-0 flex-1">
+                              <p className="font-bold text-[#1c1812]">{shortName(e, f.name)}</p>
+                              <p className="mt-0.5 flex items-center gap-1 text-xs text-black/55">
+                                <Users className="h-3.5 w-3.5" /> {(e.teamSize ?? 1) > 1 ? `Team of up to ${e.teamSize}` : "Solo"}
+                              </p>
+                            </div>
+                            {reg ? (
+                              <>
+                                <span className="inline-flex items-center gap-1 rounded-full bg-[#d9f2df] px-2.5 py-1 text-xs font-bold uppercase text-[#0d3d1a]">
+                                  <CheckCircle2 className="h-3.5 w-3.5" /> Registered
+                                </span>
+                                <button onClick={() => setConfirming(e._id)} disabled={busy} className="text-xs font-bold uppercase text-[#c8421f] underline-offset-2 hover:underline disabled:opacity-50">
+                                  Unregister
+                                </button>
+                              </>
+                            ) : open ? (
+                              <button
+                                onClick={() => toggle(e._id)}
+                                disabled={blocked}
+                                title={blocked ? `Limit of ${max} fest events reached` : undefined}
+                                className={`inline-flex items-center gap-1.5 rounded-full border-[3px] border-[#1c1812] px-4 py-1.5 text-sm font-extrabold uppercase transition-transform duration-150 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 ${inCart ? "bg-[#1c1812] text-[#f3e8cf]" : "bg-[#f5c928] text-[#1c1812]"}`}
+                              >
+                                {inCart ? <><X className="h-4 w-4" /> In cart</> : <><Plus className="h-4 w-4" /> Add</>}
+                              </button>
+                            ) : (
+                              <span className={`rounded-full px-2.5 py-1 text-xs font-bold uppercase ${st.cls}`}>{st.text}</span>
+                            )}
+                          </div>
+                          {confirming === e._id && reg && (
+                            <div className={`${INSET} mt-3 flex flex-wrap items-center gap-3 px-4 py-3`}>
+                              <p className="flex-1 text-sm text-[#1c1812]">
+                                {reg.isLeader && reg.members > 1
+                                  ? `You lead this team: unregistering removes the whole team (${reg.members} members).`
+                                  : reg.isLeader ? "Unregister from this event?" : "You'll leave this team."}
+                              </p>
+                              <button onClick={() => unregister(e._id)} disabled={busy} className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1c1812] bg-[#c8421f] px-4 py-1.5 text-sm font-extrabold uppercase text-white active:scale-95 disabled:opacity-50">
+                                <Trash2 className="h-4 w-4" /> {busy ? "Working…" : "Yes, unregister"}
+                              </button>
+                              <button onClick={() => setConfirming(null)} className="text-sm font-bold uppercase text-black/60 hover:text-black">Keep</button>
+                            </div>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              );
+            })}
+            {fests.length === 0 && (
+              <p className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 bg-white/60 py-16 text-center text-black/60">No events yet. Check back soon.</p>
+            )}
+          </div>
+
+          {/* Cart: sticky on desktop */}
+          <aside className={`${CARD_UI} sticky top-20 hidden p-5 lg:block`}>
+            <p className="mb-3 flex items-center gap-2 text-lg font-extrabold text-[#1c1812]"><ShoppingBag className="h-5 w-5" /> Your cart</p>
+            {CartBody}
+          </aside>
+        </div>
       </AppShell>
 
-      {/* Sticky CTA */}
-      {selected.size > 0 && (
-        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-5">
-          <button
-            onClick={handleRegister}
-            disabled={submitting}
-            className={`pointer-events-auto rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#f5c928] px-8 py-3 text-lg uppercase tracking-wider text-black hover:bg-[#ff6a00] disabled:opacity-60 ${display.className} card-lift`}
-          >
-            {submitting
-              ? "Registering…"
-              : `Confirm registration · ${selected.size} event${selected.size > 1 ? "s" : ""}`}
-          </button>
-        </div>
+      {/* Cart: bottom sheet on phone/tablet */}
+      {cart.length > 0 && (
+        <details className="group fixed inset-x-0 bottom-[var(--tabbar-h,4.25rem)] z-40 md:bottom-0 border-t-[3px] border-[#1c1812] bg-white p-4 shadow-[0_-4px_0_#1c1812] lg:hidden">
+          <summary className="flex cursor-pointer list-none items-center gap-2 font-extrabold text-[#1c1812]">
+            <ShoppingBag className="h-5 w-5" /> Cart · {cart.length} event{cart.length > 1 ? "s" : ""}
+            {fee !== null && <span className="ml-auto">₹{fee}</span>}
+            <span className="ml-2 text-xs uppercase text-[#0f6b63] group-open:hidden">Review</span>
+          </summary>
+          <div className="mt-3 max-h-[50vh] overflow-y-auto">{CartBody}</div>
+        </details>
       )}
     </>
   );
