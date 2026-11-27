@@ -51,7 +51,7 @@ export default function HelpClient({ initial }: { initial: HelpQueryRow[] }) {
           <textarea required minLength={10} maxLength={2000} rows={5} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Tell us what happened and which event it's about." className={FIELD} />
         </label>
         {msg && <p className={`rounded-xl px-3 py-2 text-sm font-semibold ${msg.ok ? "bg-[#d9f2df] text-[#0d3d1a]" : "bg-[#ffd0d0] text-[#6b0010]"}`}>{msg.text}</p>}
-        <button disabled={pending} className="inline-flex items-center gap-2 rounded-full border-[3px] border-[#1c1812] bg-[#0f6b63] px-6 py-2.5 font-extrabold uppercase tracking-wider text-white shadow-[0_4px_0_#1c1812] transition hover:-translate-y-0.5 disabled:opacity-60">
+        <button disabled={pending} className="inline-flex items-center gap-2 rounded-full border-[3px] border-[#1c1812] bg-[#0f6b63] px-6 py-2.5 font-extrabold uppercase tracking-wider text-white shadow-[0_4px_0_#1c1812] disabled:opacity-60 card-lift">
           <Send className="h-4 w-4" /> {pending ? "Sending…" : "Send question"}
         </button>
       </form>

@@ -119,7 +119,7 @@ export default async function AdminParticipantsPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Participants</TicketTitle>
@@ -142,7 +142,7 @@ export default async function AdminParticipantsPage({
               <p className="text-4xl font-bold text-teal-900 tabular-nums leading-none">{counts.internal}</p>
               <p className="text-xs text-teal-400 mt-2">OPJU students</p>
             </div>
-            <div className="rounded-2xl p-4 bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]">
+            <div className="rounded-2xl p-4 bg-[#c8421f] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]">
               <p className="text-xs font-medium mb-3 text-amber-100">External</p>
               <p className="text-4xl font-bold tabular-nums leading-none text-white">{counts.external}</p>
               <p className="text-xs mt-2 text-amber-200">outside colleges</p>
@@ -169,7 +169,7 @@ export default async function AdminParticipantsPage({
                   }`}
                 >
                   {t.label}
-                  <span className="ml-1.5 text-[10px] text-slate-400">
+                  <span className="ml-1.5 text-[10px] text-slate-500">
                     {t.value === "" ? counts.total : t.value === "internal" ? counts.internal : counts.external}
                   </span>
                 </Link>
@@ -187,7 +187,7 @@ export default async function AdminParticipantsPage({
         {/* Search */}
         <form method="GET" className="flex gap-2 animate-slide-up" style={{ animationDelay: "0.08s" }}>
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 pointer-events-none" />
             <Input
               name="q"
               defaultValue={q ?? ""}
@@ -209,7 +209,7 @@ export default async function AdminParticipantsPage({
 
         {/* List */}
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.12s" }}>
-          <p className="text-xs font-medium text-slate-400">
+          <p className="text-xs font-medium text-slate-500">
             {q ? `Results for "${q}"` : "All participants"} · {resultCount}
           </p>
 
@@ -241,8 +241,8 @@ export default async function AdminParticipantsPage({
                       {p.role === "INTERNAL_USER" ? "OPJU" : "External"}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 truncate">{p.email}</p>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500 truncate">{p.email}</p>
+                  <p className="text-xs text-slate-500">
                     {p.role === "INTERNAL_USER"
                       ? [p.department, p.branch, p.semester ? `Sem ${p.semester}` : null].filter(Boolean).join(" · ") || "—"
                       : p.collegeName ?? "—"}
@@ -260,7 +260,7 @@ export default async function AdminParticipantsPage({
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {(page - 1) * limit + 1}–{Math.min(page * limit, resultCount)} of {resultCount}
               </p>
               <div className="flex items-center gap-2">
@@ -271,7 +271,7 @@ export default async function AdminParticipantsPage({
                 ) : (
                   <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
-                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                <span className="text-xs text-slate-500">{page} / {totalPages}</span>
                 {page < totalPages ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                     <Link href={`${baseUrl}&page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

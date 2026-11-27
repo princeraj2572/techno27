@@ -70,11 +70,11 @@ export default async function DevManagementPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Management</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5">
               {adminCount} admin{adminCount !== 1 ? "s" : ""} · {managerCount} event manager{managerCount !== 1 ? "s" : ""}
             </p>
           </div>
@@ -116,7 +116,7 @@ export default async function DevManagementPage({
                       {u.role.replace(/_/g, " ")}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 truncate">{u.email}</p>
+                  <p className="text-xs text-slate-500 truncate">{u.email}</p>
                 </div>
                 <div className="text-right shrink-0">
                   {u.role === "EVENT_MANAGER" && (
@@ -143,7 +143,7 @@ export default async function DevManagementPage({
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
               </p>
               <div className="flex items-center gap-2">
@@ -154,7 +154,7 @@ export default async function DevManagementPage({
                 ) : (
                   <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
-                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                <span className="text-xs text-slate-500">{page} / {totalPages}</span>
                 {page < totalPages ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                     <Link href={`/dev/management?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

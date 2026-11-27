@@ -44,11 +44,11 @@ export default async function AdminEventsPage() {
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Events</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{events.length} events total</p>
+            <p className="text-xs text-slate-500 mt-0.5">{events.length} events total</p>
           </div>
           <div className="flex items-center gap-3">
             {user.role === "DEV_ADMIN" && (
@@ -65,24 +65,24 @@ export default async function AdminEventsPage() {
         {/* Registration stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.04s" }}>
           <div className="bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
-            <p className="text-xs font-medium text-teal-200 mb-1">Total registered</p>
+            <p className="text-xs font-medium text-white/75 mb-1">Total registered</p>
             <p className="text-3xl font-bold text-white tabular-nums">{totalParticipants}</p>
-            <p className="text-xs text-teal-300 mt-1">across all events</p>
+            <p className="text-xs text-white/75 mt-1">across all events</p>
           </div>
           <div className="bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
             <p className="text-xs font-medium text-white/70 mb-1">Total teams</p>
             <p className="text-3xl font-bold text-white tabular-nums">{totalTeams}</p>
             <p className="text-xs text-white/70 mt-1">registered</p>
           </div>
-          <div className="rounded-2xl px-4 py-4 bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]">
-            <p className="text-xs font-medium mb-1 text-sky-100">OPJU (Internal)</p>
-            <p className="text-3xl font-bold tabular-nums text-white">{totalInternal}</p>
-            <p className="text-xs mt-1 text-sky-200">participants</p>
+          <div className="rounded-2xl px-4 py-4 bg-[#f5c928] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]">
+            <p className="text-xs font-medium mb-1 text-[#1c1812]/70">OPJU (Internal)</p>
+            <p className="text-3xl font-bold tabular-nums text-[#1c1812]">{totalInternal}</p>
+            <p className="text-xs mt-1 text-[#1c1812]/70">participants</p>
           </div>
-          <div className="rounded-2xl px-4 py-4 bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]">
-            <p className="text-xs font-medium mb-1 text-amber-100">External</p>
+          <div className="rounded-2xl px-4 py-4 bg-[#c8421f] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]">
+            <p className="text-xs font-medium mb-1 text-white/75">External</p>
             <p className="text-3xl font-bold tabular-nums text-white">{totalExternal}</p>
-            <p className="text-xs mt-1 text-amber-200">participants</p>
+            <p className="text-xs mt-1 text-white/75">participants</p>
           </div>
         </div>
 
@@ -101,7 +101,7 @@ export default async function AdminEventsPage() {
                 <Link
                   key={event._id}
                   href={`/admin/events/${event._id}`}
-                  className={`block bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${border} rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-teal-300 hover:-translate-y-0.5 transition-all`}
+                  className={`block bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${border} rounded-2xl p-5 card-lift`}
                 >
                   {/* Title row */}
                   <div className="flex items-start justify-between gap-3 mb-4">
@@ -112,7 +112,7 @@ export default async function AdminEventsPage() {
                           {label.text}
                         </span>
                       </div>
-                      {event.category && <p className="text-xs text-slate-400">{event.category}</p>}
+                      {event.category && <p className="text-xs text-slate-500">{event.category}</p>}
                     </div>
                     <span className="shrink-0 inline-flex items-center gap-1 text-xs font-semibold text-teal-600">
                       View <ArrowRight className="h-3.5 w-3.5" />
@@ -125,21 +125,21 @@ export default async function AdminEventsPage() {
                       label="Registered"
                       value={event.participantCount}
                       icon={<Users className="h-3.5 w-3.5 text-slate-500" />}
-                      bg="bg-slate-100"
+                      bg="bg-[#f6efdf]"
                       labelColor="text-slate-500"
                       valueColor="text-slate-900"
                     />
                     <StatTile
                       label="OPJU"
                       value={event.internalCount}
-                      bg="bg-sky-50"
+                      bg="bg-[#f6efdf]"
                       labelColor="text-sky-500"
                       valueColor="text-sky-700"
                     />
                     <StatTile
                       label="External"
                       value={event.externalCount}
-                      bg="bg-amber-50"
+                      bg="bg-[#f6efdf]"
                       labelColor="text-amber-600"
                       valueColor="text-amber-700"
                     />
@@ -155,7 +155,7 @@ export default async function AdminEventsPage() {
                       label="Prize"
                       value={event.prizeMoney ? <>₹{event.prizeMoney}</> : "—"}
                       icon={event.prizeMoney ? <Trophy className="h-3.5 w-3.5" /> : null}
-                      bg="bg-emerald-50"
+                      bg="bg-[#f6efdf]"
                       labelColor="text-emerald-600"
                       valueColor="text-emerald-700"
                       wide

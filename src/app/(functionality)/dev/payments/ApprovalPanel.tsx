@@ -174,12 +174,12 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-slate-900 truncate">{row.fullName}</p>
-                <p className="text-xs text-slate-400 truncate">{row.email}</p>
+                <p className="text-xs text-slate-500 truncate">{row.email}</p>
                 {row.eventNames && <p className="text-xs text-slate-300 truncate">{row.eventNames}</p>}
               </div>
               <div className="text-right shrink-0">
                 <p className="text-sm font-bold text-slate-900">₹{row.payableAmount}</p>
-                <p className="text-xs text-slate-400">{allTxs.length} tx</p>
+                <p className="text-xs text-slate-500">{allTxs.length} tx</p>
               </div>
               {isCleared ? (
                 <span className="text-xs font-medium text-emerald-600 flex items-center gap-1 shrink-0">
@@ -190,11 +190,11 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
                   <Clock className="h-3.5 w-3.5" /> Pending
                 </span>
               ) : (
-                <span className="text-xs text-slate-400 shrink-0">No payment</span>
+                <span className="text-xs text-slate-500 shrink-0">No payment</span>
               )}
               {isExpanded
-                ? <ChevronUp className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-                : <ChevronDown className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                ? <ChevronUp className="h-3.5 w-3.5 text-slate-500 shrink-0" />
+                : <ChevronDown className="h-3.5 w-3.5 text-slate-500 shrink-0" />
               }
             </button>
 
@@ -228,7 +228,7 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <div>
                           <code className="text-xs font-mono text-slate-700">{tx.transactionId}</code>
-                          <p className="text-xs text-slate-400 mt-0.5">
+                          <p className="text-xs text-slate-500 mt-0.5">
                             Claimed ₹{tx.currentPayAmount} · {new Date(tx.createdAt).toLocaleString()}
                           </p>
                         </div>
@@ -275,7 +275,7 @@ export default function ApprovalPanel({ rows, currentUserId }: Props) {
                         {anyTx ? "Record another payment" : "Record manual payment"}
                       </p>
                     </div>
-                    <p className="text-xs text-slate-400 mb-3">
+                    <p className="text-xs text-slate-500 mb-3">
                       {anyTx
                         ? `Remaining: ₹${Math.max(row.payableAmount - allTxs.reduce((s, t) => s + (txStates[t.transactionId]?.acknowledged ? (txStates[t.transactionId]?.ackAmount ?? 0) : 0), 0), 0)} · Enter a new transaction ref and amount received.`
                         : "No transaction submitted yet. Record a cash or offline payment directly."}

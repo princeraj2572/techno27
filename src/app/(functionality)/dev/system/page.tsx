@@ -66,11 +66,11 @@ export default async function DevSystemPage() {
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">System</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">DB health &amp; stats</p>
+            <p className="text-xs text-slate-500 mt-0.5">DB health &amp; stats</p>
           </div>
           <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <Database className="h-5 w-5 text-[#0f6b63]" />
@@ -103,17 +103,17 @@ export default async function DevSystemPage() {
             <p className="text-3xl font-bold text-white tabular-nums mt-1">{totalDocs.toLocaleString()}</p>
           </div>
           <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-4">
-            <p className="text-xs font-medium text-slate-400">Collections</p>
+            <p className="text-xs font-medium text-slate-500">Collections</p>
             <p className="text-3xl font-bold text-slate-900 tabular-nums mt-1">{stats.collectionStats.length}</p>
-            <p className="text-xs text-slate-400 mt-1">NODE_ENV: <code className="font-mono">{process.env.NODE_ENV ?? "unknown"}</code></p>
+            <p className="text-xs text-slate-500 mt-1">NODE_ENV: <code className="font-mono">{process.env.NODE_ENV ?? "unknown"}</code></p>
           </div>
         </div>
 
         {/* Collection counts */}
         <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          <p className="text-xs font-semibold text-slate-400 mb-4">Collection counts</p>
+          <p className="text-xs font-semibold text-slate-500 mb-4">Collection counts</p>
           {stats.collectionStats.length === 0 ? (
-            <p className="text-sm text-slate-400">No collections found or DB not connected.</p>
+            <p className="text-sm text-slate-500">No collections found or DB not connected.</p>
           ) : (
             <div className="space-y-0">
               {stats.collectionStats.map((col, i) => (

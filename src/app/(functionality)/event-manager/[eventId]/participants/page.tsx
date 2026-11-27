@@ -158,12 +158,12 @@ export default async function EventManagerParticipantsPage({
           <div>
             <Link
               href={`/event-manager/${eventId}`}
-              className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1"
+              className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1"
             >
               <ChevronLeft className="h-3.5 w-3.5" /> {event.name}
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Participants</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5">
               {participants.length} total
               {event.maxParticipants ? ` · Limit: ${event.maxParticipants}` : ""}
             </p>
@@ -187,7 +187,7 @@ export default async function EventManagerParticipantsPage({
             <p className="text-3xl font-bold text-amber-900 tabular-nums leading-none">{externalCount}</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${externalCleared > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
-            <p className={`text-xs font-medium mb-1 ${externalCleared > 0 ? "text-emerald-100" : "text-slate-400"}`}>
+            <p className={`text-xs font-medium mb-1 ${externalCleared > 0 ? "text-emerald-100" : "text-slate-500"}`}>
               Payments cleared
             </p>
             <p className={`text-3xl font-bold tabular-nums leading-none ${externalCleared > 0 ? "text-white" : "text-slate-700"}`}>

@@ -84,7 +84,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
               }`}
             >
               {t === "all" ? "All" : t === "internal" ? "Internal" : "External"}
-              <span className="ml-1.5 text-[10px] text-slate-400">
+              <span className="ml-1.5 text-[10px] text-slate-500">
                 {t === "all" ? participants.length :
                  t === "internal" ? participants.filter((p) => p.role === "INTERNAL_USER").length :
                  participants.filter((p) => p.role === "EXTERNAL_USER").length}
@@ -143,8 +143,8 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
                       {isExternal ? "External" : "OPJU"}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-0.5">{p.email}</p>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-slate-500 mt-0.5">{p.email}</p>
+                  <p className="text-xs text-slate-500">
                     {[
                       p.department,
                       p.program,
@@ -154,7 +154,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
                     ].filter(Boolean).join(" · ")}
                   </p>
                   {(p.enrollmentNumber ?? p.participantId) && (
-                    <code className="text-[10px] font-mono text-slate-400 mt-0.5 block">
+                    <code className="text-[10px] font-mono text-slate-500 mt-0.5 block">
                       {p.enrollmentNumber ?? p.participantId}
                     </code>
                   )}
@@ -177,7 +177,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
                     <span className="text-xs text-slate-300">Free</span>
                   )}
                   {p.mobileNumber && p.mobileNumber !== "0000000000" && (
-                    <p className="text-[10px] text-slate-400 mt-0.5">{p.mobileNumber}</p>
+                    <p className="text-[10px] text-slate-500 mt-0.5">{p.mobileNumber}</p>
                   )}
                 </div>
               </div>
@@ -186,7 +186,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {(currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, filtered.length)} of {filtered.length}
               </p>
               <div className="flex items-center gap-2">
@@ -197,7 +197,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
                 >
                   ← Prev
                 </Button>
-                <span className="text-xs text-slate-400">{currentPage} / {totalPages}</span>
+                <span className="text-xs text-slate-500">{currentPage} / {totalPages}</span>
                 <Button
                   variant="outline" size="sm" className="h-8 text-xs"
                   disabled={currentPage >= totalPages}

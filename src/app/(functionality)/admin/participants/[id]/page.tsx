@@ -14,7 +14,7 @@ import { TicketTitle } from "@/components/indie/gold-poster";
 const STATUS_LABEL: Record<string, { text: string; color: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600" },
   EVENT_LIVE:          { text: "Live now",  color: "text-teal-600"  },
-  COMPLETED:           { text: "Completed", color: "text-slate-400"   },
+  COMPLETED:           { text: "Completed", color: "text-slate-500"   },
   CANCELLED:           { text: "Cancelled", color: "text-red-500"     },
   REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600"   },
   TEMPORARILY_CLOSED:  { text: "Paused",    color: "text-orange-500"  },
@@ -33,7 +33,7 @@ function Field({ label, value }: { label: string; value?: unknown }) {
   if (!value) return null;
   return (
     <div>
-      <p className="text-xs text-slate-400">{label}</p>
+      <p className="text-xs text-slate-500">{label}</p>
       <p className="text-sm font-medium text-slate-900 mt-0.5">{String(value)}</p>
     </div>
   );
@@ -72,11 +72,11 @@ export default async function AdminParticipantDetailPage({
         {/* Header */}
         <div className="flex items-start justify-between gap-4 animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/participants" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/admin/participants" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Participants
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{String(p.fullName)}</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{String(p.email)}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{String(p.email)}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <span className={`text-xs font-semibold px-2 py-1 rounded-full border ${
@@ -139,21 +139,21 @@ export default async function AdminParticipantDetailPage({
         {/* Events */}
         <div className="space-y-3 animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <p className="text-sm font-semibold text-slate-900">
-            Registered events <span className="text-slate-400 font-normal">({teamList.length})</span>
+            Registered events <span className="text-slate-500 font-normal">({teamList.length})</span>
           </p>
           {teamList.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-8 text-center">
-              <p className="text-sm text-slate-400">No event registrations</p>
+              <p className="text-sm text-slate-500">No event registrations</p>
             </div>
           ) : (
             teamList.map((t: { _id: string; event?: { name: string; status: string }; members: string[] }) => {
               const border = STATUS_BORDER[t.event?.status ?? ""] ?? "border-l-slate-200";
-              const label  = STATUS_LABEL[t.event?.status ?? ""] ?? { text: t.event?.status?.replace(/_/g, " ") ?? "—", color: "text-slate-400" };
+              const label  = STATUS_LABEL[t.event?.status ?? ""] ?? { text: t.event?.status?.replace(/_/g, " ") ?? "—", color: "text-slate-500" };
               return (
                 <div key={t._id} className={`bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${border} rounded-2xl px-4 py-3.5 flex items-center justify-between`}>
                   <p className="text-sm font-semibold text-slate-900">{t.event?.name ?? "Unknown Event"}</p>
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-xs text-slate-400">{t.members.length} member(s)</span>
+                    <span className="text-xs text-slate-500">{t.members.length} member(s)</span>
                     <span className={`text-xs font-medium ${label.color}`}>{label.text}</span>
                   </div>
                 </div>
@@ -168,11 +168,11 @@ export default async function AdminParticipantDetailPage({
             <Separator />
             <div className="space-y-3 animate-slide-up" style={{ animationDelay: "0.15s" }}>
               <p className="text-sm font-semibold text-slate-900">
-                Transactions <span className="text-slate-400 font-normal">({txList.length})</span>
+                Transactions <span className="text-slate-500 font-normal">({txList.length})</span>
               </p>
               {txList.length === 0 ? (
                 <div className="rounded-2xl border-2 border-dashed border-slate-100 py-8 text-center">
-                  <p className="text-sm text-slate-400">No transactions submitted</p>
+                  <p className="text-sm text-slate-500">No transactions submitted</p>
                 </div>
               ) : (
                 txList.map((tx: { _id: string; transactionId: string; currentPayAmount: number; acknowledgementByAdmin: boolean; clearanceApproval: boolean }) => (
@@ -189,7 +189,7 @@ export default async function AdminParticipantDetailPage({
                           <Clock className="h-3.5 w-3.5" /> Acknowledged
                         </span>
                       ) : (
-                        <span className="text-xs font-medium text-slate-400">Pending</span>
+                        <span className="text-xs font-medium text-slate-500">Pending</span>
                       )}
                     </div>
                   </div>

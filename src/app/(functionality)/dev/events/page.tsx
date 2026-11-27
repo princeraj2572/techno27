@@ -11,11 +11,11 @@ import QuickStatusToggle from "./QuickStatusToggle";
 const STATUS_LABEL: Record<string, { text: string; color: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600" },
   EVENT_LIVE:          { text: "Live now",  color: "text-[#0f6b63]"  },
-  COMPLETED:           { text: "Completed", color: "text-slate-400"   },
+  COMPLETED:           { text: "Completed", color: "text-slate-500"   },
   CANCELLED:           { text: "Cancelled", color: "text-red-500"     },
   REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600"   },
   TEMPORARILY_CLOSED:  { text: "Paused",    color: "text-orange-500"  },
-  DRAFT:               { text: "Draft",     color: "text-slate-400"   },
+  DRAFT:               { text: "Draft",     color: "text-slate-500"   },
   UPCOMING:            { text: "Upcoming",  color: "text-sky-600"     },
 };
 
@@ -44,14 +44,14 @@ export default async function DevEventsPage() {
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Events</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{events.length} event(s) total</p>
+            <p className="text-xs text-slate-500 mt-0.5">{events.length} event(s) total</p>
           </div>
           <div className="flex items-center gap-2">
-            <GenerateAllEMButton userId={userId} />
+            <GenerateAllEMButton />
             <Link
               href="/dev/seed"
               className="inline-flex items-center gap-1.5 text-xs font-medium text-[#0f6b63] hover:text-[#0f6b63] border border-[#1c1812]/30 rounded-lg px-3 py-2"
@@ -81,12 +81,12 @@ export default async function DevEventsPage() {
               category?: string;
             }) => {
               const border = STATUS_BORDER[event.status] ?? "border-l-slate-200";
-              const label  = STATUS_LABEL[event.status]  ?? { text: event.status.replace(/_/g, " "), color: "text-slate-400" };
+              const label  = STATUS_LABEL[event.status]  ?? { text: event.status.replace(/_/g, " "), color: "text-slate-500" };
               return (
                 <div key={event._id} className={`bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${border} rounded-2xl px-4 py-3.5 flex items-center gap-3`}>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-slate-900 truncate">{event.name}</p>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <p className="text-xs text-slate-500 mt-0.5">
                       {[
                         event.category,
                         `Team: ${event.teamSize ?? 1}`,

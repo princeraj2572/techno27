@@ -241,7 +241,7 @@ export default function DevUserDetailPage() {
 
   if (!user) return (
     <div className="flex min-h-[60vh] items-center justify-center">
-      <p className="text-sm text-slate-400">User not found.</p>
+      <p className="text-sm text-slate-500">User not found.</p>
     </div>
   );
 
@@ -295,7 +295,7 @@ export default function DevUserDetailPage() {
         {/* Header */}
         <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev/users" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-2">
+            <Link href="/dev/users" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-2">
               <ChevronLeft className="h-3.5 w-3.5" /> Users
             </Link>
             <div className="flex items-center gap-3">
@@ -313,7 +313,7 @@ export default function DevUserDetailPage() {
               )}
               <div>
                 <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{user.fullName}</TicketTitle>
-                <p className="text-xs text-slate-400">{user.email}</p>
+                <p className="text-xs text-slate-500">{user.email}</p>
               </div>
             </div>
           </div>
@@ -330,7 +330,7 @@ export default function DevUserDetailPage() {
               onClick={() => setActiveTab(tab.key)}
               className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-semibold whitespace-nowrap transition-all ${
                 activeTab === tab.key
-                  ? "bg-[#0f6b63] text-white shadow-sm"
+                  ? "bg-[#0f6b63] text-white"
                   : "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] text-slate-600 hover:border-[#1c1812]/30 hover:text-[#0f6b63]"
               }`}
             >
@@ -350,12 +350,12 @@ export default function DevUserDetailPage() {
         {/* Profile tab */}
         {activeTab === "profile" && (
           <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
-            <p className="text-xs font-semibold text-slate-400 mb-4">Profile details</p>
+            <p className="text-xs font-semibold text-slate-500 mb-4">Profile details</p>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-4">
               {profileFields.map(([label, value]) =>
                 value !== undefined && value !== "" ? (
                   <div key={String(label)}>
-                    <dt className="text-xs text-slate-400">{label}</dt>
+                    <dt className="text-xs text-slate-500">{label}</dt>
                     <dd className="text-sm font-medium text-slate-900 mt-0.5">{String(value)}</dd>
                   </div>
                 ) : null
@@ -380,7 +380,7 @@ export default function DevUserDetailPage() {
                     <div key={ev._id} className="flex items-center gap-3 px-4 py-3.5">
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-slate-900 truncate">{ev.name}</p>
-                        <p className="text-xs text-slate-400 mt-0.5">
+                        <p className="text-xs text-slate-500 mt-0.5">
                           {[ev.category, ev.team?.leader === user.email ? "Leader" : "Member"].filter(Boolean).join(" · ")}
                         </p>
                       </div>
@@ -414,7 +414,7 @@ export default function DevUserDetailPage() {
                 <div className="flex items-center justify-between px-4 py-3.5 border-b border-slate-100">
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-slate-900 truncate">{team.event?.name ?? "Unknown event"}</p>
-                    <p className="text-xs text-slate-400 mt-0.5">
+                    <p className="text-xs text-slate-500 mt-0.5">
                       {team.leader === user.email ? "Leader" : "Member"} · {team.members.length} member{team.members.length !== 1 ? "s" : ""}
                     </p>
                   </div>
@@ -428,7 +428,7 @@ export default function DevUserDetailPage() {
                     )}
                     <button
                       onClick={() => handleDeleteTeam(team._id)}
-                      className="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
+                      className="p-1.5 rounded-lg hover:bg-red-50 text-slate-500 hover:text-red-600 transition-colors"
                       title="Delete team"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -445,7 +445,7 @@ export default function DevUserDetailPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-semibold text-slate-800 truncate">{member.fullName}</p>
-                        <p className="text-xs text-slate-400 truncate">{member.email}</p>
+                        <p className="text-xs text-slate-500 truncate">{member.email}</p>
                       </div>
                       {member.email === team.leader && (
                         <Crown className="h-3 w-3 text-amber-500 shrink-0" />
@@ -466,7 +466,7 @@ export default function DevUserDetailPage() {
                 {/* Pending invites */}
                 {team.pendingInvites.length > 0 && (
                   <div className="border-t border-slate-100 px-4 py-2.5">
-                    <p className="text-xs text-slate-400 mb-1.5">Pending invites</p>
+                    <p className="text-xs text-slate-500 mb-1.5">Pending invites</p>
                     <div className="flex flex-wrap gap-1.5">
                       {team.pendingInvites.map((inv) => (
                         <span key={inv.inviteeEmail} className="text-xs bg-amber-50 border border-amber-200 text-amber-700 px-2 py-0.5 rounded-full">
@@ -493,7 +493,7 @@ export default function DevUserDetailPage() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-slate-900">Register for event</p>
-                  <p className="text-xs text-slate-400">Create a solo team for this user in an open event</p>
+                  <p className="text-xs text-slate-500">Create a solo team for this user in an open event</p>
                 </div>
               </div>
               <div className="space-y-3">
@@ -504,7 +504,7 @@ export default function DevUserDetailPage() {
                   ))}
                 </select>
                 {allEvents.length === 0 && (
-                  <p className="text-xs text-slate-400">No events with open registration.</p>
+                  <p className="text-xs text-slate-500">No events with open registration.</p>
                 )}
                 <button
                   onClick={handleRegister}
@@ -524,11 +524,11 @@ export default function DevUserDetailPage() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-slate-900">Send team invite</p>
-                  <p className="text-xs text-slate-400">Invite another user to one of this user&apos;s teams</p>
+                  <p className="text-xs text-slate-500">Invite another user to one of this user&apos;s teams</p>
                 </div>
               </div>
               {teams.length === 0 ? (
-                <p className="text-xs text-slate-400">User must be in a team first.</p>
+                <p className="text-xs text-slate-500">User must be in a team first.</p>
               ) : (
                 <div className="space-y-3">
                   <select value={inviteTeamId} onChange={(e) => setInviteTeamId(e.target.value)} className={selectCls}>
@@ -570,7 +570,7 @@ export default function DevUserDetailPage() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-slate-900">Change role</p>
-                <p className="text-xs text-slate-400">Current: <span className="font-medium text-slate-700">{user.role.replace(/_/g, " ")}</span></p>
+                <p className="text-xs text-slate-500">Current: <span className="font-medium text-slate-700">{user.role.replace(/_/g, " ")}</span></p>
               </div>
             </div>
             <div className="space-y-3">

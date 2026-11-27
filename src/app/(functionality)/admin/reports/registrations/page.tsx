@@ -102,11 +102,11 @@ export default async function ReportRegistrationsPage({
 
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Reports
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">All Registrations</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{total} participant(s)</p>
+            <p className="text-xs text-slate-500 mt-0.5">{total} participant(s)</p>
           </div>
           <div className="flex items-center gap-3">
             <a href={exportHref} download className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 border border-slate-200 rounded-lg px-3 py-2">
@@ -131,7 +131,7 @@ export default async function ReportRegistrationsPage({
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.08s" }}>
           {rows.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-10 text-center">
-              <p className="text-sm text-slate-400">No results</p>
+              <p className="text-sm text-slate-500">No results</p>
             </div>
           ) : (
             rows.map((p: UserRow) => {
@@ -152,8 +152,8 @@ export default async function ReportRegistrationsPage({
                         {isExternal ? "External" : "OPJU"}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 truncate">{p.email}</p>
-                    <p className="text-xs text-slate-400 truncate">
+                    <p className="text-xs text-slate-500 truncate">{p.email}</p>
+                    <p className="text-xs text-slate-500 truncate">
                       {isExternal
                         ? [p.collegeName, p.city, p.state].filter(Boolean).join(", ")
                         : [p.department, p.program, p.branch, p.year].filter(Boolean).join(" · ")}
@@ -161,11 +161,11 @@ export default async function ReportRegistrationsPage({
                   </div>
                   <div className="text-right shrink-0">
                     {(p.enrollmentNumber ?? p.participantId) && (
-                      <code className="text-xs font-mono text-slate-400 block">
+                      <code className="text-xs font-mono text-slate-500 block">
                         {p.enrollmentNumber ?? p.participantId}
                       </code>
                     )}
-                    {p.mobileNumber && <p className="text-xs text-slate-400">{p.mobileNumber}</p>}
+                    {p.mobileNumber && <p className="text-xs text-slate-500">{p.mobileNumber}</p>}
                   </div>
                 </div>
               );
@@ -175,7 +175,7 @@ export default async function ReportRegistrationsPage({
 
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-2">
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
             </p>
             <div className="flex items-center gap-2">
@@ -186,7 +186,7 @@ export default async function ReportRegistrationsPage({
               ) : (
                 <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
               )}
-              <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+              <span className="text-xs text-slate-500">{page} / {totalPages}</span>
               {page < totalPages ? (
                 <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                   <Link href={`${baseUrl}&page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

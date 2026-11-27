@@ -57,11 +57,11 @@ export default async function AdminEventManagersPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Event managers</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{total} accounts</p>
+            <p className="text-xs text-slate-500 mt-0.5">{total} accounts</p>
           </div>
           <div className="flex items-center gap-3">
             {user.role === "DEV_ADMIN" && (
@@ -107,7 +107,7 @@ export default async function AdminEventManagersPage({
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-900 truncate">{m.fullName}</p>
-                      <p className="text-xs text-slate-400 truncate">{m.email}</p>
+                      <p className="text-xs text-slate-500 truncate">{m.email}</p>
                       {eventNames.length > 0 && (
                         <p className="text-xs text-teal-600 mt-0.5 truncate">{eventNames.join(", ")}</p>
                       )}
@@ -131,7 +131,7 @@ export default async function AdminEventManagersPage({
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
               </p>
               <div className="flex items-center gap-2">
@@ -142,7 +142,7 @@ export default async function AdminEventManagersPage({
                 ) : (
                   <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
-                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                <span className="text-xs text-slate-500">{page} / {totalPages}</span>
                 {page < totalPages ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                     <Link href={`/admin/event-managers?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

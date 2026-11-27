@@ -211,7 +211,7 @@ export default function EventsSelectionPage() {
           <button
             onClick={handleRegister}
             disabled={submitting}
-            className={`pointer-events-auto rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#f5c928] px-8 py-3 text-lg uppercase tracking-wider text-black transition hover:-translate-y-0.5 hover:bg-[#ff6a00] disabled:opacity-60 ${display.className}`}
+            className={`pointer-events-auto rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#f5c928] px-8 py-3 text-lg uppercase tracking-wider text-black hover:bg-[#ff6a00] disabled:opacity-60 ${display.className} card-lift`}
           >
             {submitting
               ? "Registering…"

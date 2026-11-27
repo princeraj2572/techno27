@@ -15,11 +15,11 @@ import { TicketTitle } from "@/components/indie/gold-poster";
 const STATUS_LABEL: Record<string, { text: string; color: string; border: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600", border: "border-emerald-500" },
   EVENT_LIVE:          { text: "Live now",  color: "text-[#0f6b63]",  border: "border-[#0f6b63]"  },
-  COMPLETED:           { text: "Completed", color: "text-slate-400",   border: "border-slate-300"   },
+  COMPLETED:           { text: "Completed", color: "text-slate-500",   border: "border-slate-300"   },
   CANCELLED:           { text: "Cancelled", color: "text-red-500",     border: "border-red-400"     },
   REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600",   border: "border-amber-400"   },
   TEMPORARILY_CLOSED:  { text: "Paused",    color: "text-orange-500",  border: "border-orange-400"  },
-  DRAFT:               { text: "Draft",     color: "text-slate-400",   border: "border-slate-200"   },
+  DRAFT:               { text: "Draft",     color: "text-slate-500",   border: "border-slate-200"   },
   UPCOMING:            { text: "Upcoming",  color: "text-sky-600",     border: "border-sky-400"     },
 };
 
@@ -92,7 +92,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
     if (!eventId || !userId) return;
     setEmGenerating(true);
     try {
-      const result = await generateEventManagerAction(eventId, userId);
+      const result = await generateEventManagerAction(eventId);
       setEmData(result);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to generate event manager");
@@ -150,11 +150,11 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
 
   if (!event) return (
     <div className="flex min-h-[60vh] items-center justify-center">
-      <p className="text-sm text-slate-400">Event not found.</p>
+      <p className="text-sm text-slate-500">Event not found.</p>
     </div>
   );
 
-  const statusInfo  = STATUS_LABEL[event.status] ?? { text: event.status.replace(/_/g, " "), color: "text-slate-400", border: "border-slate-200" };
+  const statusInfo  = STATUS_LABEL[event.status] ?? { text: event.status.replace(/_/g, " "), color: "text-slate-500", border: "border-slate-200" };
   const pct         = (event.maxParticipants ?? 0) > 0 ? Math.round(((event.registeredCount ?? 0) / (event.maxParticipants ?? 1)) * 100) : 0;
   const remaining   = (event.maxParticipants ?? 0) > 0 ? (event.maxParticipants ?? 0) - (event.registeredCount ?? 0) : null;
 
@@ -167,11 +167,11 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         {/* Header */}
         <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev/events" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev/events" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               ← Events
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{event.name}</TicketTitle>
-            {event.category && <p className="text-xs text-slate-400 mt-0.5">{event.category}</p>}
+            {event.category && <p className="text-xs text-slate-500 mt-0.5">{event.category}</p>}
           </div>
           <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border shrink-0 ${statusInfo.color} border-current bg-white`}>
             {statusInfo.text}
@@ -202,13 +202,13 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
                 style={{ width: `${Math.min(pct, 100)}%` }}
               />
             </div>
-            <span className="text-xs text-slate-400 tabular-nums w-10 text-right">{pct}%</span>
+            <span className="text-xs text-slate-500 tabular-nums w-10 text-right">{pct}%</span>
           </div>
         )}
 
         {/* Status controls */}
         <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          <p className="text-xs font-semibold text-slate-400 mb-4">Registration controls</p>
+          <p className="text-xs font-semibold text-slate-500 mb-4">Registration controls</p>
           <div className="flex flex-wrap gap-2">
             {STATUS_ACTIONS.map((action) => {
               const isCurrent = event.status === action.status;
@@ -234,7 +234,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         {/* Fees & prize pool */}
         <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.13s" }}>
           <div className="flex items-center justify-between mb-4">
-            <p className="text-xs font-semibold text-slate-400">Fees &amp; prize pool</p>
+            <p className="text-xs font-semibold text-slate-500">Fees &amp; prize pool</p>
             <button
               onClick={() => setFeeEditing(!feeEditing)}
               className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium"
@@ -279,7 +279,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
                 ["Max Participants", event.maxParticipants || "Unlimited"],
               ].map(([label, value]) => (
                 <div key={label}>
-                  <p className="text-xs text-slate-400">{label}</p>
+                  <p className="text-xs text-slate-500">{label}</p>
                   <p className="text-sm font-semibold text-slate-900 mt-0.5">{value}</p>
                 </div>
               ))}
@@ -292,7 +292,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <UserCog className="h-4 w-4 text-[#0f6b63]" />
-              <p className="text-xs font-semibold text-slate-400">Event Manager account</p>
+              <p className="text-xs font-semibold text-slate-500">Event Manager account</p>
             </div>
             {emData && emData !== "loading" && (
               <Link href={`/event-manager/${eventId}/participants`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium">
@@ -311,12 +311,12 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
               ].map(({ label, value, key }) => (
                 <div key={key} className="flex items-center gap-3 bg-slate-50 rounded-xl px-3 py-2">
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] text-slate-400 font-medium">{label}</p>
+                    <p className="text-[10px] text-slate-500 font-medium">{label}</p>
                     <code className="text-xs font-mono text-slate-800 break-all">{value}</code>
                   </div>
                   <button
                     onClick={() => copyText(value, key)}
-                    className="shrink-0 text-slate-400 hover:text-[#0f6b63] transition-colors"
+                    className="shrink-0 text-slate-500 hover:text-[#0f6b63] transition-colors"
                   >
                     {copied === key
                       ? <Check className="h-3.5 w-3.5 text-emerald-500" />
@@ -324,7 +324,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
                   </button>
                 </div>
               ))}
-              <p className="text-[10px] text-slate-400 mt-1">
+              <p className="text-[10px] text-slate-500 mt-1">
                 Share these credentials with the event manager. They can log in at{" "}
                 <code className="font-mono">/auth/login</code>.
               </p>

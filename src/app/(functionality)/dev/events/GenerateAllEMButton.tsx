@@ -3,9 +3,7 @@ import { useState } from "react";
 import { generateAllEventManagersAction } from "@/features/management/management-actions";
 import { UserCog, CheckCircle2 } from "lucide-react";
 
-interface Props { userId: string }
-
-export default function GenerateAllEMButton({ userId }: Props) {
+export default function GenerateAllEMButton() {
   const [loading, setLoading]   = useState(false);
   const [done, setDone]         = useState(false);
   const [results, setResults]   = useState<{ name: string; status: string; email?: string; password?: string }[]>([]);
@@ -14,7 +12,7 @@ export default function GenerateAllEMButton({ userId }: Props) {
   const handleGenerate = async () => {
     setLoading(true);
     try {
-      const res = await generateAllEventManagersAction(userId);
+      const res = await generateAllEventManagersAction();
       setResults(res);
       setDone(true);
       setShowModal(true);
@@ -39,7 +37,7 @@ export default function GenerateAllEMButton({ userId }: Props) {
           <div className="bg-white rounded-2xl w-full max-w-lg shadow-xl max-h-[80vh] flex flex-col">
             <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-slate-100">
               <p className="text-sm font-semibold text-slate-900">Event Manager Accounts</p>
-              <button onClick={() => setShowModal(false)} className="text-xs text-slate-400 hover:text-slate-700">Close</button>
+              <button onClick={() => setShowModal(false)} className="text-xs text-slate-500 hover:text-slate-700">Close</button>
             </div>
             <div className="overflow-y-auto px-5 py-4 space-y-2">
               {results.map((r) => (
@@ -47,7 +45,7 @@ export default function GenerateAllEMButton({ userId }: Props) {
                   <div className="flex items-center gap-2 mb-1">
                     {r.status === "created"
                       ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                      : <UserCog className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                      : <UserCog className="h-3.5 w-3.5 text-slate-500 shrink-0" />
                     }
                     <p className="text-sm font-semibold text-slate-900">{r.name}</p>
                     <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${r.status === "created" ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>

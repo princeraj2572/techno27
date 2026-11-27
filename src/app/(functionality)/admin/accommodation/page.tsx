@@ -47,7 +47,7 @@ function AccomRow({ item }: { item: AccomItem }) {
             <p className="text-sm font-semibold text-slate-900">{u.fullName}</p>
             <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${chip}`}>{a.gender}</span>
           </div>
-          <p className="text-xs text-slate-400">{u.email}</p>
+          <p className="text-xs text-slate-500">{u.email}</p>
 
           <div className="flex items-center gap-4 mt-1.5 flex-wrap">
             {u.mobileNumber && (
@@ -61,7 +61,7 @@ function AccomRow({ item }: { item: AccomItem }) {
               </span>
             )}
             {a.arrivalTime && (
-              <span className="flex items-center gap-1 text-xs text-slate-400">
+              <span className="flex items-center gap-1 text-xs text-slate-500">
                 <Calendar className="h-3 w-3 shrink-0" />
                 {new Date(a.arrivalTime).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
                 {" → "}
@@ -71,7 +71,7 @@ function AccomRow({ item }: { item: AccomItem }) {
           </div>
 
           {a.additionalDetails && (
-            <p className="text-xs text-slate-400 mt-1 line-clamp-2">{a.additionalDetails}</p>
+            <p className="text-xs text-slate-500 mt-1 line-clamp-2">{a.additionalDetails}</p>
           )}
         </div>
       </div>
@@ -143,11 +143,11 @@ export default async function AdminAccommodationPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Accommodation</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{counts.total} request{counts.total !== 1 ? "s" : ""}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{counts.total} request{counts.total !== 1 ? "s" : ""}</p>
           </div>
           <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <Hotel className="h-5 w-5 text-teal-600" />
@@ -162,14 +162,14 @@ export default async function AdminAccommodationPage({
             <p className="text-xs text-teal-300 mt-1">requests</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${counts.male > 0 ? "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
-            <p className={`text-xs font-medium mb-1 ${counts.male > 0 ? "text-sky-500" : "text-slate-400"}`}>Male</p>
+            <p className={`text-xs font-medium mb-1 ${counts.male > 0 ? "text-sky-500" : "text-slate-500"}`}>Male</p>
             <p className={`text-2xl font-bold tabular-nums ${counts.male > 0 ? "text-sky-900" : "text-slate-600"}`}>{counts.male}</p>
-            <p className={`text-xs mt-1 ${counts.male > 0 ? "text-sky-400" : "text-slate-400"}`}>participants</p>
+            <p className={`text-xs mt-1 ${counts.male > 0 ? "text-sky-400" : "text-slate-500"}`}>participants</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${counts.female > 0 ? "bg-pink-50 border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
-            <p className={`text-xs font-medium mb-1 ${counts.female > 0 ? "text-pink-500" : "text-slate-400"}`}>Female</p>
+            <p className={`text-xs font-medium mb-1 ${counts.female > 0 ? "text-pink-500" : "text-slate-500"}`}>Female</p>
             <p className={`text-2xl font-bold tabular-nums ${counts.female > 0 ? "text-pink-900" : "text-slate-600"}`}>{counts.female}</p>
-            <p className={`text-xs mt-1 ${counts.female > 0 ? "text-pink-400" : "text-slate-400"}`}>participants</p>
+            <p className={`text-xs mt-1 ${counts.female > 0 ? "text-pink-400" : "text-slate-500"}`}>participants</p>
           </div>
         </div>
 
@@ -198,7 +198,7 @@ export default async function AdminAccommodationPage({
 
             {rows.length === 0 ? (
               <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
-                <p className="text-sm text-slate-400">No {gender.toLowerCase()} requests</p>
+                <p className="text-sm text-slate-500">No {gender.toLowerCase()} requests</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -208,7 +208,7 @@ export default async function AdminAccommodationPage({
                 {solo.length > 0 && (
                   <div className="space-y-2">
                     {groups.size > 0 && (
-                      <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wide">Individual</p>
+                      <p className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Individual</p>
                     )}
                     {solo.map((item) => (
                       <AccomRow key={String(item.user._id)} item={item} />
@@ -220,7 +220,7 @@ export default async function AdminAccommodationPage({
 
             {totalPages > 1 && (
               <div className="flex items-center justify-between pt-2">
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500">
                   {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
                 </p>
                 <div className="flex items-center gap-2">
@@ -231,7 +231,7 @@ export default async function AdminAccommodationPage({
                   ) : (
                     <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                   )}
-                  <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                  <span className="text-xs text-slate-500">{page} / {totalPages}</span>
                   {page < totalPages ? (
                     <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                       <Link href={`/admin/accommodation?gender=${gender}&page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

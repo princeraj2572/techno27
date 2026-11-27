@@ -42,11 +42,11 @@ export default async function DevManagementManagerPage({
         {/* Header */}
         <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev/management" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev/management" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Management
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{manager.fullName}</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{manager.email}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{manager.email}</p>
             {manager.department && <p className="text-xs text-slate-300 mt-0.5">{manager.department}</p>}
           </div>
           <div className="flex items-center gap-2 shrink-0 mt-1">

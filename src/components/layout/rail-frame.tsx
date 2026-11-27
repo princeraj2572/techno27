@@ -47,7 +47,6 @@ function itemsFor(area: Area, user: RailUser, pathname: string): Item[] {
         { href: "/admin/events", label: "Events", icon: CalendarDays },
         { href: "/admin/participants", label: "Participants", icon: Users },
         { href: "/admin/teams", label: "Teams", icon: Users },
-        { href: "/admin/payments", label: "Payments", icon: CreditCard },
         { href: "/admin/accommodation", label: "Accommodation", icon: BedDouble },
         { href: "/admin/checkin", label: "Check-in", icon: ScanLine },
         { href: "/admin/event-managers", label: "Event managers", short: "Managers", icon: UserCog },

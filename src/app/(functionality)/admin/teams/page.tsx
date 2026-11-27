@@ -49,11 +49,11 @@ export default async function AdminTeamsPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Admin
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Teams</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{total} registered teams</p>
+            <p className="text-xs text-slate-500 mt-0.5">{total} registered teams</p>
           </div>
           <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <UsersRound className="h-5 w-5 text-teal-600" />
@@ -79,7 +79,7 @@ export default async function AdminTeamsPage({
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-900 truncate">{t.eventName}</p>
-                      <p className="text-xs text-slate-400 truncate">{t.leader}</p>
+                      <p className="text-xs text-slate-500 truncate">{t.leader}</p>
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                       <div className="flex items-center gap-2">
@@ -89,7 +89,7 @@ export default async function AdminTeamsPage({
                             style={{ width: `${fillPct}%` }}
                           />
                         </div>
-                        <span className="text-xs text-slate-400 tabular-nums">
+                        <span className="text-xs text-slate-500 tabular-nums">
                           {t.members.length}/{t.size}
                         </span>
                       </div>
@@ -107,7 +107,7 @@ export default async function AdminTeamsPage({
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
               </p>
               <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default async function AdminTeamsPage({
                 ) : (
                   <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
-                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                <span className="text-xs text-slate-500">{page} / {totalPages}</span>
                 {page < totalPages ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                     <Link href={`/admin/teams?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

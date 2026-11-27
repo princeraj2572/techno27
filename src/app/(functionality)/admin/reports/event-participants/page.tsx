@@ -94,11 +94,11 @@ export default async function ReportEventParticipantsPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Reports
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Event Participants</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{total} team(s) found</p>
+            <p className="text-xs text-slate-500 mt-0.5">{total} team(s) found</p>
           </div>
           <div className="flex items-center gap-3">
             <a href={exportHref} download className="inline-flex items-center gap-1.5 text-xs font-medium text-teal-600 hover:text-teal-700 border border-teal-200 rounded-lg px-3 py-2">
@@ -125,7 +125,7 @@ export default async function ReportEventParticipantsPage({
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.08s" }}>
           {rows.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-10 text-center">
-              <p className="text-sm text-slate-400">No results</p>
+              <p className="text-sm text-slate-500">No results</p>
             </div>
           ) : (
             rows.map((t: {
@@ -139,11 +139,11 @@ export default async function ReportEventParticipantsPage({
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-slate-900 truncate">{t.leaderUser?.fullName ?? t.leader}</p>
-                  <p className="text-xs text-slate-400 truncate">{t.leader}</p>
+                  <p className="text-xs text-slate-500 truncate">{t.leader}</p>
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-xs font-medium text-slate-700 truncate max-w-[160px]">{t.event?.name ?? "—"}</p>
-                  <p className="text-xs text-slate-400">{t.members.length} member(s)</p>
+                  <p className="text-xs text-slate-500">{t.members.length} member(s)</p>
                 </div>
               </div>
             ))
@@ -153,7 +153,7 @@ export default async function ReportEventParticipantsPage({
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-2">
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
             </p>
             <div className="flex items-center gap-2">
@@ -164,7 +164,7 @@ export default async function ReportEventParticipantsPage({
               ) : (
                 <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
               )}
-              <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+              <span className="text-xs text-slate-500">{page} / {totalPages}</span>
               {page < totalPages ? (
                 <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                   <Link href={`${baseUrl}&page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

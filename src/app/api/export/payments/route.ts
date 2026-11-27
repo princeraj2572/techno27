@@ -26,7 +26,7 @@ async function getAuthRole(): Promise<string | null> {
 
 export async function GET(req: NextRequest) {
   const role = await getAuthRole();
-  if (!role || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(role)) {
+  if (role !== "DEV_ADMIN") { // payments: dev team only
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

@@ -37,11 +37,11 @@ export default async function DevPaymentsPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Payments</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{total} external participant(s) · max ₹{MAX_PAYMENT}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{total} external participant(s) · max ₹{MAX_PAYMENT}</p>
           </div>
           <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <CreditCard className="h-5 w-5 text-[#0f6b63]" />
@@ -56,18 +56,18 @@ export default async function DevPaymentsPage({
             <p className="text-xs text-white/70 mt-1">{payments.length} of {total} participants</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${statusCounts.cleared > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
-            <p className={`text-xs font-medium mb-1 ${statusCounts.cleared > 0 ? "text-emerald-100" : "text-slate-400"}`}>Cleared</p>
+            <p className={`text-xs font-medium mb-1 ${statusCounts.cleared > 0 ? "text-emerald-100" : "text-slate-500"}`}>Cleared</p>
             <p className={`text-2xl font-bold tabular-nums ${statusCounts.cleared > 0 ? "text-white" : "text-slate-700"}`}>{statusCounts.cleared}</p>
           </div>
-          <div className={`rounded-2xl px-4 py-4 ${statusCounts.pending > 0 ? "bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
-            <p className={`text-xs font-medium mb-1 ${statusCounts.pending > 0 ? "text-amber-100" : "text-slate-400"}`}>Pending</p>
+          <div className={`rounded-2xl px-4 py-4 ${statusCounts.pending > 0 ? "bg-[#c8421f] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
+            <p className={`text-xs font-medium mb-1 ${statusCounts.pending > 0 ? "text-amber-100" : "text-slate-500"}`}>Pending</p>
             <p className={`text-2xl font-bold tabular-nums ${statusCounts.pending > 0 ? "text-white" : "text-slate-700"}`}>{statusCounts.pending}</p>
           </div>
         </div>
 
         {/* Approval panel — full transaction details + acknowledge button */}
         <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          <p className="text-xs font-medium text-slate-400 mb-3">
+          <p className="text-xs font-medium text-slate-500 mb-3">
             Click any row to expand transactions and acknowledge payments
           </p>
           <ApprovalPanel
@@ -86,7 +86,7 @@ export default async function DevPaymentsPage({
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-4">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
               </p>
               <div className="flex items-center gap-2">
@@ -97,7 +97,7 @@ export default async function DevPaymentsPage({
                 ) : (
                   <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
-                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                <span className="text-xs text-slate-500">{page} / {totalPages}</span>
                 {page < totalPages ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                     <Link href={`/dev/payments?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

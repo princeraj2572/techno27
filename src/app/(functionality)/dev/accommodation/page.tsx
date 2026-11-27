@@ -66,7 +66,7 @@ function AccomRow({ item }: { item: AccomItem }) {
             </span>
           )}
         </div>
-        <p className="text-xs text-slate-400">{item.userId?.email ?? "—"}</p>
+        <p className="text-xs text-slate-500">{item.userId?.email ?? "—"}</p>
         <div className="flex items-center gap-3 mt-1 flex-wrap">
           {item.userId?.mobileNumber && (
             <span className="flex items-center gap-1 text-xs text-slate-500">
@@ -79,7 +79,7 @@ function AccomRow({ item }: { item: AccomItem }) {
             </span>
           )}
           {item.arrivalTime && (
-            <span className="flex items-center gap-1 text-xs text-slate-400">
+            <span className="flex items-center gap-1 text-xs text-slate-500">
               <Calendar className="h-3 w-3 shrink-0" />
               {new Date(item.arrivalTime).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
               {" → "}
@@ -88,7 +88,7 @@ function AccomRow({ item }: { item: AccomItem }) {
           )}
         </div>
         {item.additionalDetails && (
-          <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">{item.additionalDetails}</p>
+          <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{item.additionalDetails}</p>
         )}
       </div>
     </div>
@@ -149,11 +149,11 @@ export default async function DevAccommodationPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Accommodation</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5">
               {total} request{total !== 1 ? "s" : ""}
             </p>
           </div>
@@ -170,19 +170,19 @@ export default async function DevAccommodationPage({
             <p className="text-xs text-white/70 mt-1">requests</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${maleCount > 0 ? "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
-            <p className={`text-xs font-medium mb-1 ${maleCount > 0 ? "text-sky-500" : "text-slate-400"}`}>Male</p>
+            <p className={`text-xs font-medium mb-1 ${maleCount > 0 ? "text-sky-500" : "text-slate-500"}`}>Male</p>
             <p className={`text-2xl font-bold tabular-nums ${maleCount > 0 ? "text-sky-900" : "text-slate-600"}`}>{maleCount}</p>
-            <p className={`text-xs mt-1 ${maleCount > 0 ? "text-sky-400" : "text-slate-400"}`}>participants</p>
+            <p className={`text-xs mt-1 ${maleCount > 0 ? "text-sky-400" : "text-slate-500"}`}>participants</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${femaleCount > 0 ? "bg-pink-50 border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
-            <p className={`text-xs font-medium mb-1 ${femaleCount > 0 ? "text-pink-500" : "text-slate-400"}`}>Female</p>
+            <p className={`text-xs font-medium mb-1 ${femaleCount > 0 ? "text-pink-500" : "text-slate-500"}`}>Female</p>
             <p className={`text-2xl font-bold tabular-nums ${femaleCount > 0 ? "text-pink-900" : "text-slate-600"}`}>{femaleCount}</p>
-            <p className={`text-xs mt-1 ${femaleCount > 0 ? "text-pink-400" : "text-slate-400"}`}>participants</p>
+            <p className={`text-xs mt-1 ${femaleCount > 0 ? "text-pink-400" : "text-slate-500"}`}>participants</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${otherCount > 0 ? "bg-slate-100 border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
-            <p className="text-xs font-medium text-slate-400 mb-1">Other</p>
+            <p className="text-xs font-medium text-slate-500 mb-1">Other</p>
             <p className="text-2xl font-bold text-slate-600 tabular-nums">{otherCount}</p>
-            <p className="text-xs text-slate-400 mt-1">participants</p>
+            <p className="text-xs text-slate-500 mt-1">participants</p>
           </div>
         </div>
 
@@ -197,7 +197,7 @@ export default async function DevAccommodationPage({
             {/* Groups first */}
             {groups.size > 0 && (
               <div>
-                <p className="text-xs font-medium text-slate-400 mb-3">Groups</p>
+                <p className="text-xs font-medium text-slate-500 mb-3">Groups</p>
                 <div className="space-y-3">
                   {[...groups.entries()].map(([gname, members]) => (
                     <GroupBlock key={gname} groupName={gname} members={members} />
@@ -210,7 +210,7 @@ export default async function DevAccommodationPage({
             {solo.length > 0 && (
               <div>
                 {groups.size > 0 && (
-                  <p className="text-xs font-medium text-slate-400 mb-3">Individual</p>
+                  <p className="text-xs font-medium text-slate-500 mb-3">Individual</p>
                 )}
                 <div className="space-y-2">
                   {solo.map((item) => <AccomRow key={item._id} item={item} />)}
@@ -222,7 +222,7 @@ export default async function DevAccommodationPage({
 
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-2">
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
             </p>
             <div className="flex items-center gap-2">
@@ -233,7 +233,7 @@ export default async function DevAccommodationPage({
               ) : (
                 <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
               )}
-              <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+              <span className="text-xs text-slate-500">{page} / {totalPages}</span>
               {page < totalPages ? (
                 <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                   <Link href={`/dev/accommodation?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

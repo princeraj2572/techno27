@@ -227,7 +227,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
       {!payClearance && (
         <button
           onClick={() => setShowModal(true)}
-          className={`h-16 w-full rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#ff6a00] text-2xl uppercase tracking-wide text-black transition hover:-translate-y-0.5 hover:bg-[#f5c928] active:translate-y-0 ${display.className}`}
+          className={`h-16 w-full rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#ff6a00] text-2xl uppercase tracking-wide text-black hover:bg-[#f5c928] active:translate-y-0 ${display.className} card-lift`}
         >
           Pay ₹{remaining} via Easebuzz
         </button>
@@ -323,7 +323,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
                 href={EASEBUZZ_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#7a1c1c] text-lg font-bold uppercase tracking-wider text-white transition hover:-translate-y-0.5 hover:bg-[#5a1212]"
+                className="flex h-12 w-full items-center justify-center gap-2 rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#7a1c1c] text-lg font-bold uppercase tracking-wider text-white hover:bg-[#5a1212] card-lift"
               >
                 Open Easebuzz <ExternalLink className="h-4 w-4" />
               </a>
@@ -350,7 +350,7 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
               <button
                 onClick={handleSubmit}
                 disabled={!txInput.trim() || submitting}
-                className="h-12 w-full rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#1f8a3a] text-lg font-bold uppercase tracking-wider text-white transition hover:-translate-y-0.5 hover:bg-[#166b2c] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
+                className="h-12 w-full rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#1f8a3a] text-lg font-bold uppercase tracking-wider text-white hover:bg-[#166b2c] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 card-lift"
               >
                 {submitting ? "Submitting…" : "Submit transaction ID"}
               </button>

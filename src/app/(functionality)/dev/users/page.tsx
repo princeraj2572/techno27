@@ -68,11 +68,11 @@ export default async function DevUsersPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Users</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5">
               {q ? `Search results for "${q}"` : `${total.toLocaleString()} registered accounts`}
             </p>
           </div>
@@ -97,12 +97,12 @@ export default async function DevUsersPage({
           {semester && <input type="hidden" name="semester" value={semester} />}
           <div className="flex gap-2">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 pointer-events-none" />
               <input
                 name="q"
                 defaultValue={q ?? ""}
                 placeholder="Search by name, email, mobile, enrollment, participantId..."
-                className="w-full pl-9 pr-3 h-10 rounded-xl border-2 border-[#1c1812] bg-white text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-[#1c1812]/30"
+                className="w-full pl-9 pr-3 h-10 rounded-xl border-2 border-[#1c1812] bg-white text-sm text-slate-800 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#f5c928] focus:border-[#1c1812]/30"
               />
             </div>
             <button
@@ -145,15 +145,15 @@ export default async function DevUsersPage({
                         {u.role.replace(/_/g, " ")}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-400 truncate">{u.email}</p>
+                    <p className="text-xs text-slate-500 truncate">{u.email}</p>
                   </div>
                   <div className="text-right shrink-0 hidden sm:block">
                     {(u.enrollmentNumber ?? u.participantId) && (
-                      <code className="text-xs font-mono text-slate-400 block">{u.enrollmentNumber ?? u.participantId}</code>
+                      <code className="text-xs font-mono text-slate-500 block">{u.enrollmentNumber ?? u.participantId}</code>
                     )}
-                    {u.collegeName && <p className="text-xs text-slate-400 truncate max-w-[120px]">{u.collegeName}</p>}
+                    {u.collegeName && <p className="text-xs text-slate-500 truncate max-w-[120px]">{u.collegeName}</p>}
                     {(u.branch || u.semester) && (
-                      <p className="text-xs text-slate-400 truncate max-w-[160px]">
+                      <p className="text-xs text-slate-500 truncate max-w-[160px]">
                         {[u.branch, u.semester ? `Sem ${u.semester}` : null].filter(Boolean).join(" · ")}
                       </p>
                     )}
@@ -180,7 +180,7 @@ export default async function DevUsersPage({
           const pageHref = (p: number) => `/dev/users?page=${p}${extra ? `&${extra}` : ""}`;
           return (
           <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0.15s" }}>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               Page {page} of {totalPages} · {total} users
             </p>
             <div className="flex items-center gap-2">

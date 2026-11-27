@@ -57,11 +57,11 @@ export default function CreateManagementPage() {
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev/management" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev/management" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Management
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Create account</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">Add a Management Admin or Event Manager</p>
+            <p className="text-xs text-slate-500 mt-0.5">Add a Management Admin or Event Manager</p>
           </div>
           <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <UserPlus className="h-5 w-5 text-[#0f6b63]" />

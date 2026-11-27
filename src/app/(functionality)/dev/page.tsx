@@ -141,7 +141,7 @@ export default async function DevDashboardPage() {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
           {stats5.map((t) => {
             const tile = (
-              <div className={`h-full rounded-2xl border-[3px] p-4 transition hover:-translate-y-0.5 ${t.bg} ${t.light ? "text-white" : "text-[#1c1812]"}`} style={{ borderColor: INK, boxShadow: `0 4px 0 ${INK}` }}>
+              <div className={`h-full rounded-2xl border-[3px] border-[#1c1812] p-4 shadow-[0_4px_0_#1c1812] ${t.href ? "card-lift" : ""} ${t.bg} ${t.light ? "text-white" : "text-[#1c1812]"}`}>
                 <p className="text-xs font-extrabold uppercase tracking-wider opacity-80">{t.label}</p>
                 <p className={`mt-2 text-4xl leading-none tabular-nums ${display.className}`}>{t.value}</p>
                 <p className="mt-2 text-xs font-bold uppercase opacity-70">{t.sub}</p>
@@ -159,13 +159,13 @@ export default async function DevDashboardPage() {
               const Icon = item.icon;
               return (
                 <Link key={item.href} href={item.href} className="group">
-                  <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] hover:-translate-y-0.5 rounded-2xl px-4 py-4 transition-all h-full flex flex-col gap-3">
+                  <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4 h-full flex flex-col gap-3 card-lift">
                     <div className={`w-9 h-9 rounded-xl border-2 border-[#1c1812] ${item.color} flex items-center justify-center shrink-0`}>
                       <Icon className="h-4 w-4 text-white" />
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-[#1c1812] leading-tight">{item.label}</p>
-                      <p className="text-xs text-slate-400 mt-0.5 leading-snug hidden sm:block">{item.desc}</p>
+                      <p className="text-xs text-slate-500 mt-0.5 leading-snug hidden sm:block">{item.desc}</p>
                     </div>
                   </div>
                 </Link>
@@ -204,9 +204,9 @@ export default async function DevDashboardPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-[#1c1812]">{m.fullName}</p>
-                      <p className="text-xs text-slate-400 truncate">{m.email}</p>
+                      <p className="text-xs text-slate-500 truncate">{m.email}</p>
                     </div>
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${m.assignedEvents.length > 0 ? "bg-orange-100 text-orange-700" : "bg-slate-100 text-slate-400"}`}>
+                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${m.assignedEvents.length > 0 ? "bg-orange-100 text-orange-700" : "bg-slate-100 text-slate-500"}`}>
                       {m.assignedEvents.length} event{m.assignedEvents.length !== 1 ? "s" : ""}
                     </span>
                     <Link href={`/dev/management/${m._id}`} className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium shrink-0">
@@ -259,7 +259,7 @@ export default async function DevDashboardPage() {
                   <div key={ev.eventId} className={`flex items-center gap-4 px-4 py-3.5 border-l-4 ${border} hover:bg-slate-50 transition-colors`}>
                     <p className="text-sm font-semibold text-[#1c1812] min-w-0 flex-1 truncate">{ev.name}</p>
                     <span className="text-sm font-bold text-[#1c1812] tabular-nums shrink-0">
-                      {ev.registered}<span className="text-xs font-normal text-slate-400">/{ev.limit || "∞"}</span>
+                      {ev.registered}<span className="text-xs font-normal text-slate-500">/{ev.limit || "∞"}</span>
                     </span>
                     {ev.limit != null && ev.limit > 0 && (
                       <div className="flex items-center gap-2 shrink-0">
@@ -269,7 +269,7 @@ export default async function DevDashboardPage() {
                             style={{ width: `${Math.min(pct, 100)}%` }}
                           />
                         </div>
-                        <span className="text-xs text-slate-400 tabular-nums w-8">{pct}%</span>
+                        <span className="text-xs text-slate-500 tabular-nums w-8">{pct}%</span>
                       </div>
                     )}
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${label.bg} ${label.color}`}>{label.text}</span>
@@ -284,7 +284,7 @@ export default async function DevDashboardPage() {
         </div>
 
         {/* Footer summary */}
-        <div className="flex items-center gap-2 text-xs text-slate-400 animate-slide-up" style={{ animationDelay: "0.22s" }}>
+        <div className="flex items-center gap-2 text-xs text-slate-500 animate-slide-up" style={{ animationDelay: "0.22s" }}>
           <TrendingUp className="h-3.5 w-3.5" />
           <span>
             {stats.totalUsers} total users · {stats.internalCount} internal · {stats.externalCount} external ·{" "}

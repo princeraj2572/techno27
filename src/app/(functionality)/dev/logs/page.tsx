@@ -44,11 +44,11 @@ export default async function DevLogsPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Audit Logs</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{total} entries</p>
+            <p className="text-xs text-slate-500 mt-0.5">{total} entries</p>
           </div>
           <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <FileText className="h-5 w-5 text-[#0f6b63]" />
@@ -61,7 +61,7 @@ export default async function DevLogsPage({
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <FileText className="h-8 w-8 mx-auto mb-3 text-slate-200" />
               <p className="text-sm font-medium text-slate-500">No audit logs yet</p>
-              <p className="text-xs text-slate-400 mt-1">Actions by admins will appear here</p>
+              <p className="text-xs text-slate-500 mt-1">Actions by admins will appear here</p>
             </div>
           ) : (
             logs.map((log: {
@@ -80,7 +80,7 @@ export default async function DevLogsPage({
                         {log.action}
                       </code>
                       {log.targetType && (
-                        <span className="text-[10px] font-medium text-slate-400 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-medium text-slate-500 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded">
                           {log.targetType}
                         </span>
                       )}
@@ -88,7 +88,7 @@ export default async function DevLogsPage({
                     <p className="text-xs text-slate-600 mt-1.5">
                       {log.performedBy?.fullName ?? log.performedBy?.email ?? "System"}
                     </p>
-                    {log.reason && <p className="text-xs text-slate-400 mt-0.5 truncate">{log.reason}</p>}
+                    {log.reason && <p className="text-xs text-slate-500 mt-0.5 truncate">{log.reason}</p>}
                   </div>
                   <p className="text-xs text-slate-300 shrink-0 tabular-nums">
                     {log.timestamp ? new Date(log.timestamp).toLocaleString() : "—"}
@@ -100,7 +100,7 @@ export default async function DevLogsPage({
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
               </p>
               <div className="flex items-center gap-2">
@@ -111,7 +111,7 @@ export default async function DevLogsPage({
                 ) : (
                   <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
-                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                <span className="text-xs text-slate-500">{page} / {totalPages}</span>
                 {page < totalPages ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                     <Link href={`/dev/logs?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

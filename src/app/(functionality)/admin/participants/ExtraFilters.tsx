@@ -75,7 +75,7 @@ export default function ExtraFilters({ branches, departments, semesters }: Props
             router.push(qs ? `${pathname}?${qs}` : pathname);
           }}
           title="Clear filters"
-          className="shrink-0 text-slate-400 hover:text-slate-600 p-1"
+          className="shrink-0 text-slate-500 hover:text-slate-600 p-1"
         >
           <X className="h-3.5 w-3.5" />
         </button>

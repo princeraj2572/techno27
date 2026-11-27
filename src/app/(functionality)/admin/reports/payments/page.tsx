@@ -71,7 +71,8 @@ export default async function ReportPaymentsPage({
   searchParams: Promise<Record<string, string>>;
 }) {
   const user = await getUser();
-  if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
+  // Payments are handled by the dev team only; management does not see them.
+  if (!user || user.role !== "DEV_ADMIN") redirect(user?.role === "MANAGEMENT_ADMIN" ? "/admin" : "/dashboard");
 
   const sp     = await searchParams;
   const q      = sp.q      ?? "";
@@ -99,11 +100,11 @@ export default async function ReportPaymentsPage({
 
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Reports
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Payment Report</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{total} participant(s)</p>
+            <p className="text-xs text-slate-500 mt-0.5">{total} participant(s)</p>
           </div>
           <div className="flex items-center gap-3">
             <a href={exportHref} download className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-600 hover:text-emerald-700 border border-emerald-200 rounded-lg px-3 py-2">
@@ -125,7 +126,7 @@ export default async function ReportPaymentsPage({
         <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.08s" }}>
           {rows.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-10 text-center">
-              <p className="text-sm text-slate-400">No results</p>
+              <p className="text-sm text-slate-500">No results</p>
             </div>
           ) : (
             rows.map((p: PayRow) => (
@@ -137,12 +138,12 @@ export default async function ReportPaymentsPage({
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-slate-900 truncate">{p.fullName}</p>
-                  <p className="text-xs text-slate-400 truncate">{p.email}</p>
-                  {p.participantId && <code className="text-[10px] font-mono text-slate-400">{p.participantId}</code>}
+                  <p className="text-xs text-slate-500 truncate">{p.email}</p>
+                  {p.participantId && <code className="text-[10px] font-mono text-slate-500">{p.participantId}</code>}
                 </div>
                 <div className="text-right shrink-0">
                   <p className="text-sm font-bold text-slate-900">₹{p.payableAmount}</p>
-                  <p className="text-xs text-slate-400">{p.txCount} tx</p>
+                  <p className="text-xs text-slate-500">{p.txCount} tx</p>
                 </div>
                 {p.payClearance ? (
                   <span className="text-xs font-medium text-emerald-600 flex items-center gap-1 shrink-0">
@@ -160,7 +161,7 @@ export default async function ReportPaymentsPage({
 
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-2">
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
             </p>
             <div className="flex items-center gap-2">
@@ -171,7 +172,7 @@ export default async function ReportPaymentsPage({
               ) : (
                 <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
               )}
-              <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+              <span className="text-xs text-slate-500">{page} / {totalPages}</span>
               {page < totalPages ? (
                 <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                   <Link href={`${baseUrl}&page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

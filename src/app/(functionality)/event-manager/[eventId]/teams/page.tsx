@@ -61,11 +61,11 @@ export default async function EventManagerTeamsPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href={`/event-manager/${eventId}`} className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href={`/event-manager/${eventId}`} className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> {event.name}
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Teams</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5">
               {total} team(s) · {fullCount} full
             </p>
           </div>
@@ -81,11 +81,11 @@ export default async function EventManagerTeamsPage({
             <p className="text-2xl font-bold text-white tabular-nums">{total}</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${fullCount > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
-            <p className={`text-xs font-medium mb-1 ${fullCount > 0 ? "text-emerald-100" : "text-slate-400"}`}>Full</p>
+            <p className={`text-xs font-medium mb-1 ${fullCount > 0 ? "text-emerald-100" : "text-slate-500"}`}>Full</p>
             <p className={`text-2xl font-bold tabular-nums ${fullCount > 0 ? "text-white" : "text-slate-700"}`}>{fullCount}</p>
           </div>
           <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
-            <p className="text-xs font-medium text-slate-400 mb-1">Team size</p>
+            <p className="text-xs font-medium text-slate-500 mb-1">Team size</p>
             <p className="text-2xl font-bold text-slate-900 tabular-nums">{event.teamSize ?? 1}</p>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default async function EventManagerTeamsPage({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-slate-900 truncate">{team.leader}</p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-500">
                       {team.createdAt ? new Date(team.createdAt).toLocaleDateString() : "—"}
                     </p>
                   </div>
@@ -120,7 +120,7 @@ export default async function EventManagerTeamsPage({
                         style={{ width: `${fillPct}%` }}
                       />
                     </div>
-                    <span className="text-xs text-slate-400 tabular-nums">{team.members.length}/{maxSize}</span>
+                    <span className="text-xs text-slate-500 tabular-nums">{team.members.length}/{maxSize}</span>
                   </div>
                   {isFull && (
                     <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.5 rounded-full shrink-0">
@@ -134,7 +134,7 @@ export default async function EventManagerTeamsPage({
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
               </p>
               <div className="flex items-center gap-2">
@@ -145,7 +145,7 @@ export default async function EventManagerTeamsPage({
                 ) : (
                   <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
-                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                <span className="text-xs text-slate-500">{page} / {totalPages}</span>
                 {page < totalPages ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                     <Link href={`/event-manager/${eventId}/teams?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

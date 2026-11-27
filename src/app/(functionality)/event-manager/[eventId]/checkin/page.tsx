@@ -66,7 +66,6 @@ export default async function EventManagerCheckinPage({
   if (!data) redirect("/event-manager");
 
   const { event, participants, checkedInCount } = data;
-  const checkedInById = String(user._id ?? "");
 
   return (
     <div className="">
@@ -75,11 +74,11 @@ export default async function EventManagerCheckinPage({
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href={`/event-manager/${eventId}`} className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href={`/event-manager/${eventId}`} className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> {event.name}
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Check-In</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">{participants.length} registered · {checkedInCount} checked in</p>
+            <p className="text-xs text-slate-500 mt-0.5">{participants.length} registered · {checkedInCount} checked in</p>
           </div>
           <div className="w-9 h-9 rounded-xl bg-[#f6efdf] flex items-center justify-center shrink-0">
             <CheckSquare className="h-4 w-4 text-[#0f6b63]" />
@@ -88,7 +87,6 @@ export default async function EventManagerCheckinPage({
 
         <CheckinClient
           eventId={eventId}
-          checkedInById={checkedInById}
           initialParticipants={participants}
           totalRegistered={participants.length}
           initialCheckedInCount={checkedInCount}

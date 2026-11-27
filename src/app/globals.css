@@ -108,7 +108,7 @@ body {
 @keyframes slide-up {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -117,7 +117,19 @@ body {
 }
 
 @utility animate-slide-up {
-  animation: slide-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: slide-up 0.22s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-slide-up { animation: none; }
+}
+
+/* Clickable ink card: lifts on hover (mouse only), presses down on tap/click. Transform + shadow only. */
+@utility card-lift {
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 160ms cubic-bezier(0.23, 1, 0.32, 1);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #1c1812; }
+  }
+  &:active { transform: translateY(2px); box-shadow: 0 2px 0 #1c1812; }
 }
 
 /* ── Home hero entrance (follows the intro video: gold flash resolves into the poster) ──

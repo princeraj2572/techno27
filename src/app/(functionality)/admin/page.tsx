@@ -6,18 +6,18 @@ import { getEventsWithRegistrationCountsAction } from "@/features/events/event-a
 import { connectToDatabase } from "@/lib/mongodb";
 import { User } from "@/features/users/user.model";
 import {
-  Users, CalendarDays, CreditCard, Hotel,
+  Users, CalendarDays, Hotel,
   CheckSquare, UsersRound, ShieldCheck, BarChart2,
   ArrowRight, LifeBuoy, Contact,
 } from "lucide-react";
 import Link from "next/link";
-import { GoldBackdrop, INK, TicketTitle } from "@/components/indie/gold-poster";
+import { CARD_UI, GoldBackdrop, INK, TicketTitle } from "@/components/indie/gold-poster";
 
 // Retro "indie" look inspired by Rendezvous IITD.
 const display = Dela_Gothic_One({ weight: "400", subsets: ["latin"] });
 const body = Barlow_Condensed({ weight: ["500", "600", "700"], subsets: ["latin"] });
 
-const CARD = "bg-[#f5edd8] border-2 border-black shadow-[4px_4px_0_0_#000]";
+const CARD = CARD_UI;
 
 const NAV_GROUPS = [
   {
@@ -38,9 +38,8 @@ const NAV_GROUPS = [
     ],
   },
   {
-    title: "Money & Communication",
+    title: "Reports & help",
     items: [
-      { label: "Payments",        href: "/admin/payments",        icon: CreditCard,  desc: "Review payment submissions",       color: "bg-[#ffb10f]" },
       { label: "Reports",         href: "/admin/reports",         icon: BarChart2,   desc: "Export data and reports",          color: "bg-[#ff6a00]" },
       { label: "Help desk",       href: "/admin/helpdesk",        icon: LifeBuoy,    desc: "Answer participant questions",     color: "bg-[#f5c928]" },
     ],
@@ -66,6 +65,9 @@ const STATUS_BORDER: Record<string, string> = {
   REGISTRATION_CLOSED: "border-l-amber-500",
   TEMPORARILY_CLOSED:  "border-l-orange-500",
 };
+
+const OVERVIEW_ROWS = 8;
+const STATUS_RANK = (s: string) => ["EVENT_LIVE", "REGISTRATION_OPEN", "TEMPORARILY_CLOSED", "REGISTRATION_CLOSED", "UPCOMING"].indexOf(s) >>> 0;
 
 async function getParticipantCounts() {
   await connectToDatabase();
@@ -147,7 +149,7 @@ export default async function AdminDashboardPage() {
             <div className="indie-anim flex w-max whitespace-nowrap" style={{ animation: "indie-marquee 45s linear infinite reverse" }}>
               {[0, 1].map((n) => (
                 <span key={n} className="pr-8">
-                  {"Registrations ● Check-In ● Payments ● Accommodation ● Teams ● ".repeat(4)}
+                  {"Registrations ● Check-In ● Accommodation ● Teams ● ".repeat(4)}
                 </span>
               ))}
             </div>
@@ -191,7 +193,7 @@ export default async function AdminDashboardPage() {
                   const Icon = item.icon;
                   return (
                     <Link key={item.href + item.label} href={item.href} className="group">
-                      <div className={`${CARD} hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#000] rounded-xl px-4 py-4 transition-all h-full flex flex-col gap-3`}>
+                      <div className={`${CARD} card-lift px-4 py-4 h-full flex flex-col gap-3`}>
                         <div className={`w-9 h-9 rounded-full ${item.color} border-2 border-black flex items-center justify-center shrink-0`}>
                           <Icon className="h-4 w-4 text-black" />
                         </div>
@@ -211,7 +213,7 @@ export default async function AdminDashboardPage() {
         {/* Events overview */}
         <div className="animate-slide-up" style={{ animationDelay: "0.15s" }}>
           <div className="flex items-center justify-between mb-3">
-            <p className={`text-xl text-[#1c1812] ${display.className}`}>Events overview</p>
+            <p className={`text-xl text-[#1c1812] ${display.className}`}>Events overview <span className="text-sm text-black/50">{Math.min(events.length, OVERVIEW_ROWS)} of {events.length}</span></p>
             <Link
               href="/admin/events"
               className="text-sm font-bold uppercase tracking-wider text-[#0e5b57] hover:text-[#ef5a1c] transition-colors flex items-center gap-1"
@@ -226,8 +228,9 @@ export default async function AdminDashboardPage() {
               <p className="text-lg font-semibold uppercase tracking-wide text-black/60">No events yet</p>
             </div>
           ) : (
-            <div className={`${CARD} rounded-xl overflow-hidden divide-y-2 divide-dashed divide-black/25`}>
-              {events.map((event) => {
+            <div className={`${CARD} overflow-hidden divide-y-2 divide-dashed divide-black/15`}>
+              {/* Live and open events first; the full list is on the Events page. */}
+              {[...events].sort((a, b) => STATUS_RANK(a.status) - STATUS_RANK(b.status)).slice(0, OVERVIEW_ROWS).map((event) => {
                 const border = STATUS_BORDER[event.status] ?? "border-l-stone-400";
                 const label  = STATUS_LABEL[event.status]  ?? { text: event.status.replace(/_/g, " "), color: "text-stone-600", bg: "bg-stone-200" };
                 return (

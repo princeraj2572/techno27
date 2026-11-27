@@ -31,7 +31,7 @@ const DEPARTMENTS = [
 function Person({ role, name, phone }: { role: string; name: string; phone: string }) {
   return (
     <div className="min-w-0">
-      <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">{role}</p>
+      <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-500">{role}</p>
       <p className="text-sm font-semibold text-slate-800 truncate">{name}</p>
       <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
         <Phone className="h-3 w-3" /> {phone}
@@ -57,7 +57,7 @@ export default async function AdminTeamPage() {
             </div>
             <div>
               <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Team Behind Techno-aiMBiAtion</TicketTitle>
-              <p className="text-xs text-slate-400 mt-0.5">Conveners &amp; co-conveners by department</p>
+              <p className="text-xs text-slate-500 mt-0.5">Conveners &amp; co-conveners by department</p>
             </div>
           </div>
         </div>

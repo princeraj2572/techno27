@@ -52,11 +52,11 @@ export default function SeedPage() {
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Dev
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Seed Events</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">Load the fest events into the database</p>
+            <p className="text-xs text-slate-500 mt-0.5">Load the fest events into the database</p>
           </div>
           <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
             <Sprout className="h-5 w-5 text-[#0f6b63]" />
@@ -71,7 +71,7 @@ export default function SeedPage() {
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-900">Seed fest events</p>
-              <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">
+              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
                 Adds every event and competition from the website, with rules and team sizes, with registration not open yet.
                 Safe to run again: new events are added and existing ones get the latest rules and team size;
                 their status, fees and prizes are not touched.
@@ -100,7 +100,7 @@ export default function SeedPage() {
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-900">Bootstrap dev admin</p>
-              <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">
+              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">
                 Creates a DEV_ADMIN account if none exists. Only needed on a fresh database.
               </p>
             </div>

@@ -80,15 +80,15 @@ export default async function EventManagerPage() {
         {/* Header */}
         <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <p className="text-xs text-slate-400 mb-0.5">Event Manager</p>
+            <p className="text-xs text-slate-500 mb-0.5">Event Manager</p>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">My Events</TicketTitle>
-            <p className="text-xs text-slate-400 mt-0.5">Techno-aiMBiAtion 2027</p>
+            <p className="text-xs text-slate-500 mt-0.5">Techno-aiMBiAtion 2027</p>
           </div>
           <div className="flex items-center gap-3">
-            <code className="text-xs bg-orange-50 border border-orange-100 px-2 py-1 rounded-lg text-orange-600 font-mono">
+            <span className="rounded-full border-2 border-[#1c1812] bg-[#0f6b63] px-3 py-1 text-[10px] font-extrabold uppercase text-white sm:text-xs">
               {user.role.replace(/_/g, " ")}
-            </code>
-            <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white text-sm font-bold shrink-0">
+            </span>
+            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] text-lg font-extrabold text-[#1c1812] shadow-[0_4px_0_#1c1812]">
               {firstName[0]?.toUpperCase()}
             </div>
           </div>
@@ -96,20 +96,20 @@ export default async function EventManagerPage() {
 
         {/* Stat cards */}
         <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
-          <div className="bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl p-4">
+          <div className="bg-[#c8421f] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl p-4">
             <p className="text-xs font-medium text-orange-100 mb-3">Assigned events</p>
             <p className="text-4xl font-bold text-white tabular-nums leading-none">{assignedEvents.length}</p>
             <p className="text-xs text-orange-200 mt-2">total</p>
           </div>
           <div className={`rounded-2xl p-4 ${openCount > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
-            <p className={`text-xs font-medium mb-3 ${openCount > 0 ? "text-emerald-100" : "text-slate-400"}`}>Registration open</p>
+            <p className={`text-xs font-medium mb-3 ${openCount > 0 ? "text-emerald-100" : "text-slate-500"}`}>Registration open</p>
             <p className={`text-4xl font-bold tabular-nums leading-none ${openCount > 0 ? "text-white" : "text-slate-700"}`}>{openCount}</p>
-            <p className={`text-xs mt-2 ${openCount > 0 ? "text-emerald-200" : "text-slate-400"}`}>events</p>
+            <p className={`text-xs mt-2 ${openCount > 0 ? "text-emerald-200" : "text-slate-500"}`}>events</p>
           </div>
-          <div className={`rounded-2xl p-4 ${liveCount > 0 ? "bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
-            <p className={`text-xs font-medium mb-3 ${liveCount > 0 ? "text-blue-100" : "text-slate-400"}`}>Live now</p>
+          <div className={`rounded-2xl p-4 ${liveCount > 0 ? "bg-[#c8421f] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
+            <p className={`text-xs font-medium mb-3 ${liveCount > 0 ? "text-blue-100" : "text-slate-500"}`}>Live now</p>
             <p className={`text-4xl font-bold tabular-nums leading-none ${liveCount > 0 ? "text-white" : "text-slate-700"}`}>{liveCount}</p>
-            <p className={`text-xs mt-2 ${liveCount > 0 ? "text-blue-200" : "text-slate-400"}`}>events</p>
+            <p className={`text-xs mt-2 ${liveCount > 0 ? "text-blue-200" : "text-slate-500"}`}>events</p>
           </div>
         </div>
 
@@ -120,7 +120,7 @@ export default async function EventManagerPage() {
             <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 py-12 text-center bg-white/60">
               <CalendarDays className="h-8 w-8 mx-auto mb-3 text-slate-300" />
               <p className="text-sm font-medium text-slate-500">No events assigned yet</p>
-              <p className="text-xs text-slate-400 mt-1">Contact a Management Admin to get events assigned</p>
+              <p className="text-xs text-slate-500 mt-1">Contact a Management Admin to get events assigned</p>
             </div>
           ) : (
             <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl overflow-hidden divide-y divide-slate-100">
@@ -135,7 +135,7 @@ export default async function EventManagerPage() {
                   >
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-slate-900 truncate">{event.name}</p>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <p className="text-xs text-slate-500 mt-0.5">
                         {[
                           event.category,
                           event.teamSize && `Team: ${event.teamSize}`,
@@ -145,7 +145,7 @@ export default async function EventManagerPage() {
                       </p>
                     </div>
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${label.bg} ${label.color}`}>{label.text}</span>
-                    <ArrowRight className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                    <ArrowRight className="h-3.5 w-3.5 text-slate-500 shrink-0" />
                   </Link>
                 );
               })}
@@ -160,13 +160,13 @@ export default async function EventManagerPage() {
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               {QUICK_LINKS.map(({ label, icon: Icon, desc, key, color }) => (
                 <Link key={key} href={`/event-manager/${assignedEvents[0]._id}/${key}`} className="group">
-                  <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] hover:border-orange-300 hover:shadow-md rounded-2xl px-4 py-4 transition-all h-full flex flex-col gap-3">
+                  <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4 h-full flex flex-col gap-3 card-lift">
                     <div className={`w-8 h-8 rounded-xl ${color} flex items-center justify-center shrink-0`}>
                       <Icon className="h-4 w-4 text-white" />
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-slate-800 leading-tight">{label}</p>
-                      <p className="text-xs text-slate-400 mt-0.5 leading-snug hidden sm:block">{desc}</p>
+                      <p className="text-xs text-slate-500 mt-0.5 leading-snug hidden sm:block">{desc}</p>
                     </div>
                   </div>
                 </Link>

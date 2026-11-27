@@ -49,13 +49,13 @@ export default async function AdminEventDetailPage({
   const STATUS_LABEL: Record<string, { text: string; color: string }> = {
     REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-600" },
     EVENT_LIVE:          { text: "Live now",  color: "text-teal-600"  },
-    COMPLETED:           { text: "Completed", color: "text-slate-400"   },
+    COMPLETED:           { text: "Completed", color: "text-slate-500"   },
     CANCELLED:           { text: "Cancelled", color: "text-red-500"     },
     REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600"   },
     TEMPORARILY_CLOSED:  { text: "Paused",    color: "text-orange-500"  },
   };
 
-  const label = STATUS_LABEL[String(event.status)] ?? { text: String(event.status).replace(/_/g, " "), color: "text-slate-400" };
+  const label = STATUS_LABEL[String(event.status)] ?? { text: String(event.status).replace(/_/g, " "), color: "text-slate-500" };
   const registered = event.registeredCount ?? teamList.length;
   const limit = event.maxParticipants ?? 0;
   const fillPct = limit > 0 ? Math.round((registered / limit) * 100) : 0;
@@ -67,7 +67,7 @@ export default async function AdminEventDetailPage({
         {/* Header */}
         <div className="flex items-start justify-between gap-4 animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/admin/events" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/admin/events" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> Events
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{event.name}</TicketTitle>
@@ -97,12 +97,12 @@ export default async function AdminEventDetailPage({
             <p className="text-4xl font-bold text-teal-900 tabular-nums leading-none">{limit || "∞"}</p>
             <p className="text-xs text-teal-400 mt-2">max participants</p>
           </div>
-          <div className={`rounded-2xl p-4 ${event.prizeMoney ? "bg-[#ff6a00] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-100"}`}>
-            <p className={`text-xs font-medium mb-3 ${event.prizeMoney ? "text-amber-100" : "text-slate-400"}`}>Prize pool</p>
+          <div className={`rounded-2xl p-4 ${event.prizeMoney ? "bg-[#c8421f] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-100"}`}>
+            <p className={`text-xs font-medium mb-3 ${event.prizeMoney ? "text-amber-100" : "text-slate-500"}`}>Prize pool</p>
             <p className={`text-2xl font-bold tabular-nums leading-none ${event.prizeMoney ? "text-white" : "text-slate-700"}`}>
               {event.prizeMoney ? `₹${event.prizeMoney}` : "—"}
             </p>
-            <p className={`text-xs mt-2 ${event.prizeMoney ? "text-amber-200" : "text-slate-400"}`}>total prizes</p>
+            <p className={`text-xs mt-2 ${event.prizeMoney ? "text-amber-200" : "text-slate-500"}`}>total prizes</p>
           </div>
         </div>
 
@@ -115,7 +115,7 @@ export default async function AdminEventDetailPage({
             { icon: CalendarDays, label: "Fill", value: limit > 0 ? `${fillPct}%` : "No limit" },
           ].map(({ label: lbl, value }) => (
             <div key={lbl} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-3">
-              <p className="text-xs text-slate-400">{lbl}</p>
+              <p className="text-xs text-slate-500">{lbl}</p>
               <p className="text-base font-bold text-slate-900 mt-0.5">{value}</p>
             </div>
           ))}
@@ -123,7 +123,7 @@ export default async function AdminEventDetailPage({
 
         {limit > 0 && (
           <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            <div className="flex items-center justify-between text-xs text-slate-400 mb-1.5">
+            <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5">
               <span>Registration fill</span>
               <span>{registered} / {limit}</span>
             </div>
@@ -141,15 +141,15 @@ export default async function AdminEventDetailPage({
         {/* Teams */}
         <div className="space-y-3 animate-slide-up" style={{ animationDelay: "0.14s" }}>
           <div className="flex items-center gap-2">
-            <UsersRound className="h-4 w-4 text-slate-400" />
+            <UsersRound className="h-4 w-4 text-slate-500" />
             <p className="text-sm font-semibold text-slate-900">
-              Registered teams <span className="text-slate-400 font-normal">({teamCount})</span>
+              Registered teams <span className="text-slate-500 font-normal">({teamCount})</span>
             </p>
           </div>
 
           {teamList.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-10 text-center">
-              <p className="text-sm text-slate-400">No registrations yet</p>
+              <p className="text-sm text-slate-500">No registrations yet</p>
             </div>
           ) : (
             teamList.map((t: { _id: string; leader: string; members: string[] }) => {
@@ -164,10 +164,10 @@ export default async function AdminEventDetailPage({
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-slate-900 truncate">{leaderUser?.fullName ?? t.leader}</p>
-                    <p className="text-xs text-slate-400 truncate">{t.leader}</p>
+                    <p className="text-xs text-slate-500 truncate">{t.leader}</p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs text-slate-400">{t.members.length} member(s)</span>
+                    <span className="text-xs text-slate-500">{t.members.length} member(s)</span>
                     <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${
                       isExternal ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-teal-50 text-teal-700 border-teal-200"
                     }`}>
@@ -181,7 +181,7 @@ export default async function AdminEventDetailPage({
 
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 {(page - 1) * pageSize + 1}–{Math.min(page * pageSize, teamCount)} of {teamCount}
               </p>
               <div className="flex items-center gap-2">
@@ -192,7 +192,7 @@ export default async function AdminEventDetailPage({
                 ) : (
                   <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
                 )}
-                <span className="text-xs text-slate-400">{page} / {totalPages}</span>
+                <span className="text-xs text-slate-500">{page} / {totalPages}</span>
                 {page < totalPages ? (
                   <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
                     <Link href={`/admin/events/${id}?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>

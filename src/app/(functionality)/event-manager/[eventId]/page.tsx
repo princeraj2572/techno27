@@ -70,11 +70,11 @@ export default async function EventManagerEventPage({
         {/* Header */}
         <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
           <div>
-            <Link href="/event-manager" className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-[#0f6b63] transition-colors mb-1">
+            <Link href="/event-manager" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> My events
             </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{event.name}</TicketTitle>
-            {event.category && <p className="text-xs text-slate-400 mt-0.5">{event.category}</p>}
+            {event.category && <p className="text-xs text-slate-500 mt-0.5">{event.category}</p>}
           </div>
           <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border shrink-0 mt-1 ${statusInfo.color} ${statusInfo.bg}`}>
             {statusInfo.text}
@@ -90,7 +90,7 @@ export default async function EventManagerEventPage({
             { label: "Team size",   value: event.teamSize ?? 1 },
           ].map((s) => (
             <div key={s.label} className={`rounded-2xl px-4 py-4 ${s.highlight ? "bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
-              <p className={`text-xs font-medium mb-1 ${s.highlight ? "text-white/70" : "text-slate-400"}`}>{s.label}</p>
+              <p className={`text-xs font-medium mb-1 ${s.highlight ? "text-white/70" : "text-slate-500"}`}>{s.label}</p>
               <p className={`text-2xl font-bold tabular-nums ${s.highlight ? "text-white" : "text-slate-900"}`}>{s.value}</p>
             </div>
           ))}
@@ -105,7 +105,7 @@ export default async function EventManagerEventPage({
                 style={{ width: `${Math.min(fillPct, 100)}%` }}
               />
             </div>
-            <span className="text-xs text-slate-400 tabular-nums w-10 text-right">{fillPct}%</span>
+            <span className="text-xs text-slate-500 tabular-nums w-10 text-right">{fillPct}%</span>
           </div>
         )}
 
@@ -119,18 +119,18 @@ export default async function EventManagerEventPage({
         {/* Fees */}
         <div className="flex items-center gap-6 text-sm animate-slide-up" style={{ animationDelay: "0.1s" }}>
           <div>
-            <p className="text-xs text-slate-400">Internal fee</p>
+            <p className="text-xs text-slate-500">Internal fee</p>
             <p className="font-semibold text-slate-900">₹{event.internalFee ?? 0}</p>
           </div>
           <div>
-            <p className="text-xs text-slate-400">External fee</p>
+            <p className="text-xs text-slate-500">External fee</p>
             <p className="font-semibold text-slate-900">₹{event.externalFee ?? 0}</p>
           </div>
         </div>
 
         {/* Sub-nav */}
         <div className="animate-slide-up" style={{ animationDelay: "0.12s" }}>
-          <p className="text-xs font-medium text-slate-400 mb-3">Manage</p>
+          <p className="text-xs font-medium text-slate-500 mb-3">Manage</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {NAV.map(({ label, href, icon: Icon, desc }) => (
               <Link key={href} href={`/event-manager/${eventId}/${href}`} className="group">
@@ -139,7 +139,7 @@ export default async function EventManagerEventPage({
                     <Icon className="h-3.5 w-3.5 text-[#0f6b63]" />
                   </div>
                   <p className="text-sm font-semibold text-slate-900">{label}</p>
-                  <p className="text-xs text-slate-400 mt-0.5">{desc}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">{desc}</p>
                 </div>
               </Link>
             ))}

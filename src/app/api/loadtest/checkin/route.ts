@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const staff = await getUser();
     if (!staff) throw new Error("Staff token did not resolve to a user");
 
-    const result = await checkInByQRAction(scannedUserId, eventId, String(staff._id));
+    const result = await checkInByQRAction(scannedUserId, eventId);
     return NextResponse.json(result);
   } catch (e) {
     return errorResponse(e);

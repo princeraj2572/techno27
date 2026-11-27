@@ -78,7 +78,7 @@ export default function FilterForm({ view, eventOptions = [] }: Props) {
 
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400 pointer-events-none" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500 pointer-events-none" />
         <Input
           value={q}
           onChange={(e) => onSearch(e.target.value)}
@@ -128,14 +128,14 @@ export default function FilterForm({ view, eventOptions = [] }: Props) {
         {LIMITS.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
       </select>
 
-      {isPending && <Loader2 className="h-4 w-4 animate-spin text-slate-400" />}
+      {isPending && <Loader2 className="h-4 w-4 animate-spin text-slate-500" />}
 
       {/* Clear */}
       {(q || event || type || status || gender) && (
         <Button
           variant="ghost"
           size="sm"
-          className="h-9 text-xs text-slate-400"
+          className="h-9 text-xs text-slate-500"
           onClick={() => {
             setQ(""); setEvent(""); setType(""); setStatus(""); setGender("");
             push({ q: "", event: "", type: "", status: "", gender: "" });
