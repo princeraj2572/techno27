@@ -4,6 +4,8 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { sendResetPasswordEmail, sendWelcomeEmail } from "@/lib/mailer";
 import { User } from "@/features/users/user.model";
 import { Otp, OTP_TTL_MS, OtpPurpose, hashOtp } from "@/features/users/otp.model";
+import { isDisposable, suggestDomain } from "@/features/users/email-domain";
+import { promises as dns } from "dns";
 
 type Result = { ok: true } | { ok: false; error: string };
 
@@ -11,10 +13,42 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RESEND_AFTER_MS = 60 * 1000;
 const MAX_ATTEMPTS = 5;
 
+/** Can this domain receive mail? MX records, or an A record (the RFC 5321 fallback).
+ *  Only a definite "no such domain / no records" answer blocks; timeouts and DNS outages let it through. */
+async function domainReceivesMail(domain: string): Promise<boolean> {
+  const definiteNo = (e: unknown) => ["ENOTFOUND", "ENODATA", "ENONAME"].includes((e as { code?: string })?.code ?? "");
+  const within = <T,>(p: Promise<T>) => Promise.race([p, new Promise<never>((_, rej) => setTimeout(() => rej(Object.assign(new Error("timeout"), { code: "ETIMEOUT" })), 4000))]);
+  try {
+    const mx = await within(dns.resolveMx(domain));
+    if (mx.some((r) => r.exchange && r.exchange !== ".")) return true;
+  } catch (e) {
+    if (!definiteNo(e)) return true;
+  }
+  try {
+    return (await within(dns.resolve4(domain))).length > 0;
+  } catch (e) {
+    return !definiteNo(e);
+  }
+}
+
+/** Sign-up only: catch typos (gamil.com), throwaway inboxes and domains that can't receive mail. */
+async function checkSignupDomain(email: string): Promise<string | null> {
+  const domain = email.slice(email.lastIndexOf("@") + 1);
+  const fix = suggestDomain(domain);
+  if (fix) return `Check your email address: did you mean ${email.slice(0, email.lastIndexOf("@"))}@${fix}?`;
+  if (isDisposable(domain)) return "Please use your own email address, not a temporary inbox.";
+  if (domain !== "opju.ac.in" && !(await domainReceivesMail(domain))) return `"${domain}" can't receive email. Check the address and try again.`;
+  return null;
+}
+
 export async function sendOtp(rawEmail: string, purpose: OtpPurpose): Promise<Result> {
   const email = rawEmail.toLowerCase().trim();
   if (!EMAIL_RE.test(email)) return { ok: false, error: "Invalid email address" };
   if (purpose !== "signup" && purpose !== "reset") return { ok: false, error: "Invalid request" };
+  if (purpose === "signup") {
+    const bad = await checkSignupDomain(email);
+    if (bad) return { ok: false, error: bad };
+  }
 
   await connectToDatabase();
   const exists = await User.exists({ email });
