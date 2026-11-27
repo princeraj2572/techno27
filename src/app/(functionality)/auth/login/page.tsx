@@ -12,7 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useFetch from "@/hooks/use-fetch";
 import { userLogin } from "@/features/users/user-actions";
-import { AuthCard, AuthShell } from "../auth-shell";
+import styles from "./login.module.css";
+import CanAuthScene from "@/components/CanAuthScene";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -37,6 +38,7 @@ function LoginForm() {
   const { fn: login, loading } = useFetch(userLogin);
 
   const onSubmit = async (data: LoginForm) => {
+    if (loading) return;
     setServerError("");
     try {
       const result = await login(data);
@@ -57,8 +59,7 @@ function LoginForm() {
   };
 
   return (
-    <AuthShell>
-      <AuthCard tag="Welcome back" title="Sign In" description="Techno-aiMBiAtion 2027" maxWidth="max-w-md">
+    <CanAuthScene title="Sign In">
         {registered && (
           <div className="mb-5 flex items-center gap-2.5 border-2 border-black bg-[#f5c928]/40 px-4 py-3">
             <CheckCircle2 className="h-4 w-4 shrink-0 text-[#1a0505]" />
@@ -94,6 +95,7 @@ function LoginForm() {
                 onClick={() => setShowPassword((v) => !v)}
                 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-black/50 transition-colors hover:text-black"
                 aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -102,7 +104,7 @@ function LoginForm() {
           </div>
 
           {serverError && (
-            <div className="border-2 border-[#a1001a] bg-[#a1001a]/10 px-3 py-2">
+            <div role="alert" className="border-2 border-[#a1001a] bg-[#a1001a]/10 px-3 py-2">
               <p className="text-sm font-bold text-[#a1001a]">{serverError}</p>
             </div>
           )}
@@ -112,14 +114,13 @@ function LoginForm() {
           </Button>
         </form>
 
-        <p className="mt-5 border-t-2 border-dashed border-black/30 pt-4 text-center text-sm text-muted-foreground">
+        <p className={styles.signup}>
           New to Techno-aiMBiAtion?{" "}
           <Link href="/auth/signup" className="font-bold text-[#a1001a] underline underline-offset-4 hover:text-[#ff6a00]">
             Create an account
           </Link>
         </p>
-      </AuthCard>
-    </AuthShell>
+    </CanAuthScene>
   );
 }
 

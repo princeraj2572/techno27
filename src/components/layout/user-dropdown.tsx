@@ -15,6 +15,7 @@ import { userLogout } from "@/features/users/user-actions";
 import useFetch from "@/hooks/use-fetch";
 
 interface UserDropdownProps {
+  onOpenChange?: (open: boolean) => void;
   user: {
     fullName: string;
     email: string;
@@ -56,7 +57,7 @@ const getDashboardIcon = (role: string) => {
   }
 };
 
-export function UserDropdown({ user }: UserDropdownProps) {
+export function UserDropdown({ user, onOpenChange }: UserDropdownProps) {
   const router = useRouter();
   const { fn: logout, loading } = useFetch(userLogout);
 
@@ -77,7 +78,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
           : "Dashboard";
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2 rounded-full border-2 border-[#f5c928] bg-transparent text-[#f5c928] hover:bg-[#f5c928] hover:text-black text-base font-bold uppercase tracking-wider">
           <User className="h-4 w-4" />

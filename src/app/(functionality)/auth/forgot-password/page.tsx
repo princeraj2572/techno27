@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { sendOtp, verifyOtp } from "@/features/users/otp-actions";
 import { resetPassword } from "@/features/users/user-actions";
-import { AuthCard, AuthShell } from "../auth-shell";
+import CanAuthScene from "@/components/CanAuthScene";
+import styles from "../login/login.module.css";
 
 type Step = "email" | "otp" | "password";
 
@@ -35,6 +36,7 @@ export default function ForgotPasswordPage() {
 
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     setError("");
     if (!email) return setError("Email is required");
     setLoading(true);
@@ -51,15 +53,20 @@ export default function ForgotPasswordPage() {
 
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     setError("");
     setLoading(true);
-    const res = await verifyOtp(email, otp, "reset").finally(() => setLoading(false));
-    if (!res.ok) return setError(res.error);
-    setStep("password");
+    try {
+      const res = await verifyOtp(email, otp, "reset");
+      if (!res.ok) return setError(res.error);
+      setStep("password");
+    } catch { setError("Couldn't verify the OTP. Please try again."); }
+    finally { setLoading(false); }
   };
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     setError("");
     if (newPassword !== confirmPassword) return setError("Passwords don't match.");
     if (newPassword.length < 8) return setError("Password must be at least 8 characters.");
@@ -80,9 +87,10 @@ export default function ForgotPasswordPage() {
     : "Choose a new password for your account.";
 
   return (
-    <AuthShell>
-      <AuthCard tag="No worries" title="Reset password" description={description} steps={STEPS.map((x) => x.label)} current={stepIndex} maxWidth="max-w-md">
-        <div>
+    <CanAuthScene title={step === "email" ? "Reset password" : step === "otp" ? "Verify code" : "New password"}>
+      <ol className={styles.recoverySteps} aria-label="Password recovery progress">{STEPS.map((item, index) => <li key={item.key} aria-current={index === stepIndex ? "step" : undefined}>{item.label}</li>)}</ol>
+      <p className={styles.helper}>{description}</p>
+        <div key={step} className={styles.recoveryStep} aria-live="polite">
             {step === "email" && (
               <form onSubmit={handleSendOtp} className="space-y-4">
                 <div className="space-y-2">
@@ -124,6 +132,7 @@ export default function ForgotPasswordPage() {
                     onChange={(e) => setOtp(e.target.value)}
                     maxLength={6}
                     inputMode="numeric"
+                    autoComplete="one-time-code"
                     className="tracking-widest text-center text-lg"
                     required
                   />
@@ -133,7 +142,7 @@ export default function ForgotPasswordPage() {
                     <p className="text-sm text-destructive">{error}</p>
                   </div>
                 )}
-                <Button type="submit" className="w-full">Verify code</Button>
+                <Button type="submit" className="w-full" disabled={loading}>{loading ? "Verifying…" : "Verify code"}</Button>
                 <Button
                   type="button"
                   variant="ghost"
@@ -152,6 +161,7 @@ export default function ForgotPasswordPage() {
                   <div className="relative">
                     <Input
                       id="newPassword"
+                      autoComplete="new-password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Min. 8 characters"
                       value={newPassword}
@@ -174,6 +184,7 @@ export default function ForgotPasswordPage() {
                   <div className="relative">
                     <Input
                       id="confirmPassword"
+                      autoComplete="new-password"
                       type={showConfirm ? "text" : "password"}
                       placeholder="Re-enter password"
                       value={confirmPassword}
@@ -202,7 +213,7 @@ export default function ForgotPasswordPage() {
               </form>
             )}
         </div>
-      </AuthCard>
-    </AuthShell>
+      {step !== "email" && <p className={styles.helper}><Link href="/auth/login">Back to sign in</Link></p>}
+    </CanAuthScene>
   );
 }

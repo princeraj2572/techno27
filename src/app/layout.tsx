@@ -23,7 +23,7 @@ export default function RootLayout({ children }: RootLayoutProps): ReactElement 
     <html lang="en" suppressHydrationWarning>
       <body className={`min-h-screen bg-background text-foreground ${inter.variable} ${inter.className}`}>
         <Navbar />
-        <main className="pt-16">{children}</main>
+        <main className="public-content">{children}</main>
         <Toaster />
       </body>
     </html>

@@ -11,6 +11,14 @@ import { Badge } from "@/components/ui/badge";
 import { userSignup } from "@/features/users/user-actions";
 import { OPJU_DEPARTMENTS, OPJU_BRANCHES } from "@/data/opju-academics";
 
+const INDIAN_STATES = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+  "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+  "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+  "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+];
+
 interface Props {
   email: string;
   isInternal: boolean;
@@ -137,7 +145,7 @@ export default function SignupForm({ email, isInternal }: Props) {
       });
 
       router.push("/dashboard");
-      router.refresh(); // re-render server components (navbar) with the new session cookie
+      router.refresh();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Registration failed");
     } finally {
@@ -146,7 +154,8 @@ export default function SignupForm({ email, isInternal }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <>
+      <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex items-center gap-2 mb-2">
         <Badge variant={isInternal ? "default" : "secondary"}>
           {isInternal ? "OPJU Student" : "External Participant"}
@@ -155,6 +164,7 @@ export default function SignupForm({ email, isInternal }: Props) {
       </div>
 
       {/* Shared fields */}
+      <h2>Personal</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-1">
           <Label>Full Name *</Label>
@@ -179,6 +189,9 @@ export default function SignupForm({ email, isInternal }: Props) {
           <Label>Date of Birth</Label>
           <Input type="date" value={form.dateOfBirth} onChange={set("dateOfBirth")} />
         </div>
+      </div>
+      <h2>Academic</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-1">
           <Label>Department *</Label>
           <Select value={form.department} onValueChange={(v) => setForm((p) => ({ ...p, department: v }))}>
@@ -229,6 +242,7 @@ export default function SignupForm({ email, isInternal }: Props) {
         </div>
       </div>
 
+      <h2>Contact</h2>
       <div className="space-y-1">
         <Label>Address *</Label>
         <Input placeholder="Your full address" value={form.address} onChange={set("address")} required />
@@ -288,20 +302,27 @@ export default function SignupForm({ email, isInternal }: Props) {
             <Input placeholder="Your college name" value={form.collegeName} onChange={set("collegeName")} required />
           </div>
           <div className="space-y-1">
-            <Label>City *</Label>
-            <Input placeholder="City" value={form.city} onChange={set("city")} required />
-          </div>
-          <div className="space-y-1">
-            <Label>State *</Label>
-            <Input placeholder="State" value={form.state} onChange={set("state")} required />
-          </div>
-          <div className="space-y-1">
             <Label>Accommodation Needed? *</Label>
             <Select value={form.accommodationNeeded} onValueChange={(v) => setForm((p) => ({ ...p, accommodationNeeded: v }))}>
               <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="yes">Yes</SelectItem>
                 <SelectItem value="no">No</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1">
+            <Label>City *</Label>
+            <Input placeholder="City" value={form.city} onChange={set("city")} required />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="signup-state">State *</Label>
+            <Select value={form.state} onValueChange={(value) => setForm((previous) => ({ ...previous, state: value }))} required>
+              <SelectTrigger id="signup-state"><SelectValue placeholder="Select state" /></SelectTrigger>
+              <SelectContent>
+                {INDIAN_STATES.map((state) => (
+                  <SelectItem key={state} value={state}>{state}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -337,6 +358,7 @@ export default function SignupForm({ email, isInternal }: Props) {
       </div>
 
       {/* Password */}
+      <h2>Account Security</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-border pt-4">
         <div className="space-y-1">
           <Label>Password *</Label>
@@ -391,6 +413,7 @@ export default function SignupForm({ email, isInternal }: Props) {
       <Button type="submit" className="w-full" disabled={loading || photoUploading}>
         {loading ? "Creating account..." : "Create Account"}
       </Button>
-    </form>
+      </form>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Ticket, X } from "lucide-react";
@@ -35,6 +35,27 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const header = useRef<HTMLElement>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const inside = useRef(false);
+  const held = useRef(false);
+  const wasOpen = useRef(false);
+  held.current = mobileOpen || dropdownOpen;
+  const show = useCallback(() => { clearTimeout(timer.current); setVisible(true); }, []);
+  const hideLater = useCallback((delay = 350) => {
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      if (matchMedia("(hover: hover) and (pointer: fine)").matches && !inside.current && !held.current && !header.current?.contains(document.activeElement)) setVisible(false);
+    }, delay);
+  }, []);
+  useEffect(() => { show(); hideLater(1500); return () => clearTimeout(timer.current); }, [pathname, show, hideLater]);
+  useEffect(() => {
+    if (mobileOpen || dropdownOpen) show();
+    else if (wasOpen.current) hideLater();
+    wasOpen.current = mobileOpen || dropdownOpen;
+  }, [mobileOpen, dropdownOpen, show, hideLater]);
 
   const { data: user, fn: fetchUser } = useFetch(getUser);
 
@@ -45,6 +66,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setMobileOpen(false);
+    setDropdownOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -68,12 +90,24 @@ export default function Navbar() {
   const user_ = user && { fullName: user.fullName, email: user.email, role: user.role };
 
   return (
+    <>
+    <div className="nav-activation" onPointerEnter={() => { inside.current = true; show(); }} onPointerLeave={() => { inside.current = false; hideLater(); }}>
+      <button className="nav-reveal" hidden={visible} onFocus={() => { show(); requestAnimationFrame(() => header.current?.querySelector<HTMLElement>('a,button')?.focus()); }} onClick={() => { show(); header.current?.querySelector<HTMLElement>('a,button')?.focus(); }} aria-label="Show navigation">Menu</button>
+    </div>
     <header
+      ref={header}
+      data-main-navigation
+      data-visible={visible}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 text-[var(--nav-ink)] backdrop-blur-md transition-[box-shadow,background-color,border-color,color] duration-500",
+        "auto-navigation fixed top-0 left-0 right-0 z-50 text-[var(--nav-ink)] backdrop-blur-md",
         sans.className,
-        scrolled && "shadow-[0_6px_18px_rgba(0,0,0,0.3)]"
+        scrolled && visible && "shadow-[0_6px_18px_rgba(0,0,0,0.3)]"
       )}
+      onPointerEnter={() => { inside.current = true; show(); }}
+      onPointerLeave={() => { inside.current = false; hideLater(); }}
+      onFocusCapture={show}
+      onBlurCapture={() => hideLater()}
+      onKeyDown={event => { if (event.key === "Escape") { setMobileOpen(false); setDropdownOpen(false); } }}
       style={{
         ...navVars,
         background: `color-mix(in srgb, var(--nav-bg) ${scrolled ? 92 : 100}%, transparent)`,
@@ -96,7 +130,7 @@ export default function Navbar() {
         {/* Desktop right side */}
         <div className="hidden min-[1320px]:flex items-center gap-3 shrink-0">
           {user_ ? (
-            <UserDropdown user={user_} />
+            <UserDropdown user={user_} onOpenChange={setDropdownOpen} />
           ) : (
             <>
               <Link
@@ -142,7 +176,7 @@ export default function Navbar() {
 
             <div className="mt-2 flex flex-col gap-2 border-t-2 border-dashed border-[var(--nav-accent)] pt-3">
               {user_ ? (
-                <UserDropdown user={user_} />
+                <UserDropdown user={user_} onOpenChange={setDropdownOpen} />
               ) : (
                 <>
                   <Link
@@ -164,5 +198,6 @@ export default function Navbar() {
         </div>
       )}
     </header>
+    </>
   );
 }
