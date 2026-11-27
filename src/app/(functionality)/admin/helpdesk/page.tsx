@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ChevronLeft, LifeBuoy } from "lucide-react";
+import { LifeBuoy } from "lucide-react";
 import { TicketTitle } from "@/components/indie/gold-poster";
 import { getUser } from "@/features/users/user-actions";
 import { getHelpQueriesAction } from "@/features/helpdesk/help-actions";
@@ -18,7 +18,6 @@ export default async function AdminHelpDeskPage({ searchParams }: { searchParams
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-8">
       <div className="flex items-center justify-between">
         <div>
-          <Link href="/admin" className="mb-1 inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63]"><ChevronLeft className="h-3.5 w-3.5" /> Admin</Link>
           <TicketTitle className="mb-2 text-3xl leading-[1.1] sm:text-5xl">Help desk</TicketTitle>
           <p className="text-xs text-slate-500">Questions from participants. Replying marks a question answered.</p>
         </div>

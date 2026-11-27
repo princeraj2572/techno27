@@ -4,7 +4,7 @@ import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import { AuditLog } from "@/features/management/auditLog.model";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, FileText, ChevronRight } from "lucide-react";
+import { FileText, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
@@ -42,21 +42,15 @@ export default async function DevLogsPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Dev
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Audit Logs</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{total} entries</p>
-          </div>
-          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
-            <FileText className="h-5 w-5 text-[#0f6b63]" />
           </div>
         </div>
 
         {/* Logs */}
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+        <div className="space-y-2">
           {logs.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <FileText className="h-8 w-8 mx-auto mb-3 text-slate-200" />

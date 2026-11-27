@@ -72,7 +72,7 @@ export default async function EventManagerCheckinPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
             <Link href={`/event-manager/${eventId}`} className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> {event.name}

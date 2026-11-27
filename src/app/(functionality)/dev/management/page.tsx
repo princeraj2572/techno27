@@ -4,7 +4,7 @@ import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import { User } from "@/features/users/user.model";
 import { ManagementAssignment } from "@/features/management/managementAssignment.model";
-import { ChevronLeft, Shield, Plus, ChevronRight } from "lucide-react";
+import { Shield, Plus, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
@@ -43,8 +43,8 @@ async function getManagementUsers(page: number, limit: number) {
 }
 
 const ROLE_CHIP: Record<string, string> = {
-  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#c8421f] border-[#c8421f]/30",
-  EVENT_MANAGER:    "bg-blue-50   text-blue-700   border-blue-200",
+  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#a33517] border-[#c8421f]/30",
+  EVENT_MANAGER:    "bg-[#e3f1ef]   text-[#0f6b63]   border-[#0f6b63]/30",
 };
 
 export default async function DevManagementPage({
@@ -68,11 +68,8 @@ export default async function DevManagementPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Dev
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Management</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">
               {adminCount} admin{adminCount !== 1 ? "s" : ""} · {managerCount} event manager{managerCount !== 1 ? "s" : ""}
@@ -91,13 +88,13 @@ export default async function DevManagementPage({
         </div>
 
         {/* List */}
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+        <div className="space-y-2">
           {mgmtUsers.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <Shield className="h-8 w-8 mx-auto mb-3 text-slate-200" />
               <p className="text-sm font-medium text-slate-500">No management accounts yet</p>
               <Link href="/dev/management/create" className="text-xs text-[#0f6b63] hover:underline mt-1 block">
-                Create the first one →
+                Create the first one
               </Link>
             </div>
           ) : (
@@ -130,11 +127,11 @@ export default async function DevManagementPage({
                 </div>
                 {u.role === "EVENT_MANAGER" ? (
                   <Link href={`/dev/management/${u._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0">
-                    Assign events →
+                    Assign events
                   </Link>
                 ) : (
                   <Link href={`/dev/users/${u._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0">
-                    View →
+                    View
                   </Link>
                 )}
               </div>

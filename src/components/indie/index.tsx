@@ -438,8 +438,9 @@ export function SiteFooter() {
     <footer className="bg-black text-[#f5edd8]">
       <div className="max-w-5xl mx-auto px-6 py-10 grid sm:grid-cols-2 gap-8">
         <div>
-          <p className={`text-2xl text-white ${serif.className}`}>Techno-aiMBiAtion &apos;27</p>
-          <p className="text-sm uppercase tracking-widest text-[#f5edd8]/70">Where innovation meets culture</p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/brand/logo.webp" alt="Techno-aiMBiAtion 2027" className="w-44 sm:w-52" />
+          <p className="mt-3 text-sm text-[#f5edd8]/80">Where innovation meets culture</p>
         </div>
         <div className="sm:text-right">
           <p className="text-sm font-bold uppercase tracking-widest text-[#f5c928] mb-2">Contact us</p>

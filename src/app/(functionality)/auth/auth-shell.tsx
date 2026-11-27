@@ -79,7 +79,7 @@ export function Fare() {
           <p className="text-[10px] leading-snug text-black/70">With your <b>@opju.ac.in</b> email</p>
         </div>
         <div className="rounded-lg border-2 px-3 py-2" style={{ borderColor: INK, background: "#fde8d7" }}>
-          <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#ef5a1c]">External</p>
+          <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#a33517]">External</p>
           <p className={`whitespace-nowrap text-lg leading-tight lg:text-2xl ${display.className}`} style={{ color: INK }}>Free–₹499</p>
           <p className="text-[10px] leading-snug text-black/70">Some events free · max <b>₹499</b></p>
         </div>

@@ -7,8 +7,7 @@ import { Team } from "@/features/teams/team.model";
 import { Transaction } from "@/features/payments/transaction.model";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, User as UserIcon, CheckCircle2, Clock } from "lucide-react";
-import Link from "next/link";
+import { User as UserIcon, CheckCircle2, Clock } from "lucide-react";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
 const STATUS_LABEL: Record<string, { text: string; color: string }> = {
@@ -70,11 +69,8 @@ export default async function AdminParticipantDetailPage({
       <div className="max-w-2xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-start justify-between gap-4">
           <div>
-            <Link href="/admin/participants" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Participants
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{String(p.fullName)}</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{String(p.email)}</p>
           </div>
@@ -98,7 +94,7 @@ export default async function AdminParticipantDetailPage({
         </div>
 
         {/* Profile */}
-        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-6 h-6 rounded-lg bg-teal-50 flex items-center justify-center">
               <UserIcon className="h-3.5 w-3.5 text-teal-600" />
@@ -137,7 +133,7 @@ export default async function AdminParticipantDetailPage({
         <Separator />
 
         {/* Events */}
-        <div className="space-y-3 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="space-y-3">
           <p className="text-sm font-semibold text-slate-900">
             Registered events <span className="text-slate-500 font-normal">({teamList.length})</span>
           </p>
@@ -166,7 +162,7 @@ export default async function AdminParticipantDetailPage({
         {isExternal && (
           <>
             <Separator />
-            <div className="space-y-3 animate-slide-up" style={{ animationDelay: "0.15s" }}>
+            <div className="space-y-3">
               <p className="text-sm font-semibold text-slate-900">
                 Transactions <span className="text-slate-500 font-normal">({txList.length})</span>
               </p>

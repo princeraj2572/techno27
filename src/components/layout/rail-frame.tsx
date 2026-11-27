@@ -139,7 +139,7 @@ export default function RailFrame({ area, user, children }: { area: Area; user: 
       >
         <Link href={AREA_HOME[area]} className="flex min-h-14 shrink-0 items-center px-4" aria-label={AREA_NAME[area]}>
           {open ? <FestLogo className="!mx-0 w-36" /> : (
-            <span className={`grid h-12 w-12 place-items-center rounded-2xl border-[3px] text-lg ${display.className}`} style={{ ...RAYS, borderColor: "#f5c928", color: INK }}>27</span>
+            <FestLogo className="!mx-0 -ml-1.5 w-[3.75rem] max-w-none" />
           )}
         </Link>
         {open && <p className={`mt-1 px-4 text-[10px] tracking-[0.3em] text-[#f5c928] ${mono.className}`}>{AREA_NAME[area].toUpperCase()}</p>}

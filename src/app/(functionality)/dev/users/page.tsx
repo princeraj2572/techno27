@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser, getAllUsersPaginated, searchUsers } from "@/features/users/user-actions";
-import { ChevronLeft, Users, Search, ChevronRight, ChevronLeft as ChevLeft } from "lucide-react";
+import { Search, ChevronRight, ChevronLeft as ChevLeft } from "lucide-react";
 import Link from "next/link";
 import ExtraFilters from "../../admin/participants/ExtraFilters";
 import { OPJU_BRANCHES, OPJU_DEPARTMENTS, OPJU_SEMESTERS, branchFilterValue } from "@/data/opju-academics";
@@ -9,17 +9,17 @@ import { TicketTitle } from "@/components/indie/gold-poster";
 
 const ROLE_CHIP: Record<string, string> = {
   DEV_ADMIN:        "bg-red-50    text-red-700    border-red-200",
-  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#c8421f] border-[#c8421f]/30",
-  EVENT_MANAGER:    "bg-blue-50   text-blue-700   border-blue-200",
-  INTERNAL_USER:    "bg-sky-50    text-sky-700    border-sky-200",
+  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#a33517] border-[#c8421f]/30",
+  EVENT_MANAGER:    "bg-[#e3f1ef]   text-[#0f6b63]   border-[#0f6b63]/30",
+  INTERNAL_USER:    "bg-[#e3f1ef]    text-[#0f6b63]    border-[#0f6b63]/30",
   EXTERNAL_USER:    "bg-amber-50  text-amber-700  border-amber-200",
 };
 
 const ROLE_AVATAR: Record<string, string> = {
   DEV_ADMIN:        "bg-red-100    text-red-700",
-  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#c8421f]",
-  EVENT_MANAGER:    "bg-blue-100   text-blue-700",
-  INTERNAL_USER:    "bg-sky-100    text-sky-700",
+  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#a33517]",
+  EVENT_MANAGER:    "bg-[#e3f1ef]   text-[#0f6b63]",
+  INTERNAL_USER:    "bg-[#e3f1ef]    text-[#0f6b63]",
   EXTERNAL_USER:    "bg-amber-100  text-amber-700",
 };
 
@@ -66,23 +66,17 @@ export default async function DevUsersPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Dev
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Users</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">
               {q ? `Search results for "${q}"` : `${total.toLocaleString()} registered accounts`}
             </p>
           </div>
-          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
-            <Users className="h-5 w-5 text-[#0f6b63]" />
-          </div>
         </div>
 
         {/* Branch / Department / Semester filters */}
-        <div className="animate-slide-up" style={{ animationDelay: "0.04s" }}>
+        <div className="">
           <ExtraFilters
             branches={[...OPJU_BRANCHES]}
             departments={[...OPJU_DEPARTMENTS]}
@@ -91,7 +85,7 @@ export default async function DevUsersPage({
         </div>
 
         {/* Search */}
-        <form method="GET" className="animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <form method="GET" className="">
           {branch && <input type="hidden" name="branch" value={branch} />}
           {department && <input type="hidden" name="department" value={department} />}
           {semester && <input type="hidden" name="semester" value={semester} />}
@@ -123,7 +117,7 @@ export default async function DevUsersPage({
         </form>
 
         {/* Results */}
-        <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="">
           {users.length === 0 ? (
             <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 py-12 text-center bg-white/60">
               <Search className="h-8 w-8 mx-auto mb-3 text-slate-300" />
@@ -162,7 +156,7 @@ export default async function DevUsersPage({
                     href={`/dev/users/${u._id}`}
                     className="text-xs font-semibold text-[#0f6b63] hover:text-[#0f6b63] shrink-0 px-3 py-1.5 rounded-lg hover:bg-[#f6efdf] transition-colors"
                   >
-                    View →
+                    View
                   </Link>
                 </div>
               ))}
@@ -179,7 +173,7 @@ export default async function DevUsersPage({
           const extra = pageParams.toString();
           const pageHref = (p: number) => `/dev/users?page=${p}${extra ? `&${extra}` : ""}`;
           return (
-          <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0.15s" }}>
+          <div className="flex items-center justify-between">
             <p className="text-xs text-slate-500">
               Page {page} of {totalPages} · {total} users
             </p>

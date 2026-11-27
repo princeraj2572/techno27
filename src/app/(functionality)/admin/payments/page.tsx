@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/features/users/user-actions";
 import { getPaymentData, getPaymentStatusCounts } from "@/features/payments/payment-actions";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, CreditCard, CheckCircle2, Clock, ChevronRight } from "lucide-react";
+import { CreditCard, CheckCircle2, Clock, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
@@ -31,21 +31,15 @@ export default async function AdminPaymentsPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Admin
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Payments</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">External participant payment status</p>
-          </div>
-          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
-            <CreditCard className="h-5 w-5 text-teal-600" />
           </div>
         </div>
 
         {/* Stats — no amounts shown */}
-        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="grid grid-cols-3 gap-3">
           <div className="bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl p-4">
             <p className="text-xs font-medium text-teal-200 mb-3">Participants</p>
             <p className="text-4xl font-bold text-white tabular-nums leading-none">{total}</p>
@@ -64,7 +58,7 @@ export default async function AdminPaymentsPage({
         </div>
 
         {/* Payment rows — status only, no amounts */}
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="space-y-2">
           <p className="text-xs font-medium text-slate-500 mb-2">All external participants · {total}</p>
 
           {payments.length === 0 ? (

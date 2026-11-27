@@ -26,7 +26,7 @@ export default function GenerateAllEMButton() {
       <button
         onClick={handleGenerate}
         disabled={loading}
-        className="inline-flex items-center gap-1.5 text-xs font-medium text-[#c8421f] hover:text-[#c8421f] border border-[#c8421f]/30 rounded-lg px-3 py-2 disabled:opacity-50 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs font-medium text-[#a33517] hover:text-[#c8421f] border border-[#c8421f]/30 rounded-lg px-3 py-2 disabled:opacity-50 transition-colors"
       >
         <UserCog className="h-3.5 w-3.5" />
         {loading ? "Generating..." : done ? "Re-generate EMs" : "Generate All EMs"}

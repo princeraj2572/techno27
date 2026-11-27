@@ -568,7 +568,7 @@ function TeamDetailsContent() {
       {!filteredEvent && pendingInvites.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <AlertCircle className="h-5 w-5 text-[#ef5a1c]" />
+            <AlertCircle className="h-5 w-5 text-[#a33517]" />
             <p className={`text-2xl text-[#1c1812] ${display.className}`}>Pending invitations</p>
             <span className="bg-[#f5c928] px-2 py-0.5 text-sm font-bold text-black">{pendingInvites.length}</span>
           </div>
@@ -587,13 +587,13 @@ function TeamDetailsContent() {
       <div className="space-y-4">
         {!filteredEvent && (
           <p className={`text-2xl text-[#1c1812] ${display.className}`}>
-            Registered teams <span className="text-[#ef5a1c]">({teams.length})</span>
+            Registered teams <span className="text-[#a33517]">({teams.length})</span>
           </p>
         )}
 
         {visibleTeams.length === 0 ? (
           <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 bg-white/60 py-12 text-center">
-            <Users className="mx-auto mb-3 h-9 w-9 text-[#ef5a1c]" />
+            <Users className="mx-auto mb-3 h-9 w-9 text-[#a33517]" />
             <p className="text-xl font-bold uppercase text-[#1c1812]">No team found{filteredEvent ? " for this event" : ""}</p>
             <Link
               href="/events-selection"

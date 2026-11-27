@@ -66,7 +66,7 @@ export default async function DashboardPage() {
   const stats = [
     { href: "/events-selection", label: "Events",  count: eventCount,   sub: "registered", dot: "bg-[#0e5b57]" },
     { href: "/team-details",     label: "Teams",   count: teamCount,    sub: "joined",     dot: "bg-[#f5c928]" },
-    { href: "/team-details",     label: "Invites", count: pendingCount, sub: "pending",    dot: pendingCount > 0 ? "bg-[#ef5a1c] animate-pulse" : "bg-[#ef5a1c]" },
+    { href: "/team-details",     label: "Invites", count: pendingCount, sub: "pending",    dot: pendingCount > 0 ? "bg-[#c8421f] animate-pulse" : "bg-[#c8421f]" },
   ];
 
   return (
@@ -79,7 +79,7 @@ export default async function DashboardPage() {
             <p className="text-xs font-extrabold uppercase tracking-[0.3em] sm:text-sm" style={{ color: INK }}>{greeting()},</p>
             <TicketTitle className="truncate text-5xl leading-[1.05] sm:text-6xl">{firstName}</TicketTitle>
             <div className="mt-3 flex flex-wrap gap-2">
-              <span className="rounded-full border-2 bg-[#ef5a1c] px-3 py-1 text-[10px] font-extrabold uppercase text-white sm:text-xs" style={{ borderColor: INK }}>
+              <span className="rounded-full border-2 bg-[#c8421f] px-3 py-1 text-[10px] font-extrabold uppercase text-white sm:text-xs" style={{ borderColor: INK }}>
                 {isExt ? "External participant" : "OPJU student"}
               </span>
               {passId && (
@@ -122,7 +122,7 @@ export default async function DashboardPage() {
       {/* Pending invitations */}
       {pendingCount > 0 && (
         <div className="flex items-center gap-3 rounded-2xl border-[3px] bg-white px-4 py-3.5" style={CARD_LINE}>
-          <AlertCircle className="h-5 w-5 shrink-0 text-[#ef5a1c]" />
+          <AlertCircle className="h-5 w-5 shrink-0 text-[#a33517]" />
           <div className="min-w-0 flex-1" style={{ color: INK }}>
             <p className="font-extrabold">{pendingCount} pending invitation{pendingCount > 1 ? "s" : ""}</p>
             <p className="text-sm text-black/60">Respond before the team registration deadline.</p>
@@ -138,11 +138,11 @@ export default async function DashboardPage() {
             {stats.map((st) => (
               <Link key={st.label} href={st.href} className="rounded-2xl border-[3px] bg-white p-3 transition hover:-translate-y-0.5 sm:p-5" style={CARD_LINE}>
                 <div className="flex items-center justify-between">
-                  <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#ef5a1c] sm:text-xs">{st.label}</p>
+                  <p className="text-sm font-bold text-[#a33517]">{st.label}</p>
                   <span className={`h-2 w-2 rounded-full sm:h-2.5 sm:w-2.5 ${st.dot}`} />
                 </div>
                 <p className={`text-3xl tabular-nums sm:text-5xl ${display.className}`} style={{ color: INK }}>{st.count}</p>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-black/45 sm:text-xs">{st.sub}</p>
+                <p className="text-xs font-medium text-black/65">{st.sub}</p>
               </Link>
             ))}
           </div>
@@ -155,7 +155,7 @@ export default async function DashboardPage() {
             </div>
             {eventCount === 0 ? (
               <div className="rounded-2xl border-[3px] border-dashed bg-white/60 py-12 text-center" style={{ borderColor: `${INK}55` }}>
-                <CalendarDays className="mx-auto mb-3 h-9 w-9 text-[#ef5a1c]" />
+                <CalendarDays className="mx-auto mb-3 h-9 w-9 text-[#a33517]" />
                 <p className={`text-xl ${display.className}`} style={{ color: INK }}>No tickets yet</p>
                 <Link href="/events-selection" className="mt-1 inline-block text-sm font-extrabold uppercase text-[#0e5b57] underline underline-offset-4">Register for your first event</Link>
               </div>
@@ -166,7 +166,7 @@ export default async function DashboardPage() {
                   return (
                     <Link key={event._id} href={`/team-details?event=${event._id}`} className="flex overflow-hidden rounded-xl border-[3px] bg-white transition hover:-translate-y-0.5" style={CARD_LINE}>
                       <div className="min-w-0 flex-1 p-3.5 sm:p-4">
-                        {event.category && <p className={`truncate text-[10px] tracking-[0.3em] text-[#ef5a1c] ${mono.className}`}>{event.category.toUpperCase()}</p>}
+                        {event.category && <p className={`truncate text-[10px] tracking-[0.3em] text-[#a33517] ${mono.className}`}>{event.category.toUpperCase()}</p>}
                         <p className={`truncate text-lg sm:text-xl ${display.className}`} style={{ color: INK }}>{event.name}</p>
                         <p className="mt-0.5 flex items-center gap-1 text-xs font-extrabold uppercase text-[#0e5b57] sm:text-sm">Team <ArrowRight className="h-3.5 w-3.5" /></p>
                       </div>

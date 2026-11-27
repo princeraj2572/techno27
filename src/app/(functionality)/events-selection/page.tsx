@@ -178,7 +178,7 @@ export default function EventsSelectionPage() {
                 <span className="font-bold uppercase tracking-wider">fest events</span>
               </p>
               <p className="text-sm text-black/65">External participants can join up to {max} fest events. Competitions inside one fest event count once.</p>
-              {atCap && <p className="w-full text-sm font-bold text-[#c8421f]">Limit reached: you can still add competitions from fest events you&apos;re already in.</p>}
+              {atCap && <p className="w-full text-sm font-bold text-[#a33517]">Limit reached: you can still add competitions from fest events you&apos;re already in.</p>}
             </>
           ) : (
             <p className="text-sm text-[#1c1812]"><span className="font-bold">No event limit</span> for OPJU students. Join as many competitions as you like.</p>
@@ -200,7 +200,7 @@ export default function EventsSelectionPage() {
                 <section key={f.key} className={`${CARD_UI} overflow-hidden`}>
                   <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b-2 border-dashed border-black/15 px-5 py-4">
                     <h2 className={`text-2xl text-[#1c1812] ${display.className}`}>{f.name}</h2>
-                    {f.category && <span className="text-xs font-bold uppercase tracking-widest text-[#c8421f]">{f.category}</span>}
+                    {f.category && <span className="text-xs font-bold uppercase tracking-widest text-[#a33517]">{f.category}</span>}
                     <span className="text-xs text-black/50">{f.events.length > 1 ? `${f.events.length} competitions` : "Single event"}</span>
                     {inFest && <span className="ml-auto rounded-full bg-[#d9f2df] px-2.5 py-0.5 text-xs font-bold uppercase text-[#0d3d1a]">You&apos;re in</span>}
                     {f.tagline && <p className="w-full text-sm text-black/60">{f.tagline}</p>}
@@ -226,7 +226,7 @@ export default function EventsSelectionPage() {
                                 <span className="inline-flex items-center gap-1 rounded-full bg-[#d9f2df] px-2.5 py-1 text-xs font-bold uppercase text-[#0d3d1a]">
                                   <CheckCircle2 className="h-3.5 w-3.5" /> Registered
                                 </span>
-                                <button onClick={() => setConfirming(e._id)} disabled={busy} className="text-xs font-bold uppercase text-[#c8421f] underline-offset-2 hover:underline disabled:opacity-50">
+                                <button onClick={() => setConfirming(e._id)} disabled={busy} className="text-xs font-bold uppercase text-[#a33517] underline-offset-2 hover:underline disabled:opacity-50">
                                   Unregister
                                 </button>
                               </>

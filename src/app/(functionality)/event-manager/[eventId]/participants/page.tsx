@@ -152,8 +152,8 @@ export default async function EventManagerParticipantsPage({
 
         {/* Header */}
         <div
-          className="flex items-start justify-between animate-slide-up"
-          style={{ animationDelay: "0s" }}
+          className="flex items-start justify-between"
+         
         >
           <div>
             <Link
@@ -175,11 +175,11 @@ export default async function EventManagerParticipantsPage({
 
         {/* Stat cards */}
         <div
-          className="grid grid-cols-3 gap-3 animate-slide-up"
-          style={{ animationDelay: "0.05s" }}
+          className="grid grid-cols-3 gap-3"
+         
         >
           <div className="bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
-            <p className="text-xs font-medium text-white/70 mb-1">Internal (OPJU)</p>
+            <p className="text-xs font-semibold text-white mb-1">Internal (OPJU)</p>
             <p className="text-3xl font-bold text-white tabular-nums leading-none">{internalCount}</p>
           </div>
           <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">

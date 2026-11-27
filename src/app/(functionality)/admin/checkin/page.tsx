@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/features/users/user-actions";
 import { getAllEventsAction } from "@/features/events/event-actions";
-import { ChevronLeft, CheckSquare, QrCode } from "lucide-react";
+import { CheckSquare } from "lucide-react";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
@@ -30,21 +30,15 @@ export default async function AdminCheckinPage() {
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Admin
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Check-In</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{activeEvents.length} active event{activeEvents.length !== 1 ? "s" : ""}</p>
-          </div>
-          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
-            <CheckSquare className="h-5 w-5 text-teal-600" />
           </div>
         </div>
 
         {/* Active events */}
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+        <div className="space-y-2">
           <p className="text-xs font-medium text-slate-500">Active events</p>
           {activeEvents.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
@@ -64,7 +58,7 @@ export default async function AdminCheckinPage() {
                   <div className="flex items-center gap-3 shrink-0">
                     <span className={`text-xs font-medium ${label.color}`}>{label.text}</span>
                     <Link href={`/admin/events/${e._id}`} className="text-xs text-teal-600 hover:text-teal-700 font-medium">
-                      View participants →
+                      View participants
                     </Link>
                   </div>
                 </div>
@@ -74,10 +68,7 @@ export default async function AdminCheckinPage() {
         </div>
 
         {/* QR coming soon */}
-        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 flex items-start gap-4 animate-slide-up" style={{ animationDelay: "0.1s" }}>
-          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center shrink-0">
-            <QrCode className="h-5 w-5 text-teal-600" />
-          </div>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 flex items-start gap-4">
           <div>
             <p className="text-sm font-semibold text-slate-900">QR check-in</p>
             <p className="text-xs text-slate-500 mt-1 leading-relaxed">

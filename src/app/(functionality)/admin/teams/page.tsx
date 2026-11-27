@@ -5,7 +5,7 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { Team } from "@/features/teams/team.model";
 import { Event } from "@/features/events/event.model";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, UsersRound, ChevronRight } from "lucide-react";
+import { UsersRound, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
@@ -47,21 +47,15 @@ export default async function AdminTeamsPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Admin
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Teams</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{total} registered teams</p>
-          </div>
-          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
-            <UsersRound className="h-5 w-5 text-teal-600" />
           </div>
         </div>
 
         {/* Teams list */}
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+        <div className="space-y-2">
           {teams.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <UsersRound className="h-8 w-8 mx-auto mb-3 text-slate-200" />

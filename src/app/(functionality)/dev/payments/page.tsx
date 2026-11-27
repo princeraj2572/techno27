@@ -4,7 +4,7 @@ import { getUser } from "@/features/users/user-actions";
 import { getPaymentData, getPaymentStatusCounts } from "@/features/payments/payment-actions";
 import { MAX_PAYMENT } from "@/features/payments/payment-constants";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, CreditCard, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import ApprovalPanel from "./ApprovalPanel";
 import { TicketTitle } from "@/components/indie/gold-poster";
@@ -35,25 +35,19 @@ export default async function DevPaymentsPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Dev
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Payments</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{total} external participant(s) · max ₹{MAX_PAYMENT}</p>
-          </div>
-          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
-            <CreditCard className="h-5 w-5 text-[#0f6b63]" />
           </div>
         </div>
 
         {/* Stat cards */}
-        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="grid grid-cols-3 gap-3">
           <div className="bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
-            <p className="text-xs font-medium text-white/70 mb-1">Payable (this page)</p>
+            <p className="text-xs font-semibold text-white mb-1">Payable (this page)</p>
             <p className="text-2xl font-bold text-white tabular-nums">₹{pagePayable.toLocaleString()}</p>
-            <p className="text-xs text-white/70 mt-1">{payments.length} of {total} participants</p>
+            <p className="text-xs font-medium text-white mt-1">{payments.length} of {total} participants</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${statusCounts.cleared > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
             <p className={`text-xs font-medium mb-1 ${statusCounts.cleared > 0 ? "text-emerald-100" : "text-slate-500"}`}>Cleared</p>
@@ -66,7 +60,7 @@ export default async function DevPaymentsPage({
         </div>
 
         {/* Approval panel — full transaction details + acknowledge button */}
-        <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="">
           <p className="text-xs font-medium text-slate-500 mb-3">
             Click any row to expand transactions and acknowledge payments
           </p>

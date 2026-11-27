@@ -4,7 +4,7 @@ import { getUser } from "@/features/users/user-actions";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Accommodation } from "@/features/accommodation/accommodation.model";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Hotel, Building2, Calendar, Phone, Users, ChevronRight } from "lucide-react";
+import { Hotel, Building2, Calendar, Phone, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
@@ -147,27 +147,21 @@ export default async function DevAccommodationPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Dev
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Accommodation</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">
               {total} request{total !== 1 ? "s" : ""}
             </p>
           </div>
-          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
-            <Hotel className="h-5 w-5 text-[#0f6b63]" />
-          </div>
         </div>
 
         {/* Stat cards */}
-        <div className="grid grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="grid grid-cols-4 gap-3">
           <div className="bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
-            <p className="text-xs font-medium text-white/70 mb-1">Total</p>
+            <p className="text-xs font-semibold text-white mb-1">Total</p>
             <p className="text-2xl font-bold text-white tabular-nums">{total}</p>
-            <p className="text-xs text-white/70 mt-1">requests</p>
+            <p className="text-xs font-medium text-white mt-1">requests</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${maleCount > 0 ? "bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]"}`}>
             <p className={`text-xs font-medium mb-1 ${maleCount > 0 ? "text-sky-500" : "text-slate-500"}`}>Male</p>
@@ -188,12 +182,12 @@ export default async function DevAccommodationPage({
 
         {/* Items */}
         {items.length === 0 ? (
-          <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center animate-slide-up" style={{ animationDelay: "0.1s" }}>
+          <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
             <Hotel className="h-8 w-8 mx-auto mb-3 text-slate-200" />
             <p className="text-sm font-medium text-slate-500">No accommodation requests yet</p>
           </div>
         ) : (
-          <div className="space-y-4 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+          <div className="space-y-4">
             {/* Groups first */}
             {groups.size > 0 && (
               <div>

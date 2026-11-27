@@ -5,7 +5,7 @@ import { getEventManagerPermissions } from "@/features/management/management-act
 import { connectToDatabase } from "@/lib/mongodb";
 import { Event } from "@/features/events/event.model";
 import { Team } from "@/features/teams/team.model";
-import { Users, CheckSquare, ChevronLeft } from "lucide-react";
+import { Users, CheckSquare } from "lucide-react";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
@@ -68,11 +68,8 @@ export default async function EventManagerEventPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-start justify-between">
           <div>
-            <Link href="/event-manager" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> My events
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">{event.name}</TicketTitle>
             {event.category && <p className="text-xs text-slate-500 mt-0.5">{event.category}</p>}
           </div>
@@ -82,7 +79,7 @@ export default async function EventManagerEventPage({
         </div>
 
         {/* Stat cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: "Registered",  value: event.registeredCount, highlight: true },
             { label: "Limit",       value: event.maxParticipants || "∞" },
@@ -98,7 +95,7 @@ export default async function EventManagerEventPage({
 
         {/* Fill bar */}
         {(event.maxParticipants ?? 0) > 0 && (
-          <div className="flex items-center gap-3 animate-slide-up" style={{ animationDelay: "0.08s" }}>
+          <div className="flex items-center gap-3">
             <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full ${fillPct >= 90 ? "bg-red-400" : fillPct >= 60 ? "bg-amber-400" : "bg-[#0f6b63]"}`}
@@ -111,13 +108,13 @@ export default async function EventManagerEventPage({
 
         {/* Description */}
         {event.description && (
-          <p className="text-sm text-slate-500 leading-relaxed animate-slide-up" style={{ animationDelay: "0.09s" }}>
+          <p className="text-sm text-slate-500 leading-relaxed">
             {event.description}
           </p>
         )}
 
         {/* Fees */}
-        <div className="flex items-center gap-6 text-sm animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="flex items-center gap-6 text-sm">
           <div>
             <p className="text-xs text-slate-500">Internal fee</p>
             <p className="font-semibold text-slate-900">₹{event.internalFee ?? 0}</p>
@@ -129,7 +126,7 @@ export default async function EventManagerEventPage({
         </div>
 
         {/* Sub-nav */}
-        <div className="animate-slide-up" style={{ animationDelay: "0.12s" }}>
+        <div className="">
           <p className="text-xs font-medium text-slate-500 mb-3">Manage</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {NAV.map(({ label, href, icon: Icon, desc }) => (

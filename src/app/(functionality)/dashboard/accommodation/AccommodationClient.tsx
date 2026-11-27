@@ -106,7 +106,7 @@ export default function AccommodationClient({ initial, userUniversity, userGende
     return (
       <div className="space-y-5">
         {success && (
-          <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-none px-4 py-3 animate-slide-up">
+          <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-none px-4 py-3">
             <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
             <p className="text-sm text-emerald-800 font-medium">Accommodation request saved.</p>
           </div>

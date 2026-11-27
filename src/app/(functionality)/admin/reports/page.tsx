@@ -1,9 +1,9 @@
 export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/features/users/user-actions";
-import { ChevronLeft, BarChart2, CalendarDays, Hotel, Users } from "lucide-react";
+import { CalendarDays, Download, Hotel, Users } from "lucide-react";
 import Link from "next/link";
-import { TicketTitle } from "@/components/indie/gold-poster";
+import { CARD_UI, TicketTitle } from "@/components/indie/gold-poster";
 
 const REPORTS = [
   {
@@ -11,7 +11,7 @@ const REPORTS = [
     title: "Event Participants",
     description: "All participants per event with team details.",
     icon: CalendarDays,
-    color: "bg-teal-50 text-teal-600",
+    color: "bg-[#0f6b63] text-white",
     exportHref: "/api/export/event-participants",
   },
   {
@@ -19,7 +19,7 @@ const REPORTS = [
     title: "Accommodation Report",
     description: "Accommodation requests with arrival and departure times.",
     icon: Hotel,
-    color: "bg-amber-50 text-amber-600",
+    color: "bg-[#f5c928] text-[#1c1812]",
     exportHref: "/api/export/accommodation",
   },
   {
@@ -27,7 +27,7 @@ const REPORTS = [
     title: "All Registrations",
     description: "Full participant list — internal and external.",
     icon: Users,
-    color: "bg-slate-50 text-slate-600",
+    color: "bg-[#c8421f] text-white",
     exportHref: "/api/export/registrations",
   },
 ];
@@ -41,43 +41,30 @@ export default async function AdminReportsPage() {
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Admin
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Reports</TicketTitle>
-            <p className="text-xs text-slate-500 mt-0.5">View and export paginated, filterable report data</p>
-          </div>
-          <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center">
-            <BarChart2 className="h-5 w-5 text-teal-600" />
+            <p className="text-xs text-slate-500 mt-0.5">Look through the data here, or download it as an Excel sheet.</p>
           </div>
         </div>
 
-        {/* Report cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+        {/* Report cards: the card isn't a link (it has two actions), so it doesn't lift on hover */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {REPORTS.map((report) => {
             const Icon = report.icon;
             return (
-              <div key={report.key} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 hover:shadow-sm card-lift">
-                <div className={`w-9 h-9 rounded-xl ${report.color} flex items-center justify-center mb-4`}>
-                  <Icon className="h-4 w-4" />
-                </div>
-                <p className="text-sm font-bold text-slate-900">{report.title}</p>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">{report.description}</p>
-                <div className="flex items-center gap-4 mt-4">
-                  <Link
-                    href={`/admin/reports/${report.key}`}
-                    className="text-xs font-medium text-teal-600 hover:text-teal-700"
-                  >
-                    View data →
+              <div key={report.key} className={`${CARD_UI} flex flex-col p-5`}>
+                <span className={`mb-4 grid h-11 w-11 place-items-center rounded-xl border-2 border-[#1c1812] ${report.color}`}>
+                  <Icon className="h-5 w-5" />
+                </span>
+                <p className="text-lg font-extrabold text-[#1c1812]">{report.title}</p>
+                <p className="mt-1 flex-1 text-sm leading-relaxed text-black/65">{report.description}</p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <Link href={`/admin/reports/${report.key}`} className="rounded-full border-2 border-[#1c1812] bg-[#0f6b63] px-4 py-1.5 text-xs font-extrabold uppercase text-white transition-transform duration-150 active:scale-95">
+                    View data
                   </Link>
-                  <a
-                    href={report.exportHref}
-                    download
-                    className="text-xs text-slate-500 hover:text-slate-600"
-                  >
-                    Download Excel
+                  <a href={report.exportHref} download className="inline-flex items-center gap-1 rounded-full border-2 border-[#1c1812] bg-white px-4 py-1.5 text-xs font-extrabold uppercase text-[#1c1812] transition-transform duration-150 active:scale-95">
+                    <Download className="h-3.5 w-3.5" /> Excel
                   </a>
                 </div>
               </div>

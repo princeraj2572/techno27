@@ -71,16 +71,13 @@ export default async function AdminEventDetailPage({
           <TicketTitle className="mb-2 break-words text-3xl leading-[1.1] sm:text-5xl">{title}</TicketTitle>
           <div className="flex flex-wrap items-center gap-2">
             <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold uppercase ${st.cls}`}>{st.text}</span>
-            {event.category && <span className="text-xs font-bold uppercase tracking-widest text-[#c8421f]">{event.category}</span>}
+            {event.category && <span className="text-xs font-bold uppercase tracking-widest text-[#a33517]">{event.category}</span>}
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-3">
           {viewer.role === "DEV_ADMIN" && (
-            <Link href={`/dev/events/${id}`} className="text-xs font-bold uppercase text-[#0f6b63] hover:underline">Manage →</Link>
+            <Link href={`/dev/events/${id}`} className="text-xs font-bold uppercase text-[#0f6b63] hover:underline">Manage</Link>
           )}
-          <div className="grid h-12 w-12 place-items-center rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812]">
-            <CalendarDays className="h-5 w-5 text-[#0f6b63]" />
-          </div>
         </div>
       </div>
 
@@ -88,9 +85,9 @@ export default async function AdminEventDetailPage({
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {tiles.map((t) => (
           <div key={t.label} className={`rounded-2xl border-[3px] border-[#1c1812] p-4 shadow-[0_4px_0_#1c1812] ${t.cls}`}>
-            <p className="text-xs font-bold uppercase tracking-wider opacity-80">{t.label}</p>
+            <p className="text-sm font-semibold">{t.label}</p>
             <p className={`mt-2 text-4xl leading-none tabular-nums ${display.className}`}>{t.value}</p>
-            <p className="mt-2 text-xs font-semibold uppercase opacity-75">{t.sub}</p>
+            <p className="mt-2 text-xs font-medium">{t.sub}</p>
           </div>
         ))}
       </div>

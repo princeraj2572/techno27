@@ -66,7 +66,7 @@ export default function HelpClient({ initial }: { initial: HelpQueryRow[] }) {
               <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full bg-[#fde9a8] px-2.5 py-0.5 text-xs font-bold uppercase text-[#1c1812]">{q.topic}</span>
                 {q.status === "OPEN" ? (
-                  <span className="inline-flex items-center gap-1 text-xs font-bold uppercase text-[#c8421f]"><Clock className="h-3.5 w-3.5" /> Waiting for reply</span>
+                  <span className="inline-flex items-center gap-1 text-xs font-bold uppercase text-[#a33517]"><Clock className="h-3.5 w-3.5" /> Waiting for reply</span>
                 ) : (
                   <span className="inline-flex items-center gap-1 text-xs font-bold uppercase text-[#0f6b63]"><CheckCircle2 className="h-3.5 w-3.5" /> Answered</span>
                 )}

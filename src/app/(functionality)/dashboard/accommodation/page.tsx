@@ -15,7 +15,7 @@ export default async function AccommodationPage() {
     return (
       <AppShell title="Accommodation" crumbs={[{ label: "Home", href: "/" }, { label: "Dashboard", href: "/dashboard" }, { label: "Accommodation" }]} back={{ href: "/dashboard", label: "Back to dashboard" }} icon={<Hotel className="h-6 w-6" />}>
         <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 bg-white/60 py-16 text-center">
-          <Hotel className="mx-auto mb-4 h-10 w-10 text-[#ef5a1c]" />
+          <Hotel className="mx-auto mb-4 h-10 w-10 text-[#a33517]" />
           <p className="text-xl font-bold uppercase text-[#1c1812]">Accommodation is for external participants only</p>
           <p className="mt-1 text-sm text-black/60">OPJU students stay on campus.</p>
         </div>

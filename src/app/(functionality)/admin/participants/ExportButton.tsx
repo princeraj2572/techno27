@@ -73,7 +73,7 @@ export default function ExportButton({ q, type, branch, department, semester }: 
     <button
       onClick={handleDownload}
       disabled={status === "loading"}
-      className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 border border-slate-200 rounded-lg px-3 py-2 disabled:opacity-70 min-w-[9rem] justify-center"
+      className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1c1812] bg-white px-4 py-2 text-xs font-extrabold uppercase text-[#1c1812] transition-transform duration-150 active:scale-95 disabled:opacity-70 min-w-[9rem] justify-center"
     >
       {status === "loading" ? (
         <>

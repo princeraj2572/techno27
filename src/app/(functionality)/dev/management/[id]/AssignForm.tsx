@@ -23,7 +23,7 @@ const STATUS_COLOR: Record<string, string> = {
   CANCELLED:           "text-red-500",
   TEMPORARILY_CLOSED:  "text-orange-500",
   DRAFT:               "text-slate-400",
-  UPCOMING:            "text-sky-600",
+  UPCOMING:            "text-[#1c1812]",
 };
 const STATUS_LABEL: Record<string, string> = {
   REGISTRATION_OPEN:   "Open",
@@ -95,7 +95,7 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
     <div className="space-y-5">
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 gap-3 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+      <div className="grid grid-cols-2 gap-3">
         <div className={`rounded-2xl px-4 py-4 ${selected.size > 0 ? "bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
           <p className={`text-xs font-medium mb-1 ${selected.size > 0 ? "text-white/70" : "text-slate-500"}`}>Assigned events</p>
           <p className={`text-3xl font-bold tabular-nums leading-none ${selected.size > 0 ? "text-white" : "text-slate-700"}`}>{selected.size}</p>
@@ -107,7 +107,7 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
       </div>
 
       {/* Event checklist */}
-      <div className="animate-slide-up" style={{ animationDelay: "0.09s" }}>
+      <div className="">
         <div className="flex items-center justify-between mb-3">
           <p className="text-xs font-semibold text-slate-500">Assign events</p>
           <div className="flex gap-2">
@@ -125,7 +125,7 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
           <div className="rounded-2xl border-2 border-dashed border-slate-100 py-10 text-center">
             <CalendarDays className="h-7 w-7 mx-auto mb-2 text-slate-200" />
             <p className="text-sm text-slate-500">No events found.</p>
-            <Link href="/dev/seed" className="text-xs text-[#0f6b63] hover:underline mt-1 block">Seed events →</Link>
+            <Link href="/dev/seed" className="text-xs text-[#0f6b63] hover:underline mt-1 block">Seed events</Link>
           </div>
         ) : (
           <div className="space-y-1.5">
@@ -160,7 +160,7 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
       </div>
 
       {/* Permissions note */}
-      <div className="bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+      <div className="bg-slate-50 border border-slate-100 rounded-xl px-4 py-3">
         <p className="text-xs font-medium text-slate-500 mb-1">Default permissions granted</p>
         <div className="flex flex-wrap gap-1.5 mt-1">
           {DEFAULT_PERMISSIONS.map((p) => (
@@ -181,7 +181,7 @@ export default function AssignForm({ managerId, currentUserId, assignmentId, all
       )}
 
       {/* Action buttons */}
-      <div className="flex items-center gap-3 animate-slide-up" style={{ animationDelay: "0.12s" }}>
+      <div className="flex items-center gap-3">
         <button
           onClick={handleSave}
           disabled={saving || allEvents.length === 0}

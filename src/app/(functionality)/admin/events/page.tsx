@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowRight, CalendarDays, ChevronLeft } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { display } from "@/components/indie";
 import { CARD_UI, TicketTitle } from "@/components/indie/gold-poster";
 import { ALL_EVENTS } from "@/features/events/data/all-events";
@@ -43,9 +43,6 @@ export default async function AdminEventsPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <Link href="/admin" className="mb-1 inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63]">
-            <ChevronLeft className="h-3.5 w-3.5" /> Admin
-          </Link>
           <TicketTitle className="mb-2 text-3xl leading-[1.1] sm:text-5xl">Events</TicketTitle>
           <p className="text-sm text-slate-500">
             {groups.length} fest events · {events.length} competitions · {openCount} open for registration
@@ -53,11 +50,8 @@ export default async function AdminEventsPage() {
         </div>
         <div className="flex shrink-0 items-center gap-3">
           {user.role === "DEV_ADMIN" && (
-            <Link href="/dev/events" className="text-xs font-bold uppercase text-[#0f6b63] hover:underline">Registration controls →</Link>
+            <Link href="/dev/events" className="text-xs font-bold uppercase text-[#0f6b63] hover:underline">Registration controls</Link>
           )}
-          <div className="grid h-12 w-12 place-items-center rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812]">
-            <CalendarDays className="h-5 w-5 text-[#0f6b63]" />
-          </div>
         </div>
       </div>
 
@@ -65,9 +59,9 @@ export default async function AdminEventsPage() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {TILES.map((t) => (
           <div key={t.key} className={`rounded-2xl border-[3px] border-[#1c1812] p-4 shadow-[0_4px_0_#1c1812] ${t.cls}`}>
-            <p className="text-xs font-bold uppercase tracking-wider opacity-80">{t.label}</p>
+            <p className="text-sm font-semibold">{t.label}</p>
             <p className={`mt-2 text-4xl leading-none tabular-nums ${display.className}`}>{totals[t.key]}</p>
-            <p className="mt-2 text-xs font-semibold uppercase opacity-75">{t.sub}</p>
+            <p className="mt-2 text-xs font-medium">{t.sub}</p>
           </div>
         ))}
       </div>
@@ -85,7 +79,7 @@ export default async function AdminEventsPage() {
               <section key={g.key} className={`${CARD_UI} overflow-hidden`}>
                 <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b-2 border-dashed border-black/15 px-5 py-4">
                   <h2 className={`text-2xl text-[#1c1812] ${display.className}`}>{g.name}</h2>
-                  {g.category && <span className="text-xs font-bold uppercase tracking-widest text-[#c8421f]">{g.category}</span>}
+                  {g.category && <span className="text-xs font-bold uppercase tracking-widest text-[#a33517]">{g.category}</span>}
                   <span className="text-xs text-black/50">{single ? "Single event" : `${g.rows.length} competitions`}</span>
                   <span className="ml-auto text-sm text-[#1c1812]">
                     <b className="tabular-nums">{people}</b> participants · <b className="tabular-nums">{teams}</b> teams

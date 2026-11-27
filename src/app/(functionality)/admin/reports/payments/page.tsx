@@ -7,7 +7,7 @@ import { User } from "@/features/users/user.model";
 import { Transaction } from "@/features/payments/transaction.model";
 import { Button } from "@/components/ui/button";
 import FilterForm from "../FilterForm";
-import { ChevronLeft, CreditCard, Download, ChevronRight, CheckCircle2, Clock } from "lucide-react";
+import { CreditCard, Download, ChevronRight, CheckCircle2, Clock } from "lucide-react";
 import Link from "next/link";
 import { TicketTitle } from "@/components/indie/gold-poster";
 
@@ -98,11 +98,8 @@ export default async function ReportPaymentsPage({
     <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/admin/reports" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Reports
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Payment Report</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{total} participant(s)</p>
           </div>
@@ -117,13 +114,13 @@ export default async function ReportPaymentsPage({
           </div>
         </div>
 
-        <div className="animate-slide-up" style={{ animationDelay: "0.04s" }}>
+        <div className="">
           <Suspense>
             <FilterForm view="payments" />
           </Suspense>
         </div>
 
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.08s" }}>
+        <div className="space-y-2">
           {rows.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-10 text-center">
               <p className="text-sm text-slate-500">No results</p>

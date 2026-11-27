@@ -54,7 +54,7 @@ const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> 
   REGISTRATION_CLOSED: { text: "Closed",     color: "text-amber-900",   bg: "bg-amber-200"   },
   TEMPORARILY_CLOSED:  { text: "Paused",     color: "text-orange-900",  bg: "bg-orange-200"  },
   DRAFT:               { text: "Draft",      color: "text-stone-600",   bg: "bg-stone-200"   },
-  UPCOMING:            { text: "Upcoming",   color: "text-blue-900",    bg: "bg-blue-200"    },
+  UPCOMING:            { text: "Upcoming",   color: "text-[#1c1812]",    bg: "bg-[#fde9a8]"    },
 };
 
 const STATUS_BORDER: Record<string, string> = {
@@ -96,12 +96,12 @@ export default async function AdminDashboardPage() {
   const firstName  = user.fullName.split(" ")[0];
 
   const stats = [
-    { label: "Total events",       value: totalCount,                 sub: "all events",        bg: "bg-[#f5c928]", href: "/admin/events" },
-    { label: "Open now",           value: openCount,                  sub: "registration open", bg: "bg-[#ff6a00]" },
+    { label: "Total events",       value: totalCount,                 sub: "all events",        bg: "bg-[#0f6b63]", href: "/admin/events", light: true },
+    { label: "Open now",           value: openCount,                  sub: "registration open", bg: "bg-[#f5c928]" },
     { label: "Live now",           value: liveCount,                  sub: "events running",    bg: "bg-[#c8421f]", light: true },
-    { label: "Total participants", value: participantCounts.total,    sub: "registered",        bg: "bg-[#f5c928]", href: "/admin/participants" },
-    { label: "Internal",           value: participantCounts.internal, sub: "@opju.ac.in",       bg: "bg-[#f5edd8]" },
-    { label: "External",           value: participantCounts.external, sub: "outside colleges",  bg: "bg-[#ffb10f]" },
+    { label: "Total participants", value: participantCounts.total,    sub: "registered",        bg: "bg-[#1c1812]", href: "/admin/participants", light: true },
+    { label: "OPJU",               value: participantCounts.internal, sub: "@opju.ac.in",       bg: "bg-[#f5c928]" },
+    { label: "External",           value: participantCounts.external, sub: "outside colleges",  bg: "bg-[#c8421f]", light: true },
   ];
 
   return (
@@ -117,14 +117,14 @@ export default async function AdminDashboardPage() {
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
 
         {/* Gold header banner (same look as the participant dashboard) */}
-        <div className="relative overflow-hidden rounded-3xl border-[3px] px-5 py-6 sm:px-8 sm:py-7 animate-slide-up" style={{ borderColor: INK, boxShadow: `0 5px 0 ${INK}` }}>
+        <div className="relative overflow-hidden rounded-3xl border-[3px] px-5 py-6 sm:px-8 sm:py-7" style={{ borderColor: INK, boxShadow: `0 5px 0 ${INK}` }}>
           <GoldBackdrop at="90% 130%" sparkles={false} />
           <div className="relative flex items-end justify-between gap-4">
             <div className="min-w-0">
               <p className="text-xs font-extrabold uppercase tracking-[0.3em] sm:text-sm" style={{ color: INK }}>Management console</p>
               <TicketTitle className="text-4xl leading-[1.05] sm:text-6xl">Management</TicketTitle>
               <div className="mt-3 flex flex-wrap gap-2">
-                <span className="rounded-full border-2 bg-[#ef5a1c] px-3 py-1 text-[10px] font-extrabold uppercase text-white sm:text-xs" style={{ borderColor: INK }}>{user.role.replace(/_/g, " ")}</span>
+                <span className="rounded-full border-2 bg-[#c8421f] px-3 py-1 text-[10px] font-extrabold uppercase text-white sm:text-xs" style={{ borderColor: INK }}>{user.role.replace(/_/g, " ")}</span>
                 <span className="rounded-full border-2 px-3 py-1 text-[10px] font-extrabold uppercase text-[#f3e8cf] sm:text-xs" style={{ borderColor: INK, background: INK }}>Techno-aiMBiAtion 2027</span>
               </div>
             </div>
@@ -134,33 +134,11 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Tape banners */}
-        <div className="-mx-4 py-3 overflow-hidden animate-slide-up" style={{ animationDelay: "0.03s" }}>
-          <div className="bg-[#ff6a00] text-black font-bold uppercase tracking-wider text-lg py-1.5 -rotate-1 border-y-2 border-black overflow-hidden">
-            <div className="indie-anim flex w-max whitespace-nowrap" style={{ animation: "indie-marquee 30s linear infinite" }}>
-              {[0, 1].map((n) => (
-                <span key={n} className="pr-8">
-                  {"Join the riot ✦ Dive into the world of culture ✦ ".repeat(4)}
-                </span>
-              ))}
-            </div>
-          </div>
-          <div className="bg-[#f5c928] text-black font-bold uppercase tracking-[0.3em] text-xs py-1 rotate-1 -mt-1 border-y-2 border-black overflow-hidden">
-            <div className="indie-anim flex w-max whitespace-nowrap" style={{ animation: "indie-marquee 45s linear infinite reverse" }}>
-              {[0, 1].map((n) => (
-                <span key={n} className="pr-8">
-                  {"Registrations ● Check-In ● Accommodation ● Teams ● ".repeat(4)}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="grid grid-cols-3 gap-3">
           {stats.map((s) => {
             const tile = (
-              <div className={`relative ${s.bg} ${s.light ? "text-[#f5edd8]" : "text-black"} border-2 border-black shadow-[4px_4px_0_0_#000] rounded-xl p-4 h-full transition-transform hover:-translate-y-0.5`}>
+              <div className={`relative ${s.bg} ${s.light ? "text-white" : "text-[#1c1812]"} h-full rounded-2xl border-[3px] border-[#1c1812] p-4 shadow-[0_4px_0_#1c1812] ${s.href ? "card-lift" : ""}`}>
                 {s.label === "Live now" && s.value > 0 && (
                   <span
                     className="indie-anim absolute -top-3 -right-2 bg-[#f5c928] text-black text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 border-2 border-black rounded-full"
@@ -169,9 +147,9 @@ export default async function AdminDashboardPage() {
                     ● On air
                   </span>
                 )}
-                <p className="text-xs sm:text-sm font-bold uppercase tracking-wider mb-3 opacity-80">{s.label}</p>
+                <p className="mb-2 text-sm font-semibold">{s.label}</p>
                 <p className={`text-3xl sm:text-5xl tabular-nums leading-none ${display.className}`}>{s.value}</p>
-                <p className="text-xs sm:text-sm uppercase tracking-wide mt-2 opacity-70">{s.sub}</p>
+                <p className="mt-2 text-xs font-medium">{s.sub}</p>
               </div>
             );
             return s.href
@@ -181,7 +159,7 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Navigation grid */}
-        <div className="animate-slide-up space-y-5" style={{ animationDelay: "0.1s" }}>
+        <div className=" space-y-5">
           <p className={`text-xl text-[#1c1812] ${display.className}`}>Manage</p>
           {NAV_GROUPS.map((group) => (
             <div key={group.title}>
@@ -211,12 +189,12 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Events overview */}
-        <div className="animate-slide-up" style={{ animationDelay: "0.15s" }}>
+        <div className="">
           <div className="flex items-center justify-between mb-3">
             <p className={`text-xl text-[#1c1812] ${display.className}`}>Events overview <span className="text-sm text-black/50">{Math.min(events.length, OVERVIEW_ROWS)} of {events.length}</span></p>
             <Link
               href="/admin/events"
-              className="text-sm font-bold uppercase tracking-wider text-[#0e5b57] hover:text-[#ef5a1c] transition-colors flex items-center gap-1"
+              className="text-sm font-bold uppercase tracking-wider text-[#0e5b57] hover:text-[#a33517] transition-colors flex items-center gap-1"
             >
               View all <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -224,7 +202,7 @@ export default async function AdminDashboardPage() {
 
           {events.length === 0 ? (
             <div className="rounded-xl border-2 border-dashed border-[#1c1812]/30 bg-white/60 py-12 text-center">
-              <CalendarDays className="h-8 w-8 mx-auto mb-3 text-[#ef5a1c]" />
+              <CalendarDays className="h-8 w-8 mx-auto mb-3 text-[#a33517]" />
               <p className="text-lg font-semibold uppercase tracking-wide text-black/60">No events yet</p>
             </div>
           ) : (
@@ -250,10 +228,10 @@ export default async function AdminDashboardPage() {
                             {event.category && <span className="text-[#1a0505]/30">·</span>}
                             <span className="font-semibold">{event.participantCount} registered</span>
                             {event.internalCount > 0 && (
-                              <span className="text-xs bg-sky-200 text-sky-900 font-bold px-1.5 py-0.5 rounded-full border border-black/30">{event.internalCount} OPJU</span>
+                              <span className="text-xs bg-sky-200 text-[#0f6b63] font-bold px-1.5 py-0.5 rounded-full border border-black/30">{event.internalCount} OPJU</span>
                             )}
                             {event.externalCount > 0 && (
-                              <span className="text-xs bg-[#fbe3d9] text-[#c8421f] font-bold px-1.5 py-0.5 rounded-full border border-black/30">{event.externalCount} ext</span>
+                              <span className="text-xs bg-[#fbe3d9] text-[#a33517] font-bold px-1.5 py-0.5 rounded-full border border-black/30">{event.externalCount} ext</span>
                             )}
                           </>
                         )}
@@ -274,7 +252,7 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Ticket-stub footer */}
-        <div className="relative bg-[#f5c928] text-black border-2 border-black shadow-[4px_4px_0_0_#000] rounded-xl flex items-stretch overflow-hidden animate-slide-up" style={{ animationDelay: "0.2s" }}>
+        <div className="relative bg-[#f5c928] text-black border-2 border-black shadow-[4px_4px_0_0_#000] rounded-xl flex items-stretch overflow-hidden">
           <span aria-hidden className="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#f6efdf] border-2 border-black" />
           <span aria-hidden className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#f6efdf] border-2 border-black" />
           <div className="flex-1 px-6 py-4">

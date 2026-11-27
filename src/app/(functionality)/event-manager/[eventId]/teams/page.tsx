@@ -59,7 +59,7 @@ export default async function EventManagerTeamsPage({
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
             <Link href={`/event-manager/${eventId}`} className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               <ChevronLeft className="h-3.5 w-3.5" /> {event.name}
@@ -75,9 +75,9 @@ export default async function EventManagerTeamsPage({
         </div>
 
         {/* Stat cards */}
-        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="grid grid-cols-3 gap-3">
           <div className="bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
-            <p className="text-xs font-medium text-white/70 mb-1">Total teams</p>
+            <p className="text-xs font-semibold text-white mb-1">Total teams</p>
             <p className="text-2xl font-bold text-white tabular-nums">{total}</p>
           </div>
           <div className={`rounded-2xl px-4 py-4 ${fullCount > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
@@ -91,7 +91,7 @@ export default async function EventManagerTeamsPage({
         </div>
 
         {/* Teams list */}
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="space-y-2">
           {teams.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <UsersRound className="h-8 w-8 mx-auto mb-3 text-slate-200" />

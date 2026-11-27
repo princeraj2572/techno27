@@ -69,7 +69,7 @@ export default function ParticipantsClient({ participants, eventName }: Props) {
   };
 
   return (
-    <div className="space-y-4 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+    <div className="space-y-4">
       {/* Filter tabs + download */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 bg-slate-100 rounded-xl p-1">

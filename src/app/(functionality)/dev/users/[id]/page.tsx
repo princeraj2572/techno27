@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { TicketTitle } from "@/components/indie/gold-poster";
-import Link from "next/link";
-import {
-  ChevronLeft, User, CalendarDays, UsersRound, Zap, Shield,
-  Trash2, UserMinus, Send, Plus, Crown, Check, X, AlertCircle,
-} from "lucide-react";
+import { User, CalendarDays, UsersRound, Zap, Shield, Trash2, UserMinus, Send, Plus, Crown, Check, X, AlertCircle } from "lucide-react";
 
 const ROLE_OPTIONS = [
   "DEV_ADMIN", "MANAGEMENT_ADMIN", "EVENT_MANAGER", "INTERNAL_USER", "EXTERNAL_USER",
@@ -16,29 +12,29 @@ const ROLE_OPTIONS = [
 
 const ROLE_CHIP: Record<string, string> = {
   DEV_ADMIN:        "bg-red-50    text-red-700    border-red-200",
-  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#c8421f] border-[#c8421f]/30",
-  EVENT_MANAGER:    "bg-blue-50   text-blue-700   border-blue-200",
-  INTERNAL_USER:    "bg-sky-50    text-sky-700    border-sky-200",
+  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#a33517] border-[#c8421f]/30",
+  EVENT_MANAGER:    "bg-[#e3f1ef]   text-[#0f6b63]   border-[#0f6b63]/30",
+  INTERNAL_USER:    "bg-[#e3f1ef]    text-[#0f6b63]    border-[#0f6b63]/30",
   EXTERNAL_USER:    "bg-amber-50  text-amber-700  border-amber-200",
 };
 
 const ROLE_AVATAR: Record<string, string> = {
   DEV_ADMIN:        "bg-red-100    text-red-700",
-  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#c8421f]",
-  EVENT_MANAGER:    "bg-blue-100   text-blue-700",
-  INTERNAL_USER:    "bg-sky-100    text-sky-700",
+  MANAGEMENT_ADMIN: "bg-[#fbe3d9] text-[#a33517]",
+  EVENT_MANAGER:    "bg-[#e3f1ef]   text-[#0f6b63]",
+  INTERNAL_USER:    "bg-[#e3f1ef]    text-[#0f6b63]",
   EXTERNAL_USER:    "bg-amber-100  text-amber-700",
 };
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-700", bg: "bg-emerald-100" },
-  EVENT_LIVE:          { text: "Live",       color: "text-blue-700",    bg: "bg-blue-100" },
+  EVENT_LIVE:          { text: "Live",       color: "text-[#1c1812]",    bg: "bg-[#fde9a8]" },
   COMPLETED:           { text: "Completed",  color: "text-slate-500",   bg: "bg-slate-100" },
   CANCELLED:           { text: "Cancelled",  color: "text-red-700",     bg: "bg-red-100" },
   REGISTRATION_CLOSED: { text: "Closed",     color: "text-amber-700",   bg: "bg-amber-100" },
   TEMPORARILY_CLOSED:  { text: "Paused",     color: "text-orange-700",  bg: "bg-orange-100" },
   DRAFT:               { text: "Draft",      color: "text-slate-500",   bg: "bg-slate-100" },
-  UPCOMING:            { text: "Upcoming",   color: "text-sky-700",     bg: "bg-sky-100" },
+  UPCOMING:            { text: "Upcoming",   color: "text-[#1c1812]",     bg: "bg-[#fde9a8]" },
 };
 
 type MemberUser = { _id: string; fullName: string; email: string; role: string };
@@ -68,7 +64,7 @@ type Tab = "profile" | "events" | "teams" | "actions" | "role";
 
 function Toast({ msg, type, onDismiss }: { msg: string; type: "success" | "error"; onDismiss: () => void }) {
   return (
-    <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-lg border text-sm font-medium max-w-xs animate-slide-up ${
+    <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-lg border text-sm font-medium max-w-xs ${
       type === "success" ? "bg-emerald-50 border-emerald-200 text-emerald-800" : "bg-red-50 border-red-200 text-red-800"
     }`}>
       {type === "success" ? <Check className="h-4 w-4 shrink-0" /> : <AlertCircle className="h-4 w-4 shrink-0" />}
@@ -293,11 +289,8 @@ export default function DevUserDetailPage() {
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
 
         {/* Header */}
-        <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-start justify-between">
           <div>
-            <Link href="/dev/users" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-2">
-              <ChevronLeft className="h-3.5 w-3.5" /> Users
-            </Link>
             <div className="flex items-center gap-3">
               {user.profilePhotoUrl ? (
                 <Image
@@ -323,7 +316,7 @@ export default function DevUserDetailPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex items-center gap-1 overflow-x-auto pb-0.5 animate-slide-up" style={{ animationDelay: "0.04s" }}>
+        <div className="flex items-center gap-1 overflow-x-auto pb-0.5">
           {TABS.map((tab) => (
             <button
               key={tab.key}
@@ -349,7 +342,7 @@ export default function DevUserDetailPage() {
 
         {/* Profile tab */}
         {activeTab === "profile" && (
-          <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+          <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5">
             <p className="text-xs font-semibold text-slate-500 mb-4">Profile details</p>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-4">
               {profileFields.map(([label, value]) =>
@@ -366,7 +359,7 @@ export default function DevUserDetailPage() {
 
         {/* Events tab */}
         {activeTab === "events" && (
-          <div className="animate-slide-up" style={{ animationDelay: "0.06s" }}>
+          <div className="">
             {events.length === 0 ? (
               <div className="bg-white/60 border-[3px] border-dashed border-[#1c1812]/30 rounded-2xl py-12 text-center">
                 <CalendarDays className="h-8 w-8 mx-auto mb-3 text-slate-300" />
@@ -402,7 +395,7 @@ export default function DevUserDetailPage() {
 
         {/* Teams tab */}
         {activeTab === "teams" && (
-          <div className="space-y-4 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+          <div className="space-y-4">
             {teams.length === 0 ? (
               <div className="bg-white/60 border-[3px] border-dashed border-[#1c1812]/30 rounded-2xl py-12 text-center">
                 <UsersRound className="h-8 w-8 mx-auto mb-3 text-slate-300" />
@@ -483,7 +476,7 @@ export default function DevUserDetailPage() {
 
         {/* Actions tab */}
         {activeTab === "actions" && (
-          <div className="space-y-4 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+          <div className="space-y-4">
 
             {/* Register for event */}
             <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5">
@@ -563,7 +556,7 @@ export default function DevUserDetailPage() {
 
         {/* Role tab */}
         {activeTab === "role" && (
-          <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+          <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-7 h-7 rounded-lg bg-[#fde9a8] flex items-center justify-center">
                 <Shield className="h-3.5 w-3.5 text-[#0f6b63]" />

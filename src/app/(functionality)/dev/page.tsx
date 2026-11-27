@@ -28,24 +28,24 @@ const NAV_ITEMS = [
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-700", bg: "bg-emerald-100" },
-  EVENT_LIVE:          { text: "Live",       color: "text-blue-700",    bg: "bg-blue-100"    },
+  EVENT_LIVE:          { text: "Live",       color: "text-[#1c1812]",    bg: "bg-[#fde9a8]"    },
   COMPLETED:           { text: "Completed",  color: "text-slate-500",   bg: "bg-slate-100"   },
   CANCELLED:           { text: "Cancelled",  color: "text-red-700",     bg: "bg-red-100"     },
   REGISTRATION_CLOSED: { text: "Closed",     color: "text-amber-700",   bg: "bg-amber-100"   },
   TEMPORARILY_CLOSED:  { text: "Paused",     color: "text-orange-700",  bg: "bg-orange-100"  },
   DRAFT:               { text: "Draft",      color: "text-slate-500",   bg: "bg-slate-100"   },
-  UPCOMING:            { text: "Upcoming",   color: "text-sky-700",     bg: "bg-sky-100"     },
+  UPCOMING:            { text: "Upcoming",   color: "text-[#1c1812]",     bg: "bg-[#fde9a8]"     },
 };
 
 const STATUS_BORDER: Record<string, string> = {
   REGISTRATION_OPEN:   "border-l-emerald-500",
-  EVENT_LIVE:          "border-l-blue-500",
+  EVENT_LIVE:          "border-l-[#e9a11a]",
   COMPLETED:           "border-l-slate-300",
   CANCELLED:           "border-l-red-400",
   REGISTRATION_CLOSED: "border-l-amber-400",
   TEMPORARILY_CLOSED:  "border-l-orange-400",
   DRAFT:               "border-l-slate-200",
-  UPCOMING:            "border-l-sky-400",
+  UPCOMING:            "border-l-[#e9a11a]",
 };
 
 async function getManagementStats() {
@@ -120,7 +120,7 @@ export default async function DevDashboardPage() {
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Gold header banner (same as Management) */}
-        <div className="relative overflow-hidden rounded-3xl border-[3px] px-5 py-6 sm:px-8 sm:py-7 animate-slide-up" style={{ borderColor: INK, boxShadow: `0 5px 0 ${INK}` }}>
+        <div className="relative overflow-hidden rounded-3xl border-[3px] px-5 py-6 sm:px-8 sm:py-7" style={{ borderColor: INK, boxShadow: `0 5px 0 ${INK}` }}>
           <GoldBackdrop at="90% 130%" sparkles={false} />
           <div className="relative flex items-end justify-between gap-4">
             <div className="min-w-0">
@@ -138,13 +138,13 @@ export default async function DevDashboardPage() {
         </div>
 
         {/* Stat tiles (fest palette, same as Management) */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {stats5.map((t) => {
             const tile = (
               <div className={`h-full rounded-2xl border-[3px] border-[#1c1812] p-4 shadow-[0_4px_0_#1c1812] ${t.href ? "card-lift" : ""} ${t.bg} ${t.light ? "text-white" : "text-[#1c1812]"}`}>
-                <p className="text-xs font-extrabold uppercase tracking-wider opacity-80">{t.label}</p>
+                <p className="text-sm font-semibold">{t.label}</p>
                 <p className={`mt-2 text-4xl leading-none tabular-nums ${display.className}`}>{t.value}</p>
-                <p className="mt-2 text-xs font-bold uppercase opacity-70">{t.sub}</p>
+                <p className="mt-2 text-xs font-medium">{t.sub}</p>
               </div>
             );
             return t.href ? <Link key={t.label} href={t.href}>{tile}</Link> : <div key={t.label}>{tile}</div>;
@@ -152,7 +152,7 @@ export default async function DevDashboardPage() {
         </div>
 
         {/* Navigation grid */}
-        <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="">
           <p className={`mb-3 text-xl ${display.className}`}>Control</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {NAV_ITEMS.map((item) => {
@@ -175,7 +175,7 @@ export default async function DevDashboardPage() {
         </div>
 
         {/* Event Managers list */}
-        <div className="animate-slide-up" style={{ animationDelay: "0.13s" }}>
+        <div className="">
           <div className="flex items-center justify-between mb-3">
             <p className={`text-xl ${display.className}`}>Event managers</p>
             <Link href="/dev/management" className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium flex items-center gap-1">
@@ -188,7 +188,7 @@ export default async function DevDashboardPage() {
               <UserCog className="h-7 w-7 mx-auto mb-2 text-slate-300" />
               <p className="text-sm font-medium text-slate-500">No event managers yet</p>
               <Link href="/dev/management/create" className="text-xs text-[#0f6b63] hover:underline mt-1 block">
-                Create one →
+                Create one
               </Link>
             </div>
           ) : (
@@ -210,7 +210,7 @@ export default async function DevDashboardPage() {
                       {m.assignedEvents.length} event{m.assignedEvents.length !== 1 ? "s" : ""}
                     </span>
                     <Link href={`/dev/management/${m._id}`} className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium shrink-0">
-                      Assign →
+                      Assign
                     </Link>
                   </div>
                   {m.assignedEvents.length > 0 && (
@@ -233,7 +233,7 @@ export default async function DevDashboardPage() {
         </div>
 
         {/* Event registration table */}
-        <div className="animate-slide-up" style={{ animationDelay: "0.18s" }}>
+        <div className="">
           <div className="flex items-center justify-between mb-3">
             <p className={`text-xl ${display.className}`}>Event registration</p>
             <Link href="/dev/events" className="text-xs text-[#0f6b63] hover:text-[#0b4f49] font-medium flex items-center gap-1">
@@ -284,7 +284,7 @@ export default async function DevDashboardPage() {
         </div>
 
         {/* Footer summary */}
-        <div className="flex items-center gap-2 text-xs text-slate-500 animate-slide-up" style={{ animationDelay: "0.22s" }}>
+        <div className="flex items-center gap-2 text-xs text-slate-500">
           <TrendingUp className="h-3.5 w-3.5" />
           <span>
             {stats.totalUsers} total users · {stats.internalCount} internal · {stats.externalCount} external ·{" "}

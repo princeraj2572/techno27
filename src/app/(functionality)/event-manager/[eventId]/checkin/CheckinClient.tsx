@@ -159,9 +159,9 @@ export default function CheckinClient({
     <div className="space-y-6">
 
       {/* Stat cards */}
-      <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+      <div className="grid grid-cols-3 gap-3">
         <div className="bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-4 py-4">
-          <p className="text-xs font-medium text-white/70 mb-1">Registered</p>
+          <p className="text-xs font-semibold text-white mb-1">Registered</p>
           <p className="text-2xl font-bold text-white tabular-nums">{totalRegistered}</p>
         </div>
         <div className={`rounded-2xl px-4 py-4 ${checkedInCount > 0 ? "bg-[#0f6b63] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>
@@ -175,7 +175,7 @@ export default function CheckinClient({
       </div>
 
       {/* QR Scanner */}
-      <div className="animate-slide-up" style={{ animationDelay: "0.08s" }}>
+      <div className="">
         <div className={`rounded-2xl overflow-hidden border ${scanning ? "border-[#1c1812]/30" : "border-slate-100"}`}>
           {/* Scanner header */}
           <div className="flex items-center justify-between px-5 py-4 bg-slate-50">
@@ -292,7 +292,7 @@ export default function CheckinClient({
 
       {/* Pending check-in */}
       {notCheckedIn.length > 0 && (
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="space-y-2">
           <p className="text-xs font-medium text-slate-500">Pending check-in ({notCheckedIn.length})</p>
           {pendingPaged.map((p) => (
             <div key={p._id} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] border-l-amber-300 rounded-2xl px-4 py-3.5 flex items-center gap-3">
@@ -353,7 +353,7 @@ export default function CheckinClient({
 
       {/* Checked in */}
       {checkedIn.length > 0 && (
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.12s" }}>
+        <div className="space-y-2">
           <p className="text-xs font-medium text-slate-500">Checked in ({checkedIn.length})</p>
           {checkedInPaged.map((p) => (
             <div key={p._id} className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] border-l-emerald-400 rounded-2xl px-4 py-3.5 flex items-center gap-3">
@@ -395,7 +395,7 @@ export default function CheckinClient({
       )}
 
       {participants.length === 0 && (
-        <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
           <CheckSquare className="h-8 w-8 mx-auto mb-3 text-slate-200" />
           <p className="text-sm font-medium text-slate-500">No participants registered yet</p>
         </div>

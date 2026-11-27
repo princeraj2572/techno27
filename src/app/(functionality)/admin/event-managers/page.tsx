@@ -5,10 +5,12 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { User } from "@/features/users/user.model";
 import { ManagementAssignment } from "@/features/management/managementAssignment.model";
 import { Event } from "@/features/events/event.model";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ShieldCheck, Plus, ChevronRight } from "lucide-react";
+import { ShieldCheck, Plus } from "lucide-react";
+import { display } from "@/components/indie";
+import { Pager } from "@/components/indie/pager";
+import { getEvent as getFestEvent } from "@/features/events/data/all-events";
 import Link from "next/link";
-import { TicketTitle } from "@/components/indie/gold-poster";
+import { CARD_UI, TicketTitle } from "@/components/indie/gold-poster";
 
 async function getEventManagersWithAssignments(page: number, limit: number) {
   await connectToDatabase();
@@ -19,8 +21,9 @@ async function getEventManagersWithAssignments(page: number, limit: number) {
   const managerIds = managers.map((m: { _id: unknown }) => m._id);
   const assignments = await ManagementAssignment.find({ userId: { $in: managerIds }, isActive: true }).lean();
   const eventIds = [...new Set(assignments.flatMap((a: { eventIds: unknown[] }) => a.eventIds.map(String)))];
-  const events = await Event.find({ _id: { $in: eventIds } }).select("name").lean();
-  const eventMap = Object.fromEntries(events.map((e: { _id: unknown; name: string }) => [String(e._id), e.name]));
+  const events = await Event.find({ _id: { $in: eventIds } }).select("name mainEvent").lean<{ _id: unknown; name: string; mainEvent?: string }[]>();
+  const eventMap = Object.fromEntries(events.map((e) => [String(e._id), e.name]));
+  const festMap = Object.fromEntries(events.map((e) => [String(e._id), e.mainEvent ? getFestEvent(e.mainEvent)?.name ?? e.mainEvent : e.name]));
 
   const rows = managers.map((m: { _id: unknown }) => ({
     ...m,
@@ -29,6 +32,7 @@ async function getEventManagersWithAssignments(page: number, limit: number) {
       .map((a: { eventIds: unknown[]; permissions: string[] }) => ({
         ...a,
         eventNames: a.eventIds.map((id) => eventMap[String(id)] ?? "Unknown"),
+        festNames: [...new Set(a.eventIds.map((id) => festMap[String(id)]).filter(Boolean))],
       })),
   }));
 
@@ -44,116 +48,64 @@ export default async function AdminEventManagersPage({
   if (!user || !["DEV_ADMIN", "MANAGEMENT_ADMIN"].includes(user.role)) redirect("/dashboard");
 
   const { page: rawPage } = await searchParams;
-  const page = Math.max(1, parseInt(rawPage ?? "1"));
+  const page = Math.max(1, parseInt(rawPage ?? "1") || 1);
   const limit = 25;
 
   const { rows: managers, total } = await getEventManagersWithAssignments(page, limit).catch(() => ({ rows: [], total: 0 }));
-  const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/admin" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Admin
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Event managers</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{total} accounts</p>
           </div>
           <div className="flex items-center gap-3">
             {user.role === "DEV_ADMIN" && (
-              <Button size="sm" asChild>
-                <Link href="/dev/management/create">
-                  <Plus className="h-3.5 w-3.5 mr-1.5" /> Create account
-                </Link>
-              </Button>
+              <Link href="/dev/management/create" className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1c1812] bg-[#0f6b63] px-4 py-2 text-xs font-extrabold uppercase text-white transition-transform duration-150 active:scale-95">
+                <Plus className="h-3.5 w-3.5" /> Create account
+              </Link>
             )}
-            <div className="w-12 h-12 rounded-full border-[3px] border-[#1c1812] bg-[#f5c928] shadow-[0_4px_0_#1c1812] flex items-center justify-center shrink-0">
-              <ShieldCheck className="h-5 w-5 text-teal-600" />
-            </div>
           </div>
         </div>
 
-        {/* Managers list */}
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+        {/* Managers: one card, a row per account */}
+        <section className={`${CARD_UI} overflow-hidden`}>
           {managers.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
-              <ShieldCheck className="h-8 w-8 mx-auto mb-3 text-slate-200" />
-              <p className="text-sm font-medium text-slate-500">No event manager accounts yet</p>
-              {user.role === "DEV_ADMIN" && (
-                <Link href="/dev/management/create" className="text-xs text-teal-600 hover:underline mt-1 block">
-                  Create the first one
-                </Link>
-              )}
+            <div className="py-14 text-center">
+              <ShieldCheck className="mx-auto mb-3 h-8 w-8 text-black/25" />
+              <p className="font-semibold text-black/60">No event manager accounts yet</p>
+              {user.role === "DEV_ADMIN" && <Link href="/dev/events" className="mt-1 block text-sm font-bold text-[#0f6b63] hover:underline">Generate them from Developer → Events</Link>}
             </div>
           ) : (
-            managers.map((m: {
-              _id: string; fullName: string; email: string;
-              assignments: { eventNames: string[]; permissions: string[] }[];
-            }) => {
-              const assignment   = m.assignments[0];
-              const isAssigned   = !!assignment;
-              const eventNames   = assignment?.eventNames ?? [];
-              return (
-                <div key={m._id} className={`bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] border-l-[6px] ${
-                  isAssigned ? "border-l-teal-500" : "border-l-slate-200"
-                } rounded-2xl px-4 py-3.5`}>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-xs font-bold text-teal-700 shrink-0">
-                      {m.fullName[0]?.toUpperCase()}
+            <ul className="divide-y divide-black/10">
+              {managers.map((m: { _id: string; fullName: string; email: string; assignments: { eventNames: string[]; festNames: string[] }[] }) => {
+                const names = m.assignments.flatMap((a) => a.eventNames);
+                const fests = [...new Set(m.assignments.flatMap((a) => a.festNames))];
+                const active = names.length > 0;
+                return (
+                  <li key={m._id} className="flex items-center gap-3 px-5 py-3.5">
+                    <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-full border-2 border-[#1c1812] text-base ${active ? "bg-[#f5c928]" : "bg-[#f6efdf]"} text-[#1c1812] ${display.className}`}>
+                      {(fests[0] ?? m.fullName)[0]?.toUpperCase()}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-bold text-[#1c1812]">{fests.length ? fests.join(", ") : m.fullName}</p>
+                      <p className="truncate text-xs text-black/60">{m.email}</p>
+                      {names.length > 1 && <p className="mt-0.5 text-xs text-black/60">{names.length} competitions</p>}
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-slate-900 truncate">{m.fullName}</p>
-                      <p className="text-xs text-slate-500 truncate">{m.email}</p>
-                      {eventNames.length > 0 && (
-                        <p className="text-xs text-teal-600 mt-0.5 truncate">{eventNames.join(", ")}</p>
-                      )}
-                    </div>
-                    <div className="shrink-0">
-                      {isAssigned ? (
-                        <span className="text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-200 px-1.5 py-0.5 rounded-full">
-                          Active
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-semibold bg-slate-50 text-slate-500 border border-slate-200 px-1.5 py-0.5 rounded-full">
-                          Unassigned
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })
+                    <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase ${active ? "bg-[#0f6b63] text-white" : "bg-black/10 text-black/60"}`}>
+                      {active ? "Active" : "No events"}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
           )}
-
-          {totalPages > 1 && (
-            <div className="flex items-center justify-between pt-2">
-              <p className="text-xs text-slate-500">
-                {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
-              </p>
-              <div className="flex items-center gap-2">
-                {page > 1 ? (
-                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                    <Link href={`/admin/event-managers?page=${page - 1}`}>← Prev</Link>
-                  </Button>
-                ) : (
-                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>← Prev</Button>
-                )}
-                <span className="text-xs text-slate-500">{page} / {totalPages}</span>
-                {page < totalPages ? (
-                  <Button variant="outline" size="sm" className="h-8 text-xs" asChild>
-                    <Link href={`/admin/event-managers?page=${page + 1}`}>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Link>
-                  </Button>
-                ) : (
-                  <Button variant="outline" size="sm" className="h-8 text-xs" disabled>Next <ChevronRight className="h-3 w-3 ml-0.5" /></Button>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
+          <Pager page={page} pageSize={limit} total={total} href={(n) => `/admin/event-managers?page=${n}`} />
+        </section>
 
       </div>
     </div>

@@ -10,28 +10,28 @@ import { TicketTitle } from "@/components/indie/gold-poster";
 
 const STATUS_LABEL: Record<string, { text: string; color: string; bg: string }> = {
   REGISTRATION_OPEN:   { text: "Open",      color: "text-emerald-700", bg: "bg-emerald-100" },
-  EVENT_LIVE:          { text: "Live",       color: "text-blue-700",    bg: "bg-blue-100"    },
+  EVENT_LIVE:          { text: "Live",       color: "text-[#1c1812]",    bg: "bg-[#fde9a8]"    },
   COMPLETED:           { text: "Completed",  color: "text-slate-500",   bg: "bg-slate-100"   },
   CANCELLED:           { text: "Cancelled",  color: "text-red-700",     bg: "bg-red-100"     },
   REGISTRATION_CLOSED: { text: "Closed",     color: "text-amber-700",   bg: "bg-amber-100"   },
   TEMPORARILY_CLOSED:  { text: "Paused",     color: "text-orange-700",  bg: "bg-orange-100"  },
   DRAFT:               { text: "Draft",      color: "text-slate-500",   bg: "bg-slate-100"   },
-  UPCOMING:            { text: "Upcoming",   color: "text-sky-700",     bg: "bg-sky-100"     },
+  UPCOMING:            { text: "Upcoming",   color: "text-[#1c1812]",     bg: "bg-[#fde9a8]"     },
 };
 
 const STATUS_BORDER: Record<string, string> = {
   REGISTRATION_OPEN:   "border-l-emerald-500",
-  EVENT_LIVE:          "border-l-blue-500",
+  EVENT_LIVE:          "border-l-[#e9a11a]",
   COMPLETED:           "border-l-slate-300",
   CANCELLED:           "border-l-red-400",
   REGISTRATION_CLOSED: "border-l-amber-400",
   TEMPORARILY_CLOSED:  "border-l-orange-400",
   DRAFT:               "border-l-slate-200",
-  UPCOMING:            "border-l-sky-400",
+  UPCOMING:            "border-l-[#e9a11a]",
 };
 
 const QUICK_LINKS = [
-  { label: "Participants", icon: Users,        desc: "Registered participants", key: "participants", color: "bg-sky-600"     },
+  { label: "Participants", icon: Users,        desc: "Registered participants", key: "participants", color: "bg-[#0f6b63]"     },
   { label: "Teams",        icon: UsersRound,   desc: "Team rosters",            key: "teams",        color: "bg-[#c8421f]"  },
   { label: "Check-In",     icon: CheckSquare,  desc: "Mark attendance",         key: "checkin",      color: "bg-emerald-600" },
   { label: "Schedule",     icon: CalendarDays, desc: "Event timetable",         key: "schedule",     color: "bg-amber-500"   },
@@ -78,7 +78,7 @@ export default async function EventManagerPage() {
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
             <p className="text-xs text-slate-500 mb-0.5">Event Manager</p>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">My Events</TicketTitle>
@@ -95,7 +95,7 @@ export default async function EventManagerPage() {
         </div>
 
         {/* Stat cards */}
-        <div className="grid grid-cols-3 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="grid grid-cols-3 gap-3">
           <div className="bg-[#c8421f] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl p-4">
             <p className="text-xs font-medium text-orange-100 mb-3">Assigned events</p>
             <p className="text-4xl font-bold text-white tabular-nums leading-none">{assignedEvents.length}</p>
@@ -114,7 +114,7 @@ export default async function EventManagerPage() {
         </div>
 
         {/* Assigned events list */}
-        <div className="animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="">
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Assigned events</p>
           {assignedEvents.length === 0 ? (
             <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 py-12 text-center bg-white/60">
@@ -155,7 +155,7 @@ export default async function EventManagerPage() {
 
         {/* Quick access */}
         {assignedEvents.length > 0 && (
-          <div className="animate-slide-up" style={{ animationDelay: "0.14s" }}>
+          <div className="">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Quick access · {assignedEvents[0].name}</p>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               {QUICK_LINKS.map(({ label, icon: Icon, desc, key, color }) => (

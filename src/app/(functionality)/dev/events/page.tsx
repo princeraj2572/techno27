@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getUser } from "@/features/users/user-actions";
 import { getAllEventsAction } from "@/features/events/event-actions";
-import { ChevronLeft, CalendarDays, Plus } from "lucide-react";
+import { CalendarDays, Plus } from "lucide-react";
 import Link from "next/link";
 import QuickStatusToggle from "./QuickStatusToggle";
 
@@ -16,7 +16,7 @@ const STATUS_LABEL: Record<string, { text: string; color: string }> = {
   REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600"   },
   TEMPORARILY_CLOSED:  { text: "Paused",    color: "text-orange-500"  },
   DRAFT:               { text: "Draft",     color: "text-slate-500"   },
-  UPCOMING:            { text: "Upcoming",  color: "text-sky-600"     },
+  UPCOMING:            { text: "Upcoming",  color: "text-[#1c1812]"     },
 };
 
 const STATUS_BORDER: Record<string, string> = {
@@ -27,7 +27,7 @@ const STATUS_BORDER: Record<string, string> = {
   REGISTRATION_CLOSED: "border-l-amber-400",
   TEMPORARILY_CLOSED:  "border-l-orange-400",
   DRAFT:               "border-l-slate-200",
-  UPCOMING:            "border-l-sky-400",
+  UPCOMING:            "border-l-[#e9a11a]",
 };
 
 export default async function DevEventsPage() {
@@ -42,11 +42,8 @@ export default async function DevEventsPage() {
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-center justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-center justify-between">
           <div>
-            <Link href="/dev" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
-              <ChevronLeft className="h-3.5 w-3.5" /> Dev
-            </Link>
             <TicketTitle className="mb-2 text-3xl leading-[1.1] break-words sm:text-5xl">Events</TicketTitle>
             <p className="text-xs text-slate-500 mt-0.5">{events.length} event(s) total</p>
           </div>
@@ -65,13 +62,13 @@ export default async function DevEventsPage() {
         </div>
 
         {/* Events list */}
-        <div className="space-y-2 animate-slide-up" style={{ animationDelay: "0.06s" }}>
+        <div className="space-y-2">
           {events.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-slate-100 py-12 text-center">
               <CalendarDays className="h-8 w-8 mx-auto mb-3 text-slate-200" />
               <p className="text-sm font-medium text-slate-500">No events yet</p>
               <Link href="/dev/seed" className="text-xs text-[#0f6b63] hover:underline mt-1 block">
-                Seed dummy events →
+                Seed dummy events
               </Link>
             </div>
           ) : (
@@ -99,7 +96,7 @@ export default async function DevEventsPage() {
                   <span className={`text-xs font-medium shrink-0 ${label.color}`}>{label.text}</span>
                   <QuickStatusToggle eventId={event._id} currentStatus={event.status} currentUserId={userId} />
                   <Link href={`/dev/events/${event._id}`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium shrink-0">
-                    Manage →
+                    Manage
                   </Link>
                 </div>
               );

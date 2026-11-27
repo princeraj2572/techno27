@@ -20,7 +20,7 @@ const STATUS_LABEL: Record<string, { text: string; color: string; border: string
   REGISTRATION_CLOSED: { text: "Closed",    color: "text-amber-600",   border: "border-amber-400"   },
   TEMPORARILY_CLOSED:  { text: "Paused",    color: "text-orange-500",  border: "border-orange-400"  },
   DRAFT:               { text: "Draft",     color: "text-slate-500",   border: "border-slate-200"   },
-  UPCOMING:            { text: "Upcoming",  color: "text-sky-600",     border: "border-sky-400"     },
+  UPCOMING:            { text: "Upcoming",  color: "text-[#1c1812]",     border: "border-[#1c1812]/20"     },
 };
 
 const STATUS_ACTIONS: Array<{
@@ -165,7 +165,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-7">
 
         {/* Header */}
-        <div className="flex items-start justify-between animate-slide-up" style={{ animationDelay: "0s" }}>
+        <div className="flex items-start justify-between">
           <div>
             <Link href="/dev/events" className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-[#0f6b63] transition-colors mb-1">
               ← Events
@@ -179,10 +179,10 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-slide-up" style={{ animationDelay: "0.05s" }}>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: "Registered", value: event.registeredCount ?? 0,               bg: "bg-[#0f6b63]", label_c: "text-white/70", val_c: "text-white" },
-            { label: "Limit",      value: event.maxParticipants || "∞",             bg: "bg-sky-500",    label_c: "text-sky-100",    val_c: "text-white" },
+            { label: "Limit",      value: event.maxParticipants || "∞",             bg: "bg-[#0f6b63]",    label_c: "text-sky-100",    val_c: "text-white" },
             { label: "Remaining",  value: remaining !== null ? remaining : "∞",     bg: "bg-emerald-500",label_c: "text-emerald-100",val_c: "text-white" },
             { label: "Team size",  value: event.teamSize ?? 1,                      bg: "bg-[#c8421f]", label_c: "text-white/80", val_c: "text-white" },
           ].map((stat) => (
@@ -195,7 +195,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
 
         {/* Fill bar */}
         {(event.maxParticipants ?? 0) > 0 && (
-          <div className="flex items-center gap-3 animate-slide-up" style={{ animationDelay: "0.08s" }}>
+          <div className="flex items-center gap-3">
             <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all ${pct >= 90 ? "bg-red-400" : pct >= 60 ? "bg-amber-400" : "bg-[#0f6b63]"}`}
@@ -207,7 +207,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         )}
 
         {/* Status controls */}
-        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5">
           <p className="text-xs font-semibold text-slate-500 mb-4">Registration controls</p>
           <div className="flex flex-wrap gap-2">
             {STATUS_ACTIONS.map((action) => {
@@ -232,7 +232,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Fees & prize pool */}
-        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.13s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5">
           <div className="flex items-center justify-between mb-4">
             <p className="text-xs font-semibold text-slate-500">Fees &amp; prize pool</p>
             <button
@@ -288,7 +288,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Event Manager credentials */}
-        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5 animate-slide-up" style={{ animationDelay: "0.16s" }}>
+        <div className="bg-white border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] rounded-2xl px-5 py-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <UserCog className="h-4 w-4 text-[#0f6b63]" />
@@ -296,7 +296,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
             </div>
             {emData && emData !== "loading" && (
               <Link href={`/event-manager/${eventId}/participants`} className="text-xs text-[#0f6b63] hover:text-[#0f6b63] font-medium">
-                View participants →
+                View participants
               </Link>
             )}
           </div>

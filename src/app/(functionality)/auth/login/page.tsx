@@ -108,8 +108,8 @@ function LoginForm() {
         </form>
 
         <div className="mt-3 flex justify-between gap-3 text-xs font-bold sm:text-sm lg:mt-4 lg:text-base">
-          <Link href="/auth/forgot-password" className="text-[#0e5b57] underline underline-offset-4 hover:text-[#ef5a1c]">Forgot password?</Link>
-          <Link href="/auth/signup" className="text-[#ef5a1c] underline underline-offset-4 hover:text-[#0e5b57]">No ticket? Sign up</Link>
+          <Link href="/auth/forgot-password" className="text-[#0e5b57] underline underline-offset-4 hover:text-[#a33517]">Forgot password?</Link>
+          <Link href="/auth/signup" className="text-[#a33517] underline underline-offset-4 hover:text-[#0e5b57]">No ticket? Sign up</Link>
         </div>
       </AuthCard>
     </AuthShell>
