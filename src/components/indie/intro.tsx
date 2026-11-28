@@ -10,7 +10,7 @@ import { serif } from "@/components/indie";
 //   4.7–5.9s  the logo flies onto the hero's logo (identical lockup, so the hand-off is seamless), then dissolve
 // Smoothness: everything that moves a lot is a DOM layer animating only transform/opacity (blur is static, never
 // animated), so it runs on the compositor; the canvas only draws the light. Retro film finish on top.
-const SRC = "/audio/intro.mp4";
+const SRC = "/audio/intro.mp3"; // audio only (130 KB) so it starts at once; the old 3.9 MB video file lagged on phones
 const T = { bloom: 1.3, build: 1.8, peak: 3.45, fly: 4.7, flyDur: 1.2, fade: 6.0, end: 7.4 };
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
@@ -194,17 +194,28 @@ function measure(): Geo | null {
 
 const SEEN = "techno27-intro-seen";
 
+// Runs before first paint (server HTML), so a tab that has seen the intro never flashes the overlay.
+const SEEN_SCRIPT = `try{if(sessionStorage.getItem("${SEEN}")==="1")document.documentElement.dataset.introSeen="1"}catch(e){}`;
+
 export function Intro() {
-  // "check": plain black until we know whether this tab has already seen the intro
+  // "check": the loading screen (server-rendered) until the page's code is running
   const [phase, setPhase] = useState<"check" | "gate" | "play" | "out" | "gone">("check");
   const [geo, setGeo] = useState<Geo | null>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
+  const started = useRef(false);
 
   useEffect(() => {
     // once per tab session; reduced-motion users always skip it
     let seen = false;
     try { seen = sessionStorage.getItem(SEEN) === "1"; } catch { /* storage blocked: just show it */ }
-    setPhase(seen || window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "gone" : "gate");
+    if (seen || window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setPhase("gone"); return; }
+    setPhase("gate");
+    // Load the sound now and try to start it. Most browsers block sound until the first tap (then the
+    // Enter button starts it); where autoplay is allowed, the intro starts by itself.
+    let a: HTMLAudioElement | null = null;
+    try { a = audio = new Audio(SRC); a.preload = "auto"; a.volume = 0.9; a.play().then(enter, () => {}); } catch { /* no audio */ }
+    return () => { if (!started.current) a?.pause(); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount
   }, []);
 
   // lock scroll while the overlay is up
@@ -214,10 +225,15 @@ export function Intro() {
   }, [phase]);
 
   function enter() {
+    if (started.current) return; // the autoplay attempt and a tap can both land here
+    started.current = true;
     window.scrollTo(0, 0);
     try { sessionStorage.setItem(SEEN, "1"); } catch { /* fine, it may replay */ }
     setGeo(measure());
-    try { audio = new Audio(SRC); audio.volume = 0.9; void audio.play().catch(() => {}); } catch { /* no audio, still play visuals */ }
+    try {
+      if (!audio) { audio = new Audio(SRC); audio.volume = 0.9; }
+      if (audio.paused) void audio.play().catch(() => {}); // inside the tap, so the browser allows sound
+    } catch { /* no audio, still play visuals */ }
     setPhase("play");
   }
 
@@ -258,11 +274,12 @@ export function Intro() {
   const v = (o: Record<string, string | number>) => o as CSSProperties;
 
   return (
-    <div className={`intro-overlay fixed inset-0 z-[100] overflow-hidden bg-[#070504] ${phase === "out" ? "out" : ""}`} style={{ transition: "opacity 1.4s ease", opacity: phase === "out" ? 0 : 1, pointerEvents: phase === "out" ? "none" : "auto" }}>
-      {phase === "check" ? null : phase === "gate" ? (
-        <button onClick={enter} className="absolute inset-0 flex flex-col items-center justify-center gap-5 text-[#f1c36b]">
+    <div className={`intro-overlay fixed inset-0 z-[100] overflow-hidden bg-[#070504] ${phase === "out" ? "out" : ""} ${phase === "check" ? "intro-check" : ""}`} style={{ transition: "opacity 1.4s ease", opacity: phase === "out" ? 0 : 1, pointerEvents: phase === "out" ? "none" : "auto" }}>
+      {phase === "check" && <script dangerouslySetInnerHTML={{ __html: SEEN_SCRIPT }} />}
+      {phase === "check" || phase === "gate" ? (
+        <button onClick={enter} disabled={phase === "check"} className="absolute inset-0 flex flex-col items-center justify-center gap-5 text-[#f1c36b]">
           <span className={`text-4xl sm:text-6xl ${serif.className}`} style={{ backgroundImage: goldText, WebkitBackgroundClip: "text", color: "transparent" }}>Techno-aiMBiAtion &apos;27</span>
-          <span className="animate-pulse border border-[#f1c36b]/70 px-8 py-2 text-sm font-bold uppercase tracking-[0.4em]">Enter ♪</span>
+          <span className="animate-pulse border border-[#f1c36b]/70 px-8 py-2 text-sm font-bold uppercase tracking-[0.4em]">{phase === "check" ? "Loading…" : "Enter ♪"}</span>
         </button>
       ) : (
         <>
@@ -308,6 +325,12 @@ export function Intro() {
         </>
       )}
       <style>{`
+        /* seen this tab, or reduced motion: never show the server-rendered overlay */
+        html[data-intro-seen] .intro-check { display: none; }
+        @media (prefers-reduced-motion: reduce) { .intro-check { display: none; } }
+        /* safety net: if the page's code never starts (old browser, failed load), don't trap the visitor */
+        .intro-check { animation: intro-failsafe 0s 12s forwards; }
+        @keyframes intro-failsafe { to { visibility: hidden; pointer-events: none; } }
         /* logo slowly revealed: a widening circle, sharpening + settling as it opens */
         @keyframes intro-reveal { from { clip-path: circle(0% at 50% 50%); opacity: 0; scale: 1.08; filter: brightness(2.2) blur(6px); } 40% { opacity: 1; } to { clip-path: circle(75% at 50% 50%); opacity: 1; scale: 1; filter: none; } }
 

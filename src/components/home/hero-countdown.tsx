@@ -10,7 +10,7 @@ function parts(ms: number) {
 }
 const pad = (n: number) => String(n).padStart(2, "0");
 
-// Countdown in an ornate teal frame (cusped top, pink + gold rings). Sized in em off the wrapper's font-size.
+// Compact countdown strip: days to go, a live clock and the fest dates. Sized in em off the wrapper's font-size.
 export function HeroCountdown({ to }: { to: string }) {
   const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0 });
   useEffect(() => {
@@ -24,21 +24,21 @@ export function HeroCountdown({ to }: { to: string }) {
   return (
     <div
       role="timer"
-      aria-label="Time until the fest starts"
-      className="relative w-[19em] border-[.3em] border-[#ff2d8a] bg-[#0e5b57] px-[1.4em] pb-[1.2em] pt-[2.2em] text-center"
-      style={{ borderRadius: "9.5em 9.5em .8em .8em", boxShadow: "inset 0 0 0 .25em #f5c928, inset 0 0 0 .45em #0e5b57, inset 0 0 0 .55em #ff8a00, .35em .45em 0 #1c1812" }}
+      aria-label={`${t.d} days to go. Fest on 16 to 18 February 2027`}
+      className={`inline-flex flex-wrap items-center justify-center gap-x-[.9em] gap-y-[.3em] rounded-[1.2em] border-[.2em] border-[#1c1812] bg-[#0e5b57] px-[1.1em] py-[.45em] text-[#f3e8cf] ${sans.className}`}
+      style={{ boxShadow: "inset 0 0 0 .15em #f5c928, 0 .3em 0 #1c1812" }}
     >
-      <div
-        className={`hi-slam leading-none text-[#f5c928] ${display.className}`}
-        style={{ ["--d" as string]: 0.5, fontSize: "6.5em", textShadow: ".04em .04em 0 #ff2d8a, .08em .08em 0 #1c1812", WebkitTextStroke: ".012em #1c1812" }}
-      >
-        {t.d}
-      </div>
-      <p className={`mt-[.3em] text-[1.35em] font-extrabold uppercase tracking-wide text-[#f3e8cf] ${sans.className}`}>Days to go</p>
-      <div className={`hi-rise mx-auto mt-[.6em] w-fit whitespace-nowrap border-[.12em] border-[#f5c928] bg-[#1c1812] px-[.7em] py-[.25em] text-[1.7em] font-bold text-[#f3e8cf] ${mono.className}`} style={{ ["--d" as string]: 0.9 }}>
+      <span className="flex items-baseline gap-[.35em]">
+        <span className={`hi-slam text-[2.1em] leading-none text-[#f5c928] ${display.className}`} style={{ ["--d" as string]: 0.5, textShadow: ".05em .05em 0 #ff2d8a" }}>{t.d}</span>
+        <span className="text-[.95em] font-extrabold uppercase tracking-wide">days to go</span>
+      </span>
+      <span aria-hidden className="h-[1.4em] w-[.12em] bg-[#f5c928]/60" />
+      <span className={`text-[1.05em] font-bold tabular-nums ${mono.className}`}>
         {pad(t.h)}<small>h</small> {pad(t.m)}<small>m</small> {pad(t.s)}<small>s</small>
-      </div>
-      <p className={`mt-[.8em] text-[1.05em] font-extrabold uppercase tracking-[.08em] text-[#f5c928] ${sans.className}`}>18 – 20 February 2027</p>
+      </span>
+      {/* on narrow phones the date wraps to its own line, so drop the divider before it */}
+      <span aria-hidden className="hidden h-[1.4em] w-[.12em] bg-[#f5c928]/60 min-[420px]:block" />
+      <span className="text-[.95em] font-extrabold uppercase tracking-[.06em] text-[#f5c928]">16 – 18 Feb 2027</span>
     </div>
   );
 }

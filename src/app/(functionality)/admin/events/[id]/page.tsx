@@ -99,7 +99,7 @@ export default async function AdminEventDetailPage({
             ["Team size", maxTeam > 1 ? `Up to ${maxTeam}` : "Solo"],
             ["OPJU fee", `₹${event.internalFee ?? 0}`],
             ["External fee", `₹${event.externalFee ?? 0}`],
-            ["Prize", event.prizeMoney ? `₹${event.prizeMoney}` : "To be announced"],
+            ["Prize", event.prizeMoney ? `₹${event.prizeMoney.toLocaleString("en-IN")}` : "To be announced"],
           ].map(([k, v]) => (
             <div key={k}>
               <dt className="text-xs font-bold uppercase tracking-wider text-black/55">{k}</dt>

@@ -178,7 +178,7 @@ export function RevealPopup() {
 
       <Marquee
         className="relative bg-[#ff6a00] py-1.5 text-lg font-bold uppercase tracking-wider text-black"
-        text="Save the date ✦ 20 Nov website reveal ✦ 18–20 Feb 2027 fest ✦ "
+        text="Save the date ✦ 20 Nov website reveal ✦ 16–18 Feb 2027 fest ✦ "
       />
     </div>
   );

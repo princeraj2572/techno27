@@ -140,7 +140,7 @@ export default async function EventManagerPage() {
                           event.category,
                           event.teamSize && `Team: ${event.teamSize}`,
                           event.maxParticipants && `Limit: ${event.maxParticipants}`,
-                          event.prizeMoney && `Prize: ₹${event.prizeMoney}`,
+                          event.prizeMoney && `Prize: ₹${event.prizeMoney.toLocaleString("en-IN")}`,
                         ].filter(Boolean).join(" · ")}
                       </p>
                     </div>

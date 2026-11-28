@@ -10,13 +10,14 @@ export const voiceOfYouth: EventData = {
 
   // ---- details ----
   tagline: "Speak up, be heard.",
-  about: "Step into the intellectual battlefield of Tarkash, where logic meets leadership and arguments shape innovation. Debate current business trends, corporate ethics, financial strategy, socio-political matters and current events, and win by thinking critically and countering strategically.",
+  // Copied exactly from the event's official document.
+  about: "Step into the intellectual battlefield of tarkash, where logic meets leadership, and arguments shape innovation. This high-energy debate competition is designed for aspiring managers, entrepreneurs, and business enthusiasts as well as others to challenge conventional wisdom and present ground breaking perspectives.\n\nParticipants will engage in thought-provoking debates on current business trends, corporate ethics, financial strategies, and emerging market dynamics, Socio political matters and also current happening. Whether you're defending or opposing, your ability to think critically, articulate persuasively, and counter strategically will determine your victory.",
   date: "Feb 16–17, 2027",
-  time: "To be announced",
-  venue: "To be announced",
+  time: "Day 1 12:00 PM · Finale 10:30 AM",
+  venue: "MP Hall",
   teamSize: "2–4 members per side",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹199 per team for external",
+  prize: "₹15,000",
   rules: [
     "Two sides: Proposition (supports the motion) and Opposition (opposes it).",
     "Round 1: 5–8 min speeches with 3 min rebuttals. Semi-final: 8–10 min with 5 min rebuttals. Final: 8–15 min with 8 min rebuttals. Overrunning may be penalised.",
@@ -34,6 +35,12 @@ export const voiceOfYouth: EventData = {
     "Semi-Final",
     "Final",
   ],
+  // Wording copied exactly from the event's official document; " · " separates its bullet points.
+  subEventInfo: {
+    "Round 1": "Each speaker gets a fixed time limit (e.g., 5–8 minutes per speech). · Rebuttal speeches (3 Min). · Exceeding the time limit may result in penalties.",
+    "Semi-Final": "Each speaker gets a fixed time limit (e.g., 8–10 minutes per speech). · Rebuttal speeches (5 Min).",
+    "Final": "Each speaker gets a fixed time limit (e.g., 8–15 minutes per speech). · Rebuttal speeches (8 Min).",
+  },
 
   // ---- look ----
   theme: {

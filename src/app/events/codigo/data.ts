@@ -10,13 +10,14 @@ export const codigo: EventData = {
 
   // ---- details ----
   tagline: "Code. Compete. Conquer.",
-  about: "Unlock your coding potential at OPJU's premier coding event. Take on challenges, meet peers and sharpen your skills, whether you are a beginner or a pro. Theme: Dream your fantasy, code it into reality!",
-  date: "To be announced",
-  time: "To be announced",
-  venue: "To be announced",
+  // Copied exactly from the event's official document.
+  about: "Unlock your coding potential at our university’s premier Coding Event!! Participate in challenges, network with peers, and enhance your skills. Whether you are a beginner or a pro, join us for an unforgettable experience of innovation and collaboration.",
+  date: "Feb 16–17, 2027",
+  time: "11:00 AM",
+  venue: "TB-09",
   teamSize: "To be announced",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹99 for external (individual)",
+  prize: "₹20,000",
   rules: [
     "Event: Coding Challenge (Code & Conquer).",
     "Round 1, Coding Quiz (qualifying, 40 min): 30 MCQs including output-based and error-finding questions.",
@@ -31,6 +32,10 @@ export const codigo: EventData = {
   subEvents: [
     "Coding Challenge (Code & Conquer)",
   ],
+  // Wording copied exactly from the event's official document; " · " separates its bullet points.
+  subEventInfo: {
+    "Coding Challenge (Code & Conquer)": "Round 1: Coding Quiz (Qualifying Round) · Duration:40 minutes · 30 MCQ Questions · Output-Based Question · Error- Finding Question · Round 2: Real Coding Challenge (Final round) · Duration:60-90 minutes · Total 5 Coding Problems · 1 Easy Coding Problem · 2 Medium Coding Problems · 2 Slightly Hard Coding Problems",
+  },
 
   // ---- look ----
   theme: {

@@ -6,8 +6,10 @@
 // at most 7 different fest events, and sub-events of the same fest event count once (see event-actions.ts).
 //
 // All start as UPCOMING (registration not open). Open them from Developer -> Events when dates are fixed.
-// Prize money is 0 until announced. teamSize = maximum members per team.
+// prizeMoney = the fest event's whole prize pool (from its page; 0 while "To be announced"), shared by its competitions.
+// teamSize = maximum members per team.
 import { ALL_EVENTS } from "@/features/events/data/all-events";
+import { SOLO_FEE_1, TEAM_FEE } from "@/features/payments/payment-constants";
 
 /** An external participant may join at most this many different fest events (sub-events of one fest event count once). */
 export const MAX_EXTERNAL_EVENTS = 7;
@@ -73,11 +75,8 @@ const SINGLE_TEAM_SIZE: Record<string, number> = {
   "retail-sale-visual-merchandise": 4,
 };
 
-// "Free for OPJU · ₹199 for external" -> 0 / 199; "₹100 per team" -> 100 / 100.
-function fees(fee: string) {
-  const ext = Number(/₹\s*([\d,]+)/.exec(fee)?.[1]?.replace(/,/g, "") ?? 0);
-  return { internalFee: /free for opju/i.test(fee) ? 0 : ext, externalFee: ext };
-}
+// OPJU students enter free; externals pay per registration by team size (see payment-constants.ts).
+const fees = (teamSize: number) => ({ internalFee: 0, externalFee: teamSize === 1 ? SOLO_FEE_1 : TEAM_FEE });
 
 const slugify = (s: string) => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
@@ -90,15 +89,14 @@ export const seedEvents = ALL_EVENTS.flatMap((e) => {
     schedule: `${e.date} · ${e.time}`,
     status: "UPCOMING" as const,
     accommodationFee: 0,
-    prizeMoney: 0,
+    prizeMoney: Number(e.prize.replace(/[^\d]/g, "")) || 0,
     mainEvent: e.slug,
-    ...fees(e.fee),
   };
   const comps = COMPETITIONS[e.slug];
   if (!comps) {
     const teamSize = SINGLE_TEAM_SIZE[e.slug];
     if (!teamSize) throw new Error(`seed-events: no team size for "${e.slug}"`);
-    return [{ ...base, slug: e.slug, name: e.name, description: `${e.tagline} ${e.about}`, teamSize }];
+    return [{ ...base, slug: e.slug, name: e.name, description: `${e.tagline} ${e.about}`, teamSize, ...fees(teamSize) }];
   }
   return comps.map((c) => ({
     ...base,
@@ -106,5 +104,6 @@ export const seedEvents = ALL_EVENTS.flatMap((e) => {
     name: `${e.name}: ${c.name}`,
     description: `Part of ${e.name}. ${e.tagline} ${e.about}`,
     teamSize: c.teamSize,
+    ...fees(c.teamSize),
   }));
 });

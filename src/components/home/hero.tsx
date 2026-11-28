@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Marquee } from "@/components/indie";
-// import { FEST_START } from "@/data/dummy";
+import { FEST_START } from "@/data/dummy";
 import { Sparkle, Star } from "./hero-art";
-// import { HeroCountdown } from "./hero-countdown";
+import { HeroCountdown } from "./hero-countdown";
 import { sans } from "./fonts";
 
 const NOISE = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E\")";
@@ -52,11 +52,10 @@ export function Hero() {
           <Link href="/events" className={`${pill} text-[#f3e8cf]`} style={{ background: "linear-gradient(180deg,#178f8c,#0e5b57)", boxShadow: pillShadow }}>Browse events</Link>
         </div>
 
-        {/* countdown parked for now
-        <div className="hero-in mt-10" style={{ ...delay(4), fontSize: "clamp(9px, min(.95vw, 1.75vh), 19px)" }}>
+        {/* countdown to the fest, with the dates under it */}
+        <div className="hero-in mt-7" style={{ ...delay(4), fontSize: "clamp(12px, min(1.05vw, 2vh), 19px)" }}>
           <HeroCountdown to={FEST_START} />
         </div>
-        */}
       </div>
 
       {/* corner doodles */}

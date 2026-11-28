@@ -14,10 +14,9 @@ export interface JunoonNight {
   desc: string;
 }
 
+// One celebrity night (official schedule). The artist stays "Revealing soon" until announced.
 export const JUNOON_NIGHTS: JunoonNight[] = [
-  { n: "01", title: "Opening Night", artist: "The Midnight Ragas", genre: "Indie fusion band", date: "Thu, Feb 18, 2027", time: "7:30 PM", venue: "Main Ground", desc: "Live indie fusion to kick off the fest under the lights." },
-  { n: "02", title: "Beats & Bass", artist: "DJ Nova", genre: "Electronic · live set", date: "Fri, Feb 19, 2027", time: "8:00 PM", venue: "Main Ground", desc: "A high-energy electronic set that turns the campus into a dance floor." },
-  { n: "03", title: "Closing Night", artist: "Echo & The Monsoon", genre: "Rock · live band", date: "Sat, Feb 20, 2027", time: "7:00 PM", venue: "Main Ground", desc: "A grand rock finale to close the festival with a roar." },
+  { n: "01", title: "Celebrity Night", artist: "Revealing soon", genre: "Live", date: "Thu, Feb 18, 2027", time: "8:00 PM", venue: "University Playground", desc: "One night, one stage: a celebrity live show to close the fest." },
 ];
 
 export interface Sponsor {
@@ -311,7 +310,7 @@ export const EVENT_MEDIA: Record<string, EventMedia> = Object.fromEntries(ALL_EV
 
 export const EVENTS_BANNER: string | undefined = "/images/banners/events.jpg"; // e.g. "/images/events-banner.jpg", ~1600 x 600
 export const REVEAL_DATE = "2026-11-20T00:00:00+05:30";
-export const FEST_START = "2027-02-18T09:00:00+05:30";
+export const FEST_START = "2027-02-16T10:00:00+05:30";
 
 export const EVENT_STEPS = [
   { n: "01", title: "Browse", text: "Filter by category or search to find the events that fit you." },

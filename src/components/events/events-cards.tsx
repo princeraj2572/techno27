@@ -91,7 +91,7 @@ export function EventsCards({ events, initial = "All" }: { events: EventCard[]; 
               className="indie-pop group block"
               style={{ animationDelay: `${Math.min(i, 8) * 60}ms` }}
             >
-              <Stamp slug={e.slug} name={e.name} category={e.category} number={e.number} image={e.image} />
+              <Stamp slug={e.slug} name={e.name} category={e.category} number={e.number} image={e.image} prize={e.prize} />
 
               {/* caption */}
               <div className="mt-5 flex items-start gap-3 text-[#f5edd8]">

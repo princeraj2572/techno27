@@ -10,13 +10,14 @@ export const retailSaleVisualMerchandise: EventData = {
 
   // ---- details ----
   tagline: "Display it. Sell it.",
-  about: "Retail Sales and Visual Merchandising, theme “Local to Global”, is a hands-on competition aligned with IndiaSkills Retail Sales (Skill 55) and Visual Merchandising (Skill 59). Teams turn a 2 m × 2 m space into a retail outlet, plan the layout, display products, engage customers and handle sales.",
-  date: "To be announced",
-  time: "To be announced",
-  venue: "To be announced",
+  // Copied exactly from the event's official document.
+  about: "Retail Sales and Visual Merchandising is a practical, skill-based competition designed to provide students with hands-on exposure to the functioning of a retail business. Aligned with the IndiaSkills occupational skill domains of Retail Sales (Skill 55) and Visual Merchandising (Skill 59), the competition aims to assess participants' abilities in retail store planning, product presentation, customer engagement, selling techniques and basic retail operations.\n\nUnder the theme \"Local to Global,\" participating teams will transform designated spaces into attractive and functional retail outlets. They will be required to plan their store layout, arrange and display products, develop appropriate signage, interact with customers, handle sales transactions and maintain accurate sales records.\n\nThe competition will simulate a real-world retail environment, enabling participants to demonstrate their creativity, commercial understanding, communication skills and practical retail management capabilities.",
+  date: "Feb 16, 2027",
+  time: "11:30 AM",
+  venue: "Lawn opposite ATM",
   teamSize: "Teams (one 2 m × 2 m stall each)",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹199 per team for external",
+  prize: "₹10,000",
   rules: [
     "Three rounds: Store Plan (online), Build (on campus), and Retail Trading with Mystery Shopping (live).",
     "Products: handmade or art & craft items, Waste to Wow products, local handicrafts, or sponsored shop products. No food.",
@@ -35,6 +36,12 @@ export const retailSaleVisualMerchandise: EventData = {
     "Round 2: Build",
     "Round 3: Retail Trading",
   ],
+  // Wording copied exactly from the event's official document; " · " separates its bullet points.
+  subEventInfo: {
+    "Round 1: Store Plan": "Mode: Online · Teams must submit a product list with proposed prices and a planogram illustrating the stall layout, including the focal display, product placement, signage and billing counter. The proposed layout will serve as the reference for evaluating the actual store setup.",
+    "Round 2: Build": "Mode: On-campus · Teams must transform their allotted 2 m × 2 m stall into an attractive and functional retail outlet by arranging products, creating focal displays, designing signage and organising the billing area.",
+    "Round 3: Retail Trading": "Mode: Live Retail Simulation · Teams will operate their stalls and engage with visitors through live selling activities, demonstrating product knowledge, customer handling, promotional communication and sales skills.",
+  },
 
   // ---- look ----
   theme: {

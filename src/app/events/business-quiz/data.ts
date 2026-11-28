@@ -10,13 +10,14 @@ export const businessQuiz: EventData = {
 
   // ---- details ----
   tagline: "Think like a manager.",
-  about: "Mind_Matrix is the Business Quiz of Techno-aiMBiAtion 2027, organised by the School of Management. It tests general knowledge across mathematics aptitude, economics & business and current affairs. Think beyond. Respond smart. Rise above!",
-  date: "To be announced",
-  time: "To be announced",
-  venue: "To be announced",
+  // Copied exactly from the event's official document.
+  about: "Mind_Matrix is an experience that tests brains where curiosity meets competition. Designed to challenge participants across diverse domains, the event will test their awareness of general knowledge spanning from mathematics aptitude, economics & business, and current affairs.",
+  date: "Feb 18, 2027",
+  time: "10:00 AM",
+  venue: "MP Hall",
   teamSize: "2–4 members",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹199 per team for external",
+  prize: "₹10,000",
   rules: [
     "Two rounds: an objective-type elimination round, then a final with Rapid Fire, Buzzer Round and Audio-Visual.",
     "Open from Class 10 and above. Round 1 questions cover Class 10–12 level.",
@@ -32,6 +33,11 @@ export const businessQuiz: EventData = {
     "Elimination Round",
     "Final: Rapid Fire, Buzzer & Audio-Visual",
   ],
+  // Wording copied exactly from the event's official document; " · " separates its bullet points.
+  subEventInfo: {
+    "Elimination Round": "This will be an elimination round! Participants will be able to play this round and will get eliminated on the basis of their scores.",
+    "Final: Rapid Fire, Buzzer & Audio-Visual": "This will be a final round! It will be conducted at OPJU, Raigarh campus. There will be a final round which consists of Rapid fire, Buzzer Round and Audio Visual.",
+  },
 
   // ---- look ----
   theme: {

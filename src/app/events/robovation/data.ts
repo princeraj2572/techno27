@@ -11,12 +11,12 @@ export const robovation: EventData = {
   // ---- details ----
   tagline: "Machines, meet your match.",
   about: "Drobotics 2027 is OPJU's robotics and drone competition. Build the machine, pass inspection and take on the arena across six events, from Robo Soccer to AeroDrift. Teams bring their own robot, controller and batteries.",
-  date: "To be announced",
-  time: "To be announced",
-  venue: "To be announced",
+  date: "Feb 16–18, 2027",
+  time: "From 9:30 AM (see schedule)",
+  venue: "Babuji Chowk & beside Volleyball Ground",
   teamSize: "Up to 4 members",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹199 per team for external",
+  prize: "₹60,000",
   rules: [
     "Teams of up to 4 (one or more institutes), each with a college ID. One robot per team per event.",
     "Report to the event area 30 minutes before your slot. Bring your own robot, controller, batteries and a spare battery.",
@@ -41,6 +41,15 @@ export const robovation: EventData = {
     "Autonomous Line Follower",
     "AeroDrift: The Sky Chaser",
   ],
+  // Wording copied exactly from the event's official document; " · " separates its bullet points.
+  subEventInfo: {
+    "Robo Soccer": "Teams operate a specially designed robot to chase, push or hit a ball around the arena and score more goals than the opposing team. The event tests robot flipping, kicking, maneuvering and control skills, while encouraging teamwork and practical engineering.",
+    "Robo Race": "Teams design a wireless or Bluetooth-controlled robot that can be driven through turns and obstacles on the track. The fastest robot that completes the specified course, subject to the event rules and checkpoint evaluation, is the winner.",
+    "Pick & Place Challenge": "The Pick-and-Place Challenge is a robot systems integration event in which participants must design and operate a robot capable of picking up, transporting, and placing objects into their respective colour-designated zones.",
+    "Robo War": "Robo War is a robotic combat challenge in which teams design, build and operate a robot to push, throw, flip, hit, drag or otherwise move the opponent out of the battle ring. The event tests engineering design, driving ability and team coordination.",
+    "Autonomous Line Follower": "Autonomous Line Follower challenges teams to run a robot through a defined track, clear checkpoints, autonomously pick up a cube, release it inside the delivery box, and reach the finish zone.",
+    "AeroDrift: The Sky Chaser": "AeroDrift is a drone flying competition where participants must fly their drones through multiple obstacles within a given time limit. The winner is determined by points scored & successful completion of the obstacle course.",
+  },
 
   // ---- look ----
   theme: {

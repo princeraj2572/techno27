@@ -10,12 +10,13 @@ export const gameParadise: EventData = {
 
   // ---- details ----
   tagline: "Play online. Play to win.",
-  about: "Game Paradise is an online gaming event with two titles, BGMI and Free Fire MAX. Squads compete in custom rooms through qualifiers, semi-finals and a Grand Final, scored on placement and eliminations.",
+  // Copied exactly from the event's official document.
+  about: "Game Paradise is an online gaming event designed to bring together passionate gamers and create an exciting atmosphere of competition, teamwork, and entertainment. Featuring two popular games, BGMI: Multiplayer Gun Games and Free Fire MAX: Storm Arena, the event will give participants a chance to showcase their gaming skills, team coordination, strategic thinking, and quick reflexes. Teams will compete against each other, putting their skills and strategies to the test. Get ready for an action-packed experience where teamwork makes the difference and every move counts!",
   date: "Feb 16–17, 2027",
   time: "To be announced",
   venue: "To be announced",
   teamSize: "4 players per team",
-  fee: "Free for OPJU · ₹199 for external",
+  fee: "Free for OPJU · ₹199 per team for external",
   prize: "To be announced",
   rules: [
     "Only students of a recognised school, college or university can play. Carry a valid student ID.",

@@ -10,13 +10,14 @@ export const beatBattle: EventData = {
 
   // ---- details ----
   tagline: "Let the beats decide.",
-  about: "A high-energy dance battle where the floor is the battlefield. Dancers from diverse styles face off head to head, trading footwork, musicality and fearless improvisation. The crowd picks the matchups, and the judges watch for originality and control.",
-  date: "To be announced",
-  time: "To be announced",
-  venue: "To be announced",
+  // Copied exactly from the event's official document.
+  about: "Step into a high-energy clash of rhythm, creativity, and raw talent at our Dance Battle Event—where the floor becomes the battlefield and movement is the weapon. Dancers from diverse styles face off in head-to-head rounds, trading explosive footwork, sharp musicality, and fearless improvisation. The crowd fuels the momentum, judges watch for originality and control, and every beat drop is a chance to make a statement.",
+  date: "Feb 17, 2027",
+  time: "2:30 PM",
+  venue: "Babuji Chowk",
   teamSize: "Solo",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹99 for external (individual)",
+  prize: "₹10,000",
   rules: [
     "Only students enrolled in a recognised school, college or university can enter. Private dance academy or class participants are not allowed.",
     "A valid student I-card is mandatory and will be verified. Fake IDs mean immediate disqualification.",
@@ -35,6 +36,14 @@ export const beatBattle: EventData = {
     "Semi-Finals (Top 4)",
     "Finals (Top 2)",
   ],
+  // Wording copied exactly from the event's official document; " · " separates its bullet points.
+  subEventInfo: {
+    "Prelims (Top 16)": "Format: All participants perform a single solo set. · Time: 45 seconds per dancer. · Music: One randomly selected song played by the DJ. · Outcome: Judges select the Top 16 dancers to advance.",
+    "Top 16 (1 vs 1)": "Format: Head-to-head battles; matchups are selected by the community. · Time: 45 seconds per dancer. · Music: Both dancers perform to the same randomly played song. · Outcome: Winners advance to the Top 8.",
+    "Top 8 (1 vs 1)": "Format: Head-to-head battles; matchups are selected by the community. · Time: 45 seconds per dancer. · Music: Both dancers perform to the same randomly played song. · Outcome: Winners advance to the Semi-Finals.",
+    "Semi-Finals (Top 4)": "Format: 1 vs 1 battles; matchups are selected by the community. · Rounds: Each dancer performs two rounds. · Time: 45 seconds per round. · Music: Two different songs randomly played by the DJ. · Outcome: Winners advance to the Finals.",
+    "Finals (Top 2)": "Format: 1 vs 1 face-off; matchup chosen by the community. · Rounds: Each dancer performs two rounds. · Time: 1 minute per round. · Music: Two different songs randomly played by the DJ. · Outcome: The winner is crowned Event Champion; the other is named Runner-Up.",
+  },
 
   // ---- look ----
   theme: {

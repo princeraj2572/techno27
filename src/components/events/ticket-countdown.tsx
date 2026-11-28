@@ -50,7 +50,7 @@ export function TicketCountdown({ to }: { to: string }) {
         </p>
       </div>
 
-      <p className={`mt-4 text-base font-bold uppercase tracking-[0.3em] text-[#f5edd8] sm:text-lg ${display.className}`}>18 – 20 February 2027</p>
+      <p className={`mt-4 text-base font-bold uppercase tracking-[0.3em] text-[#f5edd8] sm:text-lg ${display.className}`}>16 – 18 February 2027</p>
       <Link
         href="/auth/signup"
         className="mt-3 inline-block border-2 border-black bg-[#f5edd8] px-6 py-2 text-sm font-bold uppercase tracking-widest text-black shadow-[4px_4px_0_0_#000] transition hover:-translate-y-0.5 hover:bg-[#ff6a00]"

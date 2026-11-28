@@ -10,13 +10,14 @@ export const riwayatFashionShow: EventData = {
 
   // ---- details ----
   tagline: "Tradition on the runway.",
-  about: "Riwayat 3.0 is the grand fashion show celebrating style, elegance, culture and creativity. Indian tradition meets contemporary trends on a runway where imagination meets expression and confidence takes centre stage.",
-  date: "To be announced",
-  time: "To be announced",
-  venue: "To be announced",
+  // Copied exactly from the event's official document.
+  about: "RIWAYAT 2026 is a spectacular celebration of fashion, style, elegance and creativity, providing a vibrant platform for students to express their individuality, artistic vision and confidence through fashion.\n\nThe event celebrates the beauty of Indian traditions blended with contemporary fashion trends. It aims to bring together creativity, cultural heritage, innovation and self-expression through an exciting runway experience.\n\nRIWAYAT is more than just a fashion show; it is a platform where imagination meets expression, tradition meets modernity, and confidence takes centre stage.",
+  date: "Feb 16, 2027",
+  time: "7:00 PM",
+  venue: "University Playground",
   teamSize: "Open to students of all institutions",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹99 for external (individual)",
+  prize: "₹25,000",
   rules: [
     "Open to students from universities, colleges and other educational institutions.",
     "Categories: Fashion Technology, Hairdressing & Makeup Artistry, and the Riwayat Grand Finale.",
@@ -33,6 +34,12 @@ export const riwayatFashionShow: EventData = {
     "Hairdressing & Makeup Artistry",
     "Riwayat Grand Finale",
   ],
+  // Wording copied exactly from the event's official document; " · " separates its bullet points.
+  subEventInfo: {
+    "Fashion Technology": "Fashion illustration and design · Pattern making and garment construction · Fabric innovation · Sustainable fashion · Fashion runway presentation",
+    "Hairdressing & Makeup Artistry": "Bridal and occasion makeup · Creative hairstyling · Contemporary and traditional looks · Fashion makeup",
+    "Riwayat Grand Finale": "Fashion ramp walk · Complete styling and makeover · Best designer outfit · Best makeup and hairstyling · Best overall presentation",
+  },
 
   // ---- look ----
   theme: {
