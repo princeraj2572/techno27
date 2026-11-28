@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { seedEvents } from "@/features/events/data/seed-events";
 import { ArrowRight, IndianRupee, LayoutGrid, Medal, Ticket } from "lucide-react";
 import { PUBLIC_EVENTS } from "@/features/events/data/public-events";
+import { ALL_EVENTS } from "@/features/events/data/all-events";
 import { SCHEDULE } from "@/data/schedule";
 // import { RevealPopup } from "@/components/indie/reveal-popup";
 import { EVENT_MEDIA, GALLERY, JUNOON_NIGHTS, TESTIMONIALS } from "@/data/dummy";
@@ -16,11 +18,19 @@ import {
   Band, BlockButton, Marquee, Note, PageShell, Vinyl, display, serif, MandalaSpin, blockHindi,
 } from "@/components/indie";
 
+// Prize pools straight from the event pages ("To be announced" counts as 0).
+const PRIZES = ALL_EVENTS.map((e) => Number(e.prize.replace(/[^\d]/g, "")) || 0).filter(Boolean);
+const rupees = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+
 const NOTES = [
-  { tag: "Open", date: "Registrations", title: "Registrations are open", text: "Sign up with your OPJU email for free entry, or as an external participant with a TRX27 ID." },
-  { tag: "Teams", date: "Dashboard", title: "Build your team", text: "Invite members from your dashboard and track who has accepted before the deadline." },
-  { tag: "Stay", date: "Accommodation", title: "Need a place to stay?", text: "Apply for accommodation from your dashboard once you have registered for an event." },
+  { tag: "New", date: "16–18 Feb 2027", title: "The schedule is out", text: "All three days, with every event's time and venue, are on the schedule page." },
+  { tag: "Prizes", date: `${PRIZES.length} events`, title: `${rupees(PRIZES.reduce((a, b) => a + b, 0))} prize pool`, text: `Every event page now shows its prize pool, from ${rupees(Math.min(...PRIZES))} to ${rupees(Math.max(...PRIZES))}.` },
+  { tag: "Soon", date: "Registrations", title: "Registrations open soon", text: "Sign up now with your OPJU email (free) or as an external participant, then pick your events when registration opens." },
 ];
+
+// Competitions you can register for inside a fest event (0 = it is a single event).
+const competitionsOf = (slug: string) => seedEvents.filter((x) => x.mainEvent === slug && x.slug !== slug).length;
+const time12 = (t: string) => { const [h, m] = t.split(":").map(Number); return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
 
 // The posters (Crystal Jubilee, Coming soon, We are ready) read badly when small, so the strip shows live photos only.
 const FLASHBACK = GALLERY.filter((g) => g.image && g.tag !== "Fest" && g.caption !== "We are ready" && g.caption !== "Convenors sign off");
@@ -64,14 +74,17 @@ function ActColumn({ count, dir }: { count: number; dir: "up" | "down" }) {
 }
 
 export default function HomePage() {
-  // Every number here is derived from the real event list; prizes stay "TBA" until the event data has them.
-  const totalSub = PUBLIC_EVENTS.reduce((n, e) => n + e.subEvents.length, 0);
+  // Every number here is derived from the real event list; events whose prize is still "To be announced" count as 0.
+  const totalPrize = ALL_EVENTS.reduce((n, e) => n + (parseInt(e.prize.replace(/[^\d]/g, ""), 10) || 0), 0);
+  // competitions = everything you can register for: sub-events (Tech-Lab, Drobotics, Kalakriti…) plus
+  // standalone events (Codigo, Ideathon…); rounds and problem statements are not counted
+  const totalSub = seedEvents.length;
   const categories = new Set(PUBLIC_EVENTS.map((e) => e.category)).size;
   const stats: { to?: number; text?: string; label: string }[] = [
     { to: PUBLIC_EVENTS.length, label: "Flagship events" },
     { to: totalSub, label: "Competitions" },
     { to: categories, label: "Categories" },
-    { text: "TBA", label: "Prize pool" },
+    { text: totalPrize ? `₹${(totalPrize / 100000).toFixed(2)}L` : "TBA", label: "Prize pool" },
   ];
   const nextUp = SCHEDULE[0].items.slice(0, 4);
 
@@ -129,14 +142,15 @@ export default function HomePage() {
               <p className="inline-block border border-[#f5c928]/60 px-3 py-0.5 text-xs font-bold uppercase tracking-[0.35em] text-[#f5c928]">After dark</p>
               <h2 className="mt-4 text-6xl sm:text-8xl font-bold uppercase leading-none text-[#f5edd8]">Junoon &apos;27</h2>
               <p className="mt-2 text-2xl sm:text-4xl font-bold uppercase">
-                The nights that <span className="text-[#f5c928]">light up</span> the campus
+                The night that <span className="text-[#f5c928]">lights up</span> the campus
               </p>
-              <div className="mt-6 grid grid-cols-3 gap-3">
+              <div className="mt-6 grid gap-3">
                 {JUNOON_NIGHTS.map((n) => (
                   <div key={n.n} className="rounded-lg border border-white/20 bg-white/5 p-3 text-center">
                     <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#f5c928]">Night {n.n}</p>
                     <p className="mt-1 text-sm font-bold uppercase leading-tight text-[#f5edd8]/90">{n.title}</p>
-                    <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.25em] text-[#f5edd8]/50">Artist · TBA</p>
+                    <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.25em] text-[#f5edd8]/50">Artist · Revealing soon</p>
+                    <p className="mt-1 text-xs font-bold uppercase tracking-[0.2em] text-[#f5edd8]/80">{n.date} · {n.time} · {n.venue}</p>
                   </div>
                 ))}
               </div>
@@ -171,11 +185,11 @@ export default function HomePage() {
           <div className="indie-hscroll flex gap-8 overflow-x-auto snap-x snap-mandatory px-6 pb-6 pt-2">
             {PUBLIC_EVENTS.map((e, i) => (
               <Link key={e.slug} href={`/events/${e.slug}`} className="group snap-start shrink-0 w-56">
-                <Stamp slug={e.slug} name={e.name} category={e.category} number={i + 1} image={EVENT_MEDIA[e.slug]?.image} compact />
+                <Stamp slug={e.slug} name={e.name} category={e.category} number={i + 1} image={EVENT_MEDIA[e.slug]?.image} prize={ALL_EVENTS[i]?.prize} compact />
                 <div className="mt-4 text-[#f5edd8]">
                   <p className={`text-lg uppercase leading-tight tracking-[0.16em] ${serif.className}`}>{CULTURES[e.slug]?.state}</p>
                   <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[0.3em] text-[#f5c928]">
-                    {e.subEvents.length > 0 ? `${e.subEvents.length} competitions` : "Marquee event"} · {e.category}
+                    {competitionsOf(e.slug) > 0 ? `${competitionsOf(e.slug)} competitions` : "Single event"} · {e.category}
                   </p>
                 </div>
               </Link>
@@ -284,13 +298,23 @@ export default function HomePage() {
             </div>
             <BlockButton href="/schedule" tone="cream">Full schedule →</BlockButton>
           </div>
-          <div className="rounded-lg border-4 border-black bg-[#161616] shadow-[6px_6px_0_0_#000] overflow-hidden">
-            <ul className="divide-y divide-white/10">
+          {/* same look as the /schedule board: tricolour, split-flap times */}
+          <div className="overflow-hidden rounded-lg border-4 border-black bg-[#fffaf0] shadow-[6px_6px_0_0_#000]">
+            <p className="flex items-center justify-between bg-[#138808] px-4 py-2 text-white">
+              <span className="text-xs font-bold uppercase tracking-[0.3em]">Departures · {SCHEDULE[0].label}</span>
+              <span className={`text-lg ${display.className}`}>{SCHEDULE[0].date}</span>
+            </p>
+            <ul>
               {nextUp.map((r) => (
-                <li key={r.time + r.title} className="grid grid-cols-[64px_1fr_auto] items-center gap-3 px-4 py-3">
-                  <span className="text-lg font-bold text-[#ffb000] tabular-nums">{r.time}</span>
-                  <span className="truncate text-lg font-bold uppercase tracking-wide text-white">{r.title}</span>
-                  <span className="border border-white/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-white/80">{r.venue}</span>
+                <li key={r.time + r.title} className="grid grid-cols-[96px_1fr] items-center gap-x-3 border-t border-[#138808]/20 px-4 py-3 sm:grid-cols-[110px_1fr_auto]">
+                  <span className="flex gap-0.5 font-mono text-lg font-bold" aria-label={time12(r.time)}>
+                    {r.time.split("").map((c, i) => <span key={i} aria-hidden className="rounded-sm bg-[#0b2a6b] px-[3px] leading-tight text-white">{c}</span>)}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-lg font-bold uppercase leading-tight tracking-wide text-[#c45500]">{r.title}</span>
+                    <span className="mt-0.5 block text-sm font-semibold text-[#0b2a6b]/75 sm:hidden">{r.venue}</span>
+                  </span>
+                  <span className="hidden border border-[#138808]/30 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-[#0b2a6b] sm:block">{r.venue}</span>
                 </li>
               ))}
             </ul>
@@ -331,7 +355,7 @@ export default function HomePage() {
         <section className="relative overflow-hidden bg-[#f5edd8] px-4 py-16 text-[#1a0505] sm:px-12 sm:py-24">
           <div aria-hidden className="absolute inset-0 opacity-[0.08]" style={patternStyle("diamonds", "#7a1c1c")} />
           <div className="relative mx-auto max-w-5xl">
-            <p className="text-center text-sm font-bold uppercase tracking-[0.35em] text-[#a1001a]">Feb 2027 &middot; O.P. Jindal University, Raigarh</p>
+            <p className="text-center text-sm font-bold uppercase tracking-[0.35em] text-[#a1001a]">16–18 Feb 2027 &middot; O.P. Jindal University, Raigarh</p>
             <h2 className={`mt-3 text-center text-[clamp(44px,8vw,110px)] uppercase leading-[0.9] ${display.className}`}>
               Ready to <span className="text-transparent" style={{ WebkitTextStroke: "2px #a1001a" }}>compete?</span>
             </h2>

@@ -6,8 +6,9 @@ import type { IPaymentSummary } from "@/features/payments/payment-actions";
 import { AlertTriangle, CheckCircle2, Clock, ExternalLink, X, QrCode, ChevronDown, Users, User } from "lucide-react";
 import { display } from "@/components/indie";
 
-// Update this URL when the 2027 Easebuzz payment link is set up
-const EASEBUZZ_URL = "https://smartpay.easebuzz.in/125084/Techno-aiMBiAtion-2026";
+// The 2027 Easebuzz link: paste it here when registration opens. While empty, the page says the link
+// isn't available yet instead of showing a Pay button.
+const EASEBUZZ_URL = "";
 
 interface Props {
   userEmail: string;
@@ -29,7 +30,6 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
   const payClearance       = initial.payClearance;
   const [transactions, setTransactions]             = useState(initial.transactions);
   const [showModal, setShowModal]                   = useState(false);
-  const [showFeeGuide, setShowFeeGuide]             = useState(true);
   const [txInput, setTxInput]                       = useState("");
   const [submitting, setSubmitting]                 = useState(false);
   const [error, setError]                           = useState("");
@@ -143,88 +143,15 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
         </div>
       </div>
 
-      {/* 3. Fee structure */}
-      <div className="space-y-3">
-        <Heading>Fee structure</Heading>
-        <div className={`${CARD_UI} overflow-hidden`}>
-          <button
-            type="button"
-            onClick={() => setShowFeeGuide((v) => !v)}
-            className="flex w-full items-center justify-between px-5 py-3 text-left hover:bg-[#f5c928]/40"
-            aria-expanded={showFeeGuide}
-          >
-            <span className="text-base font-bold uppercase tracking-wide">Registration fee structure</span>
-            <ChevronDown className={`h-5 w-5 transition-transform ${showFeeGuide ? "rotate-180" : ""}`} />
-          </button>
-          {showFeeGuide && (
-            <div className="space-y-4 border-t-2 border-black px-5 py-4">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {[
-                  { title: "Individual", icon: User, rows: [["1 event", "₹99"], ["2–3 events", "₹199"], ["4–7 events", "₹499"]] },
-                  { title: "Team", icon: Users, rows: [["Per event", "₹299"], ["4–7 events", "₹499"]] },
-                ].map(({ title, icon: Icon, rows }) => (
-                  <div key={title} className="rounded-xl bg-[#f6efdf] px-4 py-3">
-                    <div className="mb-2 flex items-center gap-2 border-b-2 border-black/20 pb-2">
-                      <Icon className="h-4 w-4 text-[#7a1c1c]" />
-                      <p className="text-base font-bold uppercase tracking-wide text-[#7a1c1c]">{title}</p>
-                    </div>
-                    <div className="space-y-1.5">
-                      {rows.map(([label, price]) => (
-                        <div key={label} className="flex justify-between text-base">
-                          <span className="text-black/70">{label}</span>
-                          <span className="font-bold">{price}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <ul className="space-y-1.5 text-base leading-snug">
-                <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> Only team leaders pay the registration fee.</li>
-                <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> Events with team size of 1 count as individual.</li>
-                <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> ₹499 is the maximum cap across all events.</li>
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* 4. How to pay */}
-      <div className="space-y-3">
-        <Heading>How to pay</Heading>
-        <div className={`${CARD_UI} px-5 py-5`}>
-          <ol className="space-y-4">
-            {[
-              { n: "1", text: "Click “Pay” below — it opens the Easebuzz payment page." },
-              { n: "2", text: <>Use this email on the payment page: <span className="break-all border-2 border-black bg-[#f5c928] px-2 py-0.5 font-bold text-black">{userEmail}</span></> },
-              { n: "3", text: "After payment, Easebuzz emails you a transaction ID." },
-              { n: "4", text: "Come back here, enter the transaction ID, and submit." },
-            ].map(({ n, text }) => (
-              <li key={n} className="flex items-start gap-3">
-                <span className={`flex h-9 w-9 shrink-0 items-center justify-center border-2 border-black bg-[#7a1c1c] text-lg text-[#f5edd8] ${display.className}`}>
-                  {n}
-                </span>
-                <p className="pt-1 text-lg leading-snug">{text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        {/* Important note */}
-        <div className="flex items-start gap-3 rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#f5c928] px-5 py-4 text-black">
-          <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0" />
-          <div>
-            <p className="text-lg font-bold uppercase tracking-wide">Important</p>
-            <p className="text-base leading-snug">
-              Use the same email as your account on the payment page, and keep your transaction ID safe.
-              Your payment shows as <strong>Pending</strong> until the admin approves it.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PaymentGuide userEmail={userEmail} />
 
       {/* 5. Pay CTA */}
-      {!payClearance && (
+      {!payClearance && !EASEBUZZ_URL && (
+        <p role="status" className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/40 bg-white/70 px-5 py-4 text-center text-lg font-bold">
+          Payment link not available yet. It will appear here when registration opens.
+        </p>
+      )}
+      {!payClearance && EASEBUZZ_URL && (
         <button
           onClick={() => setShowModal(true)}
           className={`h-16 w-full rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#ff6a00] text-2xl uppercase tracking-wide text-black hover:bg-[#f5c928] active:translate-y-0 ${display.className} card-lift`}
@@ -360,5 +287,86 @@ export default function PaymentClient({ userEmail, summary: initial }: Props) {
       )}
 
     </div>
+  );
+}
+
+// Fee structure, how to pay and the important note. Shown even before any registration, so people can
+// read the fees while registration is still closed.
+export function PaymentGuide({ userEmail }: { userEmail: string }) {
+  return (
+    <>
+        {/* 3. Fee structure */}
+        <div className="space-y-3">
+          <Heading>Fee structure</Heading>
+          <details open className={`${CARD_UI} group overflow-hidden`}>
+            <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-3 text-left hover:bg-[#f5c928]/40 [&::-webkit-details-marker]:hidden">
+              <span className="text-base font-bold uppercase tracking-wide">Registration fee structure</span>
+              <ChevronDown className="h-5 w-5 transition-transform group-open:rotate-180" />
+            </summary>
+              <div className="space-y-4 border-t-2 border-black px-5 py-4">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {[
+                    { title: "Individual", icon: User, rows: [["1 event", "₹99"], ["2–3 events", "₹199"], ["4–7 events", "₹499"]] },
+                    { title: "Team", icon: Users, rows: [["Per event", "₹199"], ["4–7 events", "₹499"]] },
+                  ].map(({ title, icon: Icon, rows }) => (
+                    <div key={title} className="rounded-xl bg-[#f6efdf] px-4 py-3">
+                      <div className="mb-2 flex items-center gap-2 border-b-2 border-black/20 pb-2">
+                        <Icon className="h-4 w-4 text-[#7a1c1c]" />
+                        <p className="text-base font-bold uppercase tracking-wide text-[#7a1c1c]">{title}</p>
+                      </div>
+                      <div className="space-y-1.5">
+                        {rows.map(([label, price]) => (
+                          <div key={label} className="flex justify-between text-base">
+                            <span className="text-black/70">{label}</span>
+                            <span className="font-bold">{price}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <ul className="space-y-1.5 text-base leading-snug">
+                  <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> Only team leaders pay the registration fee.</li>
+                  <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> Events with team size of 1 count as individual.</li>
+                  <li className="flex gap-2"><span className="font-bold text-[#7a1c1c]">•</span> ₹499 is the maximum cap across all events.</li>
+                </ul>
+              </div>
+          </details>
+        </div>
+
+        {/* 4. How to pay */}
+        <div className="space-y-3">
+          <Heading>How to pay</Heading>
+          <div className={`${CARD_UI} px-5 py-5`}>
+            <ol className="space-y-4">
+              {[
+                { n: "1", text: "Click “Pay” below — it opens the Easebuzz payment page." },
+                { n: "2", text: <>Use this email on the payment page: <span className="break-all border-2 border-black bg-[#f5c928] px-2 py-0.5 font-bold text-black">{userEmail}</span></> },
+                { n: "3", text: "After payment, Easebuzz emails you a transaction ID." },
+                { n: "4", text: "Come back here, enter the transaction ID, and submit." },
+              ].map(({ n, text }) => (
+                <li key={n} className="flex items-start gap-3">
+                  <span className={`flex h-9 w-9 shrink-0 items-center justify-center border-2 border-black bg-[#7a1c1c] text-lg text-[#f5edd8] ${display.className}`}>
+                    {n}
+                  </span>
+                  <p className="pt-1 text-lg leading-snug">{text}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          {/* Important note */}
+          <div className="flex items-start gap-3 rounded-2xl border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812] bg-[#f5c928] px-5 py-4 text-black">
+            <AlertTriangle className="mt-0.5 h-6 w-6 shrink-0" />
+            <div>
+              <p className="text-lg font-bold uppercase tracking-wide">Important</p>
+              <p className="text-base leading-snug">
+                Use the same email as your account on the payment page, and keep your transaction ID safe.
+                Your payment shows as <strong>Pending</strong> until the admin approves it.
+              </p>
+            </div>
+          </div>
+        </div>
+    </>
   );
 }

@@ -83,7 +83,7 @@ export default async function EventManagerEventPage({
           {[
             { label: "Registered",  value: event.registeredCount, highlight: true },
             { label: "Limit",       value: event.maxParticipants || "∞" },
-            { label: "Prize pool",  value: event.prizeMoney ? `₹${event.prizeMoney}` : "—" },
+            { label: "Prize pool",  value: event.prizeMoney ? `₹${event.prizeMoney.toLocaleString("en-IN")}` : "—" },
             { label: "Team size",   value: event.teamSize ?? 1 },
           ].map((s) => (
             <div key={s.label} className={`rounded-2xl px-4 py-4 ${s.highlight ? "bg-[#1c1812] border-[3px] border-[#1c1812] shadow-[0_4px_0_#1c1812]" : "bg-slate-50 border border-slate-100"}`}>

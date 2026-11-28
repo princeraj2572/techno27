@@ -5,7 +5,7 @@ import { getPaymentSummaryForUser } from "@/features/payments/payment-actions";
 import { CreditCard } from "lucide-react";
 import Link from "next/link";
 import AppShell from "@/components/layout/app-shell";
-import PaymentClient from "./PaymentClient";
+import PaymentClient, { PaymentGuide } from "./PaymentClient";
 
 export default async function DashboardPaymentPage() {
   const user = await getUser();
@@ -21,6 +21,7 @@ export default async function DashboardPaymentPage() {
       icon={<CreditCard className="h-6 w-6" />}
     >
       {summary === null || summary.eventRows.length === 0 ? (
+        <>
         <div className="rounded-2xl border-[3px] border-dashed border-[#1c1812]/30 bg-white/60 py-14 text-center">
           <CreditCard className="mx-auto mb-3 h-9 w-9 text-[#a33517]" />
           <p className="text-xl font-bold uppercase text-[#1c1812]">No events registered yet</p>
@@ -29,6 +30,8 @@ export default async function DashboardPaymentPage() {
             Browse events
           </Link>
         </div>
+        <div className="mt-8 space-y-8"><PaymentGuide userEmail={user.email} /></div>
+        </>
       ) : (
         <PaymentClient userEmail={user.email} summary={summary} />
       )}

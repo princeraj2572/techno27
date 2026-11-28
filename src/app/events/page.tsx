@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { seedEvents } from "@/features/events/data/seed-events";
+import { SCHEDULE } from "@/data/schedule";
 import { ArrowRight, CalendarDays, MapPin, Trophy, Users } from "lucide-react";
 import { PUBLIC_EVENTS } from "@/features/events/data/public-events";
 import {
@@ -17,7 +19,9 @@ export const metadata = { title: "Events | Techno-aiMBiAtion 2027" };
 
 export default async function EventsPage({ searchParams }: { searchParams: Promise<{ cat?: string }> }) {
   const { cat } = await searchParams;
-  const totalSub = PUBLIC_EVENTS.reduce((n, e) => n + e.subEvents.length, 0);
+  // competitions = everything you can register for: sub-events (Tech-Lab, Drobotics, Kalakriti…) plus
+  // standalone events (Codigo, Ideathon…); rounds and problem statements are not counted
+  const totalSub = seedEvents.length;
 
   const cards = PUBLIC_EVENTS.map((e, i) => {
     const m = getEventMock(e.slug);
@@ -46,9 +50,9 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
 
   const stats = [
     { to: PUBLIC_EVENTS.length, suffix: "", label: "Events" },
-    { to: totalSub, suffix: "+", label: "Competitions" },
+    { to: totalSub, suffix: "", label: "Competitions" },
     { to: Math.round(totalPrize / 1000), prefix: "₹", suffix: "K", label: "Total prizes" },
-    { to: 5, suffix: "", label: "Days" },
+    { to: SCHEDULE.length, suffix: "", label: "Days" },
   ].filter((s) => s.label !== "Total prizes" || totalPrize > 0);
 
   return (
@@ -58,7 +62,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
         <div>
           <h1 className={`text-6xl sm:text-8xl leading-[0.9] indie-outline ${serif.className}`}>Events</h1>
           <p className="mt-2 text-xl sm:text-2xl font-bold uppercase text-[#f5edd8]">
-            {PUBLIC_EVENTS.length} events · {totalSub}+ competitions · one fest
+            {PUBLIC_EVENTS.length} events · {totalSub} competitions · {SCHEDULE.length} days · one fest
           </p>
         </div>
         <div className="relative mt-8">
@@ -107,7 +111,7 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
               <span className="absolute -left-3 -top-4 z-10 -rotate-6 border-2 border-black bg-[#ff2d8a] px-3 py-1 text-xs font-bold uppercase tracking-[0.25em] text-black shadow-[3px_3px_0_0_#000]">
                 ★ Spotlight
               </span>
-              <Stamp slug={featured.slug} name={featured.name} category={featured.category} number={featured.number} image={featured.image} big />
+              <Stamp slug={featured.slug} name={featured.name} category={featured.category} number={featured.number} image={featured.image} prize={featured.prize} big />
               <Postmark lines={false} className="pointer-events-none absolute -bottom-9 -right-9 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
             </div>
 
@@ -165,7 +169,6 @@ export default async function EventsPage({ searchParams }: { searchParams: Promi
       <Band tone="crimson" mandala className="!pt-12 lg:!max-w-7xl">
         <h2 className={`mb-8 text-4xl sm:text-5xl text-[#f5c928] ${serif.className}`} style={{ textShadow: "3px 3px 0 #5a0010" }}>All events</h2>
         <EventsCards events={cards} initial={cat} />
-        <p className="mt-10 text-center text-xs uppercase tracking-widest text-white/60">Sample details — dates, venues and prizes are placeholders.</p>
       </Band>
 
       <Marquee

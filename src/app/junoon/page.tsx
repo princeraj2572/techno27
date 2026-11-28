@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Marquee, PageShell, body, devanagari, display, serif } from "@/components/indie";
 import { Reveal } from "@/components/indie/motion";
-import { JUNOON_ACTS, JUNOON_NIGHTS } from "@/data/dummy";
+import { JUNOON_NIGHTS } from "@/data/dummy";
 
 export const metadata = { title: "Junoon '27 | Techno-aiMBiAtion 2027" };
 
@@ -20,9 +20,6 @@ const BEAMS: [number, string, number, number, 1 | -1][] = [
 
 const EQ = Array.from({ length: 56 }, (_, i) => ({ dur: 0.7 + ((i * 37) % 9) / 10, delay: -((i * 53) % 13) / 10, h: 40 + ((i * 29) % 60) }));
 
-// Support acts spread across the nights, poster-style.
-const SUPPORT = JUNOON_ACTS.filter((a) => !JUNOON_NIGHTS.some((n) => n.artist === a.name));
-const BILL = JUNOON_NIGHTS.map((n, i) => ({ night: n, support: SUPPORT.filter((_, j) => j % JUNOON_NIGHTS.length === i) }));
 
 const CSS = `
   .jn-kb { animation: jn-kb 24s ease-in-out infinite alternate; }
@@ -60,7 +57,7 @@ export default function JunoonPage() {
       <style>{CSS}</style>
 
       {/* date / venue ticker, like real festival sites */}
-      <Marquee className="bg-[#f5c928] text-black font-bold uppercase tracking-[0.25em] text-sm py-1.5" text={`Junoon '27 ✦ ${JUNOON_NIGHTS.length} nights ✦ ${JUNOON_NIGHTS[0].venue}, OPJU Raigarh ✦ Techno-aiMBiAtion 2027 ✦ `} speed={40} />
+      <Marquee className="bg-[#f5c928] text-black font-bold uppercase tracking-[0.25em] text-sm py-1.5" text={`Junoon '27 ✦ ${JUNOON_NIGHTS[0].title} ✦ ${JUNOON_NIGHTS[0].date} · ${JUNOON_NIGHTS[0].time} ✦ ${JUNOON_NIGHTS[0].venue}, OPJU Raigarh ✦ Techno-aiMBiAtion 2027 ✦ `} speed={40} />
 
       {/* ---------- Hero: the crowd ---------- */}
       <section className="relative isolate flex min-h-[calc(100svh-6rem)] items-end overflow-hidden bg-black">
@@ -89,7 +86,7 @@ export default function JunoonPage() {
           </h1>
           <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
             <p className="max-w-xl text-xl font-semibold leading-snug text-[#f5edd8] sm:text-2xl">
-              Three nights. One stage. The lights drop, the bass hits and the whole campus sings back.
+              One night. One stage. The lights drop, the bass hits and the whole campus sings back.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/auth/signup" className="border-2 border-black bg-[#f5c928] px-7 py-3 text-lg font-bold uppercase tracking-widest text-black shadow-[0_0_30px_rgba(245,201,40,.45),4px_4px_0_0_#000] transition-transform hover:-translate-y-0.5">Get your pass</Link>
@@ -117,38 +114,35 @@ export default function JunoonPage() {
             </div>
           </Reveal>
 
-          <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-0 md:divide-x md:divide-dashed md:divide-[#f5c928]/25">
-            {BILL.map(({ night, support }, i) => (
+          <div className="mx-auto mt-14 max-w-xl">
+            {JUNOON_NIGHTS.map((night, i) => (
               <Reveal key={night.n}>
                 <div className={`text-center md:px-6 ${body.className}`}>
                   <span className="inline-block px-3 py-1 text-sm font-bold uppercase tracking-[0.3em] text-black" style={{ background: NIGHT_COLORS[i] }}>
                     Night {night.n}
                   </span>
-                  {/* Artists are not announced yet: the names in BILL are placeholders and stay hidden. */}
-                  <p className="mt-5 text-5xl font-bold uppercase leading-[0.9] text-[#f5edd8] lg:text-6xl">Singer revealing soon</p>
+                  {/* The artist is not announced yet. */}
+                  <p className="mt-5 text-5xl font-bold uppercase leading-[0.9] text-[#f5edd8] lg:text-6xl">Artist revealing soon</p>
                   <p className="mt-2 text-sm font-bold uppercase tracking-[0.3em]" style={{ color: NIGHT_COLORS[i] }}>Stay tuned</p>
                   <div className="mx-auto my-5 h-px w-16 bg-[#f5edd8]/25" />
-                  {support.map((a) => (
-                    <p key={a.name} aria-hidden className="mx-auto my-2 h-5 w-40 rounded-sm bg-[#f5edd8]/15" />
-                  ))}
-                  <p className="mt-4 text-xs font-bold uppercase tracking-[0.3em] text-[#f5edd8]/50">Date &amp; time to be announced</p>
+                  <p className="mt-4 text-sm font-bold uppercase tracking-[0.3em] text-[#f5edd8]/70">{night.date} · {night.time} · {night.venue}</p>
                 </div>
               </Reveal>
             ))}
           </div>
-          <p className="mt-14 text-center text-xs uppercase tracking-widest text-white/40">The singers will be revealed soon. Follow us so you don’t miss it.</p>
+          <p className="mt-14 text-center text-xs uppercase tracking-widest text-white/40">The artist will be revealed soon. Follow us so you don’t miss it.</p>
         </div>
       </section>
 
       {/* ---------- Crossed tapes ---------- */}
       <div aria-hidden className="relative h-40 overflow-hidden bg-[#05030a]">
         <Marquee className="absolute left-[-5%] top-12 w-[110%] -rotate-3 border-black bg-[#f5edd8] py-2 text-lg font-bold uppercase tracking-[0.3em] text-black" text="Live ● Loud ● Unforgettable ● Junoon '27 ● " speed={40} />
-        <Marquee className="absolute left-[-5%] top-16 w-[110%] rotate-3 border-black bg-[#ff2d8a] py-2 text-lg font-bold uppercase tracking-[0.3em] text-black" text="Three nights ● One stage ● Main Ground ● " speed={50} reverse />
+        <Marquee className="absolute left-[-5%] top-16 w-[110%] rotate-3 border-black bg-[#ff2d8a] py-2 text-lg font-bold uppercase tracking-[0.3em] text-black" text="One night ● One stage ● University Playground ● " speed={50} reverse />
       </div>
 
       {/* ---------- The nights (photo cards) ---------- */}
       <section className="bg-[#05030a] pb-20">
-        <div className="mx-auto grid max-w-6xl gap-6 px-4 sm:px-6 md:grid-cols-3">
+        <div className="mx-auto grid max-w-md gap-6 px-4 sm:px-6">
           {JUNOON_NIGHTS.map((n, i) => (
             <Reveal key={n.n}>
               <article className="jn-card group relative aspect-[4/5] overflow-hidden rounded-2xl border border-white/10 bg-black">
@@ -159,7 +153,7 @@ export default function JunoonPage() {
                   <p className="text-xs font-bold uppercase tracking-[0.35em]" style={{ color: NIGHT_COLORS[i] }}>{n.title}</p>
                   <p className={`mt-1 text-3xl leading-tight text-white ${serif.className}`}>Revealing soon</p>
                   <p className="mt-1 text-base text-white/75">{n.desc}</p>
-                  <p className="mt-3 border-t border-white/15 pt-3 text-xs font-bold uppercase tracking-widest text-white/80">To be announced</p>
+                  <p className="mt-3 border-t border-white/15 pt-3 text-xs font-bold uppercase tracking-widest text-white/80">{n.date} · {n.time} · {n.venue}</p>
                 </div>
               </article>
             </Reveal>
@@ -178,7 +172,7 @@ export default function JunoonPage() {
                 <div aria-hidden className="mx-auto -mt-2 mb-5 h-3 w-16 rounded-full bg-[#2a2433]" />
                 <p className="text-xs font-bold uppercase tracking-[0.5em] text-[#f5edd8]/60">Techno-aiMBiAtion &apos;27</p>
                 <p className={`mt-2 text-5xl leading-none text-[#f5c928] ${display.className}`}>ALL ACCESS</p>
-                <p className={`mt-1 text-3xl text-[#ff2d8a] ${serif.className}`}>Junoon nights</p>
+                <p className={`mt-1 text-3xl text-[#ff2d8a] ${serif.className}`}>Junoon night</p>
                 <p className="mt-5 text-lg leading-snug text-[#f5edd8]/80">Register to get your pass and be first to know the lineup.</p>
                 <Link href="/auth/signup" className="mt-6 inline-block border-2 border-black bg-[#f5c928] px-7 py-3 text-lg font-bold uppercase tracking-widest text-black shadow-[4px_4px_0_0_#000] transition-transform hover:-translate-y-0.5">Register now</Link>
                 <div aria-hidden className="mt-6 flex h-10 items-stretch justify-center gap-[3px] opacity-70">

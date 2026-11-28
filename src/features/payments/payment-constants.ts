@@ -1,7 +1,7 @@
 export const MAX_PAYMENT = 499;
 export const SOLO_FEE_1  = 99;
 export const SOLO_FEE_2  = 199;
-export const TEAM_FEE    = 299;
+export const TEAM_FEE    = 199;
 
 export function calculatePayAmount(
   individualCount: number,

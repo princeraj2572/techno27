@@ -10,13 +10,14 @@ export const startupBusinessPlan: EventData = {
 
   // ---- details ----
   tagline: "Pitch it. Fund it. Build it.",
-  about: "The Startup Pitching Event gives budding innovators a stage to present ideas before a jury of experts, investors and industry leaders. Prove the commercial viability of your venture, get feedback, and be spotted for mentoring, incubation and further support.",
-  date: "To be announced",
-  time: "To be announced",
-  venue: "To be announced",
+  // Copied exactly from the event's official document.
+  about: "The Startup Pitching Event offers budding innovators and entrepreneurs a stage to present their ideas before a jury of experts, investors and industry leaders. Participants will put forward creative solutions to real-world challenges, prove the commercial viability of their ventures, and gain constructive feedback to sharpen their concepts. The event seeks to foster innovation, entrepreneurship and teamwork, while spotting high-potential startups that can be taken forward through mentoring, incubation and further support.",
+  date: "Feb 17–18, 2027",
+  time: "Day 2 2:30 PM · Day 3 10:00 AM",
+  venue: "Live Class Room & Idea Lab",
   teamSize: "Up to 5 members",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹199 per team for external",
+  prize: "₹25,000",
   rules: [
     "PowerPoint-based pitch for working (functional) or non-working (concept-stage) models.",
     "Finish within the allotted time. Overrunning may cost marks or lead to disqualification.",

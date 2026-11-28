@@ -59,19 +59,14 @@ export async function getEventsWithRegistrationCountsAction() {
 // Unique people registered for one website event (its own DB event + any sub-events), split OPJU / external.
 export async function getEventRegistrationCountsAction(slug: string) {
   noStore();
-  const zero = { total: 0, internal: 0, external: 0 };
+  const zero = { total: 0 };
   try {
     await connectToDatabase();
     const ids = (await Event.find({ mainEvent: slug }).select("_id").lean<{ _id: unknown }[]>()).map((e) => e._id);
     if (!ids.length) return zero;
     const teams = await Team.find({ event: { $in: ids } }).select("members").lean<{ members: string[] }[]>();
-    const emails = [...new Set(teams.flatMap((t) => t.members))];
-    const users = await User.find({ email: { $in: emails } }).select("role").lean<{ role: string }[]>();
-    return {
-      total: emails.length,
-      internal: users.filter((u) => u.role === "INTERNAL_USER").length,
-      external: users.filter((u) => u.role === "EXTERNAL_USER").length,
-    };
+    // unique people across all of this fest event's competitions (team members included)
+    return { total: new Set(teams.flatMap((t) => t.members)).size };
   } catch {
     return zero; // DB unreachable: show zeros rather than break the public page
   }

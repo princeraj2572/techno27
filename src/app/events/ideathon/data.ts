@@ -10,13 +10,14 @@ export const ideathon: EventData = {
 
   // ---- details ----
   tagline: "Ideas for a better tomorrow.",
-  about: "Ideathon 2027, “Hurdle to Hustle”, is where fresh perspectives become real-world solutions. Pick one of five campus and industry problem statements and pitch a practical, feasible idea, with an artefact if it helps, to the judges.",
+  // Copied exactly from the event's official document.
+  about: "Welcome to a world of innovation with IDEATHON, where fresh perspectives spark meaningful ideas and imagination takes the shape of real-world solutions. It is a platform for passionate minds to tackle challenges and turn creative thinking into impactful innovations. Bring your vision, embrace the challenge, and take the first step towards making a difference.",
   date: "Feb 16, 2027",
-  time: "To be announced",
-  venue: "To be announced",
+  time: "11:30 AM",
+  venue: "EE Seminar Hall (FB-14)",
   teamSize: "Individual or up to 4 members",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹199 per team for external",
+  prize: "₹20,000",
   rules: [
     "Be at the venue 15 minutes before the event begins.",
     "Register before the deadline; only registered participants can present.",
@@ -37,6 +38,14 @@ export const ideathon: EventData = {
     "Climate-Resilient Campus & Public Health",
     "Industrial Decarbonisation & Wastewater Reuse",
   ],
+  // Wording copied exactly from the event's official document; " · " separates its bullet points.
+  subEventInfo: {
+    "Waste Management & Circular Economy": "“Universities generate different types of waste, including food waste, plastic, paper, e-waste, and laboratory waste, creating opportunities for innovative waste management solutions. How can students develop sustainable and financially viable business models for waste segregation, collection, recycling, and resource recovery within the university campus? Participants may explore innovative approaches to converting waste into useful products, developing recycling enterprises, and promoting circular economy practices through student-led initiatives.”",
+    "Smart Campus Security & Drones": "“Universities require effective and technology-enabled systems to enhance campus security, monitor critical infrastructure, and improve emergency response mechanisms. How can students propose innovative and responsible technology based solutions, including secure drone applications, counter-drone mechanisms, and intelligent surveillance systems, to strengthen campus safety? Participants may explore solutions for monitoring large campus areas, protecting sensitive infrastructure, identifying potential security risks, and supporting emergency management while ensuring privacy and regulatory compliance.”",
+    "Business Process Automation": "“Universities manage several administrative and academic processes, including student admissions, attendance, examination management, fee payments, document verification, grievance redressal, and internal communication. How can students develop technology-driven solutions to automate these processes, reduce manual effort, improve operational efficiency, and enhance the overall experience of students, faculty, and administrative staff? Participants are encouraged to propose affordable, scalable, and user-friendly solutions using artificial intelligence, automation tools, data analytics, and digital platforms.”",
+    "Climate-Resilient Campus & Public Health": "“Changing climatic conditions, including rising temperatures, heatwaves, air pollution, water scarcity, and seasonal variations, can influence the health, safety, and well-being of students, faculty, and university staff. How can students develop innovative solutions to create a climate-resilient and health-conscious university campus? Participants may explore technology-enabled early warning systems, climate-responsive infrastructure, health awareness initiatives, air quality monitoring, and preventive measures to improve campus preparedness and promote a healthier learning environment.”",
+    "Industrial Decarbonisation & Wastewater Reuse": "“Industries and institutional campuses have significant opportunities to improve resource efficiency, reduce environmental impacts, and adopt sustainable operational practices. How can students develop practical and economically viable solutions for reducing energy consumption, controlling pollution, managing wastewater, and promoting water reuse within university facilities and nearby industrial ecosystems? Participants may explore renewable energy integration, energy-efficient technologies, wastewater treatment, water recycling, and innovative approaches to measuring and reducing carbon emissions.”",
+  },
 
   // ---- look ----
   theme: {

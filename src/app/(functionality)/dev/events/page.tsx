@@ -86,7 +86,7 @@ export default async function DevEventsPage() {
                         `Team: ${event.teamSize ?? 1}`,
                         `Internal: ₹${event.internalFee ?? 0}`,
                         `External: ₹${event.externalFee ?? 0}`,
-                        event.prizeMoney ? `Prize: ₹${event.prizeMoney}` : null,
+                        event.prizeMoney ? `Prize: ₹${event.prizeMoney.toLocaleString("en-IN")}` : null,
                       ].filter(Boolean).join(" · ")}
                     </p>
                   </div>

@@ -10,13 +10,14 @@ export const techlab: EventData = {
 
   // ---- details ----
   tagline: "Hands-on tech, live.",
-  about: "Tech Lab is an innovation and technology showcase at Techno-aiMBiAtion 2027 and one of the flagship events of Technorollix. Students present self-developed models, prototypes, posters and apps to a panel of internal and external experts. Promising projects may be considered for funding support through the OPJU Innovation Centre, and eligible outside participants get one-way Sleeper Class train fare reimbursed.",
+  // Copied exactly from the event's official document.
+  about: "TECH LAB is one of the flagship events of TECHNOROLLIX, one of the biggest technical festivals in Central India. It provides an exciting platform for young innovators, aspiring engineers, and creative minds from universities and institutions to showcase their technical knowledge, innovative ideas, and problem-solving abilities. The event encourages students to transform their ideas into practical solutions through self-developed technical models, prototypes, posters, app and web development. Participants get an opportunity to demonstrate their creativity, technical expertise, and the real-world applicability of their innovations before an audience comprising experts, academicians, and industry professionals. Beyond recognition and rewards, TECH LAB also offers promising innovators an opportunity to explore potential funding support through the OPJU Innovation Centre, helping them take their ideas further towards development and commercialization.",
   date: "Feb 16, 2027",
-  time: "To be announced",
-  venue: "To be announced",
+  time: "10:00 AM",
+  venue: "Babuji Chowk",
   teamSize: "Up to 4 members",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹199 per team for external",
+  prize: "₹60,000",
   rules: [
     "Exhibits must reach the venue at least one hour before the event to install and test.",
     "Maximum four participants per team.",
@@ -33,6 +34,13 @@ export const techlab: EventData = {
     "Poster Presentation",
     "App & Web Development",
   ],
+  // Wording copied exactly from the event's official document; " · " separates its bullet points.
+  subEventInfo: {
+    "Working Models": "Functional prototypes demonstrating innovative concepts, processes, or practical applications.",
+    "Non-Working Models": "Conceptual or demonstrative models representing innovative designs, systems, or engineering solutions.",
+    "Poster Presentation": "Visual presentations highlighting innovative ideas, research findings, technical developments, or engineering solutions.",
+    "App & Web Development": "Innovative mobile, web-based, or software applications designed to address practical challenges.",
+  },
 
   // ---- look ----
   theme: {

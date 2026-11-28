@@ -32,6 +32,7 @@ export interface EventData {
   contact: Coordinator; // main event coordinator
   moreContacts?: Coordinator[]; // optional extra coordinators, shown beside the main one
   subEvents: string[]; // competitions inside the event (can be empty)
+  subEventInfo?: Record<string, string>; // one-line description per sub-event, keyed by its name
 
   // ---- look ----
   theme: EventTheme; // colours, pattern and scrolling tape text for this event's page

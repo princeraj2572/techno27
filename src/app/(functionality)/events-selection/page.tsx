@@ -15,7 +15,7 @@ import {
 
 type Ev = { _id: string; name: string; status: string; teamSize?: number; mainEvent?: string; category?: string };
 type Reg = { eventId: string; teamId: string; isLeader: boolean; members: number };
-type Fest = { key: string; name: string; tagline?: string; category?: string; events: Ev[] };
+type Fest = { key: string; name: string; tagline?: string; category?: string; prize: string; events: Ev[] };
 
 const CART_KEY = "trx27-cart";
 // "Kalakriti: Rangoli" -> "Rangoli" inside the Kalakriti group
@@ -67,8 +67,8 @@ export default function EventsSelectionPage() {
 
   // Group in website order; events without a fest (made by hand) form their own group at the end.
   const fests: Fest[] = useMemo(() => {
-    const groups = ALL_EVENTS.map((f) => ({ key: f.slug, name: f.name, tagline: f.tagline, category: f.category, events: events.filter((e) => e.mainEvent === f.slug) }));
-    const loose = events.filter((e) => !e.mainEvent || !ALL_EVENTS.some((f) => f.slug === e.mainEvent)).map((e) => ({ key: e._id, name: e.name, category: e.category, events: [e] }));
+    const groups = ALL_EVENTS.map((f) => ({ key: f.slug, name: f.name, tagline: f.tagline, category: f.category, prize: f.prize, events: events.filter((e) => e.mainEvent === f.slug) }));
+    const loose = events.filter((e) => !e.mainEvent || !ALL_EVENTS.some((f) => f.slug === e.mainEvent)).map((e) => ({ key: e._id, name: e.name, category: e.category, prize: "", events: [e] }));
     return [...groups, ...loose].filter((g) => g.events.length);
   }, [events]);
 
@@ -202,6 +202,9 @@ export default function EventsSelectionPage() {
                     <h2 className={`text-2xl text-[#1c1812] ${display.className}`}>{f.name}</h2>
                     {f.category && <span className="text-xs font-bold uppercase tracking-widest text-[#a33517]">{f.category}</span>}
                     <span className="text-xs text-black/50">{f.events.length > 1 ? `${f.events.length} competitions` : "Single event"}</span>
+                    <span className="rounded-full bg-[#fff1c2] px-2.5 py-0.5 text-xs font-bold uppercase text-[#5a3b00]">
+                      Prize pool: {/\d/.test(f.prize) ? f.prize : "To be announced"}
+                    </span>
                     {inFest && <span className="ml-auto rounded-full bg-[#d9f2df] px-2.5 py-0.5 text-xs font-bold uppercase text-[#0d3d1a]">You&apos;re in</span>}
                     {f.tagline && <p className="w-full text-sm text-black/60">{f.tagline}</p>}
                   </header>

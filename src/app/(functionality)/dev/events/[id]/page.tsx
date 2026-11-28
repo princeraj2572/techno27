@@ -275,7 +275,7 @@ export default function DevEventDetailPage({ params }: { params: Promise<{ id: s
               {[
                 ["Internal Fee",    `₹${event.internalFee ?? 0}`],
                 ["External Fee",    `₹${event.externalFee ?? 0}`],
-                ["Prize Pool",      event.prizeMoney ? `₹${event.prizeMoney}` : "—"],
+                ["Prize Pool",      event.prizeMoney ? `₹${event.prizeMoney.toLocaleString("en-IN")}` : "—"],
                 ["Max Participants", event.maxParticipants || "Unlimited"],
               ].map(([label, value]) => (
                 <div key={label}>

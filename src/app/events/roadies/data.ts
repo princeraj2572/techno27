@@ -10,13 +10,14 @@ export const roadies: EventData = {
 
   // ---- details ----
   tagline: "Survive the campus trail.",
-  about: "Roadies 2027 tests strength, stamina, agility and mental toughness through a series of challenging physical tasks and obstacles. Step out of your comfort zone, push your limits and show courage under pressure.",
+  // Copied exactly from the event's official document.
+  about: "ROADIES 2027 is an exciting platform designed to test student’s physical strength, stamina, endurance, agility, mental toughness, and determination through a series of challenging and engaging physical tasks. The event encourages participants to step out of their comfort zones, overcome physical challenges, push their limits, and demonstrate courage, confidence, and competitive spirit. It aims to promote physical fitness, resilience, self-discipline, and the ability to perform under pressure while creating an atmosphere of adventure, excitement, and healthy competition.\n\nThe event is designed to promote:\n• Physical Strength & Endurance\n• Agility & Coordination\n• Mental Toughness\n• Confidence & Courage\n• Sportsmanship & Discipline",
   date: "Feb 16–18, 2027",
-  time: "To be announced",
-  venue: "To be announced",
+  time: "From 11:30 AM (see schedule)",
+  venue: "Car & Bus Parking Area and Open Gym",
   teamSize: "Individual",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · ₹99 for external (individual)",
+  prize: "₹16,000",
   rules: [
     "Open to individual students. Register within the deadline.",
     "Complete all assigned tasks within the time limit and follow the coordinators' instructions.",

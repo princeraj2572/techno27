@@ -43,12 +43,15 @@ export async function EventPage({ event }: { event: EventData }) {
           {culture?.state ?? event.category}
         </p>
 
-        <div className="relative mx-auto grid max-w-5xl items-center gap-12 px-6 py-14 md:grid-cols-[1fr_auto]">
-          <div className="space-y-5">
-            <Link href="/events" className="inline-flex items-center gap-1 text-sm font-bold uppercase tracking-wider hover:underline" style={{ color: t.soft }}>
-              <ArrowLeft className="h-4 w-4" /> All events
-            </Link>
+        {/* back link first, above the stamp on phones and above the whole hero on larger screens */}
+        <div className="relative mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-8">
+          <Link href="/events" className="inline-flex items-center gap-1.5 border-2 px-3 py-1.5 text-base font-bold uppercase tracking-wider transition hover:-translate-y-0.5 sm:text-lg" style={{ color: t.ink, borderColor: t.ink }}>
+            <ArrowLeft className="h-5 w-5" /> All events
+          </Link>
+        </div>
 
+        <div className="relative mx-auto grid max-w-5xl items-center gap-10 px-4 pb-8 pt-6 sm:px-6 sm:pb-14 sm:pt-8 md:grid-cols-[1fr_auto] md:gap-12">
+          <div className="space-y-5">
             <div className="flex flex-wrap items-center gap-3">
               <span className="px-3 py-1 text-sm font-bold uppercase tracking-[0.25em] -rotate-1 lg:px-5 lg:py-2 lg:text-lg" style={pill}>Event {String(index + 1).padStart(2, "0")}</span>
               <span className="border-2 px-3 py-0.5 text-sm font-bold uppercase tracking-widest lg:border-[3px] lg:px-5 lg:py-1.5 lg:text-lg" style={{ borderColor: t.ink }}>{event.category}</span>
@@ -62,46 +65,36 @@ export async function EventPage({ event }: { event: EventData }) {
               </div>
             </div>
 
-            <h1 className="text-6xl font-extrabold uppercase leading-[0.9] tracking-tight sm:text-8xl break-words">{event.name}</h1>
-            <p className="text-2xl font-semibold sm:text-3xl" style={{ color: t.soft }}>{event.tagline}</p>
+            <h1 className="text-5xl font-extrabold uppercase leading-[0.9] tracking-tight sm:text-8xl break-words">{event.name}</h1>
+            <p className="text-xl font-semibold sm:text-3xl" style={{ color: t.soft }}>{event.tagline}</p>
 
-            <p className="flex flex-wrap gap-x-5 gap-y-1 text-lg font-semibold">
+            <p className="flex flex-wrap gap-x-5 gap-y-1 text-base font-semibold sm:text-lg">
               <span className="flex items-center gap-1.5"><CalendarDays className="h-5 w-5" />{event.date}</span>
               <span className="flex items-center gap-1.5"><MapPin className="h-5 w-5" />{event.venue}</span>
               <span className="flex items-center gap-1.5"><Trophy className="h-5 w-5" />{event.prize}</span>
             </p>
 
-            {/* Registration ticket: total on the stub, OPJU / external split with bars on the right */}
-            <div className="flex w-fit items-stretch border-2 border-black shadow-[4px_4px_0_0_#000]" aria-label="Registrations so far">
-              <div className="flex flex-col items-center justify-center px-5 py-2.5" style={{ background: t.accent, color: t.accentInk }}>
+            {/* Registration ticket: total registered participants for this event */}
+            <div className="flex w-fit items-stretch border-2 border-black shadow-[4px_4px_0_0_#000]" aria-label={`${counts.total} participants registered`}>
+              <div className="flex items-center px-5 py-2.5" style={{ background: t.accent, color: t.accentInk }}>
                 <span className={`text-5xl leading-none tabular-nums ${serif.className}`}>{counts.total}</span>
-                <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.25em]">Registered</span>
               </div>
-              <div className="flex min-w-[11rem] flex-col justify-center gap-2 border-l-2 border-dashed border-black px-4 py-2.5" style={{ background: t.card, color: t.cardInk }}>
-                {[["OPJU", counts.internal], ["External", counts.external]].map(([label, n]) => (
-                  <div key={label}>
-                    <p className="flex items-baseline justify-between text-xs font-bold uppercase tracking-widest">
-                      <span>{label}</span><span className="text-base tabular-nums">{n}</span>
-                    </p>
-                    <div className="mt-0.5 h-1.5 bg-black/10">
-                      <div className="h-full" style={{ width: `${counts.total ? (Number(n) / counts.total) * 100 : 0}%`, background: t.accent2 }} />
-                    </div>
-                  </div>
-                ))}
+              <div className="flex items-center border-l-2 border-dashed border-black px-4 py-2.5 text-sm font-bold uppercase leading-tight tracking-[0.2em]" style={{ background: t.card, color: t.cardInk }}>
+                Participants<br />registered
               </div>
             </div>
 
             <div className="flex flex-wrap gap-3 pt-1">
-              <Link href="/auth/signup" className="inline-block px-8 py-3 text-lg font-bold uppercase tracking-widest transition hover:-translate-y-0.5" style={pill}>Register now</Link>
+              <Link href="/auth/signup" className="inline-block px-6 py-3 text-base font-bold uppercase tracking-widest transition hover:-translate-y-0.5 sm:px-8 sm:text-lg" style={pill}>Register now</Link>
               {event.subEvents.length > 0 && (
-                <a href="#lineup" className="inline-block border-2 px-8 py-3 text-lg font-bold uppercase tracking-widest transition hover:-translate-y-0.5" style={{ borderColor: t.ink }}>See the lineup</a>
+                <a href="#lineup" className="inline-block border-2 px-6 py-3 text-base font-bold uppercase tracking-widest sm:px-8 sm:text-lg transition hover:-translate-y-0.5" style={{ borderColor: t.ink }}>See the lineup</a>
               )}
             </div>
           </div>
 
-          <div className="group relative mx-auto w-64 sm:w-72 lg:w-96">
-            <Stamp slug={event.slug} name={event.name} category={event.category} number={index + 1} image={media.image} />
-            <Postmark lines={false} className="pointer-events-none absolute -bottom-9 -right-9 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
+          <div className="group relative order-first mx-auto w-72 max-w-full md:order-none lg:w-96">
+            <Stamp slug={event.slug} name={event.name} category={event.category} number={index + 1} image={media.image} prize={event.prize} />
+            <Postmark lines={false} className="pointer-events-none absolute -left-9 -top-9 z-10 h-24 w-24 -rotate-12 opacity-70 mix-blend-multiply" />
           </div>
         </div>
       </section>
@@ -117,10 +110,10 @@ export async function EventPage({ event }: { event: EventData }) {
       {/* Body */}
       <section className="relative" style={{ background: t.bg2, color: t.ink }}>
         <div aria-hidden className="absolute inset-0 opacity-[0.14]" style={pattern} />
-        <div className="relative mx-auto max-w-5xl space-y-14 px-6 py-14">
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <div className="relative mx-auto max-w-5xl space-y-10 px-4 py-10 sm:space-y-14 sm:px-6 sm:py-14">
+          <div className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2 sm:grid-cols-3 sm:gap-4">
             {facts.map(({ Icon, label, value }) => (
-              <div key={label} className="flex items-start gap-3 p-4" style={{ ...cardStyle, borderLeft: `8px solid ${t.accent}` }}>
+              <div key={label} className="flex items-start gap-3 px-4 py-3 sm:p-4" style={{ ...cardStyle, borderLeft: `8px solid ${t.accent}` }}>
                 <Icon className="mt-0.5 h-6 w-6 shrink-0" style={{ color: t.accent }} />
                 <div>
                   <p className="text-[11px] font-bold uppercase tracking-[0.25em] opacity-60">{label}</p>
@@ -132,19 +125,19 @@ export async function EventPage({ event }: { event: EventData }) {
 
           <div className="grid gap-8 md:grid-cols-2">
             <div>
-              <h2 className={`mb-4 text-4xl ${serif.className}`} style={{ color: t.accent2 === t.accent ? t.ink : t.ink }}>About</h2>
-              <p className="text-xl leading-snug">{event.about}</p>
+              <h2 className={`mb-4 text-3xl sm:text-4xl ${serif.className}`} style={{ color: t.accent2 === t.accent ? t.ink : t.ink }}>About</h2>
+              <p className="whitespace-pre-line text-lg leading-snug sm:text-xl">{event.about}</p>
               <p className="mt-4 border-l-4 pl-4 text-lg font-semibold italic" style={{ borderColor: t.accent, color: t.soft }}>
                 Inspired by {culture?.landmark} · {culture?.state}
               </p>
             </div>
             <div>
-              <h2 className={`mb-4 text-4xl ${serif.className}`}>Rules</h2>
+              <h2 className={`mb-4 text-3xl sm:text-4xl ${serif.className}`}>Rules</h2>
               <ol className="divide-y-2 divide-dashed" style={{ ...cardStyle, borderColor: t.accent2 }}>
                 {event.rules.map((r, i) => (
                   <li key={r} className="flex gap-3 px-4 py-3" style={{ borderColor: `${t.accent2}55` }}>
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold" style={{ background: t.accent, color: t.accentInk }}>{i + 1}</span>
-                    <span className="text-lg leading-snug">{r}</span>
+                    <span className="text-base leading-snug sm:text-lg">{r}</span>
                   </li>
                 ))}
               </ol>
@@ -153,19 +146,26 @@ export async function EventPage({ event }: { event: EventData }) {
 
           {event.subEvents.length > 0 && (
             <div id="lineup" className="scroll-mt-24">
-              <h2 className={`mb-4 text-4xl ${serif.className}`}>The lineup</h2>
+              <h2 className={`mb-4 text-3xl sm:text-4xl ${serif.className}`}>The lineup</h2>
               <div className="grid gap-3 sm:grid-cols-2">
                 {event.subEvents.map((s, i) => (
-                  <div key={s} className="flex items-center gap-4 px-4 py-3" style={cardStyle}>
+                  <div key={s} className="flex items-start gap-3 px-4 py-3 sm:gap-4" style={cardStyle}>
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-lg font-bold" style={{ background: t.accent, color: t.accentInk }}>{String(i + 1).padStart(2, "0")}</span>
-                    <span className="text-xl font-bold uppercase tracking-wide">{s}</span>
+                    <div className="min-w-0 pt-1.5">
+                      <p className="text-lg font-bold uppercase leading-tight tracking-wide sm:text-xl">{s}</p>
+                      {event.subEventInfo?.[s]?.includes(" · ") ? (
+                        <ul className="mt-1.5 list-disc space-y-0.5 pl-5 text-base leading-snug opacity-80">
+                          {event.subEventInfo[s].split(" · ").map((line) => <li key={line}>{line}</li>)}
+                        </ul>
+                      ) : event.subEventInfo?.[s] && <p className="mt-1 text-base leading-snug opacity-80">{event.subEventInfo[s]}</p>}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          <div className="p-6" style={cardStyle}>
+          <div className="p-5 sm:p-6" style={cardStyle}>
             <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-60">
               Event coordinator{coordinators.length > 1 ? "s" : ""}
             </p>
@@ -198,15 +198,15 @@ export async function EventPage({ event }: { event: EventData }) {
       {/* Register + neighbours */}
       <section className="relative" style={{ background: t.accent2, color: "#fff" }}>
         <div aria-hidden className="absolute inset-0 opacity-20" style={patternStyle(t.pattern, "#ffffff")} />
-        <div className="relative mx-auto max-w-5xl px-6 py-14">
-          <div className="mx-auto max-w-2xl p-8 text-center" style={{ background: t.card, color: t.cardInk, border: "2px solid #000", boxShadow: "6px 6px 0 #000" }}>
+        <div className="relative mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
+          <div className="mx-auto max-w-2xl p-5 text-center sm:p-8" style={{ background: t.card, color: t.cardInk, border: "2px solid #000", boxShadow: "6px 6px 0 #000" }}>
             <p className="text-xs font-bold uppercase tracking-[0.3em] opacity-60">Admit one · {culture?.state}</p>
             <h2 className={`mt-2 text-4xl sm:text-5xl ${serif.className}`}>Join {event.name}</h2>
-            <p className="mt-2 text-xl leading-snug">Sign up with your OPJU email for free entry, then pick this event from your dashboard.</p>
+            <p className="mt-2 text-lg leading-snug sm:text-xl">Sign up with your OPJU email for free entry, then pick this event from your dashboard.</p>
             <Link href="/auth/signup" className="mt-5 inline-block px-8 py-3 text-lg font-bold uppercase tracking-widest transition hover:-translate-y-0.5" style={pill}>Register now</Link>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center justify-between gap-4 text-lg font-bold uppercase tracking-wider">
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 text-base font-bold uppercase tracking-wider sm:mt-10 sm:text-lg">
             <Link href={`/events/${prev.slug}`} className="flex items-center gap-2 hover:underline"><ArrowLeft className="h-5 w-5" /> {prev.name}</Link>
             <Link href={`/events/${next.slug}`} className="flex items-center gap-2 hover:underline">{next.name} <ArrowRight className="h-5 w-5" /></Link>
           </div>

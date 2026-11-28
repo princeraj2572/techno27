@@ -10,13 +10,14 @@ export const antaragni: EventData = {
 
   // ---- details ----
   tagline: "Express what lies within.",
-  about: "Antaragni 2K27 is a vibrant cultural platform for dance, vocal and instrumental music, rap, mime and visual storytelling. From soulful solos to energetic group acts, every student gets a stage to express their individuality and showcase their talent.",
-  date: "Feb 16–17, 2027",
-  time: "To be announced",
-  venue: "To be announced",
+  // Copied exactly from the event's official document.
+  about: "ANTARAGNI 2K27 is a vibrant cultural platform that celebrates the creativity, passion, and artistic talents of students. The event brings together diverse performing arts, including dance, vocal and instrumental music, rap, mime, and visual storytelling.From soulful solo performances and melodious duets to energetic group performances and captivating instrumental presentations, ANTARAGNI provides an opportunity for every student to express their individuality, explore their creativity, and showcase their talent.The event aims to promote cultural diversity, teamwork, confidence, and artistic excellence while creating a memorable celebration of music, movement, and expression.",
+  date: "Feb 17, 2027",
+  time: "6:30 PM",
+  venue: "University Playground",
   teamSize: "Solo, duet or group",
-  fee: "Free for OPJU · ₹199 for external",
-  prize: "To be announced",
+  fee: "Free for OPJU · External: ₹99 individual / ₹199 team",
+  prize: "₹23,000",
   rules: [
     "Report at least 30 minutes before your slot. Late arrivals cannot perform.",
     "Rounds: Audition 1, Audition 2, Screening, Final. No one enters the final without qualifying.",
@@ -35,6 +36,16 @@ export const antaragni: EventData = {
     "Mime / Silent Act",
     "Short Film / Video Performance",
   ],
+  // Wording copied exactly from the event's official document; " · " separates its bullet points.
+  subEventInfo: {
+    "Solo Dance": "Any dance form (Classical / Folk / Western / Contemporary / Hip-Hop / Fusion).",
+    "Group Dance": "Group performances with synchronized choreography and theme-based presentation.",
+    "Solo Singing": "Classical / Semi-classical / Folk / Bollywood / Western / Indian.",
+    "Duet / Group Singing & Instrumental": "Duet or group singin or group instrumental performances, showcasing musical harmony, rhythm, coordination, and creativity.",
+    "Rap / Beat-boxing": "Original or adapted rap performances with clean and appropriate lyrics.",
+    "Mime / Silent Act": "Expression-based performance conveying a message without dialogue.",
+    "Short Film / Video Performance": "Short films, reels, or visual storytelling (social, cultural, or creative themes).",
+  },
 
   // ---- look ----
   theme: {
